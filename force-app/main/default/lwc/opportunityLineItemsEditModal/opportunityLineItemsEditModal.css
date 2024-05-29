@@ -1,0 +1,8 @@
+.eu-actions-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.eu-actions-container lightning-button + lightning-button {
+  margin-left: 0.5rem;
+}

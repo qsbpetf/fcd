@@ -1,0 +1,55 @@
+<!--
+  @description       : 
+  @author            : tatu.lappetelainen@ceili.fi
+  @group             : 
+  @last modified on  : 01-13-2024
+  @last modified by  : tatu.lappetelainen@ceili.fi
+-->
+<template>
+  <lightning-modal-header
+    label="Delete Opportunity Products"
+  ></lightning-modal-header>
+  <lightning-modal-body class="slds-is-relative">
+    <template lwc:if={isFetching}>
+      <div class="eu-spinner-container">
+        <lightning-spinner variant="brand" alternative-text="Loading...">
+        </lightning-spinner>
+      </div>
+    </template>
+    <template lwc:if={isSubmitting}>
+      <div class="eu-spinner-container">
+        <lightning-spinner variant="brand" alternative-text="Loading...">
+        </lightning-spinner>
+      </div>
+    </template>
+    <p class="slds-text-heading_small slds-var-m-bottom_small">
+      Are you sure you want to delete these opportunity products?
+    </p>
+    <ol class="eu-list">
+      <template
+        for:each={computedOpportunityLineItems}
+        for:item="opportunityLineItem"
+      >
+        <li class="eu-list-item" key={opportunityLineItem.Id}>
+          <span>{opportunityLineItem.PricebookEntry.Product2.Name}</span>
+          <template lwc:if={opportunityLineItem.error}>
+            <p class="slds-text-color_error">{opportunityLineItem.error}</p>
+          </template>
+        </li>
+      </template>
+    </ol>
+  </lightning-modal-body>
+  <div class="slds-modal__footer eu-actions-container">
+    <lightning-button
+      label="Cancel"
+      disabled={isSubmitting}
+      onclick={handleCancelClick}
+    ></lightning-button>
+    <lightning-button
+      label="Delete"
+      variant="destructive"
+      disabled={isSubmitting}
+      onclick={handleSubmitClick}
+    ></lightning-button>
+  </div>
+</template>

@@ -1,0 +1,115 @@
+<!--
+  @description       : 
+  @author            : tatu.lappetelainen@ceili.fi
+  @group             : 
+  @last modified on  : 03-07-2024
+  @last modified by  : tatu.lappetelainen@ceili.fi
+-->
+<template>
+  <div class="eu-text-filter-container">
+    <lightning-input
+      type="search"
+      label="Search"
+      value={wildcard}
+      onchange={handleWildcardChange}
+    ></lightning-input>
+  </div>
+  <div class="eu-select-filter-container">
+    <lightning-select
+      name="revenueType"
+      label="Revenue Type"
+      value={revenueType}
+      options={computedRevenueTypes}
+      onchange={handleRevenueTypeChange}
+    ></lightning-select>
+    <lightning-select
+      name="productFamily"
+      label="Product Family"
+      value={productFamily}
+      options={computedProductFamilies}
+      onchange={handleProductFamilyChange}
+    ></lightning-select>
+    <lightning-select
+      name="businessArea"
+      label="Business Area"
+      value={businessArea}
+      options={computedBusinessAreas}
+      onchange={handleBusinessAreaChange}
+    ></lightning-select>
+  </div>
+  <div class="eu-actions-container">
+    <lightning-button
+      label="Clear filters"
+      variant="neutral"
+      onclick={handleClearFiltersClick}
+    ></lightning-button>
+    <lightning-button
+      label="Search products"
+      variant="brand"
+      onclick={handleSearchClick}
+    ></lightning-button>
+  </div>
+  <div class="slds-grid slds-gutters slds-var-m-top_medium">
+    <div class="slds-col slds-size_8-of-12">
+      <h6 class="slds-text-heading_small slds-var-m-bottom_small">
+        Search results
+      </h6>
+      <template lwc:if={isPricebookEntriesEmpty}>
+        <p class="slds-text-body_regular slds-var-p-vertical_medium">
+          No products were found with the given search criteria.
+        </p>
+      </template>
+      <template lwc:else>
+        <lightning-datatable
+          columns={pricebookEntryColumns}
+          data={pricebookEntries}
+          key-field="Id"
+          class="eu-datatable"
+          hide-checkbox-column="true"
+          enable-infinite-loading="true"
+          sorted-by={sortBy}
+          sorted-direction={sortDirection}
+          onloadmore={handlePricebookEntriesLoadMore}
+          onrowaction={handlePricebookEntriesRowAction}
+          onsort={handlePricebookEntriesSort}
+          min-column-width="100"
+          wrap-table-header
+        >
+        </lightning-datatable>
+      </template>
+    </div>
+    <div class="slds-col slds-size_4-of-12">
+      <h6 class="slds-text-heading_small slds-var-m-bottom_small">
+        Selected products
+      </h6>
+      <template lwc:if={isOpportunityLineItemsEmpty}>
+        <p class="slds-text-body_regular slds-var-p-vertical_medium">
+          No products have been selected. Select products by clicking the 'Add'
+          icon button.
+        </p>
+      </template>
+      <template lwc:else>
+        <ul class="eu-list">
+          <template
+            for:each={opportunityLineItems}
+            for:item="opportunityLineItem"
+          >
+            <li key={opportunityLineItem.Id} class="eu-list-item">
+              <span class="slds-text-body_regular"
+                >{opportunityLineItem.PricebookEntry.Product2.Name}</span
+              >
+              <lightning-button-icon
+                icon-name="utility:delete"
+                alternative-text="Delete"
+                title="Delete"
+                name="delete"
+                data-opportunity-line-item-id={opportunityLineItem.Id}
+                onclick={handleOpportunityItemDelete}
+              ></lightning-button-icon>
+            </li>
+          </template>
+        </ul>
+      </template>
+    </div>
+  </div>
+</template>

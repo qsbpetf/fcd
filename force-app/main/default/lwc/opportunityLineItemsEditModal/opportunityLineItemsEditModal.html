@@ -1,0 +1,35 @@
+<!--
+  @description       : 
+  @author            : tatu.lappetelainen@ceili.fi
+  @group             : 
+  @last modified on  : 01-05-2024
+  @last modified by  : tatu.lappetelainen@ceili.fi
+-->
+<template>
+  <lightning-modal-header
+    label="Edit Opportunity Products"
+  ></lightning-modal-header>
+  <lightning-modal-body>
+    <c-opportunity-line-items-edit-datatable
+      opportunity-id={opportunityId}
+      opportunity-line-items={opportunityLineItems}
+      opportunity-line-item-errors={opportunityLineItemErrors}
+      is-submitting={isSubmitting}
+      is-fetching={isFetching}
+      onopportunitylineitemschange={handleOpportunityLineItemsChange}
+    ></c-opportunity-line-items-edit-datatable>
+  </lightning-modal-body>
+  <div class="slds-modal__footer eu-actions-container">
+    <lightning-button
+      label="Cancel"
+      disabled={isSubmitting}
+      onclick={handleCancelClick}
+    ></lightning-button>
+    <lightning-button
+      label="Done"
+      variant="brand"
+      disabled={isSubmitting}
+      onclick={handleSubmitClick}
+    ></lightning-button>
+  </div>
+</template>

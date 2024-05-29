@@ -1,0 +1,22 @@
+<!--
+  @description       : 
+  @author            : tatu.lappetelainen@ceili.fi
+  @group             : 
+  @last modified on  : 01-12-2024
+  @last modified by  : tatu.lappetelainen@ceili.fi
+-->
+<template>
+  <div class="outside" onclick={handleOutsideClick}></div>
+  <lightning-select
+    name={name}
+    placeholder={placeholder}
+    label={label}
+    value={value}
+    required={required}
+    options={computedOptions}
+    onchange={handleChange}
+    variant="label-hidden"
+  >
+  </lightning-select>
+  <button type="submit" class="slds-hide">Save</button>
+</template>
