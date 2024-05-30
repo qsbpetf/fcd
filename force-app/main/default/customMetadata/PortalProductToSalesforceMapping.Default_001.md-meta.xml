@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default 001</label>
+    <protected>false</protected>
+    <values>
+        <field>Edition__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Platform__c</field>
+        <value xsi:type="xsd:string">CLOUD</value>
+    </values>
+    <values>
+        <field>ProductName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SalesforceProductName__c</field>
+        <value xsi:type="xsd:string">Atlassian Cloud - Marketplace Application</value>
+    </values>
+</CustomMetadata>
