@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Atlassian_Access_Cloud_std</label>
+    <label>Product 020</label>
     <protected>false</protected>
     <values>
         <field>Edition__c</field>
-        <value xsi:type="xsd:string">standard</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Platform__c</field>
@@ -12,10 +12,10 @@
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Access (Cloud)</value>
+        <value xsi:type="xsd:string">Jira Product Discovery</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Cloud - Atlassian Access</value>
+        <value xsi:type="xsd:string">Atlassian Cloud - Jira Product Discovery</value>
     </values>
 </CustomMetadata>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Jira_Svc_Mgmt_Cloud_Enterprise</label>
+    <label>Product 001</label>
     <protected>false</protected>
     <values>
         <field>Edition__c</field>
@@ -8,14 +8,14 @@
     </values>
     <values>
         <field>Platform__c</field>
-        <value xsi:type="xsd:string">CLOUD</value>
+        <value xsi:type="xsd:string">DATACENTER</value>
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Jira Service Management (Cloud) Enterprise</value>
+        <value xsi:type="xsd:string">Confluence (Data Center)</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Cloud - Enterprise - Jira Service Management</value>
+        <value xsi:type="xsd:string">Atlassian Data Center - Confluence</value>
     </values>
 </CustomMetadata>

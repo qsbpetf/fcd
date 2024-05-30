@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Confluence_Cloud_prem</label>
+    <label>Product 004</label>
     <protected>false</protected>
     <values>
         <field>Edition__c</field>
-        <value xsi:type="xsd:string">premium</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Platform__c</field>
-        <value xsi:type="xsd:string">CLOUD</value>
+        <value xsi:type="xsd:string">DATACENTER</value>
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Confluence (Cloud)</value>
+        <value xsi:type="xsd:string">Jira Service Management (formerly Service Desk) (Data Center)</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Cloud - Premium - Confluence</value>
+        <value xsi:type="xsd:string">Atlassian Data Center - Jira Service Management</value>
     </values>
 </CustomMetadata>

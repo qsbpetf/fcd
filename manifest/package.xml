@@ -33,30 +33,30 @@
         <name>StaticResource</name>
     </types>
     <types>
-        <members>PortalProductToSalesforceMapping.Atlas</members>
-        <members>PortalProductToSalesforceMapping.Atlassian_Access_Cloud_prem</members>
-        <members>PortalProductToSalesforceMapping.Atlassian_Access_Cloud_std</members>
-        <members>PortalProductToSalesforceMapping.Bamboo_Data_Center</members>
-        <members>PortalProductToSalesforceMapping.Bitbucket_Cloud_prem</members>
-        <members>PortalProductToSalesforceMapping.Bitbucket_Data_Center</members>
-        <members>PortalProductToSalesforceMapping.Confluence_Cloud_Enterprise</members>
-        <members>PortalProductToSalesforceMapping.Confluence_Cloud_prem</members>
-        <members>PortalProductToSalesforceMapping.Confluence_Cloud_std</members>
-        <members>PortalProductToSalesforceMapping.Confluence_Data_Center</members>
-        <members>PortalProductToSalesforceMapping.Crowd_Data_Center</members>
-        <members>PortalProductToSalesforceMapping.Crucible_Server</members>
-        <members>PortalProductToSalesforceMapping.Fisheye_Server</members>
-        <members>PortalProductToSalesforceMapping.Jira_Cloud_Enterprise</members>
-        <members>PortalProductToSalesforceMapping.Jira_Cloud_prem</members>
-        <members>PortalProductToSalesforceMapping.Jira_Cloud_std</members>
-        <members>PortalProductToSalesforceMapping.Jira_Product_Discovery</members>
-        <members>PortalProductToSalesforceMapping.Jira_Service_Mgmt_Cloud_prem</members>
-        <members>PortalProductToSalesforceMapping.Jira_Service_Mgmt_Cloud_std</members>
-        <members>PortalProductToSalesforceMapping.Jira_Service_Mgmt_f_SDDC</members>
-        <members>PortalProductToSalesforceMapping.Jira_Software_Data_Center</members>
-        <members>PortalProductToSalesforceMapping.Jira_Svc_Mgmt_Cloud_Enterprise</members>
-        <members>PortalProductToSalesforceMapping.Jira_Work_Mgmt_Cloud_prem</members>
-        <members>PortalProductToSalesforceMapping.Jira_Work_Mgmt_Cloud_std</members>
+        <members>PortalProductToSalesforceMapping.Product_001</members>
+        <members>PortalProductToSalesforceMapping.Product_002</members>
+        <members>PortalProductToSalesforceMapping.Product_003</members>
+        <members>PortalProductToSalesforceMapping.Product_004</members>
+        <members>PortalProductToSalesforceMapping.Product_005</members>
+        <members>PortalProductToSalesforceMapping.Product_006</members>
+        <members>PortalProductToSalesforceMapping.Product_007</members>
+        <members>PortalProductToSalesforceMapping.Product_008</members>
+        <members>PortalProductToSalesforceMapping.Product_009</members>
+        <members>PortalProductToSalesforceMapping.Product_010</members>
+        <members>PortalProductToSalesforceMapping.Product_011</members>
+        <members>PortalProductToSalesforceMapping.Product_012</members>
+        <members>PortalProductToSalesforceMapping.Product_013</members>
+        <members>PortalProductToSalesforceMapping.Product_014</members>
+        <members>PortalProductToSalesforceMapping.Product_015</members>
+        <members>PortalProductToSalesforceMapping.Product_016</members>
+        <members>PortalProductToSalesforceMapping.Product_017</members>
+        <members>PortalProductToSalesforceMapping.Product_018</members>
+        <members>PortalProductToSalesforceMapping.Product_019</members>
+        <members>PortalProductToSalesforceMapping.Product_020</members>
+        <members>PortalProductToSalesforceMapping.Product_021</members>
+        <members>PortalProductToSalesforceMapping.Product_022</members>
+        <members>PortalProductToSalesforceMapping.Product_023</members>
+        <members>PortalProductToSalesforceMapping.Product_024</members>
         <name>CustomMetadata</name>
     </types>
     <types>

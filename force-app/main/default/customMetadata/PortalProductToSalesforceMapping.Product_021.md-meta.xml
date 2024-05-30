@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Confluence_Data_Center</label>
+    <label>Product 021</label>
     <protected>false</protected>
     <values>
         <field>Edition__c</field>
@@ -8,14 +8,14 @@
     </values>
     <values>
         <field>Platform__c</field>
-        <value xsi:type="xsd:string">DATACENTER</value>
+        <value xsi:type="xsd:string">CLOUD</value>
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Confluence (Data Center)</value>
+        <value xsi:type="xsd:string">Atlas</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Data Center - Confluence</value>
+        <value xsi:type="xsd:string">Atlassian Cloud - Atlassian Atlas</value>
     </values>
 </CustomMetadata>
