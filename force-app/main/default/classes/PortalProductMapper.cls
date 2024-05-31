@@ -97,6 +97,18 @@ public with sharing class PortalProductMapper {
         return null;
     }
 
+    /**
+     * Search for product infos that match the search criteria.
+     *
+     * @param matchProduct - Whether to match the product name
+     * @param productName - The product name to match
+     * @param matchPlatform - Whether to match the platform
+     * @param platform - The platform to match
+     * @param matchEdition - Whether to match the edition
+     * @param edition - The edition to match
+     *
+     * @return A list of product infos that match the search criteria
+     */
     @TestVisible
     private List<ProductInfo> searchProductInfos(
         Boolean matchProduct, String productName,
@@ -117,6 +129,19 @@ public with sharing class PortalProductMapper {
         return result;
     }
 
+    /**
+     * Maps a partner portal product to a Salesforce product.
+     *
+     * @param productName - Name of the partner portal product
+     * @param platform - The platform of the partner portal product
+     * @param edition - The edition of the partner portal product
+     *
+     * @return The result of the mapping. Structure containing the fields:
+     *         - product: The Salesforce product that the partner portal product maps to
+     *         - info: Information about the mapping process
+     *         - found: Whether the mapping was successful
+     *         - If the mapping was successful, the product field will contain the Salesforce product
+     */
     public MappingResult mapProduct(String productName, String platform, String edition) {
         MappingResult result = new MappingResult();
         result.info = '';
@@ -187,6 +212,10 @@ public with sharing class PortalProductMapper {
         result.info += '[H] No default product found for product: ' + productName + ' platform: ' + platform + ' edition: ' + edition + '. ';
         return result;
     }
+
+    // ===================
+    //   WRAPPER CLASSES
+    // ===================
 
     public class MappingResult {
         public Product2 product;
