@@ -1,0 +1,73 @@
+{
+  "orderNumber" : "AT-318532801",
+  "poNumber" : null,
+  "createdDate" : "2024-05-28T05:15:02.246-0500",
+  "dueDate" : "2024-06-27T00:00:00.000-0500",
+  "billingContact" : {
+    "companyName" : "Eficode Finland",
+    "firstName" : "Licenses",
+    "lastName" : "Finland",
+    "email" : "licensesfi@eficode.com",
+    "phone" : "null",
+    "taxId" : "FI19718143",
+    "address" : {
+      "address1" : "Pohjoinen Rautatiekatu 25",
+      "address2" : null,
+      "city" : "Helsinki",
+      "postalCode" : "00100",
+      "state" : null,
+      "country" : "Finland"
+    }
+  },
+  "technicalContact" : {
+    "companyName" : "S-Pankki Oyj",
+    "firstName" : "Alex",
+    "lastName" : "Lilja",
+    "email" : "alex.lilja@s-pankki.fi",
+    "phone" : "null",
+    "taxId" : "FI25573083",
+    "address" : {
+      "address1" : "PL 77",
+      "address2" : null,
+      "city" : "Helsinki",
+      "postalCode" : null,
+      "state" : null,
+      "country" : "Finland"
+    }
+  },
+  "currency" : "USD",
+  "partnerName" : "Eficode Finland",
+  "orderItems" : [ {
+    "productName" : "Power BI Connector for Jira Data Center",
+    "startDate" : "2024-06-02T00:00:00.000-0500",
+    "endDate" : "2025-06-02T00:00:00.000-0500",
+    "licensedTo" : "S-Pankki",
+    "description" : "Power BI Connector for Jira Data Center for Jira Software (Data Center) 2000 Users: Commercial Term License Renewal",
+    "edition" : null,
+    "cloudSiteHostname" : null,
+    "supportEntitlementNumber" : "SEN-32359789",
+    "saleType" : "RENEWAL",
+    "unitPrice" : 9500.00,
+    "platform" : "DATACENTER",
+    "taxExempt" : false,
+    "licenseType" : "COMMERCIAL",
+    "unitCount" : 2000,
+    "isTrialPeriod" : false,
+    "isUnlimitedUsers" : false,
+    "maintenanceMonths" : null,
+    "priceAdjustment" : 950.00,
+    "upgradeCredit" : 0.00,
+    "partnerDiscountTotal" : 950.00,
+    "loyaltyDiscountTotal" : 0,
+    "discounts" : [ {
+      "amount" : 950.00,
+      "percentage" : 10.00,
+      "reason" : "MPAC_PARTNER_DISCOUNT",
+      "type" : "EXPERT"
+    } ],
+    "total" : 8550.00
+  } ],
+  "totalExTax" : 8550.00,
+  "totalIncTax" : 8550.00,
+  "totalTax" : 0.00
+}

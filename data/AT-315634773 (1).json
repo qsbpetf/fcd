@@ -1,0 +1,75 @@
+{
+  "orderNumber" : "AT-315634773",
+  "poNumber" : null,
+  "createdDate" : "2024-05-16T02:35:34.611-0500",
+  "dueDate" : "2024-06-15T00:00:00.000-0500",
+  "billingContact" : {
+    "companyName" : "Eficode Finland",
+    "firstName" : "Katja",
+    "lastName" : "Loikkanen",
+    "email" : "katja.loikkanen@eficode.com",
+    "phone" : "+358405611299",
+    "taxId" : "FI19718143",
+    "address" : {
+      "address1" : "Pohjoinen Rautatiekatu 25",
+      "address2" : "",
+      "city" : "Helsinki",
+      "postalCode" : "00100",
+      "state" : "Uusimaa",
+      "country" : "Finland"
+    }
+  },
+  "technicalContact" : {
+    "companyName" : "Eficode",
+    "firstName" : "Antti",
+    "lastName" : "Päivinen",
+    "email" : "antti.paivinen@eficode.com",
+    "phone" : "358447736646",
+    "taxId" : "",
+    "address" : {
+      "address1" : "Pohjoinen Rautatiekatu 25",
+      "address2" : "",
+      "city" : "Helsinki",
+      "postalCode" : "00100",
+      "state" : "Uusimaa",
+      "country" : "Finland"
+    }
+  },
+  "currency" : "USD",
+  "partnerName" : "Eficode Finland",
+  "orderItems" : [ {
+    "productName" : "Bitbucket (Cloud)",
+    "startDate" : "2024-05-03T00:00:00.000-0500",
+    "endDate" : "2025-05-03T00:00:00.000-0500",
+    "licensedTo" : "Eficode",
+    "description" : "Bitbucket (Cloud) 50 Users (Annual Payments) Renewal",
+    "edition" : null,
+    "cloudSiteHostname" : "groke-tech",
+    "supportEntitlementNumber" : "SEN-42318436",
+    "entitlementNumber" : "E-3Z4-J85-263-SR4",
+    "entitlementId" : "b692f44e-e01a-470d-b7cc-61c49f4ac015",
+    "saleType" : "RENEWAL",
+    "unitPrice" : 3000.00,
+    "platform" : "CLOUD",
+    "taxExempt" : false,
+    "licenseType" : "COMMERCIAL",
+    "unitCount" : 50,
+    "isTrialPeriod" : false,
+    "isUnlimitedUsers" : false,
+    "maintenanceMonths" : null,
+    "priceAdjustment" : 300.00,
+    "upgradeCredit" : 0.00,
+    "partnerDiscountTotal" : 300.00,
+    "loyaltyDiscountTotal" : 0,
+    "discounts" : [ {
+      "amount" : 300.00,
+      "percentage" : 10.00,
+      "reason" : "PARTNER_DISCOUNT",
+      "type" : "EXPERT"
+    } ],
+    "total" : 2700.00
+  } ],
+  "totalExTax" : 2700.00,
+  "totalIncTax" : 2700.00,
+  "totalTax" : 0.00
+}
