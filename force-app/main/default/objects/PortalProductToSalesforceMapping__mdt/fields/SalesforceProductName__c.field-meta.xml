@@ -3,7 +3,7 @@
     <fullName>SalesforceProductName__c</fullName>
     <description>Name of the corresponding Salesforce product.</description>
     <externalId>false</externalId>
-    <fieldManageability>DeveloperControlled</fieldManageability>
+    <fieldManageability>SubscriberControlled</fieldManageability>
     <label>Salesforce Product Name</label>
     <length>255</length>
     <required>true</required>
