@@ -63,6 +63,8 @@ public with sharing class PortalJsonParser {
         orderLine.upgradeCredit = (Double) itemData.get('upgradeCredit');
         orderLine.partnerDiscountTotal = (Double) itemData.get('partnerDiscountTotal');
         orderLine.loyaltyDiscountTotal = (Double) itemData.get('loyaltyDiscountTotal');
+        orderLine.edition = (String) itemData.get('edition');
+        orderLine.platform = (String) itemData.get('platform');
     }
 
     // TODO: Add fields: edition, platform
@@ -82,6 +84,8 @@ public with sharing class PortalJsonParser {
         public Double upgradeCredit;
         public Double partnerDiscountTotal;
         public Double loyaltyDiscountTotal;
+        public String edition;
+        public String platform;
     }
 
     public class OrderInformation {
