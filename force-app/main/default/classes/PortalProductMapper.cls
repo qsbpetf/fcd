@@ -61,10 +61,10 @@ public with sharing class PortalProductMapper {
             FROM Product2
             WHERE Name IN :salesforceProducts
         ]);
-        System.debug('Found ' + salesforceProducts.size() + ' Salesforce products.');
+        // System.debug('Found ' + salesforceProducts.size() + ' Salesforce products.');
         for (Product2 product : salesforceProducts) {
             result.put(product.Name, product);
-            System.debug('SF Product: ' + product.Name + ' => ' + product.Id);
+            // System.debug('SF Product: ' + product.Name + ' => ' + product.Id);
         }
         return result;
     }
@@ -144,7 +144,6 @@ public with sharing class PortalProductMapper {
      */
     public MappingResult mapProduct(String productName, String platform, String edition) {
         MappingResult result = new MappingResult();
-        result.info = '';
 
         // Full key is productName:platform:edition. Full search is done first.
         System.debug('Searching for product: ' + productName + ' platform: ' + platform + ' edition: ' + edition);
@@ -186,30 +185,32 @@ public with sharing class PortalProductMapper {
 
         if (productSearchNameOnlyResult.size() == 0) {
             result.info = '[D] Product name unknown: ' + productName + '. ';
-        } else {
-            result.info += '[E] Found ' + productSearchNameOnlyResult.size() + ' products partial match on product name: ' + productName +
-                (productSearchNameOnlyResult[0].platform == platform ? ' and platform: ' + platform : '') +
-                (productSearchNameOnlyResult[0].edition == edition ? ' and edition: ' + edition : '') +
-                '. ';
 
-            // If full key search failed, try to find the product by name only.
+            // If full key search failed, try to find the product by platform only.
             List<PortalProductMapper.ProductInfo> productSearchPlatformOnlyResult =
                 searchProductInfos(true, null, true, platform, true, null);
 
             if (productSearchPlatformOnlyResult.size() == 1) {
-                result.info += '[F] Found default product for platform: ' + platform + '. ';
+                result.info += '[E] Found default product for platform: ' + platform + '. ';
                 result.product = productByNameMapping.get(productSearchPlatformOnlyResult[0].salesforceProductName);
                 if (result.product == null) {
                     result.found = false;
-                    result.info += '[G] Found mapping but NO Salesforce product id found for Salesforce product: ' + productSearchPlatformOnlyResult[0].salesforceProductName;
+                    result.info += '[F] Found mapping but NO Salesforce product id found for Salesforce product: ' + productSearchPlatformOnlyResult[0].salesforceProductName;
                 } else {
                     result.found = true;
                 }
-                return result;
+            } else {
+                result.info += '[G] No default product found for platform: ' + platform + '. ';
             }
+        } else {
+            result.info += '[H] Found ' + productSearchNameOnlyResult.size() + ' products partial match on product name: ' + productName +
+                (productSearchNameOnlyResult[0].platform == platform ? ' and platform: ' + platform : '') +
+                (productSearchNameOnlyResult[0].edition == edition ? ' and edition: ' + edition : '') +
+                '. ';
+            result.found = false;
+            result.product = null;
         }
 
-        result.info += '[H] No default product found for product: ' + productName + ' platform: ' + platform + ' edition: ' + edition + '. ';
         return result;
     }
 
@@ -221,6 +222,12 @@ public with sharing class PortalProductMapper {
         public Product2 product;
         public String info;
         public Boolean found;
+
+        public MappingResult() {
+            this.product = null;
+            this.info = '';
+            this.found = false;
+        }
     }
 
     public class ProductInfo {

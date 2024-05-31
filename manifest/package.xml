@@ -59,7 +59,6 @@
         <members>PortalProductToSalesforceMapping.Product_024</members>
         <members>PortalProductToSalesforceMapping.Default_001</members>
         <members>PortalProductToSalesforceMapping.Default_002</members>
-        <members>PortalProductToSalesforceMapping.Default_003</members>
         <name>CustomMetadata</name>
     </types>
     <types>
