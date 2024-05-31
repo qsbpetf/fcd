@@ -41,6 +41,7 @@ public with sharing class PortalJsonParser {
         orderInfo.dueDate = Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date();
     }
 
+    // TODO: Add parsing of fields: edition, platform
     @TestVisible
     private static void getOrderItemData(OrderLine orderLine, Map<String, Object> itemData) {
         orderLine.productName = (String) itemData.get('productName');
@@ -64,6 +65,7 @@ public with sharing class PortalJsonParser {
         orderLine.loyaltyDiscountTotal = (Double) itemData.get('loyaltyDiscountTotal');
     }
 
+    // TODO: Add fields: edition, platform
     public class OrderLine {
         public String productName;
         public Date startDate;
