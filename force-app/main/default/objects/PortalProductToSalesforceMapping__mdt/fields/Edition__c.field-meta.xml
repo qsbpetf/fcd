@@ -3,7 +3,7 @@
     <fullName>Edition__c</fullName>
     <description>Edition of the Partner Portal Product, spelled exactly as in the JSON export file.</description>
     <externalId>false</externalId>
-    <fieldManageability>DeveloperControlled</fieldManageability>
+    <fieldManageability>SubscriberControlled</fieldManageability>
     <label>Edition</label>
     <length>255</length>
     <required>false</required>

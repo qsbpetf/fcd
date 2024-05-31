@@ -3,8 +3,8 @@
     <fullName>ProductName__c</fullName>
     <description>Name of the Partner Portal Product, spelled exactly as in the JSON export file.</description>
     <externalId>false</externalId>
-    <fieldManageability>DeveloperControlled</fieldManageability>
-    <label>Product Name</label>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <label>ProductName</label>
     <length>255</length>
     <required>false</required>
     <type>Text</type>
