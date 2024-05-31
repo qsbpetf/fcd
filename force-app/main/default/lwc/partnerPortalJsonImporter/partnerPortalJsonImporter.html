@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title={recordId} icon-name="custom:custom14">
+        <lightning-layout>
+            <lightning-layout-item size="12">
+                <!-- Add a lightning input field -->
+                <lightning-input label="Json" value={json} onchange={handleJsonChange}></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <!-- Add a lightning-button -->
+                <lightning-button label="Import" onclick={handleImport}></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>
