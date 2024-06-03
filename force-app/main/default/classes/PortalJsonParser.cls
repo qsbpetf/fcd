@@ -63,33 +63,37 @@ public with sharing class PortalJsonParser {
         orderLine.upgradeCredit = (Double) itemData.get('upgradeCredit');
         orderLine.partnerDiscountTotal = (Double) itemData.get('partnerDiscountTotal');
         orderLine.loyaltyDiscountTotal = (Double) itemData.get('loyaltyDiscountTotal');
+        orderLine.edition = (String) itemData.get('edition');
+        orderLine.platform = (String) itemData.get('platform');
     }
 
     // TODO: Add fields: edition, platform
     public class OrderLine {
-        public String productName;
-        public Date startDate;
-        public Date endDate;
-        public String description;
-        public String cloudSiteHostname;
-        public String supportEntitlementNumber;
-        public String entitlementNumber;
-        public String saleType;
-        public Double unitPrice;
-        public Double total;
-        public Integer unitCount;
-        public Double priceAdjustment;
-        public Double upgradeCredit;
-        public Double partnerDiscountTotal;
-        public Double loyaltyDiscountTotal;
+        @AuraEnabled public String productName;
+        @AuraEnabled public Date startDate;
+        @AuraEnabled public Date endDate;
+        @AuraEnabled public String description;
+        @AuraEnabled public String cloudSiteHostname;
+        @AuraEnabled public String supportEntitlementNumber;
+        @AuraEnabled public String entitlementNumber;
+        @AuraEnabled public String saleType;
+        @AuraEnabled public Double unitPrice;
+        @AuraEnabled public Double total;
+        @AuraEnabled public Integer unitCount;
+        @AuraEnabled public Double priceAdjustment;
+        @AuraEnabled public Double upgradeCredit;
+        @AuraEnabled public Double partnerDiscountTotal;
+        @AuraEnabled public Double loyaltyDiscountTotal;
+        @AuraEnabled public String edition;
+        @AuraEnabled public String platform;
     }
 
     public class OrderInformation {
-        public String orderNumber;
-        public String technicalContactEmail;
-        public Double totalExTax;
-        public Date dueDate;
-        public List<OrderLine> orderItems;
+        @AuraEnabled public String orderNumber;
+        @AuraEnabled public String technicalContactEmail;
+        @AuraEnabled public Double totalExTax;
+        @AuraEnabled public Date dueDate;
+        @AuraEnabled public List<OrderLine> orderItems;
 
         public OrderInformation() {
             orderItems = new List<OrderLine>();

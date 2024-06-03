@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title={recordId} icon-name="custom:custom14">
+        <lightning-textarea label="Paste your JSON below:" value={jsonText} onchange={updateJson} class="slds-m-around_x-small"></lightning-textarea>
+        <lightning-button label="Show parsed product names" variant="brand" onclick={handleImport} class="slds-m-around_x-small"></lightning-button>
+        <lightning-button label="Map products" variant="brand" onclick={handleMapping} class="slds-m-around_x-small"></lightning-button>
+        <div class="product-container">
+            <h1>Found products:</h1>
+            <ul class="custom-lis">
+                <template for:each={data.orderItems} for:item="item">
+                    <li key={item.productName}>{item.productName}</li>
+                </template>
+            </ul>
+        </div>
+
+        <div class="mapping-container">
+            <h1>Found mappings:</h1>
+            <div class="custom-lis">
+                <template for:each={mapping} for:item="item">
+                    <div class="rounded-rect" key={item.portalProduct}>
+                        <div class="product-name">{item.portalProduct}</div>
+                        <div>Found: {item.found}</div>
+                        <div>Salesforce Product: {item.product.Name}, {template.Family}, {item.product.Id}</div>
+                        <div>Info: {item.info}</div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

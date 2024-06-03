@@ -57,7 +57,7 @@ public with sharing class PortalProductMapper {
     private Map<String, Product2> prepareProductByNameMapping() {
         Map<String, Product2> result = new Map<String, Product2>();
         List<Product2> salesforceProducts = new List<Product2>([
-            SELECT Id, Name
+            SELECT Id, Name, Family
             FROM Product2
             WHERE Name IN :salesforceProducts
         ]);
@@ -117,9 +117,6 @@ public with sharing class PortalProductMapper {
     ) {
         List<ProductInfo> result = new List<ProductInfo>();
         for (ProductInfo info : productInfos) {
-            // if matchProduct is true, productName must match
-            // if matchPlatform is true, platform must match
-            // if matchEdition is true, edition must match
             if ((!matchProduct || info.productName == productName) &&
                 (!matchPlatform || info.platform == platform) &&
                 (!matchEdition || info.edition == edition)) {
@@ -144,6 +141,7 @@ public with sharing class PortalProductMapper {
      */
     public MappingResult mapProduct(String productName, String platform, String edition) {
         MappingResult result = new MappingResult();
+        result.portalProduct = 'Partner Portal Product Name: ' + productName + ',  Platform: ' + platform + ',  Edition: ' + edition;
 
         // Full key is productName:platform:edition. Full search is done first.
         System.debug('Searching for product: ' + productName + ' platform: ' + platform + ' edition: ' + edition);
@@ -219,11 +217,13 @@ public with sharing class PortalProductMapper {
     // ===================
 
     public class MappingResult {
-        public Product2 product;
-        public String info;
-        public Boolean found;
+        @AuraEnabled public String portalProduct;
+        @AuraEnabled public Product2 product;
+        @AuraEnabled public String info;
+        @AuraEnabled public Boolean found;
 
         public MappingResult() {
+            this.portalProduct = null;
             this.product = null;
             this.info = '';
             this.found = false;
@@ -231,10 +231,10 @@ public with sharing class PortalProductMapper {
     }
 
     public class ProductInfo {
-        public String productName;
-        public String platform;
-        public String edition;
-        public String salesforceProductName;
+        @AuraEnabled public String productName;
+        @AuraEnabled public String platform;
+        @AuraEnabled public String edition;
+        @AuraEnabled public String salesforceProductName;
 
         public ProductInfo(String productName, String platform, String edition, String salesforceProductName) {
             this.productName = productName;
