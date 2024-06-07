@@ -1,5 +1,6 @@
 public with sharing class OpportunityProductMapper {
-    
+    private static OpportunityProductMapper instance;
+
     public static OpportunityProductMapper getInstance() {
         if (instance == null) {
             instance = new OpportunityProductMapper();
@@ -18,7 +19,8 @@ public with sharing class OpportunityProductMapper {
      */
     public List<OpportunityLineItem> mapProducts(Product2 mappedProduct, String oppId, PortalJsonParser.OrderLine orderLine){
 
-        //Get oppty from SF (Id, priceBook2Id, currency )
+        try{
+        //Get oppty from SF
         Opportunity oppty = [SELECT Id, PriceBook2Id, CurrencyIsoCode 
                              FROM Opportunity 
                              WHERE Id = :oppId 
@@ -29,7 +31,7 @@ public with sharing class OpportunityProductMapper {
         //                     FROM Product2
         //                     WHERE Id = :mappedProduct.Id LIMIT 1];
 
-        //Get PriceBookEntry by product2, pricebook2 & currencyIsoCode
+        //Get PriceBookEntry
         PricebookEntry pbEntry = [SELECT Id, Product2Id
                                 FROM PricebookEntry 
                                 WHERE Product2Id = :mappedProduct.Id 
@@ -38,10 +40,12 @@ public with sharing class OpportunityProductMapper {
                                 LIMIT 1];
         
         OpportunityLineItem mappedOppLineItem = mapOpportunityLineItem(pbEntry, oppty, orderLine);
+    }
+    catch (Exception e) {
+        System.debug('Error mapping products: ' + e.getMessage());
+    }
 
         return mappedOppLineItem;
-
-        //insert opp here? 
         
     }
 
@@ -50,9 +54,11 @@ public with sharing class OpportunityProductMapper {
     private OpportunityLineItem mapOpportunityLineItem(PricebookEntry pbEntry, Opportunity oppty,PortalJsonParser.OrderLine orderLine){
 
         OpportunityLineItem opl = new OpportunityLineItem();
+
         opl.PricebookEntryId = pbEntryId.Id;
         opl.Product2Id = pbEntry.Product2Id;
-        opl.PriceBook = oppty.Pricebook2Id;
+        opl.OpportunityId = oppty.Id;
+        opl.Pricebook2Id = oppty.Pricebook2Id;
         opl.currencyIsoCode = oppty.CurrencyIsoCode;
         opl.License_Start_date__c = orderLine.startDate;
         opl.License_end_date__c = orderLine.endDate;
