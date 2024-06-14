@@ -1,21 +1,46 @@
 public with sharing class PortalQuoteConverter {
 
     @AuraEnabled
-    public static void convertQuote(String jsonFile, String oppId){
+    public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts, Double conversionFactor) {
+        PortalJsonParser.OrderInformation orderInfo = parseJson(jsonText);
+        Opportunity opp = getOpportunity(oppId);
+        OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
+        List<OpportunityLineItem> oppProducts = mapProducts(orderInfo, opp, conversionFactor, log);
+        System.debug('INSERTING PRODUCTS');
+        for (OpportunityLineItem oppProduct : oppProducts) {
+            System.debug('   PRODUCT: ' + oppProduct);
+        }
+        if (createProducts) {
+            insert oppProducts;
+        }
+        updateOpportunity(opp, orderInfo, log);
 
-        // Parse incoming JSON
-        PortalJsonParser.OrderInformation orderInfo = parseJson(jsonFile);
+        return log;
+    }
 
-        //Map Portal Product to SF Products and Opportunity Product
-        List<OpportunityLineItem> oppProducts = mapProduct(orderInfo, oppId);
+    @AuraEnabled
+    public static String getJsonFile(String contentBodyId, String contentVersionId, String documentId, String oppId) {
+        String versionDataString = '';
 
-        //Update Opportunity with PortalQuoteId
-        Opportunity oppty = updateOpportunity(oppId, orderInfo);
+        // Getting the Content Data
+        ContentVersion cv = [
+            SELECT Id, Title, VersionData
+            FROM ContentVersion
+            WHERE Id = :contentVersionId
+            LIMIT 1
+        ];
+        versionDataString = cv.VersionData.toString();
 
-        //update oppty and insert opp line items in another layer? 
+        // Deleting the ContentDocument
+        ContentDocument cd = [
+            SELECT Id
+            FROM ContentDocument
+            WHERE Id = :documentId
+            LIMIT 1
+        ];
+        delete cd;
 
-        //return
-
+        return versionDataString;
     }
 
     private static PortalJsonParser.OrderInformation parseJson(String jsonText) {
@@ -25,44 +50,38 @@ public with sharing class PortalQuoteConverter {
         return orderInfo;
     }
 
-    private static List<OpportunityLineItem> mapProduct(PortalJsonParser.OrderInformation orderInfo, String oppId){
-        
-        PortalProductMapper portalProductMapper = PortalProductMapper.getInstance();
-        OpportunityProductMapper oppProductMapper = OpportunityProductMapper.getInstance();
+    private static List<OpportunityLineItem> mapProducts(PortalJsonParser.OrderInformation orderInfo, Opportunity opp, Double conversionFactor, OpportunityProductMapper.LogData log) {
+        OpportunityProductMapper opMapper = OpportunityProductMapper.getInstance();
+        List<OpportunityLineItem> oppProducts = opMapper.mapProducts(orderInfo, opp, conversionFactor, log);
 
-        List<OpportunityLineItem> result = new List<OpportunityLineitem>();
-        List<Product2> mappedProducts = new List<Product2>();
-        List<PortalJsonParser.OrderLine> orderLines = new List<PortalJsonParser.OrderLine>();
-
-        for (PortalJsonParser.OrderLine orderLine : orderInfo.orderItems) {
-            //map to product2
-            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(orderLine.productName, orderLine.platform, orderLine.edition);
-            if (mapResult.found) {
-                mappedProducts.add(mapResult.product);
-                orderLines.add(orderLine);
-            }
-            //if not found, return mapResult.info to UI?
-        }
-
-        //map to oppProduct
-        OpportunityLineItem oppProduct = oppProductMapper.mapProducts(mappedProducts, oppId, orderLines);
-        result.add(oppProduct);
-
-        return result;
+        return oppProducts;
     }
 
-    private static Opportunity updateOpportunity(String oppId, PortalJsonParser.OrderInformation orderInfo ){
+    private static Opportunity getOpportunity(String oppId) {
+        Opportunity opp = [
+            SELECT Id,
+                Pricebook2Id,
+                Pricebook2.Name,
+                CurrencyIsoCode,
+                Atlassian_AT_Quote_ref__c,
+                Technical_Contact_email__c,
+                Atlassian_AT_Quote_amount__c,
+                AT_quote_expiry__c,
+                QuoteImportResult__c
+            FROM Opportunity
+            WHERE Id = :oppId
+            LIMIT 1
+        ];
+        System.debug('OPPINFO: ' + opp + ' Pricebook=' + opp.Pricebook2.Name);
+        return opp;
+    }
 
-        Opportunity oppty = [SELECT Id, Atlassian_AT_Quote_ref__c, Technical_Contact_email__c,	Atlassian_AT_Quote_amount__c, AT_quote_expiry__c
-                            FROM Opportunity
-                            WHERE Id = :oppId
-                            LIMIT 1];
-
-        oppty.Atlassian_AT_Quote_ref__c = orderInfo.orderNumber;
-        //oppty.Technical_Contact_email__c = orderInfo.technicalContactEmail; // cannot map to formula field, create new email adress field? (see slide 7 )
-        oppty.Atlassian_AT_Quote_amount__c = orderInfo.totalExTax;
-        oppty.AT_quote_expiry__c = orderInfo.dueDate;
-
-        return oppty;
+    private static void updateOpportunity(Opportunity opp, PortalJsonParser.OrderInformation orderInfo, OpportunityProductMapper.LogData log) {
+        opp.Atlassian_AT_Quote_ref__c = orderInfo.orderNumber;
+        // opp.Technical_Contact_email__c = orderInfo.technicalContactEmail; // cannot map to formula field, create new email adress field? (see slide 7 )
+        opp.Atlassian_AT_Quote_amount__c = orderInfo.totalExTax;
+        opp.AT_quote_expiry__c = orderInfo.dueDate;
+        opp.QuoteImportResult__c = String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n');
+        update opp;
     }
 }

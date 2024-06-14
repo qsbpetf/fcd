@@ -1,4 +1,12 @@
 public with sharing class OpportunityProductMapper {
+
+    private static final Map<String, String> RENEWAL_MAPPING = new Map<String, String> {
+        'NEW' => 'New',
+        'RENEWAL' => 'Renewal',
+        'UPGRADE' => 'Upgrade',
+        'DOWNGRADE' => 'Downgrade (Same Platform)'
+    };
+
     private static OpportunityProductMapper instance;
 
     public static OpportunityProductMapper getInstance() {
@@ -11,87 +19,119 @@ public with sharing class OpportunityProductMapper {
     /**
      * Maps multiple Products and OrderLines to Salesforce Opportunity Products.
      *
-     * @param mappedProducts - The list of Salesforce products that the partner portal products map to
-     * @param oppId - Salesforce Opportunity ID where partner portal product JSON are inserted
-     * @param orderLines - List of fields from partner portal products for mapping to Opportunity Products
+     * @param orderInfo - The list of fields from partner portal products for mapping to Opportunity Products
+     * @param opp - Salesforce Opportunity where partner portal product JSON are inserted
+     * @param conversionFactor - Conversion factor for currency conversion
+     * @param log - Log of the mapping process
      *
      * @return The list of Salesforce OpportunityLineItem (Opportunity Products) results of the mapping.
      */
-    public List<OpportunityLineItem> mapProducts(List<Product2> mappedProducts, String oppId, List<PortalJsonParser.OrderLine> orderLines) {
-        List<OpportunityLineItem> opportunityLineItems = new List<OpportunityLineItem>();
+    public List<OpportunityLineItem> mapProducts(PortalJsonParser.OrderInformation orderInfo, Opportunity opp, Double conversionFactor, OpportunityProductMapper.LogData log) {
+        PortalProductMapper portalProductMapper = PortalProductMapper.getInstance();
+        OpportunityProductMapper oppProductMapper = OpportunityProductMapper.getInstance();
 
-        try {
-            // Get the oppty with PbId and currency from SF
-            Opportunity oppty = [SELECT Id, Pricebook2Id, CurrencyIsoCode 
-                                 FROM Opportunity 
-                                 WHERE Id = :oppId 
-                                 LIMIT 1];
+        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
+        Map<String, Product2> mappedProducts = new Map<String, Product2>();
+        List<PortalJsonParser.OrderLine> orderLines = new List<PortalJsonParser.OrderLine>();
+        Set<Id> productIds = new Set<Id>();
 
-            // Collect Product2 ids in set
-            Set<Id> product2Ids = new Set<Id>();
-            for (Product2 product : mappedProducts) {
-                product2Ids.add(product.Id);
+        for (PortalJsonParser.OrderLine orderLine : orderInfo.orderItems) {
+            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(orderLine.productName, orderLine.platform, orderLine.edition);
+            if (mapResult.found) {
+                System.debug('  -- Product found: ' + mapResult);
+                log.productLog.add(String.valueOf(mapResult));
+                mappedProducts.put(productAsKey(orderLine.productName, orderLine.platform, orderLine.edition), mapResult.product);
+                productIds.add(mapResult.product.Id);
+                orderLines.add(orderLine);
             }
-
-            // Get PriceBookEntries and store in map
-            Map<Id, PricebookEntry> pricebookEntries = new Map<Id, PricebookEntry>();
-            for (PricebookEntry pbe : [SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
-                                        FROM PricebookEntry
-                                        WHERE Product2Id IN :product2Ids
-                                        AND Pricebook2Id = :oppty.Pricebook2Id
-                                        AND CurrencyIsoCode = :oppty.CurrencyIsoCode]) {
-
-                pricebookEntries.put(pbe.Product2Id, pbe);
-            }
-
-            // Create opp line item, iterate over orderline and get pricebookEntry
-            for (Integer i = 0; i < orderLines.size(); i++) {
-                Product2 mappedProduct = mappedProducts[i];
-                PortalJsonParser.OrderLine orderLine = orderLines[i];
-
-                // Find pbe
-                PricebookEntry pbEntry = pricebookEntries.get(mappedProduct.Id);
-
-                if (pbEntry != null) {
-                    OpportunityLineItem mappedOppLineItem = mapOpportunityLineItem(pbEntry, oppty, orderLine);
-                    opportunityLineItems.add(mappedOppLineItem);
-                } else {
-                    System.debug('No matching PricebookEntry found for Product2 Id: ' + mappedProduct.Id);
-                }
-            }
-        } catch (Exception e) {
-            System.debug('Error mapping products: ' + e.getMessage());
         }
 
-        return opportunityLineItems; // or insert opportunity products
+        Map<Id, PricebookEntry> pbeByProductId = getPriceBookEntriesMappedByProductId(productIds, opp);
+
+        for (PortalJsonParser.OrderLine orderLine : orderLines) {
+            Product2 mappedProduct = mappedProducts.get(productAsKey(orderLine.productName, orderLine.platform, orderLine.edition));
+            PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
+            if (pbe != null) {
+                OpportunityLineItem oppProduct = oppProductMapper.mapOpportunityLineItem(pbe, opp.Id, orderLine, conversionFactor);
+                opptyProductsToInsert.add(oppProduct);
+                log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name);
+            } else {
+                System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
+                log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+            }
+        }
+
+        return opptyProductsToInsert;
     }
 
-    // Map OpportunityProduct
-    @TestVisible
-    private OpportunityLineItem mapOpportunityLineItem(PricebookEntry pbEntry, Opportunity oppty, PortalJsonParser.OrderLine orderLine) {
-        OpportunityLineItem opl = new OpportunityLineItem();
+    private static String productAsKey(String productName, String platform, String edition) {
+        return productName + ':' + platform + ':' + edition;
+    }
 
-        opl.PricebookEntryId = pbEntry.Id;
-        opl.Product2Id = pbEntry.Product2Id;
-        opl.OpportunityId = oppty.Id;
-        // opl.License_Start_date__c = (orderLine.startDate == null) ? Date.today() : orderLine.startDate; // slide 8 in documentation "Where dates = null"
+    private static Map<Id, PricebookEntry> getPriceBookEntriesMappedByProductId(Set<Id> productIds, Opportunity opp) {
+        Map<Id, PricebookEntry> pbeByProductId = new Map<Id, PricebookEntry>();
+        for (PricebookEntry pbe : [
+            SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
+            FROM PricebookEntry
+            WHERE Product2Id IN :productIds
+            AND Pricebook2Id = :opp.Pricebook2Id
+            AND CurrencyIsoCode = :opp.CurrencyIsoCode
+        ]) {
+            pbeByProductId.put(pbe.Product2Id, pbe);
+        }
+
+        return pbeByProductId;
+    }
+
+    public OpportunityLineItem mapOpportunityLineItem(PricebookEntry pbEntry, Id oppId, PortalJsonParser.OrderLine orderLine, Double conversionFactor) {
+        OpportunityLineItem oli = new OpportunityLineItem();
+
+        System.debug(JSON.serializePretty(orderLine));
+
+        oli.PricebookEntryId = pbEntry.Id;
+        oli.Product2Id = pbEntry.Product2Id;
+        oli.OpportunityId = oppId;
+        // oli.License_Start_date__c = (orderLine.startDate == null) ? Date.today() : orderLine.startDate; // slide 8 in documentation "Where dates = null"
         // Date endDate = (orderLine.endDate == null) ? Date.today().addMonths(orderLine.maintenanceMonths) : orderLine.endDate; 
-        // opl.License_end_date__c = endDate;
-        opl.License_Start_date__c = orderLine.startDate;
-        opl.License_end_date__c = orderLine.endDate;
-        opl.Additional_Info__c = orderLine.description;
-        opl.Cloud_Site_Name__c = orderLine.cloudSiteHostname;
-        opl.SEN__c = orderLine.supportEntitlementNumber;
-        opl.Entitlement_Number__c = orderLine.entitlementNumber;
-        opl.Renewal__c = orderLine.saleType;
-        opl.Editable_Unit_List_Price_in_USD__c = orderLine.unitPrice;
-        opl.Editable_Cost_Price_in_Dollars__c = orderLine.total;
-        opl.User_Count__c = orderLine.unitCount;
-        opl.Atlassian_Price_Adjustment__c = orderLine.priceAdjustment;
-        opl.Atlassian_Upgrade_Credit__c = orderLine.upgradeCredit;
-        opl.Atlassian_Partner_Discount__c = orderLine.partnerDiscountTotal;
-        opl.Atlassian_Loyalty_Discount__c = orderLine.loyaltyDiscountTotal;
+        // oli.License_end_date__c = endDate;
+        oli.License_Start_date__c = orderLine.startDate;
+        oli.License_end_date__c = orderLine.endDate;
+        oli.Additional_Info__c = orderLine.description;
+        oli.Cloud_Site_Name__c = orderLine.cloudSiteHostname;
+        oli.SEN__c = orderLine.supportEntitlementNumber;
+        oli.Entitlement_Number__c = orderLine.entitlementNumber;
+        oli.Renewal__c = convertRenewal(orderLine.saleType);
+        oli.Editable_Unit_List_Price_in_USD__c = orderLine.unitPrice;
+        oli.Editable_Cost_Price_in_Dollars__c = orderLine.total;
+        oli.User_Count__c = orderLine.unitCount;
+        oli.Atlassian_Price_Adjustment__c = convertCurrency(orderLine.priceAdjustment, conversionFactor);
+        oli.Atlassian_Upgrade_Credit__c = orderLine.upgradeCredit;
+        oli.Atlassian_Partner_Discount__c = convertCurrency(orderLine.partnerDiscountTotal, conversionFactor);
+        oli.Atlassian_Loyalty_Discount__c = convertCurrency(orderLine.loyaltyDiscountTotal, conversionFactor);
+        oli.QuoteOriginalProduct__c = orderLine.productName;
+        oli.UnitPrice = convertCurrency(orderLine.unitPrice, conversionFactor);
+        oli.Quantity = orderLine.unitCount;
 
-        return opl;
+        return oli;
+    }
+
+    private static Double convertCurrency(Double amount, Double conversionFactor) {
+        return (amount != null) ? amount * conversionFactor : null;
+    }
+
+    private static String convertRenewal(String value) {
+        String result = RENEWAL_MAPPING.get(value);
+        System.debug('** SaleType Renewal: ' + value + ' -> ' + result);
+        return (result != null) ? result : value;
+    }
+
+    public class LogData {
+        @AuraEnabled public List<String> productLog;
+        @AuraEnabled public List<String> pbeLog;
+
+        public LogData() {
+            this.productLog = new List<String>();
+            this.pbeLog = new List<String>();
+        }
     }
 }

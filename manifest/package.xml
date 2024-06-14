@@ -63,6 +63,8 @@
     </types>
     <types>
         <members>PortalProductToSalesforceMapping__mdt</members>
+        <members>Opportunity</members>
+        <members>OpportunityLineItem</members>
         <name>CustomObject</name>
     </types>
     <types>

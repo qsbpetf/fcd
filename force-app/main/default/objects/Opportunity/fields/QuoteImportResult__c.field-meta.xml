@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuoteImportResult__c</fullName>
+    <description>Quote Import Result</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Quote Import Result</inlineHelpText>
+    <label>Quote Import Result</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>8</visibleLines>
+</CustomField>

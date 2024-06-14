@@ -37,8 +37,8 @@ public with sharing class PortalJsonParser {
         orderInfo.technicalContactEmail = (String) technicalContact.get('email');
         orderInfo.totalExTax = (Double) orderData.get('totalExTax');
         String dateString = (String) orderData.get('dueDate');
-        dateString = dateString.replace('T', ' ');
-        orderInfo.dueDate = Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date();
+        dateString = String.isNotBlank(dateString) ? dateString.replace('T', ' ') : dateString;
+        orderInfo.dueDate =String.isNotBlank(dateString) ? Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date() : null;
     }
 
     // TODO: Add parsing of fields: edition, platform
@@ -46,11 +46,11 @@ public with sharing class PortalJsonParser {
     private static void getOrderItemData(OrderLine orderLine, Map<String, Object> itemData) {
         orderLine.productName = (String) itemData.get('productName');
         String startDateString = (String) itemData.get('startDate');
-        startDateString = startDateString.replace('T', ' ');
-        orderLine.startDate = Datetime.valueOf(startDateString).date();
+        startDateString = String.isNotBlank(startDateString) ? startDateString.replace('T', ' ') : startDateString;
+        orderLine.startDate = String.isNotBlank(startDateString) ? Datetime.valueOf(startDateString).date() : null;
         String endDateString = (String) itemData.get('endDate');
-        endDateString = endDateString.replace('T', ' ');
-        orderLine.endDate = Datetime.valueOf(endDateString).date();
+        endDateString = String.isNotBlank(endDateString) ? endDateString.replace('T', ' ') : endDateString;
+        orderLine.endDate = String.isNotBlank(endDateString) ? Datetime.valueOf(endDateString).date() : null;
         orderLine.description = (String) itemData.get('description');
         orderLine.cloudSiteHostname = (String) itemData.get('cloudSiteHostname');
         orderLine.supportEntitlementNumber = (String) itemData.get('supportEntitlementNumber');
