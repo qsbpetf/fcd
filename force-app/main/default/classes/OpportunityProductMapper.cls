@@ -53,8 +53,13 @@ public with sharing class OpportunityProductMapper {
             PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
             if (pbe != null) {
                 OpportunityLineItem oppProduct = oppProductMapper.mapOpportunityLineItem(pbe, opp.Id, orderLine, conversionFactor);
-                opptyProductsToInsert.add(oppProduct);
-                log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name);
+                if (oppProduct != null) {
+                    opptyProductsToInsert.add(oppProduct);
+                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name);
+                } else {
+                    System.debug('Skipping zero total order line: ' + orderLine.productName);
+                    log.pbeLog.add('Skipping zero total order line for product: ' + orderLine.productName);
+                }
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
                 log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
@@ -87,6 +92,11 @@ public with sharing class OpportunityProductMapper {
         OpportunityLineItem oli = new OpportunityLineItem();
 
         System.debug(JSON.serializePretty(orderLine));
+
+        if (orderLine.total == 0.00) {
+            System.debug('Skipping zero total order line: ' + orderLine.productName);
+            return null;
+        }
 
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
