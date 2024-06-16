@@ -54,3 +54,9 @@ h2 {
     font-size: 1.0em;
     font-weight: bold;
 }
+
+.my-or {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 12px;
+}

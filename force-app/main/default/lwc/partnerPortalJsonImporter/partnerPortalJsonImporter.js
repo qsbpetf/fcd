@@ -90,8 +90,7 @@ export default class PartnerPortalJsonImporter extends LightningElement {
             const result = await apexConvertQuote({
                 jsonText: this.jsonText,
                 oppId: this.recordId,
-                createProducts: false,
-                conversionFactor: this.conversionFactor
+                createProducts: false
             });
             console.log('result', result);
             this.conversionResult = result;
@@ -117,8 +116,7 @@ export default class PartnerPortalJsonImporter extends LightningElement {
             const result = await apexConvertQuote({
                 jsonText: this.jsonText,
                 oppId: this.recordId,
-                createProducts: true,
-                conversionFactor: this.conversionFactor
+                createProducts: true
             });
             console.log('result', result);
             this.conversionResult = result;

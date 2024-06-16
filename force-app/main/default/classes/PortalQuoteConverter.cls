@@ -1,14 +1,15 @@
 public with sharing class PortalQuoteConverter {
 
     @AuraEnabled
-    public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts, Double conversionFactor) {
+    public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts) {
         PortalJsonParser.OrderInformation orderInfo = parseJson(jsonText);
         Opportunity opp = getOpportunity(oppId);
         OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
+        Double conversionFactor = getLatestCurrencyConversionFactor(opp.CurrencyIsoCode);
         List<OpportunityLineItem> oppProducts = mapProducts(orderInfo, opp, conversionFactor, log);
-        System.debug('INSERTING PRODUCTS');
+        System.debug('INSERTING PRODUCTS: ' + createProducts);
         for (OpportunityLineItem oppProduct : oppProducts) {
-            System.debug('   PRODUCT: ' + oppProduct);
+            System.debug('   PRODUCT: ' + JSON.serializePretty(oppProduct));
         }
         if (createProducts) {
             insert oppProducts;
@@ -48,6 +49,36 @@ public with sharing class PortalQuoteConverter {
         PortalJsonParser.OrderInformation orderInfo = parser.parseJson(jsonText);
 
         return orderInfo;
+    }
+
+    private static Double getLatestCurrencyConversionFactor(String currencyIsoCode) {
+        List<Buying_Exchange_Rate__c> currencyList = [
+            SELECT
+                Exchange_Rate_from_USD_to_EUR__c,
+                Exchange_Rate_from_USD_to_GBP__c,
+                Start_Date__c
+            FROM Buying_Exchange_Rate__c
+            ORDER BY Start_Date__c DESC
+            LIMIT 1
+        ];
+
+        if (currencyList.isEmpty()) {
+            return 1;
+        }
+        Buying_Exchange_Rate__c conversionRate = currencyList[0];
+        System.debug('Currency: ' + currencyIsoCode + ' Rate: ' + conversionRate);
+
+        switch on currencyIsoCode {
+            when 'EUR' {
+                return conversionRate.Exchange_Rate_from_USD_to_EUR__c;
+            }
+            when 'GBP' {
+                return conversionRate.Exchange_Rate_from_USD_to_GBP__c;
+            }
+            when else {
+                return 1;
+            }
+        }
     }
 
     private static List<OpportunityLineItem> mapProducts(PortalJsonParser.OrderInformation orderInfo, Opportunity opp, Double conversionFactor, OpportunityProductMapper.LogData log) {

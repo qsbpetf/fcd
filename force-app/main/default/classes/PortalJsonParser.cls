@@ -65,6 +65,21 @@ public with sharing class PortalJsonParser {
         orderLine.loyaltyDiscountTotal = (Double) itemData.get('loyaltyDiscountTotal');
         orderLine.edition = (String) itemData.get('edition');
         orderLine.platform = (String) itemData.get('platform');
+        orderLine.maintenanceMonths = (Integer) itemData.get('maintenanceMonths');
+
+        // Special handling of dates
+        if (orderLine.saleType == 'NEW') {
+            if (orderLine.startDate == null) {
+                orderLine.startDate = Date.today();
+                orderLine.endDate = Date.today().addMonths(
+                    (itemData.get('maintenanceMonths') != null)
+                        ? orderLine.maintenanceMonths
+                        : 12)
+                    .addDays(-1);
+            }
+        }
+
+        System.debug(JSON.serializePretty(orderLine));
     }
 
     // TODO: Add fields: edition, platform
@@ -86,6 +101,7 @@ public with sharing class PortalJsonParser {
         @AuraEnabled public Double loyaltyDiscountTotal;
         @AuraEnabled public String edition;
         @AuraEnabled public String platform;
+        @AuraEnabled public Integer maintenanceMonths;
     }
 
     public class OrderInformation {

@@ -105,11 +105,10 @@ public with sharing class OpportunityProductMapper {
         oli.Editable_Cost_Price_in_Dollars__c = orderLine.total;
         oli.User_Count__c = orderLine.unitCount;
         oli.Atlassian_Price_Adjustment__c = convertCurrency(orderLine.priceAdjustment, conversionFactor);
-        oli.Atlassian_Upgrade_Credit__c = orderLine.upgradeCredit;
+        oli.Atlassian_Upgrade_Credit__c = convertCurrency(orderLine.upgradeCredit, conversionFactor);
         oli.Atlassian_Partner_Discount__c = convertCurrency(orderLine.partnerDiscountTotal, conversionFactor);
         oli.Atlassian_Loyalty_Discount__c = convertCurrency(orderLine.loyaltyDiscountTotal, conversionFactor);
         oli.QuoteOriginalProduct__c = orderLine.productName;
-        oli.UnitPrice = convertCurrency(orderLine.unitPrice, conversionFactor);
         oli.Quantity = orderLine.unitCount;
 
         return oli;
