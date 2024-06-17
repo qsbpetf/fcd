@@ -66,6 +66,11 @@ public with sharing class PortalJsonParser {
         orderLine.edition = (String) itemData.get('edition');
         orderLine.platform = (String) itemData.get('platform');
         orderLine.maintenanceMonths = (Integer) itemData.get('maintenanceMonths');
+        List<Object> discounts = (List<Object>) itemData.get('discounts');
+        if (discounts != null && discounts.size() > 0) {
+            Map<String, Object> discount = (Map<String, Object>) discounts.get(0);
+            orderLine.discountReason = (String) discount.get('reason');
+        }
 
         // Special handling of dates
         if (orderLine.saleType == 'NEW') {
@@ -102,6 +107,7 @@ public with sharing class PortalJsonParser {
         @AuraEnabled public String edition;
         @AuraEnabled public String platform;
         @AuraEnabled public Integer maintenanceMonths;
+        @AuraEnabled public String discountReason;
     }
 
     public class OrderInformation {

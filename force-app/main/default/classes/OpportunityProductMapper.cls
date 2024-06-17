@@ -1,9 +1,10 @@
 public with sharing class OpportunityProductMapper {
 
-    private static final Map<String, String> RENEWAL_MAPPING = new Map<String, String> {
+    private static final Map<String, String> SALETYPE_MAPPING = new Map<String, String> {
         'NEW' => 'New',
-        'RENEWAL' => 'Renewal',
-        'UPGRADE' => 'Upgrade',
+        'RENEWAL' => 'Renewal (CV Owned)',
+        'RENEWAL_NEW' => 'Renewal (New to CV)',
+        'UPGRADE' => 'Upgrade (Same Platform)',
         'DOWNGRADE' => 'Downgrade (Same Platform)'
     };
 
@@ -110,16 +111,16 @@ public with sharing class OpportunityProductMapper {
         oli.Cloud_Site_Name__c = orderLine.cloudSiteHostname;
         oli.SEN__c = orderLine.supportEntitlementNumber;
         oli.Entitlement_Number__c = orderLine.entitlementNumber;
-        oli.Renewal__c = convertRenewal(orderLine.saleType);
+        oli.Renewal__c = convertRenewal(orderLine.saleType, orderLine.discountReason);
         oli.Editable_Unit_List_Price_in_USD__c = orderLine.unitPrice;
         oli.Editable_Cost_Price_in_Dollars__c = orderLine.total;
         oli.User_Count__c = orderLine.unitCount;
-        oli.Atlassian_Price_Adjustment__c = convertCurrency(orderLine.priceAdjustment, conversionFactor);
-        oli.Atlassian_Upgrade_Credit__c = convertCurrency(orderLine.upgradeCredit, conversionFactor);
-        oli.Atlassian_Partner_Discount__c = convertCurrency(orderLine.partnerDiscountTotal, conversionFactor);
-        oli.Atlassian_Loyalty_Discount__c = convertCurrency(orderLine.loyaltyDiscountTotal, conversionFactor);
+        oli.Atlassian_Price_Adjustment__c = orderLine.priceAdjustment;
+        oli.Atlassian_Upgrade_Credit__c = orderLine.upgradeCredit;
+        oli.Atlassian_Partner_Discount__c = orderLine.partnerDiscountTotal;
+        oli.Atlassian_Loyalty_Discount__c = orderLine.loyaltyDiscountTotal;
         oli.QuoteOriginalProduct__c = orderLine.productName;
-        oli.Quantity = orderLine.unitCount;
+        oli.Quantity = 1;
 
         return oli;
     }
@@ -128,10 +129,14 @@ public with sharing class OpportunityProductMapper {
         return (amount != null) ? amount * conversionFactor : null;
     }
 
-    private static String convertRenewal(String value) {
-        String result = RENEWAL_MAPPING.get(value);
-        System.debug('** SaleType Renewal: ' + value + ' -> ' + result);
-        return (result != null) ? result : value;
+    private static String convertRenewal(String value, String discountReason) {
+        String key = value;
+        if (value.equalsIgnoreCase('RENEWAL') && discountReason != null && discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_DIFFERENT_EXPERT')) {
+            key = 'RENEWAL_NEW';
+        }
+        String result = SALETYPE_MAPPING.get(key);
+        System.debug('** SaleType: ' + key + ' -> ' + result);
+        return (result != null) ? result : key;
     }
 
     public class LogData {

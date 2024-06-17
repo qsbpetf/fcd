@@ -82,8 +82,8 @@ public with sharing class PortalQuoteConverter {
     }
 
     private static List<OpportunityLineItem> mapProducts(PortalJsonParser.OrderInformation orderInfo, Opportunity opp, Double conversionFactor, OpportunityProductMapper.LogData log) {
-        OpportunityProductMapper opMapper = OpportunityProductMapper.getInstance();
-        List<OpportunityLineItem> oppProducts = opMapper.mapProducts(orderInfo, opp, conversionFactor, log);
+        OpportunityProductMapper oppMapper = OpportunityProductMapper.getInstance();
+        List<OpportunityLineItem> oppProducts = oppMapper.mapProducts(orderInfo, opp, conversionFactor, log);
 
         return oppProducts;
     }
