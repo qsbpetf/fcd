@@ -34,11 +34,39 @@ public with sharing class PortalJsonParser {
     private static void getOrderData(OrderInformation orderInfo, Map<String, Object> orderData) {
         orderInfo.orderNumber = (String) orderData.get('orderNumber');
         Map<String, Object> technicalContact = (Map<String, Object>) orderData.get('technicalContact');
-        orderInfo.technicalContactEmail = (String) technicalContact.get('email');
+        orderInfo.technicalContact = getTechnicalContact(technicalContact);
         orderInfo.totalExTax = (Double) orderData.get('totalExTax');
         String dateString = (String) orderData.get('dueDate');
         dateString = String.isNotBlank(dateString) ? dateString.replace('T', ' ') : dateString;
         orderInfo.dueDate =String.isNotBlank(dateString) ? Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date() : null;
+    }
+
+    @TestVisible
+    private static TechnicalContactDetails getTechnicalContact(Map<String, Object> technicalContact) {
+        TechnicalContactDetails techCon = new TechnicalContactDetails();
+        techCon.email = (String) technicalContact.get('email');
+        techCon.firstName = (String) technicalContact.get('firstName');
+        techCon.lastName = (String) technicalContact.get('lastName');
+        techCon.phone = (String) technicalContact.get('phone');
+        techCon.taxId = (String) technicalContact.get('taxId');
+        techCon.companyName = (String) technicalContact.get('companyName');
+        System.debug('== GOT: ' + techCon);
+        Map<String, Object> address = (Map<String, Object>) technicalContact.get('address');
+        techCon.address = getAddress(address);
+        return techCon;
+    }
+
+    @TestVisible
+    private static ContactAddress getAddress(Map<String, Object> address) {
+        ContactAddress conAddr = new ContactAddress();
+        conAddr.address1 = (String) address.get('address1');
+        conAddr.address2 = (String) address.get('address2');
+        conAddr.city = (String) address.get('city');
+        conAddr.postalCode = (String) address.get('postalCode');
+        conAddr.state = (String) address.get('state');
+        conAddr.country = (String) address.get('country');
+        System.debug('== GOT: ' + conAddr);
+        return conAddr;
     }
 
     // TODO: Add parsing of fields: edition, platform
@@ -110,9 +138,28 @@ public with sharing class PortalJsonParser {
         @AuraEnabled public String discountReason;
     }
 
+    public class ContactAddress {
+        @AuraEnabled public String address1;
+        @AuraEnabled public String address2;
+        @AuraEnabled public String city;
+        @AuraEnabled public String postalCode;
+        @AuraEnabled public String state;
+        @AuraEnabled public String country;
+    }
+
+    public class TechnicalContactDetails {
+        @AuraEnabled public String email;
+        @AuraEnabled public String firstName;
+        @AuraEnabled public String lastName;
+        @AuraEnabled public String phone;
+        @AuraEnabled public String taxId;
+        @AuraEnabled public String companyName;
+        @AuraEnabled public ContactAddress address;
+    }
+
     public class OrderInformation {
         @AuraEnabled public String orderNumber;
-        @AuraEnabled public String technicalContactEmail;
+        @AuraEnabled public TechnicalContactDetails technicalContact;
         @AuraEnabled public Double totalExTax;
         @AuraEnabled public Date dueDate;
         @AuraEnabled public List<OrderLine> orderItems;

@@ -90,13 +90,16 @@ public with sharing class PortalQuoteConverter {
 
     private static Opportunity getOpportunity(String oppId) {
         Opportunity opp = [
-            SELECT Id,
+            SELECT
+                Id,
+                AccountId,
                 Pricebook2Id,
                 Pricebook2.Name,
                 CurrencyIsoCode,
                 Atlassian_AT_Quote_ref__c,
                 Technical_Contact_email__c,
                 Atlassian_AT_Quote_amount__c,
+                Atlassian_AT_Quote_Tech_Contact__c,
                 AT_quote_expiry__c,
                 QuoteImportResult__c
             FROM Opportunity
@@ -113,6 +116,43 @@ public with sharing class PortalQuoteConverter {
         opp.Atlassian_AT_Quote_amount__c = orderInfo.totalExTax;
         opp.AT_quote_expiry__c = orderInfo.dueDate;
         opp.QuoteImportResult__c = String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n');
+
+        if (opp.Atlassian_AT_Quote_Tech_Contact__c == null) {
+            Contact con = findOrCreateContact(opp, orderInfo.technicalContact);
+            opp.Atlassian_AT_Quote_Tech_Contact__c = con.Id;
+        }
+
         update opp;
+    }
+
+    private static Contact findOrCreateContact(Opportunity opp, PortalJsonParser.TechnicalContactDetails techCon) {
+        Contact con;
+
+        List<Contact> conList = new List<Contact>([
+            SELECT Id
+            FROM Contact
+            WHERE Email = :techCon.email AND AccountId = :opp.AccountId
+            LIMIT 1
+        ]);
+
+        if (conList.isEmpty()) {
+            con = new Contact();
+            con.Email = techCon.email;
+            con.FirstName = techCon.firstName;
+            con.LastName = techCon.lastName;
+            con.Phone = techCon.phone;
+            con.AccountId = opp.AccountId;
+            con.MailingStreet = techCon?.address?.address1;
+            con.MailingCity = techCon?.address?.city;
+            con.MailingState = techCon?.address?.state;
+            con.MailingPostalCode = techCon?.address?.postalCode;
+            con.MailingCountry = techCon?.address?.country;
+
+            insert con;
+        } else {
+            con = conList[0];
+        }
+
+        return con;
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
 
-    <lightning-card title="Convert Atlassian Partner Portal Quote into Salesforce Opportunity" icon-name="custom:custom14">
+    <lightning-card title="Convert Atlassian Partner Portal Quote into Salesforce Opportunity Products" icon-name="custom:custom14">
         <div class="slds-grid slds-wrap">
             <lightning-textarea label="Paste your JSON below:" value={jsonText} onchange={updateJson} class="slds-m-around_x-small"></lightning-textarea>
             <div class="my-or">
@@ -17,8 +17,7 @@
             </lightning-file-upload>
         </div>
         <div class="slds-m-top_medium slds-m-bottom_medium">
-            <lightning-button label="Parse JSON" variant="brand" onclick={handleParse} class="slds-m-around_x-small"></lightning-button>
-            <lightning-button label="Show parsed product names" variant="brand" onclick={handleImport} class="slds-m-around_x-small"></lightning-button>
+            <lightning-button label="Parse products" variant="brand" onclick={handleImport} class="slds-m-around_x-small"></lightning-button>
             <lightning-button label="Map products" variant="brand" onclick={handleMapping} class="slds-m-around_x-small"></lightning-button>
             <lightning-button label="Validate Opportunity Products" variant="brand" onclick={handleProducts} class="slds-m-around_x-small"></lightning-button>
             <lightning-button label="CREATE Opportunity Products!" variant="neutral" onclick={createProducts} class="slds-m-left_xx-large slds-m-top_x-small"></lightning-button>
@@ -40,7 +39,9 @@
                     <div class="rounded-rect" key={item.portalProduct}>
                         <div class="product-name">{item.portalProduct}</div>
                         <div>Found: {item.found}</div>
-                        <div>Salesforce Product: {item.product.Name}, {template.Family}, {item.product.Id}</div>
+                        <template if:true={item.product}>
+                            <div>Salesforce Product: {item.product.Name}, {template.Family}, {item.product.Id}</div>
+                        </template>
                         <div>Info: {item.info}</div>
                     </div>
                 </template>
@@ -48,7 +49,7 @@
         </div>
 
         <div class="conv-result">
-            <h1>Converted results:</h1>
+            <h1>Converted results: (can also be found on Oppty field QuoteImportResult__c)</h1>
             <div class="rounded-rect">
                 <h2>Products</h2>
                 <ul class="custom-lis">
