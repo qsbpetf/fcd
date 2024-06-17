@@ -34,11 +34,39 @@ public with sharing class PortalJsonParser {
     private static void getOrderData(OrderInformation orderInfo, Map<String, Object> orderData) {
         orderInfo.orderNumber = (String) orderData.get('orderNumber');
         Map<String, Object> technicalContact = (Map<String, Object>) orderData.get('technicalContact');
-        orderInfo.technicalContactEmail = (String) technicalContact.get('email');
+        orderInfo.technicalContact = getTechnicalContact(technicalContact);
         orderInfo.totalExTax = (Double) orderData.get('totalExTax');
         String dateString = (String) orderData.get('dueDate');
-        dateString = dateString.replace('T', ' ');
-        orderInfo.dueDate = Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date();
+        dateString = String.isNotBlank(dateString) ? dateString.replace('T', ' ') : dateString;
+        orderInfo.dueDate =String.isNotBlank(dateString) ? Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date() : null;
+    }
+
+    @TestVisible
+    private static TechnicalContactDetails getTechnicalContact(Map<String, Object> technicalContact) {
+        TechnicalContactDetails techCon = new TechnicalContactDetails();
+        techCon.email = (String) technicalContact.get('email');
+        techCon.firstName = (String) technicalContact.get('firstName');
+        techCon.lastName = (String) technicalContact.get('lastName');
+        techCon.phone = (String) technicalContact.get('phone');
+        techCon.taxId = (String) technicalContact.get('taxId');
+        techCon.companyName = (String) technicalContact.get('companyName');
+        System.debug('== GOT: ' + techCon);
+        Map<String, Object> address = (Map<String, Object>) technicalContact.get('address');
+        techCon.address = getAddress(address);
+        return techCon;
+    }
+
+    @TestVisible
+    private static ContactAddress getAddress(Map<String, Object> address) {
+        ContactAddress conAddr = new ContactAddress();
+        conAddr.address1 = (String) address.get('address1');
+        conAddr.address2 = (String) address.get('address2');
+        conAddr.city = (String) address.get('city');
+        conAddr.postalCode = (String) address.get('postalCode');
+        conAddr.state = (String) address.get('state');
+        conAddr.country = (String) address.get('country');
+        System.debug('== GOT: ' + conAddr);
+        return conAddr;
     }
 
     // TODO: Add parsing of fields: edition, platform
@@ -46,11 +74,11 @@ public with sharing class PortalJsonParser {
     private static void getOrderItemData(OrderLine orderLine, Map<String, Object> itemData) {
         orderLine.productName = (String) itemData.get('productName');
         String startDateString = (String) itemData.get('startDate');
-        startDateString = startDateString.replace('T', ' ');
-        orderLine.startDate = Datetime.valueOf(startDateString).date();
+        startDateString = String.isNotBlank(startDateString) ? startDateString.replace('T', ' ') : startDateString;
+        orderLine.startDate = String.isNotBlank(startDateString) ? Datetime.valueOf(startDateString).date() : null;
         String endDateString = (String) itemData.get('endDate');
-        endDateString = endDateString.replace('T', ' ');
-        orderLine.endDate = Datetime.valueOf(endDateString).date();
+        endDateString = String.isNotBlank(endDateString) ? endDateString.replace('T', ' ') : endDateString;
+        orderLine.endDate = String.isNotBlank(endDateString) ? Datetime.valueOf(endDateString).date() : null;
         orderLine.description = (String) itemData.get('description');
         orderLine.cloudSiteHostname = (String) itemData.get('cloudSiteHostname');
         orderLine.supportEntitlementNumber = (String) itemData.get('supportEntitlementNumber');
@@ -65,6 +93,26 @@ public with sharing class PortalJsonParser {
         orderLine.loyaltyDiscountTotal = (Double) itemData.get('loyaltyDiscountTotal');
         orderLine.edition = (String) itemData.get('edition');
         orderLine.platform = (String) itemData.get('platform');
+        orderLine.maintenanceMonths = (Integer) itemData.get('maintenanceMonths');
+        List<Object> discounts = (List<Object>) itemData.get('discounts');
+        if (discounts != null && discounts.size() > 0) {
+            Map<String, Object> discount = (Map<String, Object>) discounts.get(0);
+            orderLine.discountReason = (String) discount.get('reason');
+        }
+
+        // Special handling of dates
+        if (orderLine.saleType == 'NEW') {
+            if (orderLine.startDate == null) {
+                orderLine.startDate = Date.today();
+                orderLine.endDate = Date.today().addMonths(
+                    (itemData.get('maintenanceMonths') != null)
+                        ? orderLine.maintenanceMonths
+                        : 12)
+                    .addDays(-1);
+            }
+        }
+
+        System.debug(JSON.serializePretty(orderLine));
     }
 
     // TODO: Add fields: edition, platform
@@ -86,11 +134,32 @@ public with sharing class PortalJsonParser {
         @AuraEnabled public Double loyaltyDiscountTotal;
         @AuraEnabled public String edition;
         @AuraEnabled public String platform;
+        @AuraEnabled public Integer maintenanceMonths;
+        @AuraEnabled public String discountReason;
+    }
+
+    public class ContactAddress {
+        @AuraEnabled public String address1;
+        @AuraEnabled public String address2;
+        @AuraEnabled public String city;
+        @AuraEnabled public String postalCode;
+        @AuraEnabled public String state;
+        @AuraEnabled public String country;
+    }
+
+    public class TechnicalContactDetails {
+        @AuraEnabled public String email;
+        @AuraEnabled public String firstName;
+        @AuraEnabled public String lastName;
+        @AuraEnabled public String phone;
+        @AuraEnabled public String taxId;
+        @AuraEnabled public String companyName;
+        @AuraEnabled public ContactAddress address;
     }
 
     public class OrderInformation {
         @AuraEnabled public String orderNumber;
-        @AuraEnabled public String technicalContactEmail;
+        @AuraEnabled public TechnicalContactDetails technicalContact;
         @AuraEnabled public Double totalExTax;
         @AuraEnabled public Date dueDate;
         @AuraEnabled public List<OrderLine> orderItems;
