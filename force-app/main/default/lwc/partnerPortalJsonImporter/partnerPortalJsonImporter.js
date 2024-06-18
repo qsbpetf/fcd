@@ -66,71 +66,84 @@ export default class PartnerPortalJsonImporter extends LightningElement {
         this.conversionFactor = event.target.value;
     }
 
-    async handleImport() {
+    handleImport() {
         console.log('handleImport');
         // Call apex method to parse JSON
-        const result = await apexParseJson({jsonText: this.jsonText});
-        console.log('result', result);
-        this.data = result;
+        apexParseJson({jsonText: this.jsonText})
+            .then(result => {
+                console.log('result', result);
+                this.data = result;
+            })
+            .catch(error => {
+                console.error('error', error);
+            });
     }
 
-    async handleMapping() {
+    handleMapping() {
+        this.isLoading = true;
         console.log('handleMapping');
         // Call apex method to parse JSON
-        const result = await apexParseJsonAndMapProduct({jsonText: this.jsonText});
-        console.log('result', result);
-        this.mapping = result;
+        apexParseJsonAndMapProduct({jsonText: this.jsonText})
+            .then(result => {
+                console.log('result', result);
+                this.mapping = result;
+                this.isLoading = false;
+            })
+            .catch(error => {
+                console.error('error', error);
+                this.isLoading = false;
+            });
     }
 
-    async handleProducts() {
+    handleProducts() {
         this.isLoading = true;
         console.log('handleProducts');
         // Call apex method to parse JSON
-        try {
-            const result = await apexConvertQuote({
-                jsonText: this.jsonText,
-                oppId: this.recordId,
-                createProducts: false
+        apexConvertQuote({
+            jsonText: this.jsonText,
+            oppId: this.recordId,
+            createProducts: false
+        })
+            .then(result => {
+                console.log('result', result);
+                this.conversionResult = result;
+                this.isLoading = false;
+            })
+            .catch(error => {
+                console.error('error', error);
+                this.conversionResult = {
+                    productLog: [
+                        JSON.stringify(error.body)
+                    ],
+                    pbeLog: []
+                };
+                this.isLoading = false;
             });
-            console.log('result', result);
-            this.conversionResult = result;
-            this.isLoading = false;
-        }
-        catch (error) {
-            console.error('error', error);
-            this.conversionResult = {
-                productLog: [
-                    JSON.stringify(error.body)
-                ],
-                pbeLog: []
-            };
-            this.isLoading = false;
-        }
     }
 
-    async createProducts() {
+    createProducts() {
         this.isLoading = true;
         console.log('createProducts');
         // Call apex method to parse JSON
-        try {
-            const result = await apexConvertQuote({
-                jsonText: this.jsonText,
-                oppId: this.recordId,
-                createProducts: true
+        apexConvertQuote({
+            jsonText: this.jsonText,
+            oppId: this.recordId,
+            createProducts: true
+        })
+            .then(result => {
+                console.log('result', result);
+                this.conversionResult = result;
+                this.isLoading = false;
+            })
+            .catch(error =>  {
+                console.error('error', error);
+                this.conversionResult = {
+                    productLog: [
+                        JSON.stringify(error.body)
+                    ],
+                    pbeLog: []
+                };
+                this.isLoading = false;
             });
-            console.log('result', result);
-            this.conversionResult = result;
-            this.isLoading = false;
-        }
-        catch (error) {
-            console.error('error', error);
-            this.conversionResult = {
-                productLog: [
-                    JSON.stringify(error.body)
-                ],
-                pbeLog: []
-            };
-            this.isLoading = false;
-        }
     }
 }
