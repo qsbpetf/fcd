@@ -37,9 +37,9 @@ public with sharing class PortalProductMapper {
         Map<String, String> result = new Map<String, String>();
         Map<String, PortalProductToSalesforceMapping__mdt> rows = PortalProductToSalesforceMapping__mdt.getAll();
         for (PortalProductToSalesforceMapping__mdt row : rows.values()) {
-            String prodName = (row.ProductName__c != null) ? row.ProductName__c : '';
-            String platform = (row.Platform__c != null) ? row.Platform__c : '';
-            String edition = (row.Edition__c != null) ? row.Edition__c : '';
+            String prodName = row.ProductName__c;
+            String platform = row.Platform__c;
+            String edition = row.Edition__c;
             String salesforceProduct = row.SalesforceProductName__c;
             partnerProducts.add(prodName);
             partnerPlatforms.add(platform);
