@@ -3,10 +3,10 @@
 
     <lightning-card title="Convert Atlassian Partner Portal Quote into Salesforce Opportunity Products" icon-name="custom:custom14">
         <div class="slds-grid slds-wrap">
-            <lightning-textarea label="Paste your JSON below:" value={jsonText} onchange={updateJson} class="slds-m-around_x-small"></lightning-textarea>
-            <div class="my-or">
-                OR
-            </div>
+<!--            <lightning-textarea label="Paste your JSON below:" value={jsonText} onchange={updateJson} class="slds-m-around_x-small"></lightning-textarea>-->
+<!--            <div class="my-or">-->
+<!--                OR-->
+<!--            </div>-->
             <lightning-file-upload
                     class="slds-m-around_x-small"
                     label="Upload JSON file from Atlassian Partner Portal"
@@ -17,47 +17,47 @@
             </lightning-file-upload>
         </div>
         <div class="slds-m-top_medium slds-m-bottom_medium">
-            <lightning-button label="Parse products" variant="brand" onclick={handleImport} class="slds-m-around_x-small"></lightning-button>
-            <lightning-button label="Map products" variant="brand" onclick={handleMapping} class="slds-m-around_x-small"></lightning-button>
+<!--            <lightning-button label="Parse products" variant="brand" onclick={handleImport} class="slds-m-around_x-small"></lightning-button>-->
+<!--            <lightning-button label="Map products" variant="brand" onclick={handleMapping} class="slds-m-around_x-small"></lightning-button>-->
             <lightning-button label="Validate Opportunity Products" variant="brand" onclick={handleProducts} class="slds-m-around_x-small"></lightning-button>
             <lightning-button label="CREATE Opportunity Products!" variant="neutral" onclick={createProducts} class="slds-m-left_xx-large slds-m-top_x-small"></lightning-button>
         </div>
 
-        <div class="product-container">
-            <h1>Found products:</h1>
-            <ul class="custom-lis">
-                <template for:each={data.orderItems} for:item="item">
-                    <li key={item.productName}>{item.productName}</li>
-                </template>
-            </ul>
-        </div>
+<!--        <div class="product-container">-->
+<!--            <h1>Found products:</h1>-->
+<!--            <ul class="custom-lis">-->
+<!--                <template for:each={data.orderItems} for:item="item">-->
+<!--                    <li key={item.productName}>{item.productName}</li>-->
+<!--                </template>-->
+<!--            </ul>-->
+<!--        </div>-->
 
-        <div class="mapping-container">
-            <h1>Found mappings:</h1>
-            <div class="custom-lis">
-                <template for:each={mapping} for:item="item">
-                    <div class="rounded-rect" key={item.portalProduct}>
-                        <div class="product-name">{item.portalProduct}</div>
-                        <div>Found: {item.found}</div>
-                        <template if:true={item.product}>
-                            <div>Salesforce Product: {item.product.Name}, {template.Family}, {item.product.Id}</div>
-                        </template>
-                        <div>Info: {item.info}</div>
-                    </div>
-                </template>
-            </div>
-        </div>
+<!--        <div class="mapping-container">-->
+<!--            <h1>Found mappings:</h1>-->
+<!--            <div class="custom-lis">-->
+<!--                <template for:each={mapping} for:item="item">-->
+<!--                    <div class="rounded-rect" key={item.portalProduct}>-->
+<!--                        <div class="product-name">{item.portalProduct}</div>-->
+<!--                        <div>Found: {item.found}</div>-->
+<!--                        <template if:true={item.product}>-->
+<!--                            <div>Salesforce Product: {item.product.Name}, {template.Family}, {item.product.Id}</div>-->
+<!--                        </template>-->
+<!--                        <div>Info: {item.info}</div>-->
+<!--                    </div>-->
+<!--                </template>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="conv-result">
             <h1>Converted results: (can also be found on Oppty field QuoteImportResult__c)</h1>
-            <div class="rounded-rect">
-                <h2>Products</h2>
-                <ul class="custom-lis">
-                    <template for:each={conversionResult.productLog} for:item="log">
-                        <li key={log}>{log}</li>
-                    </template>
-                </ul>
-            </div>
+<!--            <div class="rounded-rect">-->
+<!--                <h2>Products</h2>-->
+<!--                <ul class="custom-lis">-->
+<!--                    <template for:each={conversionResult.productLog} for:item="log">-->
+<!--                        <li key={log}>{log}</li>-->
+<!--                    </template>-->
+<!--                </ul>-->
+<!--            </div>-->
 
             <div class="rounded-rect">
                 <h2>Pricebook Entries</h2>
