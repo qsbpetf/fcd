@@ -69,7 +69,6 @@ public with sharing class PortalJsonParser {
         return conAddr;
     }
 
-    // TODO: Add parsing of fields: edition, platform
     @TestVisible
     private static void getOrderItemData(OrderLine orderLine, Map<String, Object> itemData) {
         orderLine.productName = (String) itemData.get('productName');
@@ -115,7 +114,6 @@ public with sharing class PortalJsonParser {
         System.debug(JSON.serializePretty(orderLine));
     }
 
-    // TODO: Add fields: edition, platform
     public class OrderLine {
         @AuraEnabled public String productName;
         @AuraEnabled public Date startDate;
