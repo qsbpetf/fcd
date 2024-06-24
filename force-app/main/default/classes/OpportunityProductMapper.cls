@@ -58,8 +58,8 @@ public with sharing class OpportunityProductMapper {
                     opptyProductsToInsert.add(oppProduct);
                     log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name);
                 } else {
-                    System.debug('Skipping zero total order line: ' + orderLine.productName);
-                    log.pbeLog.add('Skipping zero total order line for product: ' + orderLine.productName);
+                    System.debug('Skipping zero unit price order line: ' + orderLine.productName);
+                    log.pbeLog.add('Skipping zero unit price order line for product: ' + orderLine.productName);
                 }
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
@@ -94,8 +94,8 @@ public with sharing class OpportunityProductMapper {
 
         System.debug(JSON.serializePretty(orderLine));
 
-        if (orderLine.total == 0.00) {
-            System.debug('Skipping zero total order line: ' + orderLine.productName);
+        if (orderLine.unitPrice == 0.00) {
+            System.debug('Skipping zero unit price order line: ' + orderLine.productName);
             return null;
         }
 
@@ -112,7 +112,6 @@ public with sharing class OpportunityProductMapper {
         oli.SEN__c = orderLine.supportEntitlementNumber;
         oli.Entitlement_Number__c = orderLine.entitlementNumber;
         oli.Renewal__c = convertRenewal(orderLine.saleType, orderLine.discountReason);
-        oli.Editable_Unit_List_Price_in_USD__c = orderLine.unitPrice;
         oli.Editable_Cost_Price_in_Dollars__c = orderLine.total;
         oli.User_Count__c = orderLine.unitCount;
         oli.Atlassian_Price_Adjustment__c = orderLine.priceAdjustment;
@@ -121,6 +120,7 @@ public with sharing class OpportunityProductMapper {
         oli.Atlassian_Loyalty_Discount__c = orderLine.loyaltyDiscountTotal;
         oli.QuoteOriginalProduct__c = orderLine.productName;
         oli.Quantity = 1;
+        oli.Editable_Unit_List_Price_in_USD__c = orderLine.unitPrice - orderLine.upgradeCredit - orderLine.loyaltyDiscountTotal;
 
         return oli;
     }
