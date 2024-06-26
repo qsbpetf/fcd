@@ -3,8 +3,6 @@
  */
 
 import { api, track, LightningElement } from 'lwc';
-import apexParseJson from '@salesforce/apex/PortalJsonController.parseJson';
-import apexParseJsonAndMapProduct from '@salesforce/apex/PortalJsonController.parseJsonAndMapProduct';
 import apexConvertQuote from '@salesforce/apex/PortalQuoteConverter.convertQuote';
 import apexGetJsonFile from '@salesforce/apex/PortalQuoteConverter.getJsonFile';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
@@ -14,7 +12,6 @@ export default class PartnerPortalJsonImporter extends LightningElement {
     @api recordId;
 
     isLoading = true;
-    conversionFactor = 1;
 
     @track jsonText;
     @track data = {
@@ -56,43 +53,6 @@ export default class PartnerPortalJsonImporter extends LightningElement {
         });
         console.log('result', result);
         this.jsonText = result;
-    }
-
-    updateJson(event) {
-        this.jsonText = event.target.value;
-    }
-
-    updateConversionFactor(event) {
-        this.conversionFactor = event.target.value;
-    }
-
-    handleImport() {
-        console.log('handleImport');
-        // Call apex method to parse JSON
-        apexParseJson({jsonText: this.jsonText})
-            .then(result => {
-                console.log('result', result);
-                this.data = result;
-            })
-            .catch(error => {
-                console.error('error', error);
-            });
-    }
-
-    handleMapping() {
-        this.isLoading = true;
-        console.log('handleMapping');
-        // Call apex method to parse JSON
-        apexParseJsonAndMapProduct({jsonText: this.jsonText})
-            .then(result => {
-                console.log('result', result);
-                this.mapping = result;
-                this.isLoading = false;
-            })
-            .catch(error => {
-                console.error('error', error);
-                this.isLoading = false;
-            });
     }
 
     handleProducts() {
