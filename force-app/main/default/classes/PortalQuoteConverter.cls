@@ -137,7 +137,7 @@ public with sharing class PortalQuoteConverter {
         List<Contact> conList = new List<Contact>([
             SELECT Id
             FROM Contact
-            WHERE Email = :techCon.email // TODO: Restore this!!!  AND AccountId = :opp.AccountId
+            WHERE Email = :techCon.email AND AccountId = :opp.AccountId
             LIMIT 1
         ]);
 
