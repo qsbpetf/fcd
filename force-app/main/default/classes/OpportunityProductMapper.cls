@@ -44,6 +44,9 @@ public with sharing class OpportunityProductMapper {
                 mappedProducts.put(productAsKey(orderLine.productName, orderLine.platform, orderLine.edition), mapResult.product);
                 productIds.add(mapResult.product.Id);
                 orderLines.add(orderLine);
+            } else {
+                System.debug('  -- Product NOT found: ' + + mapResult);
+                log.productLog.add(String.valueOf(mapResult));
             }
         }
 
@@ -76,6 +79,13 @@ public with sharing class OpportunityProductMapper {
 
     private static Map<Id, PricebookEntry> getPriceBookEntriesMappedByProductId(Set<Id> productIds, Opportunity opp) {
         Map<Id, PricebookEntry> pbeByProductId = new Map<Id, PricebookEntry>();
+        System.debug([
+            SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
+            FROM PricebookEntry
+            WHERE Product2Id IN :productIds
+            AND Pricebook2Id = :opp.Pricebook2Id
+            AND CurrencyIsoCode = :opp.CurrencyIsoCode
+        ]);
         for (PricebookEntry pbe : [
             SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
             FROM PricebookEntry
@@ -125,10 +135,12 @@ public with sharing class OpportunityProductMapper {
         return oli;
     }
 
+    @TestVisible
     private static Double convertCurrency(Double amount, Double conversionFactor) {
         return (amount != null) ? amount * conversionFactor : null;
     }
 
+    @TestVisible
     private static String convertRenewal(String value, String discountReason) {
         String key = value;
         if (value.equalsIgnoreCase('RENEWAL') && discountReason != null && discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_DIFFERENT_EXPERT')) {

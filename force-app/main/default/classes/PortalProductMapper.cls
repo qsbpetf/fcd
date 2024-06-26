@@ -200,6 +200,25 @@ public with sharing class PortalProductMapper {
             } else {
                 result.info += '[G] No default product found for platform: ' + platform + '. ';
             }
+        } else if (productSearchNameOnlyResult.size() == 1) {
+            result.info = '[I] Product name found (single match): ' + productName + '. ';
+
+            // If full key search failed, try to find the product by platform only.
+            List<PortalProductMapper.ProductInfo> productSearchPlatformOnlyResult =
+                searchProductInfos(true, null, true, platform, true, null);
+
+            if (productSearchPlatformOnlyResult.size() == 1) {
+                result.info += '[J] Found default product for platform: ' + platform + '. ';
+                result.product = productByNameMapping.get(productSearchPlatformOnlyResult[0].salesforceProductName);
+                if (result.product == null) {
+                    result.found = false;
+                    result.info += '[K] Found mapping but NO Salesforce product id found for Salesforce product: ' + productSearchPlatformOnlyResult[0].salesforceProductName;
+                } else {
+                    result.found = true;
+                }
+            } else {
+                result.info += '[L] No default product found for platform: ' + platform + '. ';
+            }
         } else {
             result.info += '[H] Found ' + productSearchNameOnlyResult.size() + ' products partial match on product name: ' + productName +
                 (productSearchNameOnlyResult[0].platform == platform ? ' and platform: ' + platform : '') +

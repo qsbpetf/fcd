@@ -13,8 +13,8 @@ public with sharing class PortalQuoteConverter {
         }
         if (createProducts) {
             insert oppProducts;
+            updateOpportunity(opp, orderInfo, log);
         }
-        updateOpportunity(opp, orderInfo, log);
 
         return log;
     }
@@ -44,6 +44,7 @@ public with sharing class PortalQuoteConverter {
         return versionDataString;
     }
 
+    @TestVisible
     private static PortalJsonParser.OrderInformation parseJson(String jsonText) {
         PortalJsonParser parser = PortalJsonParser.getInstance();
         PortalJsonParser.OrderInformation orderInfo = parser.parseJson(jsonText);
@@ -51,6 +52,7 @@ public with sharing class PortalQuoteConverter {
         return orderInfo;
     }
 
+    @TestVisible
     private static Double getLatestCurrencyConversionFactor(String currencyIsoCode) {
         List<Buying_Exchange_Rate__c> currencyList = [
             SELECT
@@ -81,6 +83,7 @@ public with sharing class PortalQuoteConverter {
         }
     }
 
+    @TestVisible
     private static List<OpportunityLineItem> mapProducts(PortalJsonParser.OrderInformation orderInfo, Opportunity opp, Double conversionFactor, OpportunityProductMapper.LogData log) {
         OpportunityProductMapper oppMapper = OpportunityProductMapper.getInstance();
         List<OpportunityLineItem> oppProducts = oppMapper.mapProducts(orderInfo, opp, conversionFactor, log);
@@ -88,6 +91,7 @@ public with sharing class PortalQuoteConverter {
         return oppProducts;
     }
 
+    @TestVisible
     private static Opportunity getOpportunity(String oppId) {
         Opportunity opp = [
             SELECT
@@ -110,6 +114,7 @@ public with sharing class PortalQuoteConverter {
         return opp;
     }
 
+    @TestVisible
     private static void updateOpportunity(Opportunity opp, PortalJsonParser.OrderInformation orderInfo, OpportunityProductMapper.LogData log) {
         opp.Atlassian_AT_Quote_ref__c = orderInfo.orderNumber;
         // opp.Technical_Contact_email__c = orderInfo.technicalContactEmail; // cannot map to formula field, create new email adress field? (see slide 7 )
@@ -125,13 +130,14 @@ public with sharing class PortalQuoteConverter {
         update opp;
     }
 
+    @TestVisible
     private static Contact findOrCreateContact(Opportunity opp, PortalJsonParser.TechnicalContactDetails techCon) {
         Contact con;
 
         List<Contact> conList = new List<Contact>([
             SELECT Id
             FROM Contact
-            WHERE Email = :techCon.email AND AccountId = :opp.AccountId
+            WHERE Email = :techCon.email // TODO: Restore this!!!  AND AccountId = :opp.AccountId
             LIMIT 1
         ]);
 
@@ -148,7 +154,18 @@ public with sharing class PortalQuoteConverter {
             con.MailingPostalCode = techCon?.address?.postalCode;
             con.MailingCountry = techCon?.address?.country;
 
-            insert con;
+            try {
+                System.debug('Creating contact with state: ' + con.MailingState + ': ' + con);
+                insert con;
+            } catch (System.DmlException ex) {
+                if (ex.getMessage().containsIgnoreCase('Please select a state from the list of valid states.')) {
+                    con.MailingState = null;
+                    System.debug('Creating contact:  with removed state: ' + con.MailingState + ': ' + con);
+                    insert con;
+                } else {
+                    throw ex;
+                }
+            }
         } else {
             con = conList[0];
         }

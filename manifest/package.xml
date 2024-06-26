@@ -59,6 +59,7 @@
         <members>PortalProductToSalesforceMapping.Product_024</members>
         <members>PortalProductToSalesforceMapping.Default_001</members>
         <members>PortalProductToSalesforceMapping.Default_002</members>
+        <members>PortalProductToSalesforceMapping.Product_025</members>
         <name>CustomMetadata</name>
     </types>
     <types>
@@ -73,5 +74,5 @@
     <types>
         <name>ListView</name>
     </types>
-    <version>60.0</version>
+    <version>61.0</version>
 </Package>

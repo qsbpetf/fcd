@@ -20,11 +20,13 @@ public with sharing class PortalJsonParser {
         OrderInformation orderInfo = new OrderInformation();
         getOrderData(orderInfo, orderData);
 
-        for (Object orderItem : orderItems) {
-            Map<String, Object> itemData = (Map<String, Object>) orderItem;
-            OrderLine orderLineData = new OrderLine();
-            getOrderItemData(orderLineData, itemData);
-            orderInfo.orderItems.add(orderLineData);
+        if (orderItems != null) {
+            for (Object orderItem : orderItems) {
+                Map<String, Object> itemData = (Map<String, Object>) orderItem;
+                OrderLine orderLineData = new OrderLine();
+                getOrderItemData(orderLineData, itemData);
+                orderInfo.orderItems.add(orderLineData);
+            }
         }
 
         return orderInfo;
@@ -38,12 +40,14 @@ public with sharing class PortalJsonParser {
         orderInfo.totalExTax = (Double) orderData.get('totalExTax');
         String dateString = (String) orderData.get('dueDate');
         dateString = String.isNotBlank(dateString) ? dateString.replace('T', ' ') : dateString;
-        orderInfo.dueDate =String.isNotBlank(dateString) ? Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date() : null;
+        orderInfo.dueDate = String.isNotBlank(dateString) ? Datetime.valueOf(dateString.substring(0, dateString.length() - 5)).date() : null;
+        orderInfo.isoCurrencyCode = (String) orderData.get('currency');
     }
 
     @TestVisible
     private static TechnicalContactDetails getTechnicalContact(Map<String, Object> technicalContact) {
         TechnicalContactDetails techCon = new TechnicalContactDetails();
+        if (technicalContact == null) return techCon;
         techCon.email = (String) technicalContact.get('email');
         techCon.firstName = (String) technicalContact.get('firstName');
         techCon.lastName = (String) technicalContact.get('lastName');
@@ -59,6 +63,7 @@ public with sharing class PortalJsonParser {
     @TestVisible
     private static ContactAddress getAddress(Map<String, Object> address) {
         ContactAddress conAddr = new ContactAddress();
+        if (address == null) return conAddr;
         conAddr.address1 = (String) address.get('address1');
         conAddr.address2 = (String) address.get('address2');
         conAddr.city = (String) address.get('city');
@@ -104,10 +109,7 @@ public with sharing class PortalJsonParser {
             if (orderLine.startDate == null) {
                 orderLine.startDate = Date.today();
                 orderLine.endDate = Date.today().addMonths(
-                    (itemData.get('maintenanceMonths') != null)
-                        ? orderLine.maintenanceMonths
-                        : 12)
-                    .addDays(-1);
+                    (itemData.get('maintenanceMonths') != null) ? orderLine.maintenanceMonths : 12);
             }
         }
 
@@ -153,6 +155,10 @@ public with sharing class PortalJsonParser {
         @AuraEnabled public String taxId;
         @AuraEnabled public String companyName;
         @AuraEnabled public ContactAddress address;
+
+        public TechnicalContactDetails() {
+            this.address = new ContactAddress();
+        }
     }
 
     public class OrderInformation {
@@ -160,6 +166,7 @@ public with sharing class PortalJsonParser {
         @AuraEnabled public TechnicalContactDetails technicalContact;
         @AuraEnabled public Double totalExTax;
         @AuraEnabled public Date dueDate;
+        @AuraEnabled public String isoCurrencyCode;
         @AuraEnabled public List<OrderLine> orderItems;
 
         public OrderInformation() {
