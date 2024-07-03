@@ -402,4 +402,69 @@ private class  PortalQuoteConverterTest {
         List<Contact> conList = new List<Contact>([SELECT Id FROM Contact]);
         System.assertEquals(1, conList.size(), 'New Contact created');
     }
+
+    @IsTest
+    private static void testConvertQuoteToOpptyAndLineItemsFailContact() {
+        testSetup();
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.Pricebook2Id = Test.getStandardPricebookId();
+        insert opp;
+
+        Test.startTest();
+        String wrongJson = FULL_JSON;
+        wrongJson = wrongJson.replace('"lastName" : "Päivinen"', '"lastName" : null');
+        wrongJson = wrongJson.replace('"state" : "Uusimaa"', '"state" : null');
+        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(wrongJson, opp.Id, true);
+        Test.stopTest();
+
+        System.debug(log.errorLog.size());
+        System.assertEquals(1, log.errorLog.size(), 'Error log should contain an error');
+        for (String s : log.errorLog) {
+            System.debug('LOG=' + s);
+        }
+        System.assert(log.errorLog[0].containsIgnoreCase('Required fields are missing: [LastName]'), 'LastName shall be missing');
+    }
+
+    @IsTest
+    private static void testConvertQuoteToOpptyAndLineItemsContactOtherAccount() {
+        testSetup();
+
+        Account otherAcc = TestDataFactory.getAccount('Sweden', 'USD');
+        otherAcc.Name = 'Other Test Acc';
+        insert otherAcc;
+        Contact otherCon = TestDataFactory.getCon(otherAcc.Id);
+        otherCon.Email = 'antti.paivinen@eficode.com';
+        insert otherCon;
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.Pricebook2Id = Test.getStandardPricebookId();
+        insert opp;
+
+        Test.startTest();
+        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(FULL_JSON, opp.Id, true);
+        Test.stopTest();
+
+        List<OpportunityLineItem> oliList = new List<OpportunityLineItem>([SELECT Id FROM OpportunityLineItem]);
+        System.assertEquals(2, oliList.size(), 'Opportunity Line Items must be created');
+
+        List<Contact> conList = new List<Contact>([SELECT Id FROM Contact]);
+        System.assertEquals(1, conList.size(), 'No new Contact created shall be created');
+
+        System.debug(log.productLog.size());
+        System.assertEquals(2, log.productLog.size(), 'Product log should contain two products');
+        for (String s : log.productLog) {
+            System.debug('LOG=' + s);
+        }
+        System.debug(log.errorLog.size());
+        System.assertEquals(1, log.errorLog.size(), 'Error log should contain one error');
+        for (String s : log.errorLog) {
+            System.debug('LOG=' + s);
+        }
+        System.assert(log.errorLog[0].containsIgnoreCase('does not match Opportunity\'s AccountId'), 'Other contact must be found');
+    }
 }

@@ -45,7 +45,7 @@ public with sharing class OpportunityProductMapper {
                 productIds.add(mapResult.product.Id);
                 orderLines.add(orderLine);
             } else {
-                System.debug('  -- Product NOT found: ' + + mapResult);
+                System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
             }
         }
@@ -67,6 +67,7 @@ public with sharing class OpportunityProductMapper {
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
                 log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
             }
         }
 
@@ -154,10 +155,14 @@ public with sharing class OpportunityProductMapper {
     public class LogData {
         @AuraEnabled public List<String> productLog;
         @AuraEnabled public List<String> pbeLog;
+        @AuraEnabled public List<String> errorLog;
+        @AuraEnabled public List<String> successLog;
 
         public LogData() {
             this.productLog = new List<String>();
             this.pbeLog = new List<String>();
+            this.errorLog = new List<String>();
+            this.successLog = new List<String>();
         }
     }
 }

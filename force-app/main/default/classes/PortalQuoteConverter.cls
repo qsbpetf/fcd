@@ -13,7 +13,15 @@ public with sharing class PortalQuoteConverter {
         }
         if (createProducts) {
             insert oppProducts;
-            updateOpportunity(opp, orderInfo, log);
+            log.successLog.add(oppProducts.size() + ' Opportunity Products added successfully');
+            try {
+                updateOpportunity(opp, orderInfo, log);
+                log.successLog.add('Opportunity updated successfully');
+            } catch (Exception ex) {
+                String error = 'ERROR: Failed updating Opportunity/Contact: ' + ex.getMessage() + ex.getStackTraceString();
+                log.errorLog.add(error);
+                System.debug(error);
+            }
         }
 
         return log;
@@ -97,6 +105,7 @@ public with sharing class PortalQuoteConverter {
             SELECT
                 Id,
                 AccountId,
+                Account.Name,
                 Pricebook2Id,
                 Pricebook2.Name,
                 CurrencyIsoCode,
@@ -123,23 +132,28 @@ public with sharing class PortalQuoteConverter {
         opp.QuoteImportResult__c = String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n');
 
         if (opp.Atlassian_AT_Quote_Tech_Contact__c == null) {
-            Contact con = findOrCreateContact(opp, orderInfo.technicalContact);
+            Contact con = findOrCreateContact(opp, orderInfo.technicalContact, log);
             opp.Atlassian_AT_Quote_Tech_Contact__c = con.Id;
+            log.successLog.add('Technical Contact Linked: ' + con.FirstName + ' ' + con.LastName + ' <' + con.Email + '>');
         }
 
         update opp;
     }
 
     @TestVisible
-    private static Contact findOrCreateContact(Opportunity opp, PortalJsonParser.TechnicalContactDetails techCon) {
+    private static Contact findOrCreateContact(Opportunity opp, PortalJsonParser.TechnicalContactDetails techCon, OpportunityProductMapper.LogData log) {
         Contact con;
 
+        System.debug('SEARCHING FOR:' + techCon.email + ' in Account: ' + opp.AccountId + ' ' + opp.Account.Name);
+
         List<Contact> conList = new List<Contact>([
-            SELECT Id
+            SELECT Id, AccountId, Account.Name, FirstName, LastName, Email
             FROM Contact
-            WHERE Email = :techCon.email AND AccountId = :opp.AccountId
+            WHERE Email = :techCon.email // AND AccountId = :opp.AccountId
             LIMIT 1
         ]);
+
+        System.debug('Found contacts: ' + conList.size() + ': ' + conList);
 
         if (conList.isEmpty()) {
             con = new Contact();
@@ -159,15 +173,25 @@ public with sharing class PortalQuoteConverter {
                 insert con;
             } catch (System.DmlException ex) {
                 if (ex.getMessage().containsIgnoreCase('Please select a state from the list of valid states.')) {
+                    String error = 'WARNING: Creating technical Contact:  with removed state: ' + con.MailingState + ': ' + con;
+                    log.errorLog.add(error);
+                    System.debug(error);
                     con.MailingState = null;
-                    System.debug('Creating contact:  with removed state: ' + con.MailingState + ': ' + con);
                     insert con;
                 } else {
                     throw ex;
                 }
             }
+            log.successLog.add('Technical Contact Created: ' + con.FirstName + ' ' + con.LastName + ' <' + con.Email + '>');
         } else {
             con = conList[0];
+            if (con.AccountId != opp.AccountId) {
+                String error = 'WARNING: Technical Contact found, but its AccountId (' +
+                    con.Account.Id + '="' + con.Account.Name + '") does not match Opportunity\'s AccountId: (' +
+                    opp.AccountId + '="' + opp.Account.Name + '")';
+                log.errorLog.add(error);
+                System.debug(error);
+            }
         }
 
         return con;

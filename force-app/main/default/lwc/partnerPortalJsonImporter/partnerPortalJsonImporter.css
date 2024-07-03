@@ -26,6 +26,22 @@
     margin: 5px;
 }
 
+.rounded-rect2 {
+    background-color: #ffb6c1; /* Light red */
+    border-radius: 5px;
+    border: 1px solid #444444;
+    padding: 10px;
+    margin: 5px;
+}
+
+.rounded-rect3 {
+    background-color: #d5fdd5; /* Light green */
+    border-radius: 5px;
+    border: 1px solid #444444;
+    padding: 10px;
+    margin: 5px;
+}
+
 .conv-result {
     background-color: #DDDDFF; /* Light blue */
     border-radius: 5px;

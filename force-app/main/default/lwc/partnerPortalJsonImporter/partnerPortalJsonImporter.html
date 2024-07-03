@@ -13,8 +13,8 @@
             </lightning-file-upload>
         </div>
         <div class="slds-m-top_medium slds-m-bottom_medium">
-            <lightning-button label="Validate Opportunity Products" variant="brand" onclick={handleProducts} class="slds-m-around_x-small"></lightning-button>
-            <lightning-button label="CREATE Opportunity Products!" variant="neutral" onclick={createProducts} class="slds-m-left_xx-large slds-m-top_x-small"></lightning-button>
+            <lightning-button disabled={buttonsDisabled} label="Validate Opportunity Products" variant="brand" onclick={handleProducts} class="slds-m-around_x-small"></lightning-button>
+            <lightning-button disabled={buttonsDisabled} label="CREATE Opportunity Products!" variant="neutral" onclick={createProducts} class="slds-m-left_xx-large slds-m-top_x-small"></lightning-button>
         </div>
 
         <div class="conv-result">
@@ -23,6 +23,24 @@
                 <h2>Pricebook Entries</h2>
                 <ul class="custom-lis">
                     <template for:each={conversionResult.pbeLog} for:item="log">
+                        <li key={log}>{log}</li>
+                    </template>
+                </ul>
+            </div>
+
+            <div if:true={isErrorLogNotEmpty} class="rounded-rect2">
+                <h2>Warnings/Errors</h2>
+                <ul class="custom-lis">
+                    <template for:each={conversionResult.errorLog} for:item="log">
+                        <li key={log}>{log}</li>
+                    </template>
+                </ul>
+            </div>
+
+            <div if:true={isSuccessLogNotEmpty} class="rounded-rect3">
+                <h2>Success</h2>
+                <ul class="custom-lis">
+                    <template for:each={conversionResult.successLog} for:item="log">
                         <li key={log}>{log}</li>
                     </template>
                 </ul>
