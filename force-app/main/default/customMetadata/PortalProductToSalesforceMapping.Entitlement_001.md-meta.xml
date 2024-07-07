@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Product 023</label>
+    <label>Entitlement 001</label>
     <protected>false</protected>
     <values>
         <field>Edition__c</field>
@@ -12,14 +12,14 @@
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Confluence (Cloud) Enterprise</value>
+        <value xsi:type="xsd:string">Atlassian Cloud</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Cloud - Enterprise - Confluence</value>
+        <value xsi:type="xsd:string">null</value>
     </values>
     <values>
         <field>ZeroSEN__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
 </CustomMetadata>

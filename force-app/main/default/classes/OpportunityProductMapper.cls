@@ -9,6 +9,7 @@ public with sharing class OpportunityProductMapper {
     };
 
     private static OpportunityProductMapper instance;
+    private static String globalSEN;
 
     public static OpportunityProductMapper getInstance() {
         if (instance == null) {
@@ -41,9 +42,19 @@ public with sharing class OpportunityProductMapper {
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
-                mappedProducts.put(productAsKey(orderLine.productName, orderLine.platform, orderLine.edition), mapResult.product);
-                productIds.add(mapResult.product.Id);
-                orderLines.add(orderLine);
+
+                if (mapResult.globalSEN) {
+                    globalSEN = orderLine.supportEntitlementNumber;
+                    System.debug('* Found common SEN: ' + globalSEN);
+                } else {
+                    if (mapResult.zeroSEN) {
+                        orderLine.supportEntitlementNumber = '0';
+                        System.debug('* Found zero SEN:');
+                    }
+                    mappedProducts.put(productAsKey(orderLine.productName, orderLine.platform, orderLine.edition), mapResult.product);
+                    productIds.add(mapResult.product.Id);
+                    orderLines.add(orderLine);
+                }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
@@ -52,12 +63,24 @@ public with sharing class OpportunityProductMapper {
 
         Map<Id, PricebookEntry> pbeByProductId = getPriceBookEntriesMappedByProductId(productIds, opp);
 
+        Integer productCountWithGlobalSEN = 0;
+        Integer productCountWithZeroSEN = 0;
         for (PortalJsonParser.OrderLine orderLine : orderLines) {
             Product2 mappedProduct = mappedProducts.get(productAsKey(orderLine.productName, orderLine.platform, orderLine.edition));
             PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
             if (pbe != null) {
                 OpportunityLineItem oppProduct = oppProductMapper.mapOpportunityLineItem(pbe, opp.Id, orderLine, conversionFactor);
                 if (oppProduct != null) {
+                    // Set common SEN to all cloud products except the products having SEN = '0'
+                    if (globalSEN != null && orderLine.platform.equalsIgnoreCase('CLOUD') && orderLine.supportEntitlementNumber != '0') {
+                        oppProduct.SEN__c = globalSEN;
+                        productCountWithGlobalSEN++;
+                        System.debug('Applying common SEN to cloud product: ' + globalSEN);
+                    }
+                    if (orderLine.supportEntitlementNumber == '0') {
+                        productCountWithZeroSEN++;
+                        System.debug('Found zero SEN for product: ' + orderLine.productName);
+                    }
                     opptyProductsToInsert.add(oppProduct);
                     log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name);
                 } else {
@@ -71,6 +94,14 @@ public with sharing class OpportunityProductMapper {
             }
         }
 
+        if (productCountWithGlobalSEN > 0) {
+            System.debug('Multiple products with common SEN: ' + productCountWithGlobalSEN);
+            log.successLog.add(productCountWithGlobalSEN + ' Opportunity Products with common SEN applied');
+        }
+        if (productCountWithZeroSEN > 0) {
+            System.debug('Multiple products with zero SEN: ' + productCountWithZeroSEN);
+            log.successLog.add(productCountWithZeroSEN + ' Opportunity Products with zero SEN applied');
+        }
         return opptyProductsToInsert;
     }
 

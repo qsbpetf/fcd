@@ -60,6 +60,7 @@
         <members>PortalProductToSalesforceMapping.Default_001</members>
         <members>PortalProductToSalesforceMapping.Default_002</members>
         <members>PortalProductToSalesforceMapping.Product_025</members>
+        <members>PortalProductToSalesforceMapping.Entitlement_001</members>
         <name>CustomMetadata</name>
     </types>
     <types>

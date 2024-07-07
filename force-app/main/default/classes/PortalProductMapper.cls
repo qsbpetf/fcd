@@ -41,11 +41,12 @@ public with sharing class PortalProductMapper {
             String platform = row.Platform__c;
             String edition = row.Edition__c;
             String salesforceProduct = row.SalesforceProductName__c;
+            Boolean zeroSEN = row.ZeroSEN__c;
             partnerProducts.add(prodName);
             partnerPlatforms.add(platform);
             partnerEditions.add(edition);
             salesforceProducts.add(salesforceProduct);
-            this.productInfos.add(new ProductInfo(prodName, platform, edition, salesforceProduct));
+            this.productInfos.add(new ProductInfo(prodName, platform, edition, salesforceProduct, zeroSEN));
         }
 
         System.debug('Products: ' + partnerProducts);
@@ -151,12 +152,20 @@ public with sharing class PortalProductMapper {
 
         // Found one exact match!
         if (productSearchResult.size() == 1) {
-            result.product = productByNameMapping.get(productSearchResult[0].salesforceProductName);
             result.found = true;
+            // Generic Atlassian Cloud product containing generic SEN?
+            if (productSearchResult[0].salesforceProductName == null) {
+                result.globalSEN = true;
+                result.zeroSEN = productSearchResult[0].zeroSEN;
+                return result;
+            }
+
+            result.product = productByNameMapping.get(productSearchResult[0].salesforceProductName);
             if (result.product == null) {
                 result.found = false;
                 result.info = '[A] Found mapping but NO Salesforce product id found for product: ' + productSearchResult[0];
             } else {
+                result.zeroSEN = productSearchResult[0].zeroSEN;
                 result.info = 'Success';
             }
             return result;
@@ -195,6 +204,7 @@ public with sharing class PortalProductMapper {
                     result.found = false;
                     result.info += '[F] Found mapping but NO Salesforce product id found for Salesforce product: ' + productSearchPlatformOnlyResult[0].salesforceProductName;
                 } else {
+                    result.zeroSEN = productSearchPlatformOnlyResult[0].zeroSEN;
                     result.found = true;
                 }
             } else {
@@ -214,6 +224,7 @@ public with sharing class PortalProductMapper {
                     result.found = false;
                     result.info += '[K] Found mapping but NO Salesforce product id found for Salesforce product: ' + productSearchPlatformOnlyResult[0].salesforceProductName;
                 } else {
+                    result.zeroSEN = productSearchPlatformOnlyResult[0].zeroSEN;
                     result.found = true;
                 }
             } else {
@@ -240,12 +251,16 @@ public with sharing class PortalProductMapper {
         @AuraEnabled public Product2 product;
         @AuraEnabled public String info;
         @AuraEnabled public Boolean found;
+        @AuraEnabled public Boolean globalSEN;
+        @AuraEnabled public Boolean zeroSEN;
 
         public MappingResult() {
             this.portalProduct = null;
             this.product = null;
             this.info = '';
             this.found = false;
+            this.globalSEN = false;
+            this.zeroSEN = false;
         }
     }
 
@@ -254,12 +269,14 @@ public with sharing class PortalProductMapper {
         @AuraEnabled public String platform;
         @AuraEnabled public String edition;
         @AuraEnabled public String salesforceProductName;
+        @AuraEnabled public Boolean zeroSEN;
 
-        public ProductInfo(String productName, String platform, String edition, String salesforceProductName) {
+        public ProductInfo(String productName, String platform, String edition, String salesforceProductName, Boolean zeroSEN) {
             this.productName = productName;
             this.platform = platform;
             this.edition = edition;
-            this.salesforceProductName = salesforceProductName;
+            this.salesforceProductName = (salesforceProductName != null && salesforceProductName.containsIgnoreCase('null')) ? null : salesforceProductName;
+            this.zeroSEN = (zeroSEN != null) ? zeroSEN : false;
         }
     }
 }

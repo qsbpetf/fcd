@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Edition__c</field>
-        <value xsi:type="xsd:string">standard</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Platform__c</field>
@@ -12,10 +12,14 @@
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Access (Cloud)</value>
+        <value xsi:type="xsd:string">Atlassian Guard (Cloud)</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Cloud - Atlassian Access</value>
+        <value xsi:type="xsd:string">Atlassian Cloud - Standard - Atlassian Guard</value>
+    </values>
+    <values>
+        <field>ZeroSEN__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>

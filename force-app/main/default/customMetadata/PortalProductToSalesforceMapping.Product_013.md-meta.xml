@@ -12,10 +12,14 @@
     </values>
     <values>
         <field>ProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Access (Cloud)</value>
+        <value xsi:type="xsd:string">Atlassian Guard (Cloud)</value>
     </values>
     <values>
         <field>SalesforceProductName__c</field>
-        <value xsi:type="xsd:string">Atlassian Default Product</value>
+        <value xsi:type="xsd:string">Atlassian Cloud - Premium - Atlassian Guard</value>
+    </values>
+    <values>
+        <field>ZeroSEN__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>
