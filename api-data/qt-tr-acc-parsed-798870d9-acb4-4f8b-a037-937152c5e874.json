@@ -1,0 +1,1133 @@
+{
+    "data" : [ {
+        "upcomingBills" : {
+            "total" : 433837,
+            "subTotal" : 551374,
+            "lines" : [ {
+                "total" : -236303,
+                "subTotal" : -315071,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1960b9IMDPKDwF2o87879956",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_11d92bIMDPKDwF2o17f4aef2",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 469725,
+                "subTotal" : 626300,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1ca941IMDPKDwF2o7baf01c3",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : -132484,
+                "subTotal" : -165605,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1d026fIMDPKDwF2o6727372f",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1db533IMDPKDwF2o7e55d542",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 291402,
+                "subTotal" : 364253,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_153422IMDPKDwF2o6064923f",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : -41497,
+                "subTotal" : -41497,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_166bbfIMDPKDwF2o89b1ddbf",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_139779IMDPKDwF2oae0165e6",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 82994,
+                "subTotal" : 82994,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1b3af1IMDPKDwF2oc0390121",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            } ]
+        },
+        "status" : "OPEN",
+        "reasonCode" : "Finalized Quote",
+        "quoteNumber" : "QT-42N-JCS-XQQ-HRW",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "3899ff0a-b2ee-4aac-8b09-19cdcb460e8d",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "871626b4-680f-4049-9530-b205f7c71e61",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "2f42f0d3-a0cc-4e01-af8e-024c6ac20fff",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        } ],
+        "id" : "870f96a9-e1a5-48e3-8099-18ad757a1eca",
+        "expiresAt" : 1730888688814,
+        "createdAt" : 1723112659220,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 554947,
+            "subTotal" : 702762,
+            "lines" : [ {
+                "total" : -236303,
+                "subTotal" : -315071,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_167ed3IMDPKDwF2oce500ac9",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1af3deIMDPKDwF2oee2667b9",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 469725,
+                "subTotal" : 626300,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_17a104IMDPKDwF2od830be14",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_11b92dIMDPKDwF2od16466b6",
+                "description" : "BigTemplate - Export to PDF, Word, Excel Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 121110,
+                "subTotal" : 151388,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_196dcdIMDPKDwF2o333280c1",
+                "description" : "BigTemplate - Export to PDF, Word, Excel Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : -132484,
+                "subTotal" : -165605,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1cf186IMDPKDwF2o4efc1151",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_19ae00IMDPKDwF2o7dd91cb7",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 291402,
+                "subTotal" : 364253,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_143355IMDPKDwF2o46c5ac27",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : -41497,
+                "subTotal" : -41497,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_127319IMDPKDwF2o5b21e809",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_17fa39IMDPKDwF2ob8a693cd",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 82994,
+                "subTotal" : 82994,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1723680000000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_12779dIMDPKDwF2o752b0867",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            } ]
+        },
+        "status" : "STALE",
+        "reasonCode" : "Finalized Quote",
+        "quoteNumber" : "QT-42N-FKE-YBS-7DA",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "7586784c-121a-4a54-9802-3f7629cf8e9b",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "efe17769-ffcc-421e-b0b5-20d1b6a51758",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "546519f7-a773-434b-9682-7bfb3bd9d80b",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1723680000000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "c9e694dc-39d7-4f2e-9f5f-01b6df90cc31",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        } ],
+        "id" : "10f90d96-68a9-4bb9-a868-cefeb9f05457",
+        "expiresAt" : 1730809045802,
+        "createdAt" : 1723032909304,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 58982,
+            "subTotal" : 73727,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1724309813000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1aaf3fIMDPKDwF2o60e1dc29",
+                "description" : "BigTemplate - Export to PDF, Word, Excel Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 58982,
+                "subTotal" : 73727,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1724309813000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_13b824IMDPKDwF2o2249caa1",
+                "description" : "BigTemplate - Export to PDF, Word, Excel Cloud Standard ANNUAL USD COMMERCIAL"
+            } ]
+        },
+        "status" : "CANCELLED",
+        "reasonCode" : "New Open Quote",
+        "quoteNumber" : "QT-42K-YNJ-4UW-7DJ",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1724309813000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "19c17521-a840-3c12-82f9-ac76da35ceb3",
+            "endsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1747914364000
+            }
+        } ],
+        "id" : "f4429742-0b68-3b28-8c17-b44220bd35af",
+        "expiresAt" : 1729493909116,
+        "createdAt" : 1721717909117,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 810000,
+            "subTotal" : 810000,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1724576969000,
+                    "endsAt" : 1756112969000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_15d88bIMDPKDwF2o3fa71fef",
+                "description" : "Xray Test Management for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 250000,
+                "subTotal" : 250000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1724576969000,
+                    "endsAt" : 1756112969000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1a19e2IMDPKDwF2obe63839c",
+                "description" : "Xray Test Management for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 25,
+                "period" : {
+                    "startsAt" : 1724576969000,
+                    "endsAt" : 1756112969000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1b03f1IMDPKDwF2o72071324",
+                "description" : "Confluence Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 150000,
+                "subTotal" : 150000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1724576969000,
+                    "endsAt" : 1756112969000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_174de3IMDPKDwF2o50b0aafc",
+                "description" : "Confluence Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1724576969000,
+                    "endsAt" : 1756112969000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1a785eIMDPKDwF2o168cee75",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 410000,
+                "subTotal" : 410000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1724576969000,
+                    "endsAt" : 1756112969000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_11c186IMDPKDwF2od3c34f4b",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            } ]
+        },
+        "status" : "ACCEPTED",
+        "reasonCode" : "Accepted Quote",
+        "quoteNumber" : "QT-42H-6WB-KSQ-J8P",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1724576969000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "08498d73-37a5-47a8-8ebb-aaf7ebc51999",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1724576969000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "fcbff446-879f-4c30-96c9-8f5abf2a18a0",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1724576969000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "a1e1c27c-4de2-468d-86eb-ca0a71e48baf",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "68818494-0eb6-46e3-8cfd-f9e3bc5d8e5c"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "1452bac1-6a33-4c7d-8983-a6ad5a1e5fc6"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "081c49da-2dac-40f1-8a60-6f8b8b5594d5"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "d2cad6bd-f457-463d-b136-9b082bd9f247"
+        } ],
+        "id" : "f5977483-6f96-460d-901f-a7a8dc80f6af",
+        "expiresAt" : 1727010425859,
+        "createdAt" : 1719234366958,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 4815000,
+            "subTotal" : 5350000,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 200,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_18c26aIMDPKDwF2oddc1d862",
+                "description" : "Time Reports by Tempo Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 76500,
+                "subTotal" : 85000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1b8d21IMDPKDwF2o4f1b24e4",
+                "description" : "Time Reports by Tempo Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 200,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_167693IMDPKDwF2o7957a905",
+                "description" : "Jira, Premium, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 2475000,
+                "subTotal" : 2750000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_14603dIMDPKDwF2o91a82880",
+                "description" : "Jira, Premium, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_175030IMDPKDwF2o47316606",
+                "description" : "Jira Service Management Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 1566000,
+                "subTotal" : 1740000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_141705IMDPKDwF2oa98c0837",
+                "description" : "Jira Service Management Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1cc938IMDPKDwF2o8a3577bf",
+                "description" : "draw.io Diagrams & Whiteboards Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 153000,
+                "subTotal" : 170000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1f860fIMDPKDwF2oc7fd5f1b",
+                "description" : "draw.io Diagrams & Whiteboards Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 100,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1d1e08IMDPKDwF2od45c6c63",
+                "description" : "Confluence Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 544500,
+                "subTotal" : 605000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1718789180000,
+                    "endsAt" : 1750325180000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_18b45aIMDPKDwF2o6774c69c",
+                "description" : "Confluence Annual Standard (USD, DEFAULT, 2024)"
+            } ]
+        },
+        "status" : "CANCELLED",
+        "reasonCode" : "Cancelled quote by stripe",
+        "quoteNumber" : "QT-42G-HDU-3A4-MA2",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "UPCOMING_INVOICE"
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "c90cb783-2a81-4ef2-ba79-03a3cd4bd400",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "UPCOMING_INVOICE"
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "82382dbc-ecef-491a-b18c-e26f5165ba20",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "UPCOMING_INVOICE"
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "38153184-70e0-44ca-8807-ba6ea2f24133",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "UPCOMING_INVOICE"
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "23f66ab4-6c66-4fd6-9eb0-c22b113537c8",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "UPCOMING_INVOICE"
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "9a8207fe-0f42-492f-bbe1-00f8870d64fe",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "fd4b2436-0935-475a-8458-ac2aac16e2b0"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "78c78674-3b70-4b3e-bef1-21416065c6ba"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "e3edc091-707f-4cfe-9d6c-a4ba402487ab"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "f42b2667-4b5f-43d5-b834-411a23b02852"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "b6a28bf4-2140-409c-8d1f-55076a6a8ae8"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "772667b0-8695-4d0e-9796-5d0a2fffe8af"
+        } ],
+        "id" : "2e89c4a9-80d8-4b94-b6d8-0e6e4fd56820",
+        "expiresAt" : 1726423665615,
+        "createdAt" : 1718647468398,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 180000,
+            "subTotal" : 200000,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 20,
+                "period" : {
+                    "startsAt" : 1719311116000,
+                    "endsAt" : 1748168716000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_103fffIMDPKDwF2o90fdf3b3",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            }, {
+                "total" : 164713,
+                "subTotal" : 183014,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1719311116000,
+                    "endsAt" : 1748168716000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_16d754IMDPKDwF2o633aec1c",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 20,
+                "period" : {
+                    "startsAt" : 1748168716000,
+                    "endsAt" : 1750847116000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_14d482IMDPKDwF2o2e54cc66",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            }, {
+                "total" : 15287,
+                "subTotal" : 16986,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1748168716000,
+                    "endsAt" : 1750847116000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1600aeIMDPKDwF2of5bcb311",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            } ]
+        },
+        "status" : "ACCEPTED",
+        "reasonCode" : "Accepted Quote",
+        "quoteNumber" : "QT-42D-ZH7-AVR-UVN",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "UPCOMING_INVOICE"
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "d60a9f52-e5e3-4281-8d95-29c76424c054",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "bbb84914-bb0c-412c-bda0-9283f88af20d"
+        } ],
+        "id" : "29eacef4-1ce7-4b80-b6c9-fe2309e6206a",
+        "expiresAt" : 1724572786400,
+        "createdAt" : 1716417500189,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 762650,
+            "subTotal" : 984500,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1625a7IMDPKDwF2oe466a317",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 307500,
+                "subTotal" : 410000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_135153IMDPKDwF2o76959a27",
+                "description" : "Jira, Standard, Annual (USD, Default, 29-03-2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1716378361000,
+                    "endsAt" : 1747914361000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1b0c30IMDPKDwF2o1579f2bd",
+                "description" : "Confluence Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 228750,
+                "subTotal" : 305000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1716378361000,
+                    "endsAt" : 1747914361000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_153735IMDPKDwF2oa8e0e660",
+                "description" : "Confluence Annual Standard (USD, DEFAULT, 2024)"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_13d554IMDPKDwF2ofac44a37",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 172400,
+                "subTotal" : 215500,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_166311IMDPKDwF2oeacffbf0",
+                "description" : "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 10,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1717755693000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1d2ebfIMDPKDwF2o57ee6353",
+                "description" : "Issue Templates for Jira Cloud Standard MONTHLY USD COMMERCIAL"
+            }, {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 50,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_190abdIMDPKDwF2o02c18838",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            }, {
+                "total" : 54000,
+                "subTotal" : 54000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1716378364000,
+                    "endsAt" : 1747914364000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_110ea4IMDPKDwF2o49dff07e",
+                "description" : "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL"
+            } ]
+        },
+        "status" : "ACCEPTED",
+        "reasonCode" : "Accepted Quote",
+        "quoteNumber" : "QT-42D-4DE-KSP-ZNG",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1716378361000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "718a278e-0764-4b7e-8302-534c71a1787c",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1716378364000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "1d3073fd-8d94-4dee-9a4f-8cf9cb6b9f55",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1716378364000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "ff881b69-ba33-482d-af94-d0228795d2df",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1716378364000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "455a8f8f-6fc1-459c-9c7f-dcce64f458af",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "a0b6f337-6b33-409c-943a-bd1aecce4c23"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "5967b888-1275-4c87-8a76-12a6ea3588bb"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "f29bfc80-b2d6-4214-a7bc-6258cee66826"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "cdce34be-e92a-4bc9-b259-33ca468d26a0"
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "37be34d9-8041-4d09-86af-c35a0a04c82b"
+        } ],
+        "id" : "a5857631-3c1d-49f2-b713-f2f9d26f9dbf",
+        "expiresAt" : 1723388595676,
+        "createdAt" : 1715612406968,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 2006250,
+            "subTotal" : 2675000,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 300,
+                "period" : {
+                    "startsAt" : 1714385802000,
+                    "endsAt" : 1745921802000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_13b502IMDPKDwF2o9563d240",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            }, {
+                "total" : 2006250,
+                "subTotal" : 2675000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1714385802000,
+                    "endsAt" : 1745921802000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_108d56IMDPKDwF2o49c6e956",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            } ]
+        },
+        "status" : "CANCELLED",
+        "reasonCode" : "Cancelled quote by stripe",
+        "quoteNumber" : "QT-42A-CAJ-4SF-N59",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1714385802000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "bb3a3323-1226-4d6d-9e6c-e510d5bae956",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "fac6f252-6cd6-4287-9aa1-bb36114bee56"
+        } ],
+        "id" : "014af47b-57b2-4c7d-b24d-4f061bc659d4",
+        "expiresAt" : 1720952334398,
+        "createdAt" : 1713176263312,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 75000,
+            "subTotal" : 100000,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 10,
+                "period" : {
+                    "startsAt" : 1715108682000,
+                    "endsAt" : 1746644682000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_152702IMDPKDwF2oe914ab7e",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            }, {
+                "total" : 75000,
+                "subTotal" : 100000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1715108682000,
+                    "endsAt" : 1746644682000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_14ea01IMDPKDwF2o25944282",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            } ]
+        },
+        "status" : "CANCELLED",
+        "reasonCode" : "Cancelled quote on request",
+        "quoteNumber" : "QT-429-WB7-WHV-QAR",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1715108682000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "c73261bf-2399-41d7-87bb-250b3be1475e",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "099970b0-1ace-4825-82b9-e075a7d29539"
+        } ],
+        "id" : "9c3f269c-1913-4388-8e86-39e66f04a5f6",
+        "expiresAt" : 1720552108880,
+        "createdAt" : 1712926311875,
+        "contractType" : "STANDARD"
+    }, {
+        "upcomingBills" : {
+            "total" : 75000,
+            "subTotal" : 100000,
+            "lines" : [ {
+                "total" : 0,
+                "subTotal" : 0,
+                "quantity" : 10,
+                "period" : {
+                    "startsAt" : 1715108682000,
+                    "endsAt" : 1746644682000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_1b4874IMDPKDwF2o1d3bfb49",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            }, {
+                "total" : 75000,
+                "subTotal" : 100000,
+                "quantity" : 0,
+                "period" : {
+                    "startsAt" : 1715108682000,
+                    "endsAt" : 1746644682000
+                },
+                "isoCurrency" : "USD",
+                "id" : "il_tmp_12a377IMDPKDwF2oa51fbef1",
+                "description" : "Jira Product Discovery Annual Standard (USD, adv, 2023)"
+            } ]
+        },
+        "status" : "CANCELLED",
+        "reasonCode" : "Cancelled quote by stripe",
+        "quoteNumber" : "QT-429-WB7-WHV-QAR",
+        "lineItems" : [ {
+            "startsAt" : {
+                "type" : "TIMESTAMP",
+                "timestamp" : 1715108682000
+            },
+            "lineItemType" : "AMEND_ENTITLEMENT",
+            "lineItemId" : "c73261bf-2399-41d7-87bb-250b3be1475e",
+            "endsAt" : {
+                "type" : "DURATION",
+                "duration" : {
+                    "intervalCount" : 1,
+                    "interval" : "YEAR"
+                }
+            }
+        }, {
+            "lineItemType" : "ACCOUNT_MODIFICATION",
+            "lineItemId" : "099970b0-1ace-4825-82b9-e075a7d29539"
+        } ],
+        "id" : "d7930321-6e49-4e1c-8fc3-4d1fdbeb36f0",
+        "expiresAt" : 1720552108880,
+        "createdAt" : 1712776074808,
+        "contractType" : "STANDARD"
+    } ]
+}

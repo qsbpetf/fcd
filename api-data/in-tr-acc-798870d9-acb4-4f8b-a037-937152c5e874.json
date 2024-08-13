@@ -1,0 +1,1595 @@
+{
+    "nextId": "e98da00d-81d3-48ed-bf53-dd0b093b2ddb",
+    "data": [
+        {
+            "paymentStatus": null,
+            "userDefinedNotes": {},
+            "prePaymentCreditNotesAmount": null,
+            "reInvoiced": null,
+            "appliedBalance": 0,
+            "purchaseOrderNumber": null,
+            "dunningStatus": null,
+            "dunningHistory": [],
+            "items": [
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": true,
+                    "exchangeRateDate": 1715558400000,
+                    "exchangeRate": 0.92635479,
+                    "originalInvoiceReferral": {
+                        "invoiceItems": [
+                            "6c5604ca-e3ee-4c4d-bece-15cb4e74dfc7",
+                            "dcd70378-b193-46d6-bda7-7c2717900ec8"
+                        ],
+                        "invoiceCreatedAt": 1715693866000,
+                        "invoiceNumber": "IN-EU-000-561-914",
+                        "invoice": "89d3d72b-7978-43c6-85ce-24abf796b1a9"
+                    },
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "781360ef-523c-4302-a150-73127afcf70f",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-3",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "94d948cf-a3de-419d-971a-99b57568f8f6",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZY-TJD-S25-FAF",
+                    "entitlementId": "313ca303-b5b7-3e5b-8aab-3697dfd32b3a",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-f703a2b7-1f2c-49a9-87c1-9f0638cb3f37",
+                        "type": "COMMERCIAL",
+                        "id": "f703a2b7-1f2c-49a9-87c1-9f0638cb3f37"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "76d1b288-1fc2-4153-9b41-f955ff1bca75"
+                    },
+                    "invoiceRequestItemId": "284032b1-4cae-45cd-b0a0-6e86fc7b1c20",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "629740ed-c4fe-43f0-b450-fc9b69a94fe3",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "0add1011-e54c-49a6-ada2-a9641c35da4a"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 50,
+                    "total": -414.97,
+                    "subtotal": -414.97,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "2fb056f2-02e1-4f5a-8e0c-b3ef3a181a60"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1723420800000,
+                    "exchangeRate": 0.91533181,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "781360ef-523c-4302-a150-73127afcf70f",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-3",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "94d948cf-a3de-419d-971a-99b57568f8f6",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZY-TJD-S25-FAF",
+                    "entitlementId": "313ca303-b5b7-3e5b-8aab-3697dfd32b3a",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-f703a2b7-1f2c-49a9-87c1-9f0638cb3f37",
+                        "type": "COMMERCIAL",
+                        "id": "f703a2b7-1f2c-49a9-87c1-9f0638cb3f37"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "76d1b288-1fc2-4153-9b41-f955ff1bca75"
+                    },
+                    "invoiceRequestItemId": "e943506c-1160-48ce-8d41-74f54aa8682d",
+                    "invoiceRequestItem": 1,
+                    "invoiceRequest": "629740ed-c4fe-43f0-b450-fc9b69a94fe3",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "14b7b712-440c-4cf5-beb5-29e7bb5bc027"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 100,
+                    "total": 0,
+                    "subtotal": 0,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "264dd546-c48a-45a5-a4f1-c05e994160ca"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1723420800000,
+                    "exchangeRate": 0.91533181,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "781360ef-523c-4302-a150-73127afcf70f",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-3",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "94d948cf-a3de-419d-971a-99b57568f8f6",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZY-TJD-S25-FAF",
+                    "entitlementId": "313ca303-b5b7-3e5b-8aab-3697dfd32b3a",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-f703a2b7-1f2c-49a9-87c1-9f0638cb3f37",
+                        "type": "COMMERCIAL",
+                        "id": "f703a2b7-1f2c-49a9-87c1-9f0638cb3f37"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "76d1b288-1fc2-4153-9b41-f955ff1bca75"
+                    },
+                    "invoiceRequestItemId": "9f09c0c3-b6f7-431b-81e7-42578a3f1af3",
+                    "invoiceRequestItem": 2,
+                    "invoiceRequest": "629740ed-c4fe-43f0-b450-fc9b69a94fe3",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "0a29849c-9ee9-4ee4-a150-49c5fda8c5bb"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 0,
+                    "total": 829.94,
+                    "subtotal": 829.94,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "Issue Templates for Jira Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "6e63fc26-704d-4856-a223-34ff88e6b205"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": true,
+                    "exchangeRateDate": 1715558400000,
+                    "exchangeRate": 0.92635479,
+                    "originalInvoiceReferral": {
+                        "invoiceItems": [
+                            "82eb3c6b-65a5-485e-8dbf-b12e56e04377",
+                            "56e45bf3-8d96-44a6-9662-4311b28c0458"
+                        ],
+                        "invoiceCreatedAt": 1715693866000,
+                        "invoiceNumber": "IN-EU-000-561-914",
+                        "invoice": "89d3d72b-7978-43c6-85ce-24abf796b1a9"
+                    },
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "5df57e38-e906-4bf9-88a3-99be64c8d543",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-2",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "52629187-7a6a-4db3-b524-660fcb14154e",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-42C-KVY-VKJ-DQR",
+                    "entitlementId": "4f5ff133-b455-34b9-b757-1f322fb6d1ce",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-74ccd6a1-99e7-4239-adb3-286a19bb089b",
+                        "type": "COMMERCIAL",
+                        "id": "74ccd6a1-99e7-4239-adb3-286a19bb089b"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "666499e5-fcc7-4ba3-b0ab-14eeecdbe123"
+                    },
+                    "invoiceRequestItemId": "430d6b58-5205-4a72-951f-5579bb2b05cb",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "77fa7138-372f-453d-80bb-9d40db98ff21",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "59d2ddcc-c021-4095-b63d-bd723bf94420"
+                        }
+                    ],
+                    "margins": [
+                        {
+                            "reasonCode": "partner.discount",
+                            "promotionId": "7e548023-ebdf-4212-9ead-c37668a44dbf",
+                            "promoCode": null,
+                            "percent": 20,
+                            "type": "PARTNER_MARGIN",
+                            "amount": -331.21
+                        }
+                    ],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 50,
+                    "total": -1324.84,
+                    "subtotal": -1656.05,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "8739b70d-d003-4f2a-9734-25b70d3a53ec"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1723420800000,
+                    "exchangeRate": 0.91533181,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "5df57e38-e906-4bf9-88a3-99be64c8d543",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-2",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "52629187-7a6a-4db3-b524-660fcb14154e",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-42C-KVY-VKJ-DQR",
+                    "entitlementId": "4f5ff133-b455-34b9-b757-1f322fb6d1ce",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-7a1cb800-2440-4c39-a229-159ba1c409ec",
+                        "type": "COMMERCIAL",
+                        "id": "7a1cb800-2440-4c39-a229-159ba1c409ec"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "666499e5-fcc7-4ba3-b0ab-14eeecdbe123"
+                    },
+                    "invoiceRequestItemId": "216d9eb8-3d0c-48c1-a897-5b2f9cea58f4",
+                    "invoiceRequestItem": 1,
+                    "invoiceRequest": "77fa7138-372f-453d-80bb-9d40db98ff21",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "e88d417b-abb2-4aee-9f3f-b7cab5c12d96"
+                        }
+                    ],
+                    "margins": [
+                        {
+                            "reasonCode": "partner.discount",
+                            "promotionId": "7e548023-ebdf-4212-9ead-c37668a44dbf",
+                            "promoCode": null,
+                            "percent": 20,
+                            "type": "PARTNER_MARGIN",
+                            "amount": 0
+                        }
+                    ],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 100,
+                    "total": 0,
+                    "subtotal": 0,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "a6032079-ff66-4e11-a022-031564d69225"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1723420800000,
+                    "exchangeRate": 0.91533181,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "5df57e38-e906-4bf9-88a3-99be64c8d543",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-2",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "52629187-7a6a-4db3-b524-660fcb14154e",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-42C-KVY-VKJ-DQR",
+                    "entitlementId": "4f5ff133-b455-34b9-b757-1f322fb6d1ce",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-7a1cb800-2440-4c39-a229-159ba1c409ec",
+                        "type": "COMMERCIAL",
+                        "id": "7a1cb800-2440-4c39-a229-159ba1c409ec"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "666499e5-fcc7-4ba3-b0ab-14eeecdbe123"
+                    },
+                    "invoiceRequestItemId": "d22d365c-7a5b-4e21-b96a-df5a906a9967",
+                    "invoiceRequestItem": 2,
+                    "invoiceRequest": "77fa7138-372f-453d-80bb-9d40db98ff21",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "fac9fae3-9a32-4939-8448-c24733ef86e1"
+                        }
+                    ],
+                    "margins": [
+                        {
+                            "reasonCode": "partner.discount",
+                            "promotionId": "7e548023-ebdf-4212-9ead-c37668a44dbf",
+                            "promoCode": null,
+                            "percent": 20,
+                            "type": "PARTNER_MARGIN",
+                            "amount": 728.51
+                        }
+                    ],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 0,
+                    "total": 2914.02,
+                    "subtotal": 3642.53,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "BigPicture - Project Management & PPM Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "c4df8825-20ee-40a6-8e8b-b0ee4e6b3606"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": true,
+                    "exchangeRateDate": 1715558400000,
+                    "exchangeRate": 0.92635479,
+                    "originalInvoiceReferral": {
+                        "invoiceItems": [
+                            "548d67b6-acab-4615-ba0c-2d069bc64c1f",
+                            "6ad739b3-da81-4be0-8586-917965d25a29"
+                        ],
+                        "invoiceCreatedAt": 1715693866000,
+                        "invoiceNumber": "IN-EU-000-561-914",
+                        "invoice": "89d3d72b-7978-43c6-85ce-24abf796b1a9"
+                    },
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "c3758d24-c5ec-42f3-81f6-eec7a3cd9420",
+                                "relationshipType": "FAMILY_CONTAINER"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZW-YPE-ERD-VSN",
+                    "entitlementId": "a8891eaa-bc0a-3405-990b-8b4b86b60814",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-software-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "00526dea-dd4b-4108-8c96-a2915c48e883"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "628a28c0-1dc8-409d-9c51-7a1a5838315e"
+                    },
+                    "invoiceRequestItemId": "54d28347-c339-4259-b08b-ab49d07841d4",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "2c29cb25-074e-4c7f-b34a-3e79d162b1f2",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "6815f063-82cf-44bd-bafb-9f57b3596424"
+                        }
+                    ],
+                    "margins": [
+                        {
+                            "reasonCode": "partner.discount",
+                            "promotionId": "eb9b3481-74a9-4978-b235-bc50c887b7f5",
+                            "promoCode": null,
+                            "percent": 25,
+                            "type": "PARTNER_MARGIN",
+                            "amount": -787.68
+                        }
+                    ],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 50,
+                    "total": -2363.03,
+                    "subtotal": -3150.71,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "Jira, Standard, Annual (USD, Default, 29-03-2024)",
+                    "currency": "USD",
+                    "id": "33ad72fc-a330-4422-8303-5adb09736385"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1723420800000,
+                    "exchangeRate": 0.91533181,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "c3758d24-c5ec-42f3-81f6-eec7a3cd9420",
+                                "relationshipType": "FAMILY_CONTAINER"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZW-YPE-ERD-VSN",
+                    "entitlementId": "a8891eaa-bc0a-3405-990b-8b4b86b60814",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-software-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "00526dea-dd4b-4108-8c96-a2915c48e883"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "628a28c0-1dc8-409d-9c51-7a1a5838315e"
+                    },
+                    "invoiceRequestItemId": "09d52226-b65d-4a5c-9038-e852f955db1d",
+                    "invoiceRequestItem": 1,
+                    "invoiceRequest": "2c29cb25-074e-4c7f-b34a-3e79d162b1f2",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "d7122e40-b9a7-48a5-9e01-36d6e3e9e07d"
+                        }
+                    ],
+                    "margins": [
+                        {
+                            "reasonCode": "partner.discount",
+                            "promotionId": "eb9b3481-74a9-4978-b235-bc50c887b7f5",
+                            "promoCode": null,
+                            "percent": 25,
+                            "type": "PARTNER_MARGIN",
+                            "amount": 0
+                        }
+                    ],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 100,
+                    "total": 0,
+                    "subtotal": 0,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "Jira, Standard, Annual (USD, Default, 29-03-2024)",
+                    "currency": "USD",
+                    "id": "d5f18eb3-a047-4494-8484-028fbca57dde"
+                },
+                {
+                    "orderId": "dedf5664-7167-44ac-87d8-1120f1a56e8b",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1723420800000,
+                    "exchangeRate": 0.91533181,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+                    "orderItemId": "dedf5664-7167-44ac-87d8-1120f1a56e8b-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+                                "relationshipId": "c3758d24-c5ec-42f3-81f6-eec7a3cd9420",
+                                "relationshipType": "FAMILY_CONTAINER"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZW-YPE-ERD-VSN",
+                    "entitlementId": "a8891eaa-bc0a-3405-990b-8b4b86b60814",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-software-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "00526dea-dd4b-4108-8c96-a2915c48e883"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "628a28c0-1dc8-409d-9c51-7a1a5838315e"
+                    },
+                    "invoiceRequestItemId": "031d6f90-8a47-42cb-ad73-997ddb388ab6",
+                    "invoiceRequestItem": 2,
+                    "invoiceRequest": "2c29cb25-074e-4c7f-b34a-3e79d162b1f2",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "a1eeaa06-93b1-437d-a52c-affe44d4b558"
+                        }
+                    ],
+                    "margins": [
+                        {
+                            "reasonCode": "partner.discount",
+                            "promotionId": "eb9b3481-74a9-4978-b235-bc50c887b7f5",
+                            "promoCode": null,
+                            "percent": 25,
+                            "type": "PARTNER_MARGIN",
+                            "amount": 1565.75
+                        }
+                    ],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 0,
+                    "total": 4697.25,
+                    "subtotal": 6263,
+                    "period": {
+                        "endAt": 1747914364000,
+                        "startAt": 1723680000000
+                    },
+                    "description": "Jira, Standard, Annual (USD, Default, 29-03-2024)",
+                    "currency": "USD",
+                    "id": "a7d5c6fa-2afa-4633-93da-ea15ee20d400"
+                }
+            ],
+            "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice/credit note to the customer's local revenue authorities.. The total amount shown on this invoice/credit note is VAT exclusive.",
+            "headerTaxIds": [
+                {
+                    "taxIdLabel": "VAT Number",
+                    "headerTaxID": "EU372001951"
+                }
+            ],
+            "headerTaxId": "EU372001951",
+            "taxIdLabel": "VAT Number",
+            "tax": 0,
+            "total": 4338.37,
+            "subtotal": 5513.74,
+            "currency": "USD",
+            "paymentMethodObj": {
+                "default": false,
+                "terms": {
+                    "payOnStatement": true,
+                    "status": "ACTIVE",
+                    "invoiceDueDays": 30
+                },
+                "currency": "USD",
+                "type": "DEFERRED",
+                "id": "20ba281c-0481-46dd-9d66-87e00290ff77"
+            },
+            "paymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "shipTo": {
+                "createdAt": 1715598367897,
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Value-added tax registration number",
+                        "taxIdLabel": "VAT No.",
+                        "label": "vatNumber",
+                        "id": "FI18860981"
+                    }
+                ],
+                "taxId": "FI18860981",
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "postalAddress": {
+                    "postcode": "01720",
+                    "phone": null,
+                    "state": "18",
+                    "country": "FI",
+                    "city": "Vantaa",
+                    "line2": null,
+                    "line1": "Tiilenlyöjänkuja 9 A"
+                },
+                "name": "Canatu Oy",
+                "version": 2,
+                "id": "3b7404aa-1fb1-46f3-a084-cea831fb4334"
+            },
+            "billTo": {
+                "priceEligibility": {},
+                "postalAddress": {
+                    "postcode": "00100",
+                    "phone": null,
+                    "state": "Uusimaa",
+                    "country": "FI",
+                    "city": "Helsinki",
+                    "line2": null,
+                    "line1": "Pohjoinen Rautatiekatu 25"
+                },
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Tax identification number",
+                        "taxIdLabel": "Tax ID",
+                        "label": "vatNumber",
+                        "id": "FI19718143"
+                    }
+                ],
+                "taxId": "FI19718143",
+                "name": "Eficode Finland"
+            },
+            "uncollectibleAt": null,
+            "paidAt": null,
+            "dueAt": 1726400205669,
+            "finalizedAt": 1723549007000,
+            "createdAt": 1723549003000,
+            "status": "OPEN",
+            "memo": null,
+            "invoiceGroup": "a016879b-37f5-4288-be8e-49bab85b507e",
+            "number": "IN-EU-000-767-961",
+            "version": 3,
+            "id": "2888c59d-e53d-4b04-a94d-c034aa6f2b07"
+        },
+        {
+            "paymentStatus": null,
+            "userDefinedNotes": {},
+            "prePaymentCreditNotesAmount": null,
+            "reInvoiced": null,
+            "appliedBalance": 0,
+            "purchaseOrderNumber": null,
+            "dunningStatus": null,
+            "dunningHistory": [],
+            "items": [
+                {
+                    "orderId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1722988800000,
+                    "exchangeRate": 0.91558323,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+                    "orderItemId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "e91cd52f-8a36-3378-b3ef-242c49b8416a",
+                                "relationshipId": "c3758d24-c5ec-42f3-81f6-eec7a3cd9420",
+                                "relationshipType": "FAMILY_CONTAINER"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZY-8BC-PRA-PQR",
+                    "entitlementId": "e6fc378e-5cd1-4f10-ba38-a587d04737d3",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-software-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "00526dea-dd4b-4108-8c96-a2915c48e883"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "bb12ce8d-b83c-4072-bc30-bd7232aa6b8c"
+                    },
+                    "invoiceRequestItemId": "423627e1-b12f-40bf-9607-4941123a3c2e",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "ca951d51-15e5-416d-8ff5-0d91ce85cba4",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "af0f0a2c-920b-4dcb-a353-24e00cf2e0a8"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 50,
+                    "total": 0,
+                    "subtotal": 0,
+                    "period": {
+                        "endAt": 1756112969000,
+                        "startAt": 1724576969000
+                    },
+                    "description": "Jira, Standard, Annual (USD, Default, 29-03-2024)",
+                    "currency": "USD",
+                    "id": "e539b7e1-b3bb-46dd-b574-c4ff358ea62b"
+                },
+                {
+                    "orderId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1722988800000,
+                    "exchangeRate": 0.91558323,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+                    "orderItemId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "e91cd52f-8a36-3378-b3ef-242c49b8416a",
+                                "relationshipId": "c3758d24-c5ec-42f3-81f6-eec7a3cd9420",
+                                "relationshipType": "FAMILY_CONTAINER"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZY-8BC-PRA-PQR",
+                    "entitlementId": "e6fc378e-5cd1-4f10-ba38-a587d04737d3",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-software-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "00526dea-dd4b-4108-8c96-a2915c48e883"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "bb12ce8d-b83c-4072-bc30-bd7232aa6b8c"
+                    },
+                    "invoiceRequestItemId": "5db3b568-5092-4845-8d86-1e4a571a978c",
+                    "invoiceRequestItem": 1,
+                    "invoiceRequest": "ca951d51-15e5-416d-8ff5-0d91ce85cba4",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "b1d77f0f-0c92-4bb7-ab47-1d5096a599b7"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 0,
+                    "total": 4100,
+                    "subtotal": 4100,
+                    "period": {
+                        "endAt": 1756112969000,
+                        "startAt": 1724576969000
+                    },
+                    "description": "Jira, Standard, Annual (USD, Default, 29-03-2024)",
+                    "currency": "USD",
+                    "id": "60a32bae-cb8c-4fe5-82f9-4452fb19f235"
+                },
+                {
+                    "orderId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1722988800000,
+                    "exchangeRate": 0.91558323,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "45b14354-6988-460f-b746-7de5813ec9ee",
+                    "orderItemId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336-3",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "e91cd52f-8a36-3378-b3ef-242c49b8416a",
+                                "relationshipId": "206d5a03-fccb-41fe-bdb6-3454f6f135b7",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-422-GEN-KHW-CC6",
+                    "entitlementId": "c83878fd-57bf-4737-a208-83c3e4613dd6",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-92a147fa-4e8f-452a-a1e7-4f42cd1d6f97",
+                        "type": "COMMERCIAL",
+                        "id": "92a147fa-4e8f-452a-a1e7-4f42cd1d6f97"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "3b94a962-4789-415c-bb2b-c964f303ac04"
+                    },
+                    "invoiceRequestItemId": "f910312d-1956-43b3-a7e1-181436f5218b",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "ff0fb70a-d72b-4e16-b4c3-348bd8dfaac8",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "2061d396-3bfd-4b18-a4f3-33f18a699e3d"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 50,
+                    "total": 0,
+                    "subtotal": 0,
+                    "period": {
+                        "endAt": 1756112969000,
+                        "startAt": 1724576969000
+                    },
+                    "description": "Xray Test Management for Jira Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "ee098012-9f57-4a7b-9752-f37666051081"
+                },
+                {
+                    "orderId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1722988800000,
+                    "exchangeRate": 0.91558323,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "45b14354-6988-460f-b746-7de5813ec9ee",
+                    "orderItemId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336-3",
+                    "relationship": {
+                        "relatesFromEntitlements": [
+                            {
+                                "entitlementId": "e91cd52f-8a36-3378-b3ef-242c49b8416a",
+                                "relationshipId": "206d5a03-fccb-41fe-bdb6-3454f6f135b7",
+                                "relationshipType": "APP_DEPENDENCE"
+                            }
+                        ],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-422-GEN-KHW-CC6",
+                    "entitlementId": "c83878fd-57bf-4737-a208-83c3e4613dd6",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "plan-92a147fa-4e8f-452a-a1e7-4f42cd1d6f97",
+                        "type": "COMMERCIAL",
+                        "id": "92a147fa-4e8f-452a-a1e7-4f42cd1d6f97"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "3b94a962-4789-415c-bb2b-c964f303ac04"
+                    },
+                    "invoiceRequestItemId": "b4974736-75be-4f96-bebb-10bf58aec567",
+                    "invoiceRequestItem": 1,
+                    "invoiceRequest": "ff0fb70a-d72b-4e16-b4c3-348bd8dfaac8",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "e366b739-e906-4788-af8b-2bfd90c818b9"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 0,
+                    "total": 2500,
+                    "subtotal": 2500,
+                    "period": {
+                        "endAt": 1756112969000,
+                        "startAt": 1724576969000
+                    },
+                    "description": "Xray Test Management for Jira Cloud Standard ANNUAL USD COMMERCIAL",
+                    "currency": "USD",
+                    "id": "1f98b667-c203-4963-9df8-e0098b430cfd"
+                },
+                {
+                    "orderId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1722988800000,
+                    "exchangeRate": 0.91558323,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "2eda1119-fab4-4699-ab37-ff8f12052cde",
+                    "orderItemId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336-2",
+                    "relationship": {
+                        "relatesFromEntitlements": [],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3SN-K46-8K3-2VY",
+                    "entitlementId": "2c21eda6-32d6-4935-8bd2-92255f2ad0ad",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "confluence-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "82ce553a-80c8-42fc-b930-f10ab5bca4ee"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "1eeb514f-1ce7-4876-b65d-06755a02248e"
+                    },
+                    "invoiceRequestItemId": "c6364cd5-1822-49c7-b650-65d770ace756",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "876d21d7-8f03-4c4c-9f07-37ae00970acd",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "804bd065-50dd-4a95-9c07-d8094432803a"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 25,
+                    "total": 0,
+                    "subtotal": 0,
+                    "period": {
+                        "endAt": 1756112969000,
+                        "startAt": 1724576969000
+                    },
+                    "description": "Confluence Annual Standard (USD, DEFAULT, 2024)",
+                    "currency": "USD",
+                    "id": "b546600b-818a-4d6d-829b-03ce82d9e2f1"
+                },
+                {
+                    "orderId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1722988800000,
+                    "exchangeRate": 0.91558323,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "2eda1119-fab4-4699-ab37-ff8f12052cde",
+                    "orderItemId": "2df97e02-dd9d-4234-b3a0-b35f0e42d336-2",
+                    "relationship": {
+                        "relatesFromEntitlements": [],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3SN-K46-8K3-2VY",
+                    "entitlementId": "2c21eda6-32d6-4935-8bd2-92255f2ad0ad",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "ANNUAL"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "confluence-standard-annual-usd",
+                        "type": "COMMERCIAL",
+                        "id": "82ce553a-80c8-42fc-b930-f10ab5bca4ee"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "1eeb514f-1ce7-4876-b65d-06755a02248e"
+                    },
+                    "invoiceRequestItemId": "2fb07e1a-1723-4538-b841-641f0fc72486",
+                    "invoiceRequestItem": 1,
+                    "invoiceRequest": "876d21d7-8f03-4c4c-9f07-37ae00970acd",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "307ab136-cdec-4742-b038-4abf7f50ba8e"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [],
+                    "unitAmount": 0.01,
+                    "quantity": 0,
+                    "total": 1500,
+                    "subtotal": 1500,
+                    "period": {
+                        "endAt": 1756112969000,
+                        "startAt": 1724576969000
+                    },
+                    "description": "Confluence Annual Standard (USD, DEFAULT, 2024)",
+                    "currency": "USD",
+                    "id": "3358875c-2e3f-42f4-b62c-f834e206d0df"
+                }
+            ],
+            "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice to the customer's local revenue authorities. The total amount shown on this invoice is VAT exclusive",
+            "headerTaxIds": [
+                {
+                    "taxIdLabel": "VAT Number",
+                    "headerTaxID": "EU372001951"
+                }
+            ],
+            "headerTaxId": "EU372001951",
+            "taxIdLabel": "VAT Number",
+            "tax": 0,
+            "total": 8100,
+            "subtotal": 8100,
+            "currency": "USD",
+            "paymentMethodObj": {
+                "default": false,
+                "terms": {
+                    "payOnStatement": true,
+                    "status": "ACTIVE",
+                    "invoiceDueDays": 30
+                },
+                "currency": "USD",
+                "type": "DEFERRED",
+                "id": "20ba281c-0481-46dd-9d66-87e00290ff77"
+            },
+            "paymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "shipTo": {
+                "createdAt": 1719234105223,
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Value-added tax registration number",
+                        "taxIdLabel": "VAT No.",
+                        "label": "vatNumber",
+                        "id": "FI10157300"
+                    }
+                ],
+                "taxId": "FI10157300",
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "postalAddress": {
+                    "postcode": "00180",
+                    "phone": null,
+                    "state": "05",
+                    "country": "FI",
+                    "city": "Helsinki",
+                    "line2": null,
+                    "line1": "Itämerenkatu 23"
+                },
+                "name": "Management Events",
+                "version": 3,
+                "id": "41764675-ba7d-4e50-95a2-4013bc0a3365"
+            },
+            "billTo": {
+                "priceEligibility": {},
+                "postalAddress": {
+                    "postcode": "00100",
+                    "phone": null,
+                    "state": "Uusimaa",
+                    "country": "FI",
+                    "city": "Helsinki",
+                    "line2": null,
+                    "line1": "Pohjoinen Rautatiekatu 25"
+                },
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Tax identification number",
+                        "taxIdLabel": "Tax ID",
+                        "label": "vatNumber",
+                        "id": "FI19718143"
+                    }
+                ],
+                "taxId": "FI19718143",
+                "name": "Eficode Finland"
+            },
+            "uncollectibleAt": null,
+            "paidAt": null,
+            "dueAt": 1726396601901,
+            "finalizedAt": 1723113403000,
+            "createdAt": 1723113400000,
+            "status": "OPEN",
+            "memo": null,
+            "invoiceGroup": "7e2892ed-2a64-45e0-812a-599853660501",
+            "number": "IN-EU-000-756-076",
+            "version": 3,
+            "id": "5b0611a7-f4c4-4972-b39a-a23d3d57dbbf"
+        },
+        {
+            "paymentStatus": {
+                "updatedAt": 1721373643000,
+                "status": "NO_ACTION"
+            },
+            "userDefinedNotes": {},
+            "prePaymentCreditNotesAmount": 0,
+            "reInvoiced": null,
+            "appliedBalance": 0,
+            "purchaseOrderNumber": null,
+            "dunningStatus": null,
+            "dunningHistory": [],
+            "items": [
+                {
+                    "orderId": "31677c3d-55aa-43d2-9108-9eab2acc875a",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1721260800000,
+                    "exchangeRate": 0.91491308,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+                    "orderItemId": "31677c3d-55aa-43d2-9108-9eab2acc875a-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZT-P4B-FW8-DH4",
+                    "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "MONTHLY"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-product-discovery-standard",
+                        "type": "COMMERCIAL",
+                        "id": "38bd379a-d16b-4dd9-bdbf-44c240841286"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "74d012d8-0d33-482d-b367-2962e9888380"
+                    },
+                    "invoiceRequestItemId": "5782c09b-2f18-4de9-84c0-3d741f62343e",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "ad63a2d2-7d8f-4225-b809-03ef50061e10",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "30aa942a-5933-4c3c-bbb2-5789b764e916"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [
+                        {
+                            "promoCode": null,
+                            "percent": 25,
+                            "amount": 55,
+                            "type": "PARTNER_DISCOUNT",
+                            "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                            "reasonCode": "partner.discount",
+                            "reason": "partner.discount"
+                        }
+                    ],
+                    "unitAmount": 0.01,
+                    "quantity": 22,
+                    "total": 165,
+                    "subtotal": 220,
+                    "period": {
+                        "endAt": 1724050155000,
+                        "startAt": 1721371755000
+                    },
+                    "description": "Jira Product Discovery (Cloud, Standard, Monthly, Default List, USD, 2023)",
+                    "currency": "USD",
+                    "id": "84e6412e-b791-4be1-b91b-badc0a76e275"
+                }
+            ],
+            "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice to the customer's local revenue authorities. The total amount shown on this invoice is VAT exclusive",
+            "headerTaxIds": [
+                {
+                    "taxIdLabel": "VAT Number",
+                    "headerTaxID": "EU372001951"
+                }
+            ],
+            "headerTaxId": "EU372001951",
+            "taxIdLabel": "VAT Number",
+            "tax": 0,
+            "total": 165,
+            "subtotal": 220,
+            "currency": "USD",
+            "paymentMethodObj": {
+                "default": true,
+                "card": {
+                    "cardHolderName": "Katja Loikkanen",
+                    "last4": "4262",
+                    "funding": "credit",
+                    "expYear": 2027,
+                    "expMonth": 3,
+                    "country": "FI",
+                    "brand": "mastercard"
+                },
+                "currency": "USD",
+                "type": "CARD",
+                "id": "4295ab3b-77bb-4dbc-8159-103638af4827"
+            },
+            "paymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "shipTo": {
+                "createdAt": 1719386301225,
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Value-added tax registration number",
+                        "taxIdLabel": "VAT No.",
+                        "label": "vatNumber",
+                        "id": "FI28568685"
+                    }
+                ],
+                "taxId": "FI28568685",
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "postalAddress": {
+                    "postcode": "15700",
+                    "phone": null,
+                    "state": "18",
+                    "country": "FI",
+                    "city": "Lahti",
+                    "line2": null,
+                    "line1": "Ala-Okeroistentie 29"
+                },
+                "name": "Kempower",
+                "version": 2,
+                "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884"
+            },
+            "billTo": {
+                "priceEligibility": {},
+                "postalAddress": {
+                    "postcode": "00100",
+                    "phone": null,
+                    "state": "Uusimaa",
+                    "country": "FI",
+                    "city": "Helsinki",
+                    "line2": null,
+                    "line1": "Pohjoinen Rautatiekatu 25"
+                },
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Tax identification number",
+                        "taxIdLabel": "Tax ID",
+                        "label": "vatNumber",
+                        "id": "FI19718143"
+                    }
+                ],
+                "taxId": "FI19718143",
+                "name": "Eficode Finland"
+            },
+            "uncollectibleAt": null,
+            "paidAt": 1721373643000,
+            "dueAt": 1721373639899,
+            "finalizedAt": 1721373641000,
+            "createdAt": 1721373638000,
+            "status": "PAID",
+            "memo": null,
+            "invoiceGroup": "d77361a0-2760-4aec-af59-08d80d9c912c",
+            "number": "IN-EU-000-710-766",
+            "version": 4,
+            "id": "065d0f52-a6fc-4cd9-8141-88d3ee902718"
+        },
+        {
+            "paymentStatus": {
+                "updatedAt": 1720671623000,
+                "status": "NO_ACTION"
+            },
+            "userDefinedNotes": {},
+            "prePaymentCreditNotesAmount": 0,
+            "reInvoiced": null,
+            "appliedBalance": 0,
+            "purchaseOrderNumber": null,
+            "dunningStatus": {
+                "attemptCount": 1,
+                "nextPaymentAttemptDate": 1720671622000,
+                "updatedAt": 1719991223392,
+                "message": "Your card was declined for making repeated attempts too frequently or exceeding its amount limit.",
+                "declineCode": "card_velocity_exceeded",
+                "errorCode": "card_declined",
+                "attempt": "ONE"
+            },
+            "dunningHistory": [
+                {
+                    "attemptCount": 1,
+                    "nextPaymentAttemptDate": 1720671622000,
+                    "updatedAt": 1719991223392,
+                    "message": "Your card was declined for making repeated attempts too frequently or exceeding its amount limit.",
+                    "declineCode": "card_velocity_exceeded",
+                    "errorCode": "card_declined",
+                    "attempt": "ONE"
+                }
+            ],
+            "items": [
+                {
+                    "orderId": "31677c3d-55aa-43d2-9108-9eab2acc875a",
+                    "metadata": null,
+                    "proration": false,
+                    "exchangeRateDate": 1719878400000,
+                    "exchangeRate": 0.93205331,
+                    "originalInvoiceReferral": null,
+                    "taxPercent": 0,
+                    "tax": 0,
+                    "offeringKey": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+                    "orderItemId": "31677c3d-55aa-43d2-9108-9eab2acc875a-1",
+                    "relationship": {
+                        "relatesFromEntitlements": [],
+                        "relatesToEntitlements": []
+                    },
+                    "entitlementNumber": "E-3ZT-P4B-FW8-DH4",
+                    "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+                    "planObj": {
+                        "cycle": {
+                            "interval": "MONTHLY"
+                        },
+                        "hostingType": "CLOUD",
+                        "sku": "jira-product-discovery-standard",
+                        "type": "COMMERCIAL",
+                        "id": "38bd379a-d16b-4dd9-bdbf-44c240841286"
+                    },
+                    "subscriptionObj": {
+                        "chargeType": "LICENSED",
+                        "itemId": "user",
+                        "id": "74d012d8-0d33-482d-b367-2962e9888380"
+                    },
+                    "invoiceRequestItemId": "3e1d3562-6613-4a19-b8fd-165fdde9dc2f",
+                    "invoiceRequestItem": 0,
+                    "invoiceRequest": "fe61fd84-8323-4eb1-bed5-436905322428",
+                    "taxItems": [
+                        {
+                            "taxIdLabel": null,
+                            "taxAmountLabel": "VAT",
+                            "taxId": null,
+                            "taxPercent": 0,
+                            "tax": 0,
+                            "id": "8022b00c-50ae-4017-9f66-dd8c52ccd9f7"
+                        }
+                    ],
+                    "margins": [],
+                    "adjustments": [
+                        {
+                            "promoCode": null,
+                            "percent": 25,
+                            "amount": 25.8,
+                            "type": "PARTNER_DISCOUNT",
+                            "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                            "reasonCode": "partner.discount",
+                            "reason": "partner.discount"
+                        }
+                    ],
+                    "unitAmount": 0.01,
+                    "quantity": 20,
+                    "total": 77.41,
+                    "subtotal": 103.21,
+                    "period": {
+                        "endAt": 1721371755000,
+                        "startAt": 1719989507000
+                    },
+                    "description": "Jira Product Discovery (Cloud, Standard, Monthly, Default List, USD, 2023)",
+                    "currency": "USD",
+                    "id": "146f25c3-4953-4138-ac8f-4a1af16758a2"
+                }
+            ],
+            "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice to the customer's local revenue authorities. The total amount shown on this invoice is VAT exclusive",
+            "headerTaxIds": [
+                {
+                    "taxIdLabel": "VAT Number",
+                    "headerTaxID": "EU372001951"
+                }
+            ],
+            "headerTaxId": "EU372001951",
+            "taxIdLabel": "VAT Number",
+            "tax": 0,
+            "total": 77.41,
+            "subtotal": 103.21,
+            "currency": "USD",
+            "paymentMethodObj": {
+                "default": true,
+                "card": {
+                    "cardHolderName": "Katja Loikkanen",
+                    "last4": "4262",
+                    "funding": "credit",
+                    "expYear": 2027,
+                    "expMonth": 3,
+                    "country": "FI",
+                    "brand": "mastercard"
+                },
+                "currency": "USD",
+                "type": "CARD",
+                "id": "4295ab3b-77bb-4dbc-8159-103638af4827"
+            },
+            "paymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "shipTo": {
+                "createdAt": 1719386301225,
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Value-added tax registration number",
+                        "taxIdLabel": "VAT No.",
+                        "label": "vatNumber",
+                        "id": "FI28568685"
+                    }
+                ],
+                "taxId": "FI28568685",
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "postalAddress": {
+                    "postcode": "15700",
+                    "phone": null,
+                    "state": "18",
+                    "country": "FI",
+                    "city": "Lahti",
+                    "line2": null,
+                    "line1": "Ala-Okeroistentie 29"
+                },
+                "name": "Kempower",
+                "version": 2,
+                "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884"
+            },
+            "billTo": {
+                "priceEligibility": {},
+                "postalAddress": {
+                    "postcode": "00100",
+                    "phone": null,
+                    "state": "Uusimaa",
+                    "country": "FI",
+                    "city": "Helsinki",
+                    "line2": null,
+                    "line1": "Pohjoinen Rautatiekatu 25"
+                },
+                "taxIds": [
+                    {
+                        "metadata": {},
+                        "taxIdDescription": "Tax identification number",
+                        "taxIdLabel": "Tax ID",
+                        "label": "vatNumber",
+                        "id": "FI19718143"
+                    }
+                ],
+                "taxId": "FI19718143",
+                "name": "Eficode Finland"
+            },
+            "uncollectibleAt": null,
+            "paidAt": 1720671623000,
+            "dueAt": 1719991215875,
+            "finalizedAt": 1719991217000,
+            "createdAt": 1719991214000,
+            "status": "PAID",
+            "memo": null,
+            "invoiceGroup": "d77361a0-2760-4aec-af59-08d80d9c912c",
+            "number": "IN-EU-000-672-763",
+            "version": 7,
+            "id": "e98da00d-81d3-48ed-bf53-dd0b093b2ddb"
+        }
+    ]
+}

@@ -1,0 +1,486 @@
+{
+    "Invoice": {
+        "id": "065d0f52-a6fc-4cd9-8141-88d3ee902718",
+        "version": 4,
+        "number": "IN-EU-000-710-766",
+        "invoiceGroup": "d77361a0-2760-4aec-af59-08d80d9c912c",
+        "memo": null,
+        "status": "PAID",
+        "createdAt": 1721373638000,
+        "finalizedAt": 1721373641000,
+        "dueAt": 1721373639899,
+        "paidAt": 1721373643000,
+        "uncollectibleAt": null,
+        "billTo": {
+            "name": "Eficode Finland",
+            "taxId": "FI19718143",
+            "taxIds": [
+                {
+                    "id": "FI19718143",
+                    "label": "vatNumber",
+                    "taxIdLabel": "Tax ID",
+                    "taxIdDescription": "Tax identification number",
+                    "metadata": {}
+                }
+            ],
+            "postalAddress": {
+                "line1": "Pohjoinen Rautatiekatu 25",
+                "line2": null,
+                "city": "Helsinki",
+                "country": "FI",
+                "state": "Uusimaa",
+                "phone": null,
+                "postcode": "00100"
+            },
+            "priceEligibility": {}
+        },
+        "shipTo": {
+            "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884",
+            "version": 2,
+            "name": "Kempower",
+            "postalAddress": {
+                "line1": "Ala-Okeroistentie 29",
+                "line2": null,
+                "city": "Lahti",
+                "country": "FI",
+                "state": "18",
+                "phone": null,
+                "postcode": "15700"
+            },
+            "priceEligibility": {
+                "commercial": true
+            },
+            "taxId": "FI28568685",
+            "taxIds": [
+                {
+                    "id": "FI28568685",
+                    "label": "vatNumber",
+                    "taxIdLabel": "VAT No.",
+                    "taxIdDescription": "Value-added tax registration number",
+                    "metadata": {}
+                }
+            ],
+            "createdAt": 1719386301225
+        },
+        "paymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+        "paymentMethodObj": {
+            "id": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "type": "CARD",
+            "currency": "USD",
+            "card": {
+                "brand": "mastercard",
+                "country": "FI",
+                "expMonth": 3,
+                "expYear": 2027,
+                "funding": "credit",
+                "last4": "4262",
+                "cardHolderName": "Katja Loikkanen"
+            },
+            "default": true
+        },
+        "currency": "USD",
+        "subtotal": 220,
+        "total": 165,
+        "tax": 0,
+        "taxIdLabel": "VAT Number",
+        "headerTaxId": "EU372001951",
+        "headerTaxIds": [
+            {
+                "headerTaxID": "EU372001951",
+                "taxIdLabel": "VAT Number"
+            }
+        ],
+        "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice to the customer's local revenue authorities. The total amount shown on this invoice is VAT exclusive",
+        "items": [
+            {
+                "id": "84e6412e-b791-4be1-b91b-badc0a76e275",
+                "currency": "USD",
+                "description": "Jira Product Discovery (Cloud, Standard, Monthly, Default List, USD, 2023)",
+                "period": {
+                    "startAt": 1721371755000,
+                    "endAt": 1724050155000
+                },
+                "subtotal": 220,
+                "total": 165,
+                "quantity": 22,
+                "unitAmount": 0.01,
+                "adjustments": [
+                    {
+                        "reason": "partner.discount",
+                        "reasonCode": "partner.discount",
+                        "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                        "type": "PARTNER_DISCOUNT",
+                        "amount": 55,
+                        "percent": 25,
+                        "promoCode": null
+                    }
+                ],
+                "margins": [],
+                "taxItems": [
+                    {
+                        "id": "30aa942a-5933-4c3c-bbb2-5789b764e916",
+                        "tax": 0,
+                        "taxPercent": 0,
+                        "taxId": null,
+                        "taxAmountLabel": "VAT",
+                        "taxIdLabel": null
+                    }
+                ],
+                "invoiceRequest": "ad63a2d2-7d8f-4225-b809-03ef50061e10",
+                "invoiceRequestItem": 0,
+                "invoiceRequestItemId": "5782c09b-2f18-4de9-84c0-3d741f62343e",
+                "subscriptionObj": {
+                    "id": "74d012d8-0d33-482d-b367-2962e9888380",
+                    "itemId": "user",
+                    "chargeType": "LICENSED"
+                },
+                "planObj": {
+                    "id": "38bd379a-d16b-4dd9-bdbf-44c240841286",
+                    "type": "COMMERCIAL",
+                    "sku": "jira-product-discovery-standard",
+                    "hostingType": "CLOUD",
+                    "cycle": {
+                        "interval": "MONTHLY"
+                    }
+                },
+                "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+                "entitlementNumber": "E-3ZT-P4B-FW8-DH4",
+                "relationship": {
+                    "relatesToEntitlements": [],
+                    "relatesFromEntitlements": []
+                },
+                "orderItemId": "31677c3d-55aa-43d2-9108-9eab2acc875a-1",
+                "offeringKey": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+                "tax": 0,
+                "taxPercent": 0,
+                "originalInvoiceReferral": null,
+                "exchangeRate": 0.91491308,
+                "exchangeRateDate": 1721260800000,
+                "proration": false,
+                "metadata": null,
+                "orderId": "31677c3d-55aa-43d2-9108-9eab2acc875a"
+            }
+        ],
+        "dunningHistory": [],
+        "dunningStatus": null,
+        "purchaseOrderNumber": null,
+        "appliedBalance": 0,
+        "reInvoiced": null,
+        "prePaymentCreditNotesAmount": 0,
+        "userDefinedNotes": {},
+        "paymentStatus": {
+            "status": "NO_ACTION",
+            "updatedAt": 1721373643000
+        }
+    },
+    "InvoiceGroup": {
+        "id": "d77361a0-2760-4aec-af59-08d80d9c912c",
+        "version": 3,
+        "name": "Additional products",
+        "slug": null,
+        "currency": "USD",
+        "shipToParty": {
+            "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884",
+            "version": 2,
+            "name": "Kempower",
+            "postalAddress": {
+                "line1": "Ala-Okeroistentie 29",
+                "line2": null,
+                "city": "Lahti",
+                "country": "FI",
+                "state": "18",
+                "phone": null,
+                "postcode": "15700"
+            },
+            "priceEligibility": {
+                "commercial": true
+            },
+            "taxId": "FI28568685",
+            "taxIds": [
+                {
+                    "id": "FI28568685",
+                    "label": "vatNumber",
+                    "taxIdLabel": "VAT No.",
+                    "taxIdDescription": "Value-added tax registration number",
+                    "metadata": {}
+                }
+            ],
+            "createdAt": 1719386301225
+        },
+        "billToParty": null,
+        "defaultPaymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+        "purchaseOrder": null,
+        "active": true,
+        "memo": null,
+        "createdAt": 1719386380757,
+        "recipients": []
+    },
+    "EntitlementDetails": [
+        {
+            "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+            "version": 33,
+            "status": "ACTIVE",
+            "slug": "E-3ZT-P4B-FW8-DH4",
+            "offeringKey": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+            "featureVariables": {
+                "user": "20"
+            },
+            "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874",
+            "order": {
+                "id": "b33ebfea-7367-40f7-a73e-d8bef7019bf1",
+                "itemId": "b33ebfea-7367-40f7-a73e-d8bef7019bf1-1"
+            },
+            "relatesToEntitlements": [],
+            "relatesFromEntitlements": [],
+            "createdAt": 1700144260633,
+            "updatedAt": 1722597329694,
+            "invoiceGroupId": "1993ef9a-8619-4bc1-9a51-24bbfe135763",
+            "entitlementTemplate": {
+                "key": "b4c4cb99-4605-488c-aee9-22f764c270c6",
+                "version": 17,
+                "data": {
+                    "viewPermissions": {
+                        "enabled": false
+                    },
+                    "auditLog": {
+                        "allInclusive": false,
+                        "events": []
+                    },
+                    "viewPublishing": {
+                        "enabled": true
+                    },
+                    "ai": {
+                        "available": false
+                    },
+                    "sandbox": {
+                        "limit": 0,
+                        "entitledSandbox": "none"
+                    },
+                    "allowlisting": {
+                        "ip": 0
+                    },
+                    "aggregateStorage": {
+                        "bytes": 250000000000,
+                        "unlimited": false
+                    },
+                    "customDomain": {
+                        "self": {
+                            "limit": 0
+                        },
+                        "portal": {
+                            "limit": 0
+                        },
+                        "parent": {
+                            "limit": 0
+                        }
+                    },
+                    "dataResidency": {
+                        "realms": [
+                            "eu",
+                            "us",
+                            "au",
+                            "global",
+                            "de",
+                            "sg",
+                            "ca",
+                            "gb",
+                            "jp",
+                            "ch",
+                            "br",
+                            "in",
+                            "kr"
+                        ],
+                        "isDataResidencyAllowed": true
+                    },
+                    "automation": {
+                        "automationEdition": "standard",
+                        "workspaceExecutionLimit": {
+                            "limitType": "flat",
+                            "limitAmount": 500
+                        }
+                    },
+                    "supportEligibility": {
+                        "level": "standard"
+                    },
+                    "adminInsight": {
+                        "charts": []
+                    },
+                    "releaseTrack": {
+                        "tracks": [
+                            "fastTrack"
+                        ]
+                    },
+                    "crossProjectViews": {
+                        "enabled": false
+                    },
+                    "fliprEnabled": false,
+                    "customRoles": true
+                }
+            },
+            "subscriptionv2": {
+                "id": "74d012d8-0d33-482d-b367-2962e9888380",
+                "orderItemId": "b33ebfea-7367-40f7-a73e-d8bef7019bf1-1",
+                "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+                "endTimestamp": 0,
+                "accountDetails": {
+                    "invoiceGroupId": "1993ef9a-8619-4bc1-9a51-24bbfe135763",
+                    "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874"
+                },
+                "trial": null,
+                "billingPeriodDetails": {
+                    "billingAnchorTimestamp": 1718779755000,
+                    "nextBillingTimestamp": 1724050155000,
+                    "nextBillingAnchorTimestamp": 1718779755000
+                },
+                "status": "ACTIVE",
+                "startTimestamp": null,
+                "pauseBilling": null,
+                "testFeatures": {
+                    "billingClockId": null
+                },
+                "chargeDetails": {
+                    "offeringId": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+                    "pricingPlanId": "38bd379a-d16b-4dd9-bdbf-44c240841286",
+                    "chargeQuantities": [
+                        {
+                            "chargeElement": "user",
+                            "quantity": 22,
+                            "lastUpdatedAt": 1723547156817
+                        }
+                    ],
+                    "promotionInstances": [
+                        {
+                            "promotionInstanceId": "c3e5e64c-1e8c-42a0-9d24-bcb81acded80",
+                            "promotionDefinition": {
+                                "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                                "promotionCode": null,
+                                "customisedValues": null
+                            }
+                        }
+                    ]
+                },
+                "scheduledChanges": {},
+                "subscriptionScheduled": false,
+                "subscriptionEvergreen": true
+            }
+        }
+    ],
+    "Entitlement Display Info": [
+        {
+            "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+            "provisionedResource": {
+                "ari": "ari:cloud:platform::site/2c53e8af-1081-49c9-b0c9-d354c4443d27",
+                "name": "kempower.atlassian.net"
+            }
+        }
+    ],
+    "OrderDetails": [
+        {
+            "orderId": "31677c3d-55aa-43d2-9108-9eab2acc875a",
+            "slug": "R-42J-2A2-HQH-F6B",
+            "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874",
+            "invoiceGroupId": "d77361a0-2760-4aec-af59-08d80d9c912c",
+            "items": [
+                {
+                    "offeringId": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+                    "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874",
+                    "invoiceGroupId": "d77361a0-2760-4aec-af59-08d80d9c912c",
+                    "orderItemId": "31677c3d-55aa-43d2-9108-9eab2acc875a-1",
+                    "optedUsageOptions": {
+                        "chargingDetails": {
+                            "chargeQuantities": [
+                                {
+                                    "chargeElement": "user",
+                                    "quantity": 20
+                                }
+                            ],
+                            "pricingPlanId": "38bd379a-d16b-4dd9-bdbf-44c240841286"
+                        },
+                        "trial": {
+                            "endTimestamp": null,
+                            "behaviourAtEndOfTrial": null,
+                            "skipTrial": true,
+                            "offeringId": null,
+                            "pricingPlanId": null,
+                            "startTimestamp": null
+                        },
+                        "billingBehaviour": null,
+                        "effectiveTime": null
+                    },
+                    "type": "SYSTEM_AMENDMENT_ORDER",
+                    "processingInfo": {
+                        "status": "SUCCESS",
+                        "entitlement": {
+                            "id": "272886de-d7df-3469-a81a-9962a5837616",
+                            "version": "30"
+                        },
+                        "transitionTimestamp": null,
+                        "transitionTime": "IMMEDIATE",
+                        "saleTransitionDetails": {
+                            "glpForLastPaidPlan": 17000,
+                            "glpForCurrentPlan": 0,
+                            "glpForNextPlan": 20000,
+                            "glpForNextPlanLegacyPricing": null,
+                            "currentOfferingLevel": 200,
+                            "nextOfferingLevel": 200,
+                            "saleTransitionType": "UPGRADE",
+                            "lastPaidOfferingLevel": 200,
+                            "saleTransitionTime": null,
+                            "glpForAllPhases": null
+                        },
+                        "saleTransitionType": "UPGRADE",
+                        "computedDetails": {
+                            "computedEndTimestamp": null,
+                            "offeringId": null,
+                            "usageOptions": null,
+                            "computedBillUntilTimestamp": null,
+                            "orderedPromotions": [
+                                {
+                                    "promotionInstanceId": "c3e5e64c-1e8c-42a0-9d24-bcb81acded80",
+                                    "promotionDefinition": null
+                                }
+                            ],
+                            "removedPromotions": null,
+                            "pricingPlanTransition": null
+                        },
+                        "accountModification": null,
+                        "additionalTriggeredOrderItems": null,
+                        "prorationBehaviour": "ALWAYS_INVOICE",
+                        "impactedEntitlements": null
+                    },
+                    "billingOptions": null,
+                    "resetOptions": null,
+                    "reasonCode": null,
+                    "metadata": null,
+                    "triggeredByOrderItem": null,
+                    "promotions": [
+                        {
+                            "promotionInstanceId": "c3e5e64c-1e8c-42a0-9d24-bcb81acded80",
+                            "promotionDefinition": null
+                        }
+                    ],
+                    "isImmediate": null,
+                    "originalOrderItemId": "badd7803-6bb4-4cb3-9247-dd1428b5a15a-2",
+                    "quoteLineItemDetailsReference": null,
+                    "nextBillingAnchorTimestamp": 1718779755000,
+                    "prorationBehaviour": null,
+                    "relatesFromEntitlements": []
+                }
+            ],
+            "additionalTriggeredOrders": null,
+            "createdDate": 1719989537213
+        }
+    ],
+    "Sales Contact Details": {
+        "values": [
+            {
+                "resource": "ari:cloud:commerce:798870d9-acb4-4f8b-a037-937152c5e874:invoice-group/d77361a0-2760-4aec-af59-08d80d9c912c",
+                "CUSTOMER_CONTACT": [
+                    "ville.pekkola@kempower.com",
+                    "mikko.kotola@kempower.com",
+                    "marko.teerioja@kempower.com"
+                ]
+            }
+        ]
+    }
+}
