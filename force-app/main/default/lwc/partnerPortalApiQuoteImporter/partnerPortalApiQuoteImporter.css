@@ -1,0 +1,47 @@
+/**
+ * Created by peterfriberg on 2024-08-13.
+ */
+
+.rounded-rect {
+    background-color: #f3f3f3; /* Light gray */
+    border-radius: 5px;
+    border: 1px solid #444444;
+    padding: 10px;
+    margin: 5px;
+}
+
+h1 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 1.0em;
+    font-weight: bold;
+}
+
+.custom-lis li {
+    list-style-type: disc;
+    margin-left: 16px;
+    padding-left: 8px;
+}
+
+.conv-result {
+    background-color: #DDDDFF; /* Light blue */
+    border-radius: 5px;
+    border: 1px solid #444444;
+    padding: 10px;
+    margin: 5px;
+}
+
+.td-indent {
+    width: 40px;
+}
+
+.tr-yellow {
+    background-color: #FFFFD0; /* Yellow */
+}
+
+.table-green {
+    background-color: #d5fdd5; /* Green */
+}
