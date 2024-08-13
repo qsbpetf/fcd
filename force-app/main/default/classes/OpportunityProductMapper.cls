@@ -175,7 +175,12 @@ public with sharing class OpportunityProductMapper {
     @TestVisible
     private static String convertRenewal(String value, String discountReason) {
         String key = value;
-        if (value.equalsIgnoreCase('RENEWAL') && discountReason != null && discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_DIFFERENT_EXPERT')) {
+        Boolean isRenewal = value.equalsIgnoreCase('RENEWAL');
+        Boolean isDiscountReasonNotNull = discountReason != null;
+        Boolean isRenewalDifferentExpert = discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_DIFFERENT_EXPERT');
+        Boolean isRenewalAtlassian = discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_ATLASSIAN');
+
+        if (isRenewal && isDiscountReasonNotNull && (isRenewalDifferentExpert || isRenewalAtlassian)) {
             key = 'RENEWAL_NEW';
         }
         String result = SALETYPE_MAPPING.get(key);
