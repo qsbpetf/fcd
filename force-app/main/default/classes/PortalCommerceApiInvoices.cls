@@ -17,6 +17,12 @@ public with sharing class PortalCommerceApiInvoices
 
     public InvoiceList getInvoices(Integer pageSize, String nextId, String transactionAccountId) {
         HttpResponse response = client.getInvoices(pageSize, nextId, transactionAccountId);
+        if (response.getStatusCode() != 200) {
+            InvoiceList invoices = new InvoiceList();
+            invoices.error = response.getBody();
+            invoices.missingAccountId = true;
+            return invoices;
+        }
         InvoiceList products = (InvoiceList) JSON.deserialize(
             response.getBody()
                 .replaceAll('"number"', '"invoiceNumber"')
@@ -38,6 +44,14 @@ public with sharing class PortalCommerceApiInvoices
     public class InvoiceList {
         @AuraEnabled public List<InvoiceInfo> data;
         @AuraEnabled public String nextId;
+        @AuraEnabled public String error;
+        @AuraEnabled public Boolean missingAccountId;
+
+        public InvoiceList() {
+            data = new List<InvoiceInfo>();
+            error = null;
+            missingAccountId = false;
+        }
     }
 
     public class InvoiceInfo {
