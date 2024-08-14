@@ -8,6 +8,7 @@ import apexConvertQuote from '@salesforce/apex/PortalCommerceApiController.getQu
 export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
     @api recordId;
+    @api errorMessage;
 
     isLoading = true;
     buttonsDisabled = true;
@@ -35,6 +36,12 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             .catch(error => {
                 console.error('error', error);
                 this.isLoading = false;
+                this.quoteResults = {
+                    error: JSON.stringify(error),
+                    data: [],
+                    nextId: null,
+                    missingAccountId: true
+                };
             });
     }
 
@@ -42,6 +49,9 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         result.data.forEach(quote => {
             quote.length = quote.upcomingBills.lines.length;
         });
+        if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {
+            result.error = this.errorMessage;
+        }
         return result;
     }
 }

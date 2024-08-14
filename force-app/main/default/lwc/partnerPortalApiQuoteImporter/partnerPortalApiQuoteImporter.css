@@ -20,6 +20,10 @@ h2 {
     font-weight: bold;
 }
 
+.red {
+    color: red;
+}
+
 .custom-lis li {
     list-style-type: disc;
     margin-left: 16px;

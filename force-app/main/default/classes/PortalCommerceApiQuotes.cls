@@ -17,12 +17,18 @@ public with sharing class PortalCommerceApiQuotes
 
     public QuoteList getQuotes(Integer pageSize, String nextId, String transactionAccountId) {
         HttpResponse response = client.getQuotes(pageSize, nextId, transactionAccountId);
-        QuoteList products = (QuoteList) JSON.deserialize(
+        if (response.getStatusCode() != 200) {
+            QuoteList quotes = new QuoteList();
+            quotes.error = response.getBody();
+            quotes.missingAccountId = true;
+            return quotes;
+        }
+        QuoteList quotes = (QuoteList) JSON.deserialize(
             response.getBody()
                 .replaceAll('"number"', '"quoteNumber"')
                 .replaceAll('"currency"', '"isoCurrency"'),
             QuoteList.class);
-        return products;
+        return quotes;
     }
 
     @AuraEnabled
@@ -38,6 +44,14 @@ public with sharing class PortalCommerceApiQuotes
     public class QuoteList {
         @AuraEnabled public List<QuoteInfo> data;
         @AuraEnabled public String nextId;
+        @AuraEnabled public String error;
+        @AuraEnabled public Boolean missingAccountId;
+
+        public QuoteList() {
+            data = new List<QuoteInfo>();
+            error = null;
+            missingAccountId = false;
+        }
     }
 
     public class QuoteInfo {

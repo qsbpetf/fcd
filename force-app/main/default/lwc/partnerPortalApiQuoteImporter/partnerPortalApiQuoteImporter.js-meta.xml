@@ -10,6 +10,7 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property name="recordId" type="String" label="Record ID" description="The value should be {!recordId}."/>
+            <property name="errorMessage" type="String" label="Error Message" description="Add your error message to present when the related account do not have a Atlassian Account Id defined."/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
