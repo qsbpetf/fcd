@@ -1,0 +1,79 @@
+<!--
+ - Created by peterfriberg on 2024-08-15.
+ -->
+
+<!-- Partner Portal Api Invoice Viewer -->
+<template>
+    <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
+
+    <lightning-card title="Import Atlassian Partner Portal Quote via API into Salesforce Opportunity Products" icon-name="custom:custom14">
+        <template if:true={invoiceResults.missingAccountId}>
+            <h2 class="slds-text-color_error">{invoiceResults.error}</h2>
+        </template>
+
+        <template if:false={invoiceResults.missingAccountId}>
+            <div class="conv-result">
+                <h1>Invoices found through API</h1>
+                <div class="rounded-rect">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Invoice Id</th>
+                            <th>Invoice #</th>
+                            <th>Status</th>
+                            <th>SubTotal</th>
+                            <th>Total</th>
+                            <th>Currency</th>
+                            <th># Line Items</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={invoiceResults.data} for:item="inv">
+                                <tr key={inv.id} class="tr-yellow">
+                                    <td>{inv.id}</td>
+                                    <td>{inv.invoiceNumber}</td>
+                                    <td>{inv.status}</td>
+                                    <td>{inv.subTotal}</td>
+                                    <td>{inv.total}</td>
+                                    <td>{inv.isoCurrency}</td>
+                                    <td>{inv.length}</td>
+                                </tr>
+                                <tr key={inv.invoiceNumber}>
+                                    <td colspan=100>
+                                        <table class="table-green">
+                                            <thead>
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Id</th>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Unit Amount</th>
+                                                <th>Subtotal</th>
+                                                <th>Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <template for:each={inv.items} for:item="li">
+                                                <tr key={li.id}>
+                                                    <td class="td-indent">&nbsp;</td>
+                                                    <td>{li.id}</td>
+                                                    <td>{li.description}</td>
+                                                    <td>{li.quantity}</td>
+                                                    <td>{li.unitAmount}</td>
+                                                    <td>{li.subTotal}</td>
+                                                    <td>{li.total}</td>
+                                                </tr>
+                                            </template>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>

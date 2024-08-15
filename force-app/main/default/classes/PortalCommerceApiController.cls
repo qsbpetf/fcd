@@ -18,4 +18,17 @@ public with sharing class PortalCommerceApiController {
         PortalCommerceApiQuotes.QuoteList quotes = PortalCommerceApiQuotes.getQuotesStatic(25, null, transactionAccountId);
         return quotes;
     }
+
+    @AuraEnabled
+    static public PortalCommerceApiInvoices.InvoiceList getInvoices(String accountId) {
+        Account acc = [SELECT Id, AtlassianAccountId__c FROM Account WHERE Id = :accountId];
+        String transactionAccountId = acc.AtlassianAccountId__c;
+        if (transactionAccountId == null) {
+            PortalCommerceApiInvoices.InvoiceList invoices = new PortalCommerceApiInvoices.InvoiceList();
+            invoices.missingAccountId = true;
+            return invoices;
+        }
+        PortalCommerceApiInvoices.InvoiceList invoices = PortalCommerceApiInvoices.getInvoicesStatic(25, null, transactionAccountId);
+        return invoices;
+    }
 }
