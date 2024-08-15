@@ -6,7 +6,7 @@
 <template>
     <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
 
-    <lightning-card title="Import Atlassian Partner Portal Quote via API into Salesforce Opportunity Products" icon-name="custom:custom14">
+    <lightning-card title="Atlassian Partner Portal Invoices via API" icon-name="custom:custom14">
         <template if:true={invoiceResults.missingAccountId}>
             <h2 class="slds-text-color_error">{invoiceResults.error}</h2>
         </template>
