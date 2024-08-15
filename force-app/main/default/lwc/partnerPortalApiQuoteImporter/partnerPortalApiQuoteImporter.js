@@ -11,7 +11,6 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     @api errorMessage;
 
     isLoading = true;
-    buttonsDisabled = true;
 
     @track quoteResults = {
         data: [],

@@ -7,67 +7,66 @@
     <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
 
     <lightning-card title="Import Atlassian Partner Portal Quote via API into Salesforce Opportunity Products" icon-name="custom:custom14">
-    </lightning-card>
+        <template if:true={quoteResults.missingAccountId}>
+            <h2 class="slds-text-color_error">{quoteResults.error}</h2>
+        </template>
 
-    <template if:true={quoteResults.missingAccountId}>
-        <h2 class="slds-text-color_error">{quoteResults.error}</h2>
-    </template>
-
-    <template if:false={quoteResults.missingAccountId}>
-        <div class="conv-result">
-            <h1>Quotes found through API</h1>
-            <div class="rounded-rect">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Quote Id</th>
-                            <th>Quote Number</th>
-                            <th>Status</th>
-                            <th># Line Items</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template for:each={quoteResults.data} for:item="qt">
-                            <tr key={qt.id} class="tr-yellow">
-                                <td>{qt.id}</td>
-                                <td>{qt.quoteNumber}</td>
-                                <td>{qt.status}</td>
-                                <td>{qt.length}</td>
+        <template if:false={quoteResults.missingAccountId}>
+            <div class="conv-result">
+                <h1>Quotes found through API</h1>
+                <div class="rounded-rect">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quote Id</th>
+                                <th>Quote Number</th>
+                                <th>Status</th>
+                                <th># Line Items</th>
                             </tr>
-                            <tr key={qt.quoteNumber}>
-                                <td colspan=100>
-                                    <table class="table-green">
-                                        <thead>
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th>Id</th>
-                                                <th>Description</th>
-                                                <th>Quantity</th>
-                                                <th>Subtotal</th>
-                                                <th>Total</th>
-                                                <th>Currency</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <template for:each={qt.upcomingBills.lines} for:item="li">
-                                                <tr key={li.id}>
-                                                    <td class="td-indent">&nbsp;</td>
-                                                    <td>{li.id}</td>
-                                                    <td>{li.description}</td>
-                                                    <td>{li.quantity}</td>
-                                                    <td>{li.subTotal}</td>
-                                                    <td>{li.total}</td>
-                                                    <td>{li.isoCurrency}</td>
+                        </thead>
+                        <tbody>
+                            <template for:each={quoteResults.data} for:item="qt">
+                                <tr key={qt.id} class="tr-yellow">
+                                    <td>{qt.id}</td>
+                                    <td>{qt.quoteNumber}</td>
+                                    <td>{qt.status}</td>
+                                    <td>{qt.length}</td>
+                                </tr>
+                                <tr key={qt.quoteNumber}>
+                                    <td colspan=100>
+                                        <table class="table-green">
+                                            <thead>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th>Id</th>
+                                                    <th>Description</th>
+                                                    <th>Quantity</th>
+                                                    <th>Subtotal</th>
+                                                    <th>Total</th>
+                                                    <th>Currency</th>
                                                 </tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={qt.upcomingBills.lines} for:item="li">
+                                                    <tr key={li.id}>
+                                                        <td class="td-indent">&nbsp;</td>
+                                                        <td>{li.id}</td>
+                                                        <td>{li.description}</td>
+                                                        <td>{li.quantity}</td>
+                                                        <td>{li.subTotal}</td>
+                                                        <td>{li.total}</td>
+                                                        <td>{li.isoCurrency}</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </template>
+        </template>
+    </lightning-card>
 </template>
