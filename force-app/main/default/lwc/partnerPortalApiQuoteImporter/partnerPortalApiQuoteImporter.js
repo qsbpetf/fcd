@@ -4,6 +4,7 @@
 
 import { api, track, LightningElement } from 'lwc';
 import apexConvertQuote from '@salesforce/apex/PortalCommerceApiController.getQuotes';
+import apexImportQuote from '@salesforce/apex/PortalCommerceApiController.importQuote';
 
 export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
@@ -77,7 +78,30 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
         if (this.selectedItem.level === 1) {
             let choice = confirm('Are you sure you want to import this quote ' + this.selectedItem.quoteNumber + ' ?');
+            if (choice) {
+                this.importQuote(this.selectedItem);
+            }
         }
+    }
+
+    importQuote(quote) {
+        console.log('importQuote', quote);
+        this.isLoading = true;
+        apexImportQuote({
+            opportunityId: this.recordId,
+            quoteInfo: JSON.stringify(quote)
+        })
+            .then(result => {
+                console.log('result', result);
+                if (result === 'OK') {
+                    alert('*** TESTING ONLY! ***   Quote ' + quote.quoteNumber + ' imported successfully!');
+                }
+                this.isLoading = false;
+            })
+            .catch(error => {
+                console.error('error', error);
+                this.isLoading = false;
+            });
     }
 
     getQuotes() {

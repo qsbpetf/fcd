@@ -20,6 +20,14 @@ public with sharing class PortalCommerceApiController {
     }
 
     @AuraEnabled
+    static public String importQuote(String opportunityId, String quoteInfo) {
+        System.debug(quoteInfo);
+        PortalCommerceApiQuotes.QuoteInfo quoteData = (PortalCommerceApiQuotes.QuoteInfo) JSON.deserialize(quoteInfo, PortalCommerceApiQuotes.QuoteInfo.class);
+        System.debug(quoteData);
+        return 'OK';
+    }
+
+    @AuraEnabled
     static public PortalCommerceApiInvoices.InvoiceList getInvoices(String accountId) {
         Account acc = [SELECT Id, AtlassianAccountId__c FROM Account WHERE Id = :accountId];
         String transactionAccountId = acc.AtlassianAccountId__c;
