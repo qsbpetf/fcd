@@ -21,11 +21,10 @@
                             <th>Invoice Id</th>
                             <th>Invoice #</th>
                             <th>Status</th>
-                            <th>SubTotal</th>
-                            <th>Total</th>
-                            <th>Currency</th>
-                            <th># Line Items</th>
-                            <th></th>
+                            <th class="number"># Line Items</th>
+                            <th class="currency">SubTotal</th>
+                            <th class="currency">Total</th>
+                            <th class="left-pad">Currency</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,10 +33,10 @@
                                     <td>{inv.id}</td>
                                     <td>{inv.invoiceNumber}</td>
                                     <td>{inv.status}</td>
-                                    <td>{inv.subTotal}</td>
-                                    <td>{inv.total}</td>
-                                    <td>{inv.isoCurrency}</td>
-                                    <td>{inv.length}</td>
+                                    <td class="currency">{inv.length}</td>
+                                    <td class="currency">{inv.subTotal}</td>
+                                    <td class="currency">{inv.total}</td>
+                                    <td class="left-pad">{inv.isoCurrency}</td>
                                 </tr>
                                 <tr key={inv.invoiceNumber}>
                                     <td colspan=100>
@@ -47,10 +46,10 @@
                                                 <th>&nbsp;</th>
                                                 <th>Id</th>
                                                 <th>Description</th>
-                                                <th>Quantity</th>
-                                                <th>Unit Amount</th>
-                                                <th>Subtotal</th>
-                                                <th>Total</th>
+                                                <th class="number">Quantity</th>
+                                                <th class="currency">Unit Amount</th>
+                                                <th class="currency">SubTotal</th>
+                                                <th class="currency">Total</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -59,10 +58,10 @@
                                                     <td class="td-indent">&nbsp;</td>
                                                     <td>{li.id}</td>
                                                     <td>{li.description}</td>
-                                                    <td>{li.quantity}</td>
-                                                    <td>{li.unitAmount}</td>
-                                                    <td>{li.subTotal}</td>
-                                                    <td>{li.total}</td>
+                                                    <td class="number">{li.quantity}</td>
+                                                    <td class="currency">{li.unitAmount}</td>
+                                                    <td class="currency">{li.subTotal}</td>
+                                                    <td class="currency">{li.total}</td>
                                                 </tr>
                                             </template>
                                             </tbody>

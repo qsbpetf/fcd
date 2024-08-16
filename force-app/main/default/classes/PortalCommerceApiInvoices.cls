@@ -73,7 +73,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Integer quantity;
         @AuraEnabled public Double unitAmount;
         @AuraEnabled public Double total;
-        @AuraEnabled public Double subtotal;
+        @AuraEnabled public Double subTotal;
         @AuraEnabled public PeriodInfo period;
     }
 

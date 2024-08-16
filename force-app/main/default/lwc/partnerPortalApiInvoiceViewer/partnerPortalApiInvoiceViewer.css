@@ -40,6 +40,18 @@ h2 {
     background-color: #FFFFD0; /* Yellow */
 }
 
+.number {
+    text-align: right;
+}
+
+.currency {
+    text-align: right;
+}
+
+.left-pad {
+    padding-left: 10px;
+}
+
 .table-green {
     background-color: #d5fdd5; /* Green */
 }
