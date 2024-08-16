@@ -49,3 +49,15 @@ h2 {
 .table-green {
     background-color: #d5fdd5; /* Green */
 }
+
+.number {
+    text-align: right;
+}
+
+.currency {
+    text-align: right;
+}
+
+.left-pad {
+    padding-left: 10px;
+}

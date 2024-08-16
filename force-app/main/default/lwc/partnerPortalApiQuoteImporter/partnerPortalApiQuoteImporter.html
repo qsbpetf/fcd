@@ -12,6 +12,16 @@
         </template>
 
         <template if:false={quoteResults.missingAccountId}>
+            <div class="slds-m-around_medium">
+                <lightning-tree-grid
+                        data={quoteResults.data}
+                        columns={columns}
+                        key-field="id"
+                        onrowaction={handleRowAction}
+                        hide-checkbox-column
+                ></lightning-tree-grid>
+            </div>
+
             <div class="conv-result">
                 <h1>Quotes found through API</h1>
                 <div class="rounded-rect">
@@ -21,7 +31,7 @@
                                 <th>Quote Id</th>
                                 <th>Quote Number</th>
                                 <th>Status</th>
-                                <th># Line Items</th>
+                                <th class="number"># Line Items</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,7 +40,7 @@
                                     <td>{qt.id}</td>
                                     <td>{qt.quoteNumber}</td>
                                     <td>{qt.status}</td>
-                                    <td>{qt.length}</td>
+                                    <td class="number">{qt.length}</td>
                                 </tr>
                                 <tr key={qt.quoteNumber}>
                                     <td colspan=100>
@@ -40,10 +50,10 @@
                                                     <th>&nbsp;</th>
                                                     <th>Id</th>
                                                     <th>Description</th>
-                                                    <th>Quantity</th>
-                                                    <th>Subtotal</th>
-                                                    <th>Total</th>
-                                                    <th>Currency</th>
+                                                    <th class="number">Quantity</th>
+                                                    <th class="currency">Subtotal</th>
+                                                    <th class="currency">Total</th>
+                                                    <th class="left-pad">Currency</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -52,10 +62,10 @@
                                                         <td class="td-indent">&nbsp;</td>
                                                         <td>{li.id}</td>
                                                         <td>{li.description}</td>
-                                                        <td>{li.quantity}</td>
-                                                        <td>{li.subTotal}</td>
-                                                        <td>{li.total}</td>
-                                                        <td>{li.isoCurrency}</td>
+                                                        <td class="number">{li.quantity}</td>
+                                                        <td class="currency">{li.subTotal}</td>
+                                                        <td class="currency">{li.total}</td>
+                                                        <td class="left-pad">{li.isoCurrency}</td>
                                                     </tr>
                                                 </template>
                                             </tbody>
