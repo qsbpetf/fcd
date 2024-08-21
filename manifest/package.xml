@@ -67,6 +67,7 @@
         <members>PortalProductToSalesforceMapping__mdt</members>
         <members>Opportunity</members>
         <members>OpportunityLineItem</members>
+        <members>InvoiceGroup__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -74,6 +75,10 @@
     </types>
     <types>
         <name>ListView</name>
+    </types>
+    <types>
+        <members>InvoiceGroup__c</members>
+        <name>CustomTab</name>
     </types>
     <version>61.0</version>
 </Package>
