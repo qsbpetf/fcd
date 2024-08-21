@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_CH</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_DE</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_DK</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_FI</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_NL</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_NO</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_SE</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_UK</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_US</name>
+    </customPermissions>
+    <description>Gives access to all offices, e.g. transaction accounts through the Atlassian PPC API.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Atlassian PPC All Offices</label>
+</PermissionSet>

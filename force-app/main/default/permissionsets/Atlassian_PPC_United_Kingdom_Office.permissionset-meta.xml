@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Eficode_Office_UK</name>
+    </customPermissions>
+    <description>Get access to Atlassian PPC resources related to the United Kingdom office.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Atlassian PPC United Kingdom Office</label>
+</PermissionSet>

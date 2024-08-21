@@ -84,5 +84,27 @@
         <members>InvoiceGroup__c-Invoice Group Layout</members>
         <name>Layout</name>
     </types>
+    <types>
+        <members>Eficode_Office_CH</members>
+        <members>Eficode_Office_DE</members>
+        <members>Eficode_Office_DK</members>
+        <members>Eficode_Office_FI</members>
+        <members>Eficode_Office_NL</members>
+        <members>Eficode_Office_NO</members>
+        <members>Eficode_Office_SE</members>
+        <members>Eficode_Office_UK</members>
+        <members>Eficode_Office_US</members>
+        <name>CustomPermission</name>
+    </types>
+    <types>
+        <members>Eficode_Office_FI</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
+        <members>Atlassian_PPC_All_Offices</members>
+        <members>Atlassian_PPC_Finnish_Office</members>
+        <members>Atlassian_PPC_United_Kingdom_Office</members>
+        <name>PermissionSet</name>
+    </types>
     <version>61.0</version>
 </Package>
