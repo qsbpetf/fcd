@@ -122,13 +122,16 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     nextId: null,
                     missingAccountId: true
                 };
+                if (error.status && error.status === 500) {
+                    this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                }
             });
     }
 
     calculate(result) {
         result.data.forEach(quote => {
             quote.length = quote.upcomingBills.lines.length;
-            // convert unix time milli seconds since epoch to Date object
+            // convert unix time milliseconds since epoch to Date object
             quote.createdDate = new Date(quote.createdAt).toLocaleDateString(
                 'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
             quote.expireDate = new Date(quote.expiresAt).toLocaleDateString(

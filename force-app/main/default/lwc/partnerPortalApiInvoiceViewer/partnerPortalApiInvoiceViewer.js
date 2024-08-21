@@ -41,6 +41,9 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
                     nextId: null,
                     missingAccountId: true
                 };
+                if (error.status && error.status === 500) {
+                    this.invoiceResults.error = error.body.exceptionType + ': ' + error.body.message;
+                }
             });
     }
 
@@ -50,6 +53,9 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
         });
         if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {
             result.error = this.errorMessage;
+        }
+        if (result.data.length === 0) {
+            result.error = 'No invoices found';
         }
         return result;
     }

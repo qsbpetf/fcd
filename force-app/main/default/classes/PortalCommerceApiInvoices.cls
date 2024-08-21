@@ -15,8 +15,9 @@ public with sharing class PortalCommerceApiInvoices
         return instance;
     }
 
-    public InvoiceList getInvoices(Integer pageSize, String nextId, String transactionAccountId) {
-        HttpResponse response = client.getInvoices(pageSize, nextId, transactionAccountId);
+    public InvoiceList getInvoices(String office, Integer pageSize, String nextId) {
+        String invoiceGroupId = null;
+        HttpResponse response = client.getInvoices(office, invoiceGroupId, pageSize, nextId);
         if (response.getStatusCode() != 200) {
             InvoiceList invoices = new InvoiceList();
             invoices.error = response.getBody();
@@ -32,9 +33,9 @@ public with sharing class PortalCommerceApiInvoices
     }
 
     @AuraEnabled
-    public static InvoiceList getInvoicesStatic(Integer pageSize, String nextId, String transactionAccountId) {
+    public static InvoiceList getInvoicesStatic(String office, Integer pageSize, String nextId) {
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
-        return instance.getInvoices(pageSize, nextId, transactionAccountId);
+        return instance.getInvoices(office, pageSize, nextId);
     }
 
     // ==================

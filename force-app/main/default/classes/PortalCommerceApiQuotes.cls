@@ -15,8 +15,9 @@ public with sharing class PortalCommerceApiQuotes
         return instance;
     }
 
-    public QuoteList getQuotes(Integer pageSize, String nextId, String transactionAccountId) {
-        HttpResponse response = client.getQuotes(pageSize, nextId, transactionAccountId);
+    public QuoteList getQuotes(String office, Integer pageSize, String nextId) {
+        String invoiceGroupId = null;
+        HttpResponse response = client.getQuotes(office, invoiceGroupId, pageSize, nextId);
         if (response.getStatusCode() != 200) {
             QuoteList quotes = new QuoteList();
             quotes.error = response.getBody();
@@ -32,9 +33,9 @@ public with sharing class PortalCommerceApiQuotes
     }
 
     @AuraEnabled
-    public static QuoteList getQuotesStatic(Integer pageSize, String nextId, String transactionAccountId) {
+    public static QuoteList getQuotesStatic(String office, Integer pageSize, String nextId) {
         PortalCommerceApiQuotes instance = PortalCommerceApiQuotes.getInstance();
-        return instance.getQuotes(pageSize, nextId, transactionAccountId);
+        return instance.getQuotes(office, pageSize, nextId);
     }
 
     // ==================
