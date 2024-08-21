@@ -1,5 +1,8 @@
 /**
- * Created by peterfriberg on 2024-06-05.
+ * The `PortalCommerceApiClient` class provides methods to interact with
+ * the Commerce API for various entities like products, quotes, invoices,
+ * and invoice groups. It follows a singleton pattern to ensure a single
+ * instance and uses named credentials to authenticate and access the API.
  */
 
 public with sharing class PortalCommerceApiClient {
@@ -15,6 +18,14 @@ public with sharing class PortalCommerceApiClient {
 
     private Map<String, String> namedCredentials = new Map<String, String> { };
 
+    /**
+     * Returns the singleton instance of the PortalCommerceApiClient
+     * Creates a new instance if it does not exist
+     * Gets the named credentials for the offices that the running user has access to
+     * and puts them in a map with KEY = office and VALUE = named credential
+     *
+     * @return The instance of the PortalCommerceApiClient
+     */
     static public PortalCommerceApiClient getInstance() {
         if (instance == null) {
             instance = new PortalCommerceApiClient();
@@ -51,6 +62,17 @@ public with sharing class PortalCommerceApiClient {
         return new Http().send(req);
     }
 
+    /**
+     * Generates the endpoint URL for the Commerce API
+     *
+     * @param office The office to get the data from
+     * @param function The function to call
+     * @param pageSize The number of items to return
+     * @param nextId The ID to start from
+     * @param invoiceGroupId The invoice group ID
+     *
+     * @return The endpoint URL
+     */
     @TestVisible
     private String generateEndpoint(String office, String function, Integer pageSize, String nextId, String invoiceGroupId) {
         if (!PortalCommerceApiAccessMgmt.hasOfficeAccess(office)) {
@@ -83,6 +105,13 @@ public with sharing class PortalCommerceApiClient {
         return endpoint;
     }
 
+    /**
+     * Creates a new HttpRequest object with the necessary headers
+     *
+     * @param useTransactionAccount Whether to use the transaction account header
+     *
+     * @return The HttpRequest object
+     */
     @TestVisible static HttpRequest createRequestHeader(Boolean useTransactionAccount) {
         HttpRequest req = new HttpRequest();
         req.setHeader('Accept', 'application/json');
