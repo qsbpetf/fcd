@@ -80,5 +80,9 @@
         <members>InvoiceGroup__c</members>
         <name>CustomTab</name>
     </types>
+    <types>
+        <members>InvoiceGroup__c-Invoice Group Layout</members>
+        <name>Layout</name>
+    </types>
     <version>61.0</version>
 </Package>
