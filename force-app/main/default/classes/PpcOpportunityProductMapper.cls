@@ -126,6 +126,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.QuoteOriginalProduct__c = quoteLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = quoteLine.subTotal / 100.0;
+        oli.Renewal__c = 'Renewal (CV Owned)';
 
         return oli;
     }

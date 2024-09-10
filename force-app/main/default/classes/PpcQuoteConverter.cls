@@ -14,26 +14,22 @@ public with sharing class PpcQuoteConverter {
 
         List<OpportunityLineItem> oppProducts = mapProducts(quoteData, opp, conversionFactor, log);
 
+        System.debug('INSERTING PRODUCTS: ' + createProducts);
         for (OpportunityLineItem oppProduct : oppProducts) {
-            System.debug('   OPP PRODUCT: ' + JSON.serializePretty(oppProduct));
+            System.debug('   PRODUCT: ' + JSON.serializePretty(oppProduct));
         }
-
-//        System.debug('INSERTING PRODUCTS: ' + createProducts);
-//        for (OpportunityLineItem oppProduct : oppProducts) {
-//            System.debug('   PRODUCT: ' + JSON.serializePretty(oppProduct));
-//        }
-//        if (createProducts) {
-//            insert oppProducts;
-//            log.successLog.add(oppProducts.size() + ' Opportunity Products added successfully');
-//            try {
-//                updateOpportunity(opp, orderInfo, log);
-//                log.successLog.add('Opportunity updated successfully');
-//            } catch (Exception ex) {
-//                String error = 'ERROR: Failed updating Opportunity/Contact: ' + ex.getMessage() + ex.getStackTraceString();
-//                log.errorLog.add(error);
-//                System.debug(error);
-//            }
-//        }
+        if (createProducts) {
+            insert oppProducts;
+            log.successLog.add(oppProducts.size() + ' Opportunity Products added successfully');
+            try {
+                updateOpportunity(opp, quoteData, log);
+                log.successLog.add('Opportunity updated successfully');
+            } catch (Exception ex) {
+                String error = 'ERROR: Failed updating Opportunity/Contact: ' + ex.getMessage() + ex.getStackTraceString();
+                log.errorLog.add(error);
+                System.debug(error);
+            }
+        }
 
         return log;
     }
@@ -44,5 +40,14 @@ public with sharing class PpcQuoteConverter {
         List<OpportunityLineItem> oppProducts = oppMapper.mapProducts(quoteData, opp, conversionFactor, log);
 
         return oppProducts;
+    }
+
+    @TestVisible
+    private static void updateOpportunity(Opportunity opp, PortalCommerceApiQuotes.QuoteInfo quoteData, OpportunityProductMapper.LogData log) {
+        opp.Atlassian_AT_Quote_ref__c = quoteData.quoteNumber;
+        opp.Atlassian_AT_Quote_amount__c = quoteData.upcomingBills.subTotal;
+        opp.AT_quote_expiry__c = quoteData.expiresAt != null ? Datetime.newInstance(quoteData.expiresAt).date() : null;
+        opp.QuoteImportResult__c = String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n');
+        update opp;
     }
 }

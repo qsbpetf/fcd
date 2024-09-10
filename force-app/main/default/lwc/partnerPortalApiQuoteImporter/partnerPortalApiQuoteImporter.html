@@ -31,6 +31,13 @@
                     disabled={importDisabled}
                     class="slds-m-left_small"
             ></lightning-button>
+            <lightning-button
+                    label="Import fetched Quote and create products!"
+                    onclick={handleImportQuoteProducts}
+                    variant="brand"
+                    disabled={importDisabled}
+                    class="slds-m-left_small"
+            ></lightning-button>
         </div>
 
         <template if:false={quoteResults.missingAccountId}>

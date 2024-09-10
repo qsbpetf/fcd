@@ -253,7 +253,12 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
     handleImportQuote() {
         console.log('handleImportQuote() ', this.quote.data[0]);
-        this.importQuote(this.quote.data[0]);
+        this.importQuote(this.quote.data[0], false);
+    }
+
+    handleImportQuoteProducts() {
+        console.log('handleImportQuote() ', this.quote.data[0]);
+        this.importQuote(this.quote.data[0], true);
     }
 
     // Method to handle the row action
@@ -267,19 +272,19 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         if (this.selectedItem.level === 1) {
             let choice = confirm('Are you sure you want to import this quote ' + this.selectedItem.quoteNumber + ' ?');
             if (choice) {
-                this.importQuote(this.selectedItem);
+                this.importQuote(this.selectedItem, false);
             }
         }
     }
 
-    importQuote(quote) {
+    importQuote(quote, createProducts) {
         console.log('importQuote', quote);
         console.log('quote JSON', JSON.stringify(quote, null, 2));
         this.isLoading = true;
         apexImportQuote({
             jsonText: JSON.stringify(quote),
             oppId: this.recordId,
-            createProducts: false
+            createProducts: createProducts
         })
             .then(result => {
                 console.log('result', result, JSON.stringify(result, null, 3));
