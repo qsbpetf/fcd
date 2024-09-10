@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SalesforceProductName__c</fullName>
+    <description>Name of the corresponding Salesforce product.
+Enter &quot;null&quot; for the generic &quot;Atlassian Cloud&quot; product. This will pick up the SEN and set on the other resulting products.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Name of the corresponding Salesforce product.
+Enter &quot;null&quot; for the generic &quot;Atlassian Cloud&quot; product. This will pick up the SEN and set on the other resulting products.</inlineHelpText>
+    <label>Salesforce Product Name</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
