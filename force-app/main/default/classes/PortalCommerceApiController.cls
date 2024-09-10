@@ -39,4 +39,18 @@ public with sharing class PortalCommerceApiController {
         PortalCommerceApiInvoices.InvoiceList invoices = PortalCommerceApiInvoices.getInvoicesStatic(acc.CV_Subsidiary__c, 25, null);
         return invoices;
     }
+
+    @AuraEnabled
+    static public PortalCommerceApiEntitlements.EntitlementDisplayInfo getEntitlementDisplayInfo(String opportunityId, String entitlementId) {
+        Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
+        PortalCommerceApiEntitlements.EntitlementDisplayInfo entitlementDisplayInfo = PortalCommerceApiEntitlements.getEntitlementDisplayInfoStatic(opp.Account.CV_Subsidiary__c, entitlementId);
+        return entitlementDisplayInfo;
+    }
+
+    @AuraEnabled
+    static public PortalCommerceApiEntitlements.EntitlementDetails getEntitlementDetails(String opportunityId, String entitlementId) {
+        Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
+        PortalCommerceApiEntitlements.EntitlementDetails entitlementDetails = PortalCommerceApiEntitlements.getEntitlementDetailsStatic(opp.Account.CV_Subsidiary__c, entitlementId);
+        return entitlementDetails;
+    }
 }

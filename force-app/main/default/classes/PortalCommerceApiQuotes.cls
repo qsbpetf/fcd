@@ -94,6 +94,7 @@ public with sharing class PortalCommerceApiQuotes
 
     public class QuoteItem {
         @AuraEnabled public String lineItemId;
+        @AuraEnabled public String entitlementId;
         @AuraEnabled public String lineItemType;
         @AuraEnabled public TimeInfo startsAt;
         @AuraEnabled public TimeInfo endsAt;
@@ -118,12 +119,16 @@ public with sharing class PortalCommerceApiQuotes
 
     public class BillLineItem {
         @AuraEnabled public String id;
+        @AuraEnabled public String quoteLineId;
         @AuraEnabled public String description;
         @AuraEnabled public Long total;
         @AuraEnabled public Long subTotal;
         @AuraEnabled public String isoCurrency;
         @AuraEnabled public PeriodType period;
         @AuraEnabled public Integer quantity;
+        @AuraEnabled public String entName;
+        @AuraEnabled public String entSlug;
+        @AuraEnabled public String entAri;
         @AuraEnabled public List<MarginType> margins;
     }
 

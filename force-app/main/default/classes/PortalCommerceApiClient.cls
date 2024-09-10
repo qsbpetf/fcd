@@ -16,6 +16,8 @@ public with sharing class PortalCommerceApiClient {
     static private final String QUOTE_ENDPOINT = '/v2/quotes';
     static private final String INVOICES_ENDPOINT = '/v2/invoices';
     static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
+    static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
+    static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
 
     private Map<String, String> namedCredentials = new Map<String, String> { };
 
@@ -66,6 +68,20 @@ public with sharing class PortalCommerceApiClient {
     public HttpResponse getInvoiceGroups(String office, Integer pageSize, String nextId) {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, INVOICE_GROUPS_ENDPOINT, pageSize, nextId, null));
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getEntitlementDisplayInfo(String office, String entitlementId) {
+        HttpRequest req = createRequestHeader(false);
+        req.setEndpoint(generateEndpoint(office, ENTITLEMENT_DISPLAY_INFO_ENDPOINT.replace('{{ENTITLEMENT_ID}}', entitlementId), null, null, null));
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getEntitlementDetails(String office, String entitlementId) {
+        HttpRequest req = createRequestHeader(false);
+        req.setEndpoint(generateEndpoint(office, ENTITLEMENT_DETAILS_ENDPOINT.replace('{{ENTITLEMENT_ID}}', entitlementId), null, null, null));
         req.setMethod('GET');
         return new Http().send(req);
     }
