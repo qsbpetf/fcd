@@ -11,7 +11,30 @@
             <h2 class="slds-text-color_error">{quoteResults.error}</h2>
         </template>
 
+        <div class="slds-m-around_medium">
+            <lightning-input
+                    type="text"
+                    label="Atlassian Partner Portal Quote URL"
+                    value={quoteUrl}
+                    onchange={handleQuoteUrlChange}
+                    class="slds-m-bottom_small"
+            ></lightning-input>
+            <lightning-button
+                    label="Fetch Quote"
+                    onclick={handleFetchQuote}
+                    variant="brand"
+            ></lightning-button>
+            <lightning-button
+                    label="Import fetched Quote"
+                    onclick={handleImportQuote}
+                    variant="brand"
+                    disabled={importDisabled}
+                    class="slds-m-left_small"
+            ></lightning-button>
+        </div>
+
         <template if:false={quoteResults.missingAccountId}>
+
             <div class="slds-m-around_medium">
                 <lightning-tree-grid
                         data={quoteResults.data}
@@ -23,9 +46,9 @@
             </div>
 
             <div class="conv-result">
-                <h1>Quotes found through API</h1>
+                <h1>Quote fetched through API</h1>
                 <div class="rounded-rect">
-                    <table>
+                    <table class="bordered-table">
                         <thead>
                             <tr>
                                 <th>Quote Id</th>
@@ -42,30 +65,36 @@
                                     <td>{qt.status}</td>
                                     <td class="number">{qt.length}</td>
                                 </tr>
-                                <tr key={qt.quoteNumber}>
+                                <tr key={qt.id2}>
                                     <td colspan=100>
                                         <table class="table-green">
                                             <thead>
                                                 <tr>
                                                     <th>&nbsp;</th>
-                                                    <th>Id</th>
-                                                    <th>Description</th>
-                                                    <th class="number">Quantity</th>
-                                                    <th class="currency">Subtotal</th>
-                                                    <th class="currency">Total</th>
-                                                    <th class="left-pad">Currency</th>
+                                                    <th class="td-pad">Id</th>
+                                                    <th class="td-pad">Description</th>
+                                                    <th class="td-pad">Ent.name</th>
+                                                    <th class="td-pad">Ent.ari</th>
+                                                    <th class="td-pad">Ent.slug</th>
+                                                    <th class="td-pad number">Quantity</th>
+                                                    <th class="td-pad currency">Subtotal</th>
+                                                    <th class="td-pad currency">Total</th>
+                                                    <th class="td-pad left-pad">Currency</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <template for:each={qt.upcomingBills.lines} for:item="li">
                                                     <tr key={li.id}>
                                                         <td class="td-indent">&nbsp;</td>
-                                                        <td>{li.id}</td>
-                                                        <td>{li.description}</td>
-                                                        <td class="number">{li.quantity}</td>
-                                                        <td class="currency">{li.subTotal}</td>
-                                                        <td class="currency">{li.total}</td>
-                                                        <td class="left-pad">{li.isoCurrency}</td>
+                                                        <td class="td-pad">{li.id}</td>
+                                                        <td class="td-pad">{li.description}</td>
+                                                        <td class="td-pad">{li.entName}</td>
+                                                        <td class="td-pad">{li.entAri}</td>
+                                                        <td class="td-pad">{li.entSlug}</td>
+                                                        <td class="td-pad number">{li.quantity}</td>
+                                                        <td class="td-pad currency">{li.subTotal}</td>
+                                                        <td class="td-pad currency">{li.total}</td>
+                                                        <td class="td-pad left-pad">{li.isoCurrency}</td>
                                                     </tr>
                                                 </template>
                                             </tbody>
@@ -77,6 +106,35 @@
                     </table>
                 </div>
             </div>
+
+            <div class="conv-result">
+                <h1>Converted results:</h1>
+                <div class="rounded-rect">
+                    <h2>Conversion Results</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.productLog} for:item="log">
+                            <li key={log}>{log}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect">
+                    <h2>Oppty Lines</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.pbeLog} for:item="log">
+                            <li key={log}>{log}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect">
+                    <h2>Error Log</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.errorLog} for:item="log">
+                            <li key={log}>{log}</li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
         </template>
     </lightning-card>
 </template>

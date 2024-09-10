@@ -42,6 +42,11 @@ h2 {
     width: 40px;
 }
 
+.td-pad {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 .tr-yellow {
     background-color: #FFFFD0; /* Yellow */
 }
@@ -60,4 +65,13 @@ h2 {
 
 .left-pad {
     padding-left: 10px;
+}
+
+.bordered-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.bordered-table th, .bordered-table td {
+    border: 1px solid #444444;
 }

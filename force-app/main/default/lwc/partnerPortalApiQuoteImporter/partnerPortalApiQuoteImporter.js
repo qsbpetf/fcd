@@ -3,8 +3,11 @@
  */
 
 import { api, track, LightningElement } from 'lwc';
-import apexConvertQuote from '@salesforce/apex/PortalCommerceApiController.getQuotes';
-import apexImportQuote from '@salesforce/apex/PortalCommerceApiController.importQuote';
+import apexGetQuotes from '@salesforce/apex/PortalCommerceApiController.getQuotes';
+import apexGetQuote from '@salesforce/apex/PortalCommerceApiController.getQuote';
+import apexImportQuote from '@salesforce/apex/PpcQuoteConverter.convertQuote';
+import apexGetEntitlementDisplayInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementDisplayInfo';
+import apexGetEntitlementDetails from '@salesforce/apex/PortalCommerceApiController.getEntitlementDetails';
 
 export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
@@ -13,13 +16,31 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
     @track quoteResults = {
         data: [],
-        nextId: null
+        nextId: null,
+        missingAccountId: false,
+        error: ''
+    };
+
+    quote = { };
+
+    @track conversionResult = {
+        errorLog: [],
+        pbeLog: [],
+        productLog: [],
+        successLog: []
     };
 
     @track selectedItem = { id: '' }; // Used to store the clicked row data handleRowClick(event) {
     @track content;
 
-    isLoading = true;
+    @track quoteUrl;  // Typical URL =
+
+    isLoading = false;
+    importDisabled = true;
+    quoteLineIds = {};
+    lineItems = {};
+    entitlementIds = {};
+
     columns = [
         { label: 'Quote Number', fieldName: 'quoteNumber', type: 'text' },
         { label: '# Items', fieldName: 'length', type: 'number' },
@@ -37,7 +58,8 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             fieldName: 'subTotal',
             type: 'currency',
             typeAttributes: {
-                currencyCode: { fieldName: 'isoCurrency' }
+                currencyCode: { fieldName: 'isoCurrency' },
+                decimalPlaces: '2'
             }
         },
         {
@@ -45,7 +67,8 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             fieldName: 'total',
             type: 'currency',
             typeAttributes: {
-                currencyCode: { fieldName: 'isoCurrency' }
+                currencyCode: { fieldName: 'isoCurrency' },
+                decimalPlaces: '2'
             }
         },
         {
@@ -65,7 +88,172 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     connectedCallback() {
         console.log('connectedCallback', this.recordId);
         debugger;
-        this.getQuotes();
+        // this.getQuotes();
+    }
+
+    handleQuoteUrlChange(event) {
+        this.quoteUrl = event.target.value;
+    }
+
+    handleFetchQuote() {
+        console.log('getQuote for opp', this.recordId);
+        console.log('Parsing quoteUrl', this.quoteUrl);
+
+        if (this.quoteUrl === undefined || this.quoteUrl === null || this.quoteUrl === '') {
+            return;
+        }
+
+        let parts = this.quoteUrl.split('/');
+        let quoteId = parts[parts.length - 1];
+        console.log('quoteId', quoteId);
+
+        this.quoteResults = {
+            data: [],
+            nextId: null,
+            missingAccountId: false,
+            error: ''
+        };
+        this.quote = { };
+
+        this.isLoading = true;
+        apexGetQuote({ opportunityId: this.recordId, quoteId: quoteId })
+            .then(result => {
+                console.log('result', result);
+                this.quote = this.prepare(result);
+                let self = this;
+                this.getEntitlementInformation(() => {
+                    this.populateEntitlements(this.quote.data[0]);
+                    this.quoteResults = { ...this.quote, value: 'Updated data' };
+                    this.isLoading = false;
+                    this.importDisabled = false;
+                });
+            })
+            .catch(error => {
+                console.error('error', error);
+                this.isLoading = false;
+                this.quoteResults = {
+                    error: JSON.stringify(error),
+                    data: [],
+                    nextId: null,
+                    missingAccountId: true
+                };
+                if (error.status && error.status === 500) {
+                    this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                }
+            });
+    }
+
+    prepare(theQuote) {
+        let result = {
+            data: [ theQuote ],
+            nextId: null,
+            missingAccountId: false,
+            error: ''
+        };
+
+        theQuote.length = theQuote.upcomingBills.lines.length;
+        // convert unix time milliseconds since epoch to Date object
+        theQuote.createdDate = new Date(theQuote.createdAt).toLocaleDateString(
+            'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+        theQuote.expireDate = new Date(theQuote.expiresAt).toLocaleDateString(
+            'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+        theQuote.statusClass = theQuote.status.includes('ACCEPTED') ? 'slds-text-color_success' : theQuote.status.includes('CANCELLED') ? 'slds-text-color_error' : '';
+        theQuote._children = [];
+        theQuote.id2 = `${theQuote.id}-2`;
+        theQuote.lineItems.forEach(item => {
+            this.lineItems[item.lineItemId] = item.entitlementId;
+            this.entitlementIds[item.entitlementId] = { id: item.entitlementId };
+        });
+        this.quoteLineIds = {};
+        theQuote.upcomingBills.lines.forEach(item => {
+            theQuote._children.push({
+                id: item.id,
+                description: item.description,
+                quantity: item.quantity,
+                subTotal: item.subTotal / 100.0,
+                total: item.total / 100.0,
+                isoCurrency: item.isoCurrency,
+                quoteLineId: item.quoteLineId
+            });
+        });
+
+        if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {
+            result.error = this.errorMessage;
+        }
+        return result;
+    }
+
+    getEntitlementInformation(callback) {
+        console.log('getEntitlementInformation');
+        this.isLoading = true;
+        let calls = 0;
+        const totalCalls = Object.keys(this.entitlementIds).length * 2; // Each entitlement has 2 async calls
+
+        Object.keys(this.entitlementIds).forEach(id => {
+            let item = this.entitlementIds[id];
+
+            apexGetEntitlementDisplayInfo({ opportunityId: this.recordId, entitlementId: item.id })
+                .then(result => {
+                    console.log('result', result);
+                    if (result.missingAccountId === false) {
+                        item['name'] = result.provisionedResource.name;
+                        item['ari'] = result.provisionedResource.ari;
+                        console.log('item', item);
+                    }
+                    calls++;
+                    if (calls === totalCalls) {
+                        this.isLoading = false;
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('error', error);
+                    this.isLoading = false;
+                });
+            apexGetEntitlementDetails({ opportunityId: this.recordId, entitlementId: item.id })
+                .then(result => {
+                    console.log('result', result);
+                    if (result.missingAccountId === false) {
+                        item['slug'] = result.slug;
+                        console.log('item', item);
+                    }
+                    calls++;
+                    if (calls === totalCalls) {
+                        this.isLoading = false;
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('error', error);
+                    this.isLoading = false;
+                });
+        });
+    }
+
+    populateEntitlements(theQuote) {
+        theQuote._children.forEach(item => {
+            let lineId = this.lineItems[item.quoteLineId];
+            item['entName'] = this.entitlementIds[lineId].name;
+            item['entAri'] = this.entitlementIds[lineId].ari;
+            item['entSlug'] = this.entitlementIds[lineId].slug;
+            console.log('POPULATED item', JSON.stringify(item));
+        });
+        theQuote.upcomingBills.lines.forEach(item => {
+            let lineId = this.lineItems[item.quoteLineId];
+            item['entName'] = this.entitlementIds[lineId].name;
+            item['entAri'] = this.entitlementIds[lineId].ari;
+            item['entSlug'] = this.entitlementIds[lineId].slug;
+            console.log('POPULATED item', JSON.stringify(item));
+        });
+    }
+
+    handleImportQuote() {
+        console.log('handleImportQuote() ', this.quote.data[0]);
+        this.importQuote(this.quote.data[0]);
     }
 
     // Method to handle the row action
@@ -86,28 +274,43 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
     importQuote(quote) {
         console.log('importQuote', quote);
+        console.log('quote JSON', JSON.stringify(quote, null, 2));
         this.isLoading = true;
         apexImportQuote({
-            opportunityId: this.recordId,
-            quoteInfo: JSON.stringify(quote)
+            jsonText: JSON.stringify(quote),
+            oppId: this.recordId,
+            createProducts: false
         })
             .then(result => {
-                console.log('result', result);
-                if (result === 'OK') {
-                    alert('*** TESTING ONLY! ***   Quote ' + quote.quoteNumber + ' imported successfully!');
-                }
+                console.log('result', result, JSON.stringify(result, null, 3));
                 this.isLoading = false;
+                this.conversionResult = result;
             })
             .catch(error => {
-                console.error('error', error);
                 this.isLoading = false;
+                this.conversionResult = {
+                    productLog: [],
+                    pbeLog: [],
+                    errorLog: [
+                        JSON.stringify(error.body)
+                    ]
+                };
+                this.quoteResults = {
+                    error: JSON.stringify(error),
+                    data: this.quoteResults.data,
+                    nextId: null,
+                    missingAccountId: true
+                };
+                if (error.status && error.status === 500) {
+                    this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                }
             });
     }
 
     getQuotes() {
         console.log('getQuotes', this.recordId);
         this.isLoading = true;
-        apexConvertQuote({ opportunityId: this.recordId })
+        apexGetQuotes({ opportunityId: this.recordId })
             .then(result => {
                 console.log('result', result);
                 this.quoteResults = this.calculate(result);
@@ -123,7 +326,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     missingAccountId: true
                 };
                 if (error.status && error.status === 500) {
-                    this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                    this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message + ' ==> ' + error.body.stackTrace;
                 }
             });
     }
@@ -138,6 +341,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
             quote.statusClass = quote.status.includes('ACCEPTED') ? 'slds-text-color_success' : quote.status.includes('CANCELLED') ? 'slds-text-color_error' : '';
             quote._children = [];
+            quote.id2 = `${quote.id}-2`;
             quote.upcomingBills.lines.forEach(item => {
                 quote._children.push({
                     id: item.id,
