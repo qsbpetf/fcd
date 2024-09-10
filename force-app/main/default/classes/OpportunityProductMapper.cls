@@ -1,6 +1,6 @@
 public with sharing class OpportunityProductMapper {
 
-    private static final Map<String, String> SALETYPE_MAPPING = new Map<String, String> {
+    private static final Map<String, String> SALE_TYPE_MAPPING = new Map<String, String> {
         'NEW' => 'New',
         'RENEWAL' => 'Renewal (CV Owned)',
         'RENEWAL_NEW' => 'Renewal (New to CV)',
@@ -173,14 +173,17 @@ public with sharing class OpportunityProductMapper {
     }
 
     @TestVisible
-    private static String convertRenewal(String value, String discountReason) {
-        String key = value;
-        if (value.equalsIgnoreCase('RENEWAL') && discountReason != null && discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_DIFFERENT_EXPERT')) {
-            key = 'RENEWAL_NEW';
+    private static String convertRenewal(String saleType, String discountReason) {
+        if (saleType == null) {
+            return null;
         }
-        String result = SALETYPE_MAPPING.get(key);
-        System.debug('** SaleType: ' + key + ' -> ' + result);
-        return (result != null) ? result : key;
+        String newSaleType = saleType;
+        if (saleType.equalsIgnoreCase('RENEWAL') && discountReason != null && discountReason.equalsIgnoreCase('RENEWAL_PREVIOUSLY_DIFFERENT_EXPERT')) {
+            newSaleType = 'RENEWAL_NEW';
+        }
+        String result = SALE_TYPE_MAPPING.get(newSaleType);
+        System.debug('** SaleType: ' + newSaleType + ' -> ' + result);
+        return (result != null) ? result : newSaleType;
     }
 
     public class LogData {
