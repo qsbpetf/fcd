@@ -60,8 +60,7 @@ public with sharing class PortalQuoteConverter {
         return orderInfo;
     }
 
-    @TestVisible
-    private static Double getLatestCurrencyConversionFactor(String currencyIsoCode) {
+    public static Double getLatestCurrencyConversionFactor(String currencyIsoCode) {
         List<Buying_Exchange_Rate__c> currencyList = [
             SELECT
                 Exchange_Rate_from_USD_to_EUR__c,
@@ -99,8 +98,7 @@ public with sharing class PortalQuoteConverter {
         return oppProducts;
     }
 
-    @TestVisible
-    private static Opportunity getOpportunity(String oppId) {
+    public static Opportunity getOpportunity(String oppId) {
         Opportunity opp = [
             SELECT
                 Id,
