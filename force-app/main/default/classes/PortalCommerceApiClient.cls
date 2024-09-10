@@ -13,6 +13,7 @@ public with sharing class PortalCommerceApiClient {
     static private final String COMMERCE_API = 'callout:{{NAMED_CREDENTIAL}}/commerce/api';
     static private final String PRODUCTS_ENDPOINT = '/v2/products';
     static private final String QUOTES_ENDPOINT = '/v1/quotes';
+    static private final String QUOTE_ENDPOINT = '/v2/quotes';
     static private final String INVOICES_ENDPOINT = '/v2/invoices';
     static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
 
@@ -44,6 +45,13 @@ public with sharing class PortalCommerceApiClient {
     public HttpResponse getQuotes(String office, String invoiceGroupId, Integer pageSize, String nextId) {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, QUOTES_ENDPOINT, pageSize, nextId, invoiceGroupId));
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getQuote(String office, String quoteId) {
+        HttpRequest req = createRequestHeader(true);
+        req.setEndpoint(generateEndpoint(office, QUOTE_ENDPOINT, null, null, null) + '/' + quoteId);
         req.setMethod('GET');
         return new Http().send(req);
     }

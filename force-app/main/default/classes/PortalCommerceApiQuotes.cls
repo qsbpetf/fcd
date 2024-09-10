@@ -38,6 +38,29 @@ public with sharing class PortalCommerceApiQuotes
         return instance.getQuotes(office, pageSize, nextId);
     }
 
+    public QuoteInfo getQuote(String office, String quoteId) {
+        HttpResponse response = client.getQuote(office, quoteId);
+        if (response.getStatusCode() != 200) {
+            QuoteInfo theQuote = new QuoteInfo();
+            theQuote.error = response.getBody();
+            theQuote.missingAccountId = true;
+            return theQuote;
+        }
+        QuoteInfo theQuote = (QuoteInfo) JSON.deserialize(
+            response.getBody()
+                .replaceAll('"number"', '"quoteNumber"')
+                .replaceAll('"currency"', '"isoCurrency"'),
+            QuoteInfo.class);
+        System.debug('QUOTE = ' + response.getBody());
+        return theQuote;
+    }
+
+    @AuraEnabled
+    public static QuoteInfo getQuoteStatic(String office, String quoteId) {
+        PortalCommerceApiQuotes instance = PortalCommerceApiQuotes.getInstance();
+        return instance.getQuote(office, quoteId);
+    }
+
     // ==================
     //  WRAPPER CLASSES
     // ==================
@@ -65,6 +88,8 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public Long expiresAt;
         @AuraEnabled public List<QuoteItem> lineItems;
         @AuraEnabled public BillItem upcomingBills;
+        @AuraEnabled public String error;
+        @AuraEnabled public Boolean missingAccountId;
     }
 
     public class QuoteItem {
@@ -99,10 +124,18 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String isoCurrency;
         @AuraEnabled public PeriodType period;
         @AuraEnabled public Integer quantity;
+        @AuraEnabled public List<MarginType> margins;
     }
 
     public class PeriodType {
         @AuraEnabled public Long startsAt;
         @AuraEnabled public Long endsAt;
+    }
+
+    public class MarginType {
+        @AuraEnabled public String type;
+        @AuraEnabled public String reasonCode;
+        @AuraEnabled public Long amount;
+        @AuraEnabled public Double percent;
     }
 }

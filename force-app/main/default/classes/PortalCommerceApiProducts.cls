@@ -15,17 +15,17 @@ public with sharing class PortalCommerceApiProducts {
         return instance;
     }
 
-    public ProductList getProducts(Integer pageSize, String nextId) {
-        HttpResponse response = client.getProducts(pageSize, nextId);
+    public ProductList getProducts(String office, Integer pageSize, String nextId) {
+        HttpResponse response = client.getProducts(office, null, pageSize, nextId);
         ProductList products = (ProductList) JSON.deserialize(response.getBody(), ProductList.class);
         return products;
     }
 
     @AuraEnabled
-    public static ProductList getProductsStatic(Integer pageSize, String nextId) {
+    public static ProductList getProductsStatic(String office, Integer pageSize, String nextId) {
         PortalCommerceApiClient client = PortalCommerceApiClient.getInstance();
         PortalCommerceApiProducts instance = PortalCommerceApiProducts.getInstance();
-        return instance.getProducts(pageSize, nextId);
+        return instance.getProducts(office, pageSize, nextId);
     }
 
     // ==================
