@@ -38,6 +38,14 @@
                     disabled={importDisabled}
                     class="slds-m-left_small"
             ></lightning-button>
+            <lightning-button
+                    label="Preview PDF"
+                    onclick={handlePreview}
+                    variant="brand"
+                    disabled={importDisabled}
+                    class="slds-m-left_small"
+                    data-id={quoteId}
+            ></lightning-button>
         </div>
 
         <template if:false={quoteResults.missingAccountId}>
@@ -58,19 +66,25 @@
                     <table class="bordered-table">
                         <thead>
                             <tr>
-                                <th>Quote Id</th>
-                                <th>Quote Number</th>
-                                <th>Status</th>
-                                <th class="number"># Line Items</th>
+                                <th class="td-pad">Quote Id</th>
+                                <th class="td-pad">Quote Number</th>
+                                <th class="td-pad">Status</th>
+                                <th class="td-pad number"># Items</th>
+                                <th class="td-pad number">Subtotal</th>
+                                <th class="td-pad number">Total</th>
+                                <th class="td-pad">Preview</th>
                             </tr>
                         </thead>
                         <tbody>
                             <template for:each={quoteResults.data} for:item="qt">
                                 <tr key={qt.id} class="tr-yellow">
-                                    <td>{qt.id}</td>
-                                    <td>{qt.quoteNumber}</td>
-                                    <td>{qt.status}</td>
-                                    <td class="number">{qt.length}</td>
+                                    <td class="td-pad">{qt.id}</td>
+                                    <td class="td-pad">{qt.quoteNumber}</td>
+                                    <td class="td-pad">{qt.status}</td>
+                                    <td class="number td-pad">{qt.length}</td>
+                                    <td class="currency td-pad">{qt.subTotal}</td>
+                                    <td class="currency td-pad">{qt.total}</td>
+                                    <td class="button-around"><button onclick={handlePreview} data-id={qt.id}>Preview</button></td>
                                 </tr>
                                 <tr key={qt.id2}>
                                     <td colspan=100>
@@ -78,7 +92,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>&nbsp;</th>
-                                                    <th class="td-pad">Id</th>
+<!--                                                    <th class="td-pad">Id</th>-->
                                                     <th class="td-pad">Description</th>
                                                     <th class="td-pad">Ent.name</th>
                                                     <th class="td-pad">Ent.ari</th>
@@ -93,14 +107,14 @@
                                                 <template for:each={qt.upcomingBills.lines} for:item="li">
                                                     <tr key={li.id}>
                                                         <td class="td-indent">&nbsp;</td>
-                                                        <td class="td-pad">{li.id}</td>
+<!--                                                        <td class="td-pad">{li.id}</td>-->
                                                         <td class="td-pad">{li.description}</td>
                                                         <td class="td-pad">{li.entName}</td>
                                                         <td class="td-pad">{li.entAri}</td>
                                                         <td class="td-pad">{li.entSlug}</td>
                                                         <td class="td-pad number">{li.quantity}</td>
-                                                        <td class="td-pad currency">{li.subTotal}</td>
-                                                        <td class="td-pad currency">{li.total}</td>
+                                                        <td class="td-pad currency">{li.subTotalDecimal}</td>
+                                                        <td class="td-pad currency">{li.totalDecimal}</td>
                                                         <td class="td-pad left-pad">{li.isoCurrency}</td>
                                                     </tr>
                                                 </template>

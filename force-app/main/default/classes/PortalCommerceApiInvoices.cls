@@ -4,8 +4,8 @@
 
 public with sharing class PortalCommerceApiInvoices
 {
-    static private PortalCommerceApiInvoices instance;
-    static private PortalCommerceApiClient client;
+    @TestVisible static private PortalCommerceApiInvoices instance;
+    @TestVisible static private PortalCommerceApiClient client;
 
     static public PortalCommerceApiInvoices getInstance() {
         if (instance == null) {
@@ -15,8 +15,7 @@ public with sharing class PortalCommerceApiInvoices
         return instance;
     }
 
-    public InvoiceList getInvoices(String office, Integer pageSize, String nextId) {
-        String invoiceGroupId = null;
+    public InvoiceList getInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId) {
         HttpResponse response = client.getInvoices(office, invoiceGroupId, pageSize, nextId);
         if (response.getStatusCode() != 200) {
             InvoiceList invoices = new InvoiceList();
@@ -33,9 +32,9 @@ public with sharing class PortalCommerceApiInvoices
     }
 
     @AuraEnabled
-    public static InvoiceList getInvoicesStatic(String office, Integer pageSize, String nextId) {
+    public static InvoiceList getInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId) {
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
-        return instance.getInvoices(office, pageSize, nextId);
+        return instance.getInvoices(office, invoiceGroupId, pageSize, nextId);
     }
 
     // ==================

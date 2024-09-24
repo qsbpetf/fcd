@@ -75,3 +75,7 @@ h2 {
 .bordered-table th, .bordered-table td {
     border: 1px solid #444444;
 }
+
+.button-around {
+    margin: 5px;
+}

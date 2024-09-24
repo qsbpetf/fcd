@@ -40,6 +40,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     quoteLineIds = {};
     lineItems = {};
     entitlementIds = {};
+    quoteId = '';
 
     columns = [
         { label: 'Quote Number', fieldName: 'quoteNumber', type: 'text' },
@@ -126,6 +127,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     this.quoteResults = { ...this.quote, value: 'Updated data' };
                     this.isLoading = false;
                     this.importDisabled = false;
+                    this.quoteId = this.quote.data[0].id;
                 });
             })
             .catch(error => {
@@ -166,6 +168,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         });
         this.quoteLineIds = {};
         theQuote.upcomingBills.lines.forEach(item => {
+            theQuote.isoCurrency = item.isoCurrency;
             theQuote._children.push({
                 id: item.id,
                 description: item.description,
@@ -175,7 +178,11 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 isoCurrency: item.isoCurrency,
                 quoteLineId: item.quoteLineId
             });
+            item.subTotalDecimal = item.subTotal / 100.0;
+            item.totalDecimal = item.total / 100.0;
         });
+        theQuote["total"] = theQuote.upcomingBills.total / 100.0;
+        theQuote["subTotal"] = theQuote.upcomingBills.subTotal / 100.0;
 
         if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {
             result.error = this.errorMessage;
@@ -362,5 +369,19 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             result.error = this.errorMessage;
         }
         return result;
+    }
+
+    handlePreview(event) {
+        console.log('handlePreview', JSON.stringify(event));
+        const invoiceId = event.target.dataset.id;
+        console.log('Preview button clicked for invoice Id:', invoiceId);
+        const office = this.quote.data[0].office;
+        console.log('Office: ', office);
+
+        const quoteId = event.target.getAttribute('data-id');
+        console.log('qid:', quoteId);
+
+        const visualforcePageURL = `/apex/PreviewQuote?OFFICE=${office}&QUOTE_ID=${invoiceId}`;
+        window.open(visualforcePageURL, '_blank');
     }
 }

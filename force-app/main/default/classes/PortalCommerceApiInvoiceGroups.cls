@@ -4,8 +4,8 @@
 
 public with sharing class PortalCommerceApiInvoiceGroups {
 
-    static private PortalCommerceApiInvoiceGroups instance;
-    static private PortalCommerceApiClient client;
+    @TestVisible static private PortalCommerceApiInvoiceGroups instance;
+    @TestVisible static private PortalCommerceApiClient client;
 
     static public PortalCommerceApiInvoiceGroups getInstance() {
         if (instance == null) {
@@ -51,6 +51,7 @@ public with sharing class PortalCommerceApiInvoiceGroups {
         @AuraEnabled public String id;
         @AuraEnabled public Integer version;
         @AuraEnabled public String name;
+        @AuraEnabled public String slug;
         @AuraEnabled public String isoCurrency;
         @AuraEnabled public Boolean active;
         @AuraEnabled public Long createdAt;

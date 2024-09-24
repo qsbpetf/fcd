@@ -9,11 +9,12 @@ public with sharing class PortalCommerceApiClient {
 
     public class PortalCommerceApiException extends Exception {}
 
-    static private PortalCommerceApiClient instance;
+    @TestVisible static private PortalCommerceApiClient instance;
     static private final String COMMERCE_API = 'callout:{{NAMED_CREDENTIAL}}/commerce/api';
     static private final String PRODUCTS_ENDPOINT = '/v2/products';
     static private final String QUOTES_ENDPOINT = '/v1/quotes';
     static private final String QUOTE_ENDPOINT = '/v2/quotes';
+    static private final String QUOTE_PDF_ENDPOINT = '/v3/quotes/{{QUOTE_ID}}/download';
     static private final String INVOICES_ENDPOINT = '/v2/invoices';
     static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
     static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
@@ -54,6 +55,14 @@ public with sharing class PortalCommerceApiClient {
     public HttpResponse getQuote(String office, String quoteId) {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, QUOTE_ENDPOINT, null, null, null) + '/' + quoteId);
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getQuotePdf(String office, String quoteId) {
+        HttpRequest req = createRequestHeader(true);
+        String transactionAccountId = PortalCommerceApiAccessMgmt.getOfficeTransactionAccountId(office);
+        req.setEndpoint(generateEndpoint(office, QUOTE_PDF_ENDPOINT.replace('{{QUOTE_ID}}', quoteId), null, null, null) + '?transactionAccountId=' + transactionAccountId);
         req.setMethod('GET');
         return new Http().send(req);
     }
@@ -109,7 +118,7 @@ public with sharing class PortalCommerceApiClient {
         String endpoint = COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', this.namedCredentials.get(office)) + function;
         Map<String, String> parameterMap = new Map<String, String>();
         if (invoiceGroupId != null) {
-            parameterMap.put('invoice-group-id', invoiceGroupId);
+            parameterMap.put('invoice-group', invoiceGroupId);
         }
         if (pageSize != null) {
             parameterMap.put('page-size', String.valueOf(pageSize));
@@ -138,7 +147,7 @@ public with sharing class PortalCommerceApiClient {
      */
     @TestVisible static HttpRequest createRequestHeader(Boolean useTransactionAccount) {
         HttpRequest req = new HttpRequest();
-        req.setHeader('Accept', 'application/json');
+        req.setHeader('Accept', '*/*');
         req.setHeader('Authorization', 'Bearer {!$Credential.Password}');
         if (useTransactionAccount) {
             req.setHeader('X-transaction-account', '{!$Credential.Username}');

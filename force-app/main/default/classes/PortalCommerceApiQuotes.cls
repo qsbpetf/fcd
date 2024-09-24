@@ -4,8 +4,8 @@
 
 public with sharing class PortalCommerceApiQuotes
 {
-    static private PortalCommerceApiQuotes instance;
-    static private PortalCommerceApiClient client;
+    @TestVisible static private PortalCommerceApiQuotes instance;
+    @TestVisible static private PortalCommerceApiClient client;
 
     static public PortalCommerceApiQuotes getInstance() {
         if (instance == null) {
@@ -61,6 +61,21 @@ public with sharing class PortalCommerceApiQuotes
         return instance.getQuote(office, quoteId);
     }
 
+    public String getQuotePdf(String office, String quoteId) {
+        HttpResponse response = client.getQuotePdf(office, quoteId);
+        if (response.getStatusCode() != 200) {
+            return response.getBody();
+        }
+        String responseBody = EncodingUtil.base64Encode(response.getBodyAsBlob());
+        return responseBody;
+    }
+
+    @AuraEnabled
+    public static String getQuotePdfStatic(String office, String quoteId) {
+        PortalCommerceApiQuotes instance = PortalCommerceApiQuotes.getInstance();
+        return instance.getQuotePdf(office, quoteId);
+    }
+
     // ==================
     //  WRAPPER CLASSES
     // ==================
@@ -90,6 +105,7 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public BillItem upcomingBills;
         @AuraEnabled public String error;
         @AuraEnabled public Boolean missingAccountId;
+        @AuraEnabled public String office;
     }
 
     public class QuoteItem {

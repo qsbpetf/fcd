@@ -3,7 +3,7 @@
  */
 
 import { api, LightningElement, track } from 'lwc';
-import apexConvertInvoice from '@salesforce/apex/PortalCommerceApiController.getInvoices';
+import apexGetInvoices from '@salesforce/apex/PortalCommerceApiController.getInvoices';
 
 export default class PartnerPortalApiInvoiceViewer extends LightningElement {
 
@@ -26,10 +26,10 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
     getInvoices() {
         console.log('getInvoices', this.recordId);
         this.isLoading = true;
-        apexConvertInvoice({ accountId: this.recordId })
+        apexGetInvoices({ accountId: this.recordId })
             .then(result => {
                 console.log('result', result);
-                this.invoiceResults = this.calculate(result);
+                this.invoiceResults = this.prepare(result);
                 this.isLoading = false;
             })
             .catch(error => {
@@ -47,16 +47,24 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
             });
     }
 
-    calculate(result) {
-        result.data.forEach(invoice => {
-            invoice.length = invoice.items.length;
+    prepare(result) {
+        let totalList = {
+            data: [],
+            error: ''
+        };
+        result.forEach(invoiceList => {
+            invoiceList.data.forEach(invoice => {
+                invoice.length = invoice.items.length;
+            });
+            if (invoiceList.missingAccountId && (invoiceList.error === undefined || invoiceList.error === null || invoiceList.error === '')) {
+                invoiceList.error = this.errorMessage;
+            }
+            if (invoiceList.data.length === 0) {
+                invoiceList.error = 'No invoices found';
+            }
+            totalList.data = totalList.data.concat(invoiceList.data);
+            totalList.error = totalList.error + '; ' + invoiceList.error;
         });
-        if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {
-            result.error = this.errorMessage;
-        }
-        if (result.data.length === 0) {
-            result.error = 'No invoices found';
-        }
-        return result;
+        return totalList;
     }
 }

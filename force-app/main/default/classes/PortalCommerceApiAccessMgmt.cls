@@ -6,6 +6,8 @@
 
 public with sharing class PortalCommerceApiAccessMgmt {
 
+    private static Map<String, String> OFFICES_ACCESS = null;
+
     /**
      * Returns a list of custom permissions related to the Eficode offices
      *
@@ -67,5 +69,24 @@ public with sharing class PortalCommerceApiAccessMgmt {
         String name = 'Eficode_Office_' + office;
         List<NamedCredential> creds = new List<NamedCredential>([SELECT Id FROM NamedCredential WHERE DeveloperName = :name]);
         return creds.size() > 0;
+    }
+
+    public static String getOfficeTransactionAccountId(String office) {
+        if (OFFICES_ACCESS == null) {
+            OFFICES_ACCESS = getOfficesTransactionAccountIds();
+        }
+        return OFFICES_ACCESS.get(office);
+    }
+
+    public static Map<String, String> getOfficesTransactionAccountIds() {
+        OFFICES_ACCESS = new Map<String, String>();
+        for (PPC_TransactionAccount__mdt item : PPC_TransactionAccount__mdt.getAll().values()) {
+            OFFICES_ACCESS.put(item.DeveloperName, item.MasterLabel);
+        }
+        return OFFICES_ACCESS;
+    }
+
+    public static List<String> getAllOffices() {
+        return new List<String>(getOfficesTransactionAccountIds().keySet());
     }
 }

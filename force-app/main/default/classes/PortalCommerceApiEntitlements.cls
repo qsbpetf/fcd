@@ -4,8 +4,8 @@
 
 public with sharing class PortalCommerceApiEntitlements {
 
-    static private PortalCommerceApiEntitlements instance;
-    static private PortalCommerceApiClient client;
+    @TestVisible static private PortalCommerceApiEntitlements instance;
+    @TestVisible static private PortalCommerceApiClient client;
 
     static public PortalCommerceApiEntitlements getInstance() {
         if (instance == null) {
