@@ -15,6 +15,10 @@ public with sharing class PortalCommerceApiQuotes
         return instance;
     }
 
+    public static void setApiClient(PortalCommerceApiClient apiClient) {
+        client = apiClient;
+    }
+
     public QuoteList getQuotes(String office, Integer pageSize, String nextId) {
         String invoiceGroupId = null;
         HttpResponse response = client.getQuotes(office, invoiceGroupId, pageSize, nextId);
