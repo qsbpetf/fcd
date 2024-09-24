@@ -25,6 +25,14 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
+        <members>PPC_TransactionAccount.CH</members>
+        <members>PPC_TransactionAccount.DK</members>
+        <members>PPC_TransactionAccount.FI</members>
+        <members>PPC_TransactionAccount.JODOCUS</members>
+        <members>PPC_TransactionAccount.NL</members>
+        <members>PPC_TransactionAccount.NO</members>
+        <members>PPC_TransactionAccount.SE</members>
+        <members>PPC_TransactionAccount.UK</members>
         <members>PortalProductToSalesforceMapping.Default_001</members>
         <members>PortalProductToSalesforceMapping.Default_002</members>
         <members>PortalProductToSalesforceMapping.Entitlement_001</members>
@@ -68,6 +76,7 @@
         <members>InvoiceGroup__c</members>
         <members>Opportunity</members>
         <members>OpportunityLineItem</members>
+        <members>PPC_TransactionAccount__mdt</members>
         <members>PortalProductToSalesforceMapping__mdt</members>
         <members>PpcProductToSalesforceMapping__mdt</members>
         <name>CustomObject</name>
@@ -97,7 +106,16 @@
         <name>LightningComponentBundle</name>
     </types>
     <types>
+        <members>AtlassianCommerceApi</members>
+        <members>Eficode_Office_CH</members>
+        <members>Eficode_Office_DK</members>
         <members>Eficode_Office_FI</members>
+        <members>Eficode_Office_JODOCUS</members>
+        <members>Eficode_Office_NL</members>
+        <members>Eficode_Office_NO</members>
+        <members>Eficode_Office_SE</members>
+        <members>Eficode_Office_UK</members>
+        <members>Eficode_com_JIRA_DC</members>
         <name>NamedCredential</name>
     </types>
     <types>
