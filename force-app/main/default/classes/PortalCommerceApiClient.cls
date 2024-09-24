@@ -10,17 +10,18 @@ public with sharing class PortalCommerceApiClient {
     public class PortalCommerceApiException extends Exception {}
 
     @TestVisible static private PortalCommerceApiClient instance;
-    static private final String COMMERCE_API = 'callout:{{NAMED_CREDENTIAL}}/commerce/api';
-    static private final String PRODUCTS_ENDPOINT = '/v2/products';
-    static private final String QUOTES_ENDPOINT = '/v1/quotes';
-    static private final String QUOTE_ENDPOINT = '/v2/quotes';
-    static private final String QUOTE_PDF_ENDPOINT = '/v3/quotes/{{QUOTE_ID}}/download';
-    static private final String INVOICES_ENDPOINT = '/v2/invoices';
-    static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
-    static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
-    static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
 
-    private Map<String, String> namedCredentials = new Map<String, String> { };
+    @TestVisible static private final String COMMERCE_API = 'callout:{{NAMED_CREDENTIAL}}/commerce/api';
+    @TestVisible static private final String PRODUCTS_ENDPOINT = '/v2/products';
+    @TestVisible static private final String QUOTES_ENDPOINT = '/v1/quotes';
+    @TestVisible static private final String QUOTE_ENDPOINT = '/v2/quotes';
+    @TestVisible static private final String QUOTE_PDF_ENDPOINT = '/v3/quotes/{{QUOTE_ID}}/download';
+    @TestVisible static private final String INVOICES_ENDPOINT = '/v2/invoices';
+    @TestVisible static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
+    @TestVisible static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
+    @TestVisible static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
+
+    @TestVisible private Map<String, String> namedCredentials = new Map<String, String> { };
 
     /**
      * Returns the singleton instance of the PortalCommerceApiClient
@@ -108,11 +109,11 @@ public with sharing class PortalCommerceApiClient {
      */
     @TestVisible
     private String generateEndpoint(String office, String function, Integer pageSize, String nextId, String invoiceGroupId) {
-        if (!PortalCommerceApiAccessMgmt.hasOfficeAccess(office)) {
-            throw new PortalCommerceApiException('User does not have access to the office: ' + office);
-        }
         if (!PortalCommerceApiAccessMgmt.namedCredentialExists(office)) {
             throw new PortalCommerceApiException('Named Credential does not exist for the office: ' + office);
+        }
+        if (!PortalCommerceApiAccessMgmt.hasOfficeAccess(office)) {
+            throw new PortalCommerceApiException('User does not have access to the office: ' + office);
         }
 
         String endpoint = COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', this.namedCredentials.get(office)) + function;
