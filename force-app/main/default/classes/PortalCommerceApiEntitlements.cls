@@ -15,6 +15,10 @@ public with sharing class PortalCommerceApiEntitlements {
         return instance;
     }
 
+    public static void setApiClient(PortalCommerceApiClient apiClient) {
+        client = apiClient;
+    }
+
     public EntitlementDisplayInfo getEntitlementDisplayInfo(String office, String entitlementId) {
         HttpResponse response = client.getEntitlementDisplayInfo(office, entitlementId);
         if (response.getStatusCode() != 200) {

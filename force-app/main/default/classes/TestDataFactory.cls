@@ -47,5 +47,8 @@ public class TestDataFactory {
         return rate;
     }
 
-
+    public static InvoiceGroup__c getInvoiceGroup(Id accId){
+        InvoiceGroup__c invGroup=new InvoiceGroup__c(Name='Test Invoice Group',  AtlassianInvoiceGroupId__c='Test', Account__c=accId, CurrencyIsoCode='USD', Active__c=true, ShipToPartyName__c='Test', CV_Subsidiary__c='FI');
+        return invGroup;
+    }
 }
