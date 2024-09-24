@@ -15,6 +15,10 @@ public with sharing class PortalCommerceApiInvoiceGroups {
         return instance;
     }
 
+    public static void setApiClient(PortalCommerceApiClient apiClient) {
+        client = apiClient;
+    }
+
     public InvoiceGroupList getInvoiceGroups(String office, Integer pageSize, String nextId) {
         HttpResponse response = client.getInvoiceGroups(office, pageSize, nextId);
         if (response.getStatusCode() != 200) {
