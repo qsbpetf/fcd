@@ -26,13 +26,6 @@ private class PortalCommerceApiQuotesTest {
 
     @IsTest
     static void testGetQuotesSuccessful() {
-//        PortalCommerceApiQuotes.QuoteList quotesToReturn = new PortalCommerceApiQuotes.QuoteList();
-//        PortalCommerceApiQuotes.QuoteInfo aQuote = new PortalCommerceApiQuotes.QuoteInfo();
-//        aQuote.quoteNumber = '123';
-//        aQuote.id = '123456';
-//        aQuote.lineItems = new List<PortalCommerceApiQuotes.QuoteItem>();
-//        quotesToReturn.data.add(aQuote);
-
         HttpResponse response = new HttpResponse();
         response.setStatusCode(200);
         response.setStatus('OK');
