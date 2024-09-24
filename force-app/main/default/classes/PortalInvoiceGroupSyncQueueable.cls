@@ -6,8 +6,8 @@ public class PortalInvoiceGroupSyncQueueable implements Queueable, Database.Allo
 
     private final static PortalCommerceApiInvoiceGroups invoiceGroups = PortalCommerceApiInvoiceGroups.getInstance();
     private final static Integer PAGE_SIZE = 50;
-    private final String nextId = null;
-    private final Integer currentOfficeIdx;
+    @TestVisible private final String nextId = null;
+    @TestVisible private final Integer currentOfficeIdx;
     private final static List<String> OFFICE_LIST = PortalCommerceApiAccessMgmt.getAllOffices();
 
     public PortalInvoiceGroupSyncQueueable() {
@@ -86,15 +86,23 @@ public class PortalInvoiceGroupSyncQueueable implements Queueable, Database.Allo
         }
     }
 
+    @TestVisible
     private void nextSyncBatch(String nextId, String office) {
         System.debug('### Scheduling next sync with nextId: ' + nextId + ' for office ' + office);
+        if (Test.isRunningTest()) {
+            return;
+        }
         System.enqueueJob(new PortalInvoiceGroupSyncQueueable(this.currentOfficeIdx, nextId));
     }
 
+    @TestVisible
     private void nextOffice() {
         if (this.currentOfficeIdx < OFFICE_LIST.size() - 1) {
             String office = OFFICE_LIST[this.currentOfficeIdx + 1];
             System.debug('### Scheduling next sync with next office: ' + office);
+            if (Test.isRunningTest()) {
+                return;
+            }
             System.enqueueJob(new PortalInvoiceGroupSyncQueueable(this.currentOfficeIdx + 1));
         }
     }
