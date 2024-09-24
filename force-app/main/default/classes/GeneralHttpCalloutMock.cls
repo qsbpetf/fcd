@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class GeneralHttpCalloutMock implements HttpCalloutMock {
-    private Map<String, HttpResponse> responseMap;
+    private final Map<String, HttpResponse> responseMap;
+    private final List<HttpRequest> requests;
 
     public GeneralHttpCalloutMock() {
         this.responseMap = new Map<String, HttpResponse>();
@@ -11,6 +12,7 @@ public with sharing class GeneralHttpCalloutMock implements HttpCalloutMock {
         resp.setBody('');
 
         this.responseMap.put('', resp);
+        this.requests = new List<HttpRequest>();
     }
 
     public GeneralHttpCalloutMock(Integer defaultStatusCode, String defaultStatus, String defaultBody) {
@@ -22,6 +24,7 @@ public with sharing class GeneralHttpCalloutMock implements HttpCalloutMock {
         resp.setBody(defaultBody);
 
         this.responseMap.put('', resp);
+        this.requests = new List<HttpRequest>();
     }
 
     public void addOkResponse(String key, String body) {
@@ -43,6 +46,8 @@ public with sharing class GeneralHttpCalloutMock implements HttpCalloutMock {
     }
 
     public HttpResponse respond(HttpRequest req) {
+        this.requests.add(req);
+
         for (String key : this.responseMap.keySet()) {
             if (String.isNotBlank(key) && req.getEndpoint().containsIgnoreCase(key)) {
                 return this.responseMap.get(key);
@@ -56,5 +61,9 @@ public with sharing class GeneralHttpCalloutMock implements HttpCalloutMock {
         }
 
         return this.responseMap.get('');
+    }
+
+    public List<HttpRequest> getRequests() {
+        return this.requests;
     }
 }
