@@ -1,0 +1,19 @@
+<!--
+ - Created by peterfriberg on 2024-09-18.
+ -->
+
+<apex:page id="PreviewQuote" controller="PreviewQuoteCtrl" sidebar="false" showHeader="false" readOnly="false" cache="false"
+           standardStylesheets="false" lightningStylesheets="true">
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+
+    <object height="100%" width="100%" style="{!IF(errorMessage != '', 'display:none', '')}">
+        <embed src="data:{!contenttype};base64,{!pdf}" height="100%" width="100%"/>
+    </object>
+
+    <h2 style="{!IF(errorMessage == '', 'display:none', '')}; padding-left: 32px;">{!errorMessage}</h2>
+    <h4 style="{!IF(errorDetails == '', 'display:none', '')}; padding-left: 32px;">{!errorDetails}</h4>
+</apex:page>
