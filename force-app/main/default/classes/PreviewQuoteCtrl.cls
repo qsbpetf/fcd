@@ -22,12 +22,18 @@ public with sharing class PreviewQuoteCtrl {
         String office = parameters.get('OFFICE');
         String quoteId = parameters.get('QUOTE_ID');
 
+        if (office == null || quoteId == null) {
+            errorMessage = 'Sorry for the inconvenience! Required parameters are missing.';
+            errorDetails = 'OFFICE and QUOTE_ID are required parameters.';
+            return;
+        }
+
         try {
-            pdf = PortalCommerceApiQuotes.getQuotePdfStatic(office, quoteId);
+            pdf = PortalCommerceApiController.getQuotePdfStatic(office, quoteId);
         }
         catch (Exception ex) {
             String error = ex.getMessage();
-            errorMessage = 'Sorry for the inconvenience! Error from Metaforce when generating PDF. Please look in Apex Log to find error.';
+            errorMessage = 'Sorry for the inconvenience! Error when generating PDF from Atlassian PPC .';
             errorDetails = error;
         }
     }

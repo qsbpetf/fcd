@@ -4,9 +4,9 @@
 
 public with sharing class PortalCommerceApiController {
 
-    @TestVisible static private PortalCommerceApiQuotes apiQuotes = new PortalCommerceApiQuotes();
-    @TestVisible static private PortalCommerceApiEntitlements apiEntitlements = new PortalCommerceApiEntitlements();
-    @TestVisible static private PortalCommerceApiInvoices apiInvoices = new PortalCommerceApiInvoices();
+    @TestVisible static private PortalCommerceApiQuotes apiQuotes = PortalCommerceApiQuotes.getInstance();
+    @TestVisible static private PortalCommerceApiEntitlements apiEntitlements = PortalCommerceApiEntitlements.getInstance();
+    @TestVisible static private PortalCommerceApiInvoices apiInvoices = PortalCommerceApiInvoices.getInstance();
 
     public static void setApiQuotes(PortalCommerceApiQuotes api) {
         apiQuotes = api;
@@ -81,5 +81,10 @@ public with sharing class PortalCommerceApiController {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiEntitlements.EntitlementDetails entitlementDetails = apiEntitlements.getEntitlementDetails(opp.Account.CV_Subsidiary__c, entitlementId);
         return entitlementDetails;
+    }
+
+    @AuraEnabled
+    static public String getQuotePdfStatic(String office, String quoteId) {
+        return apiQuotes.getQuotePdf(office, quoteId);
     }
 }
