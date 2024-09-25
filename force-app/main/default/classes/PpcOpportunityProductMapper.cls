@@ -105,18 +105,17 @@ public with sharing class PpcOpportunityProductMapper {
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
         oli.OpportunityId = oppId;
-        // oli.License_Start_date__c = (orderLine.startDate == null) ? Date.today() : orderLine.startDate; // slide 8 in documentation "Where dates = null"
-        // Date endDate = (orderLine.endDate == null) ? Date.today().addMonths(orderLine.maintenanceMonths) : orderLine.endDate;
-        // oli.License_end_date__c = endDate;
         Long startsAt = quoteLine?.period?.startsAt;
         Long endsAt = quoteLine?.period?.endsAt;
-        oli.License_Start_date__c = (startsAt != null) ? Datetime.newInstance(startsAt).date() : null;
+        // oli.License_Start_date__c = (orderLine.startDate == null) ? Date.today() : orderLine.startDate; // slide 8 in documentation "Where dates = null"
+        oli.License_Start_date__c = (startsAt != null) ? Datetime.newInstance(startsAt).date() : Date.today();
+        // Date endDate = (orderLine.endDate == null) ? Date.today().addMonths(orderLine.maintenanceMonths) : orderLine.endDate;
+        // oli.License_end_date__c = endDate;
         oli.License_end_date__c = (endsAt != null) ? Datetime.newInstance(endsAt).date() : null;
-        // oli.Additional_Info__c = quoteLine.description;
+        oli.Additional_Info__c = quoteLine.description;
         oli.Cloud_Site_Name__c = quoteLine.entName;
         // oli.SEN__c = quoteLine.entSlug;
         oli.Entitlement_Number__c = quoteLine.entSlug;
-        // oli.Renewal__c = convertRenewal(quoteLine.saleType, quoteLine.discountReason);
         oli.Editable_Cost_Price_in_Dollars__c = quoteLine.total / 100;
         oli.User_Count__c = quoteLine.quantity;
 //        oli.Atlassian_Price_Adjustment__c = quoteLine.priceAdjustment;
@@ -126,6 +125,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.QuoteOriginalProduct__c = quoteLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = quoteLine.subTotal / 100.0;
+        // oli.Renewal__c = convertRenewal(quoteLine.saleType, quoteLine.discountReason);
         oli.Renewal__c = 'Renewal (CV Owned)';
 
         return oli;
