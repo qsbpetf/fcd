@@ -7,6 +7,8 @@
 public with sharing class PortalCommerceApiAccessMgmt {
 
     private static Map<String, String> OFFICES_ACCESS = null;
+    private static final String OFFICE_CUSTOM_PERMISSION_PREFIX = 'Eficode_Office_';
+    @TestVisible private static Boolean allowOfficeAccessOverride = false;
 
     /**
      * Returns a list of custom permissions related to the Eficode offices
@@ -21,7 +23,7 @@ public with sharing class PortalCommerceApiAccessMgmt {
 
         // Add the names to the customPermissions list
         for (CustomPermission perm : permList) {
-            if (perm.DeveloperName.startsWith('Eficode_Office_')) {
+            if (perm.DeveloperName.startsWith(OFFICE_CUSTOM_PERMISSION_PREFIX)) {
                 customPermissions.add(perm.DeveloperName);
             }
         }
@@ -39,7 +41,7 @@ public with sharing class PortalCommerceApiAccessMgmt {
         List<String> allOffices = getEficodeOfficeCustomPermissions();
         Map<String, String> officesAccess = new Map<String, String>();
         for (String office : allOffices) {
-            if (FeatureManagement.checkPermission(office)) {
+            if (FeatureManagement.checkPermission(office) || allowOfficeAccessOverride) {
                 String officeLocator = office.substringAfter('Eficode_Office_');
                 officesAccess.put(officeLocator, office);
             }

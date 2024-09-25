@@ -116,7 +116,8 @@ public with sharing class PortalCommerceApiClient {
             throw new PortalCommerceApiException('User does not have access to the office: ' + office);
         }
 
-        String endpoint = COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', this.namedCredentials.get(office)) + function;
+        String namedCredentialText = namedCredentials.get(office) != null ? namedCredentials.get(office) : '';
+        String endpoint = COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', namedCredentialText) + function;
         Map<String, String> parameterMap = new Map<String, String>();
         if (invoiceGroupId != null) {
             parameterMap.put('invoice-group', invoiceGroupId);

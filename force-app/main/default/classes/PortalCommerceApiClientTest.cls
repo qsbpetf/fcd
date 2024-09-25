@@ -14,6 +14,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetProducts() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -37,13 +40,16 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetQuotes() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        Test.startTest();
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
         mock.addOkResponse(PortalCommerceApiClient.QUOTES_ENDPOINT, '{"data": []}');
         Test.setMock(HttpCalloutMock.class, mock);
 
-        Test.startTest();
         HttpResponse resp = instance.getQuotes('FI', 'IG_ID', 10, null);
         Test.stopTest();
 
@@ -56,6 +62,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetQuote() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -75,6 +84,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetQuotePdf() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -94,6 +106,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetInvoices() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -113,6 +128,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetInvoiceGroups() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -132,6 +150,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetEntitlementDisplayInfo() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -151,6 +172,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGetEntitlementDetails() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -170,6 +194,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGenerateEndpointAllParameters() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
         String endpoint = instance.generateEndpoint('FI', 'ENDPOINT', 10, 'NEXT_ID', 'IG_ID');
         System.assertEquals(true, endpoint.startsWithIgnoreCase(PortalCommerceApiClient.COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', 'Eficode_Office_FI')), 'Wrong endpoint');
@@ -181,6 +208,9 @@ private class PortalCommerceApiClientTest {
 
     @IsTest
     static void testGenerateEndpointNoParameters() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
         String endpoint = instance.generateEndpoint('FI', 'ENDPOINT', null, null, null);
         System.assertEquals(true, endpoint.startsWithIgnoreCase(PortalCommerceApiClient.COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', 'Eficode_Office_FI')), 'Wrong endpoint');
