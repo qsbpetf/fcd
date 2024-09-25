@@ -80,11 +80,18 @@
                                 <tr key={qt.id} class="tr-yellow">
                                     <td class="td-pad">{qt.id}</td>
                                     <td class="td-pad">{qt.quoteNumber}</td>
-                                    <td class="td-pad">{qt.status}</td>
+                                    <td class="td-pad"><strong>{qt.status}</strong></td>
                                     <td class="number td-pad">{qt.length}</td>
                                     <td class="currency td-pad">{qt.subTotal}</td>
                                     <td class="currency td-pad">{qt.total}</td>
-                                    <td class="button-around"><button onclick={handlePreview} data-id={qt.id}>Preview</button></td>
+                                    <td class="button-around">
+                                        <lightning-button
+                                                label="Preview"
+                                                onclick={handlePreview}
+                                                variant="neutral"
+                                                data-id={qt.id}
+                                        ></lightning-button>
+                                    </td>
                                 </tr>
                                 <tr key={qt.id2}>
                                     <td colspan=100>
