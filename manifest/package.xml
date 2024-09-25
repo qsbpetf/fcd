@@ -125,6 +125,10 @@
         <name>PermissionSet</name>
     </types>
     <types>
+        <members>AtlassianAPI</members>
+        <name>RemoteSiteSetting</name>
+    </types>
+    <types>
         <members>*</members>
         <name>StaticResource</name>
     </types>
