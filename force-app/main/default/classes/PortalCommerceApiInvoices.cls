@@ -30,7 +30,8 @@ public with sharing class PortalCommerceApiInvoices
         InvoiceList products = (InvoiceList) JSON.deserialize(
             response.getBody()
                 .replaceAll('"number"', '"invoiceNumber"')
-                .replaceAll('"currency"', '"isoCurrency"'),
+                .replaceAll('"currency"', '"isoCurrency"')
+                .replaceAll('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
             InvoiceList.class);
         return products;
     }
@@ -47,6 +48,8 @@ public with sharing class PortalCommerceApiInvoices
 
     public class InvoiceList {
         @AuraEnabled public List<InvoiceInfo> data;
+        @AuraEnabled public List<EntitlementDetail> EntitlementDetails;
+        @AuraEnabled public List<EntitlementDisplayInfo> EntitlementDisplayInfos;
         @AuraEnabled public String nextId;
         @AuraEnabled public String error;
         @AuraEnabled public Boolean missingAccountId;
@@ -68,6 +71,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Double subTotal;
         @AuraEnabled public Long createdAt;
         @AuraEnabled public Long dueAt;
+        @AuraEnabled public Long paidAt;
         @AuraEnabled public List<InvoiceItem> items;
     }
 
@@ -79,6 +83,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Double total;
         @AuraEnabled public Double subTotal;
         @AuraEnabled public PeriodInfo period;
+        @AuraEnabled public String entitlementId;
     }
 
     public class PeriodInfo {
@@ -86,4 +91,19 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Long endAt;
     }
 
+    public class EntitlementDetail {
+        @AuraEnabled public String entitlementId;
+        @AuraEnabled public String status;
+        @AuraEnabled public String slug;
+    }
+
+    public class EntitlementDisplayInfo {
+        @AuraEnabled public String entitlementId;
+        @AuraEnabled public ProvisionedResourceInfo provisionedResource;
+    }
+
+    public class ProvisionedResourceInfo {
+        @AuraEnabled public String ari;
+        @AuraEnabled public String name;
+    }
 }

@@ -8,8 +8,7 @@ public with sharing class PpcPortalProductMapper {
     private final Set<String> partnerProducts = new Set<String>();    // Set of all unique partner products
     private final Set<String> salesforceProducts = new Set<String>(); // Set of all unique Salesforce products
     private final Map<String, Product2> productByNameMapping;         // Mapping from Salesforce Product Name to Product2 records
-//    private final Product2 defaultCloudProduct;
-//    private final Product2 defaultDatacenterProduct;
+    private final Product2 defaultCloudProduct;
     private final List<ProductInfo> productInfos = new List<ProductInfo>();
 
     public static PpcPortalProductMapper getInstance() {
@@ -22,6 +21,7 @@ public with sharing class PpcPortalProductMapper {
     public PpcPortalProductMapper() {
         prepareProductNameMapping();
         this.productByNameMapping = prepareProductByNameMapping();
+        this.defaultCloudProduct = getDefaultCloudProduct();
     }
 
     @TestVisible
@@ -79,13 +79,34 @@ public with sharing class PpcPortalProductMapper {
                 result.info += '[K] Found mapping but NO Salesforce product id found for Salesforce product: ' + salesforceProductName;
                 System.debug('### FOUND (' + productName + ')in Metadata. NOT FOUND (' + salesforceProductName + ') as Product2!');
             }
+            return result;
+        }
+
+        if (productSearchResult.size() == 0)
+        {
+            result.info = '[D] Product name unknown: ' + productName + '.';
+            System.debug('### SETTING DEFAULT PRODUCT! ' + productName);
+
+            result.found = true;
+            result.product = defaultCloudProduct;
         } else {
             result.found = false;
-            result.info = '[D] Product name unknown: ' + productName + '.';
-            System.debug('### NOT FOUND! ' + productName);
+            result.info = '[E] Multiple products found for product: ' + productName + '.';
+            System.debug('### MULTIPLE PRODUCTS FOUND! ' + productName);
         }
 
         return result;
+    }
+
+    @TestVisible
+    private Product2 getDefaultCloudProduct() {
+        List<ProductInfo> searchProductInfos = searchProductInfos(true, null);
+        System.debug('getDefaultCloudProduct: ' + searchProductInfos);
+        if (searchProductInfos.size() == 1) {
+            Product2 product = productByNameMapping.get(searchProductInfos[0].salesforceProductName);
+            return product;
+        }
+        return null;
     }
 
     @TestVisible
@@ -94,7 +115,7 @@ public with sharing class PpcPortalProductMapper {
     ) {
         List<ProductInfo> result = new List<ProductInfo>();
         for (ProductInfo info : productInfos) {
-            if ((!matchProduct || info.productName.equalsIgnoreCase(productName))) {
+            if ((!matchProduct || (productName == null && info.salesforceProductName == null) || (info.productName == productName))) {
                 result.add(info);
             }
         }

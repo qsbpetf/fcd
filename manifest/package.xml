@@ -26,6 +26,7 @@
     </types>
     <types>
         <members>PPC_TransactionAccount.CH</members>
+        <members>PPC_TransactionAccount.DE</members>
         <members>PPC_TransactionAccount.DK</members>
         <members>PPC_TransactionAccount.FI</members>
         <members>PPC_TransactionAccount.JODOCUS</members>
@@ -61,6 +62,7 @@
         <members>PortalProductToSalesforceMapping.Product_023</members>
         <members>PortalProductToSalesforceMapping.Product_024</members>
         <members>PortalProductToSalesforceMapping.Product_025</members>
+        <members>PpcProductToSalesforceMapping.Default_001</members>
         <members>PpcProductToSalesforceMapping.Product_001</members>
         <members>PpcProductToSalesforceMapping.Product_002</members>
         <members>PpcProductToSalesforceMapping.Product_003</members>
@@ -69,7 +71,12 @@
         <members>PpcProductToSalesforceMapping.Product_006</members>
         <members>PpcProductToSalesforceMapping.Product_007</members>
         <members>PpcProductToSalesforceMapping.Product_008</members>
-        <members>PpcProductToSalesforceMapping.Product_009</members>
+        <members>PpcProductToSalesforceMapping.Product_010</members>
+        <members>PpcProductToSalesforceMapping.Product_011</members>
+        <members>PpcProductToSalesforceMapping.Product_012</members>
+        <members>PpcProductToSalesforceMapping.Product_013</members>
+        <members>PpcProductToSalesforceMapping.Product_014</members>
+        <members>PpcProductToSalesforceMapping.Product_015</members>
         <name>CustomMetadata</name>
     </types>
     <types>

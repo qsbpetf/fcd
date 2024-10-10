@@ -97,10 +97,10 @@ public with sharing class PpcOpportunityProductMapper {
 
         System.debug(JSON.serializePretty(quoteLine));
 
-//        if (quoteLine.unitPrice == 0.00) {
-//            System.debug('Skipping zero unit price order line: ' + quoteLine.productName);
-//            return null;
-//        }
+        if (quoteLine.subTotal == 0) {
+            System.debug('Skipping zero unit price order line: ' + quoteLine.description);
+            return null;
+        }
 
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
