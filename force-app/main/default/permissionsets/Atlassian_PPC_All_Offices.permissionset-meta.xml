@@ -18,6 +18,10 @@
     </customPermissions>
     <customPermissions>
         <enabled>true</enabled>
+        <name>Eficode_Office_JODOCUS</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
         <name>Eficode_Office_NL</name>
     </customPermissions>
     <customPermissions>

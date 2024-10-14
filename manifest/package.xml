@@ -115,6 +115,7 @@
     <types>
         <members>AtlassianCommerceApi</members>
         <members>Eficode_Office_CH</members>
+        <members>Eficode_Office_DE</members>
         <members>Eficode_Office_DK</members>
         <members>Eficode_Office_FI</members>
         <members>Eficode_Office_JODOCUS</members>
@@ -126,8 +127,10 @@
         <name>NamedCredential</name>
     </types>
     <types>
+        <members>Atlassian_PPC_Access</members>
         <members>Atlassian_PPC_All_Offices</members>
         <members>Atlassian_PPC_Finnish_Office</members>
+        <members>Atlassian_PPC_Import_Access</members>
         <members>Atlassian_PPC_United_Kingdom_Office</members>
         <name>PermissionSet</name>
     </types>
