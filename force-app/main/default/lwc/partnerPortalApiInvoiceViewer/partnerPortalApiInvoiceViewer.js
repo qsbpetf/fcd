@@ -58,9 +58,14 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
             });
             if (invoiceList.missingAccountId && (invoiceList.error === undefined || invoiceList.error === null || invoiceList.error === '')) {
                 invoiceList.error = this.errorMessage;
+                totalList.missingAccountId = true;
             }
-            if (invoiceList.data.length === 0) {
+            if (invoiceList.missingAccountId && invoiceList.error) {
+                totalList.missingAccountId = true;
+            }
+            if (!invoiceList.missingAccountId && invoiceList.data.length === 0) {
                 invoiceList.error = 'No invoices found';
+                totalList.missingAccountId = true;
             }
             totalList.data = totalList.data.concat(invoiceList.data);
             totalList.error = totalList.error + '; ' + invoiceList.error;

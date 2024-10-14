@@ -7,6 +7,7 @@
 public with sharing class PortalCommerceApiAccessMgmt {
 
     private static Map<String, String> OFFICES_ACCESS = null;
+    private static Map<String, String> OFFICES_APINAME_TO_NAMED_CREDENTIAL = null;
     private static final String OFFICE_CUSTOM_PERMISSION_PREFIX = 'Eficode_Office_';
     @TestVisible private static Boolean allowOfficeAccessOverride = false;
 
@@ -57,7 +58,7 @@ public with sharing class PortalCommerceApiAccessMgmt {
      * @return True if the running user has access to the office, false otherwise
      */
     public static Boolean hasOfficeAccess(String office) {
-        return getOfficesAccess().containsKey(office);
+        return getOfficesAccess().containsKey(translateApiNameToNamedCredential(office));
     }
 
     /**
@@ -68,7 +69,8 @@ public with sharing class PortalCommerceApiAccessMgmt {
      * @return True if the named credential exists, false otherwise
      */
     public static Boolean namedCredentialExists(String office) {
-        String name = 'Eficode_Office_' + office;
+
+        String name = 'Eficode_Office_' + translateApiNameToNamedCredential(office);
         List<NamedCredential> creds = new List<NamedCredential>([SELECT Id FROM NamedCredential WHERE DeveloperName = :name]);
         return creds.size() > 0;
     }
@@ -77,7 +79,19 @@ public with sharing class PortalCommerceApiAccessMgmt {
         if (OFFICES_ACCESS == null) {
             OFFICES_ACCESS = getOfficesTransactionAccountIds();
         }
-        return OFFICES_ACCESS.get(office);
+        return OFFICES_ACCESS.get(translateApiNameToNamedCredential(office));
+    }
+
+    public static String translateApiNameToNamedCredential(String office) {
+        if (OFFICES_APINAME_TO_NAMED_CREDENTIAL == null) {
+            OFFICES_APINAME_TO_NAMED_CREDENTIAL = new Map<String, String>();
+            for (PPC_TransactionAccount__mdt item : PPC_TransactionAccount__mdt.getAll().values()) {
+                System.debug('### item: ' + item);
+                OFFICES_APINAME_TO_NAMED_CREDENTIAL.put(item.SubsidiaryApiName__c, item.DeveloperName);
+                OFFICES_APINAME_TO_NAMED_CREDENTIAL.put(item.DeveloperName, item.DeveloperName);
+            }
+        }
+        return OFFICES_APINAME_TO_NAMED_CREDENTIAL.get(office);
     }
 
     public static Map<String, String> getOfficesTransactionAccountIds() {

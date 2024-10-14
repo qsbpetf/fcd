@@ -116,7 +116,8 @@ public with sharing class PortalCommerceApiClient {
             throw new PortalCommerceApiException('User does not have access to the office: ' + office);
         }
 
-        String namedCredentialText = namedCredentials.get(office) != null ? namedCredentials.get(office) : '';
+        String officeAPiName = PortalCommerceApiAccessMgmt.translateApiNameToNamedCredential(office);
+        String namedCredentialText = namedCredentials.get(officeAPiName) != null ? namedCredentials.get(officeAPiName) : '';
         String endpoint = COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', namedCredentialText) + function;
         Map<String, String> parameterMap = new Map<String, String>();
         if (invoiceGroupId != null) {
