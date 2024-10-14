@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>6fbf5c9e-684b-4787-b02f-bf889423624b</label>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>77e4e84e-c42b-43f7-ab3d-d942d8bbc779</label>
     <protected>false</protected>
+    <values>
+        <field>SubsidiaryApiName__c</field>
+        <value xsi:type="xsd:string">CH</value>
+    </values>
 </CustomMetadata>
