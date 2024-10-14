@@ -153,10 +153,18 @@
                         </template>
                     </ul>
                 </div>
-                <div class="rounded-rect">
+                <div class="rounded-rect-error">
                     <h2>Error Log</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.errorLog} for:item="log">
+                            <li key={log}>{log}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect-success">
+                    <h2>Success Log</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.successLog} for:item="log">
                             <li key={log}>{log}</li>
                         </template>
                     </ul>

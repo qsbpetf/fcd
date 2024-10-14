@@ -117,6 +117,12 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         this.quote = { };
 
         this.isLoading = true;
+        this.conversionResult = {
+            errorLog: [],
+            pbeLog: [],
+            productLog: [],
+            successLog: []
+        };
         apexGetQuote({ opportunityId: this.recordId, quoteId: quoteId })
             .then(result => {
                 console.log('result', result);
