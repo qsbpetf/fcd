@@ -8,6 +8,8 @@ import apexGetQuote from '@salesforce/apex/PortalCommerceApiController.getQuote'
 import apexImportQuote from '@salesforce/apex/PpcQuoteConverter.convertQuote';
 import apexGetEntitlementDisplayInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementDisplayInfo';
 import apexGetEntitlementDetails from '@salesforce/apex/PortalCommerceApiController.getEntitlementDetails';
+import apexGetEntitlementPartnerInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementPartnerInfo';
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
@@ -41,6 +43,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     lineItems = {};
     entitlementIds = {};
     quoteId = '';
+    mergeLineItems = true;
 
     columns = [
         { label: 'Quote Number', fieldName: 'quoteNumber', type: 'text' },
@@ -92,6 +95,10 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         // this.getQuotes();
     }
 
+    handleMergeLineItemsChange(event) {
+        this.mergeLineItems = event.target.checked;
+    }
+
     handleQuoteUrlChange(event) {
         this.quoteUrl = event.target.value;
     }
@@ -115,6 +122,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             error: ''
         };
         this.quote = { };
+        this.entitlementIds = { };
 
         this.isLoading = true;
         this.conversionResult = {
@@ -126,6 +134,16 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         apexGetQuote({ opportunityId: this.recordId, quoteId: quoteId })
             .then(result => {
                 console.log('result', result);
+                if (result.missingAccountId) {
+                    this.quoteResults = {
+                        error: result.error,
+                        data: [],
+                        nextId: null,
+                        missingAccountId: true
+                    };
+                    this.isLoading = false;
+                    return;
+                }
                 this.quote = this.prepare(result);
                 let self = this;
                 this.getEntitlementInformation(() => {
@@ -182,10 +200,34 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 subTotal: item.subTotal / 100.0,
                 total: item.total / 100.0,
                 isoCurrency: item.isoCurrency,
-                quoteLineId: item.quoteLineId
+                quoteLineId: item.quoteLineId,
+                startsAt: new Date(item.period.startsAt).toLocaleDateString(
+                    'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' }),
+                endsAt: new Date(item.period.endsAt).toLocaleDateString(
+                    'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' })
             });
             item.subTotalDecimal = item.subTotal / 100.0;
             item.totalDecimal = item.total / 100.0;
+            item.taxDecimal = item.tax / 100.0;
+            item.startsAt= new Date(item.period.startsAt).toLocaleDateString(
+                'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            item.endsAt = new Date(item.period.endsAt).toLocaleDateString(
+                'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            item.discount = (item.margins && item.margins.length > 0)
+                ? item.margins.reduce((sum, margin) => sum + margin.amount, 0)
+                : 0;
+            item.discountAmount = (item.margins && item.margins.length > 0)
+                ? item.margins.reduce((sum, margin) => sum + margin.amount, 0) / 100.0
+                : 0;
+            item.adjustment = (item.adjustments && item.adjustments.length > 0)
+                ? item.adjustments.reduce((sum, adjustment) => sum + adjustment.amount, 0)
+                : 0;
+            item.adjustmentAmount = (item.adjustments && item.adjustments.length > 0)
+                ? item.adjustments.reduce((sum, ajdjustment) => sum + ajdjustment.amount, 0) / 100.0
+                : 0;
+            item.amountExcludingTax = item.subTotal - item.discount - item.adjustment;
+            item.amountExcludingTaxDecimal = item.amountExcludingTax / 100.0;
+            item.uniqueKey = item.id + item.description + item.quantity + item.subTotal + item.total + item.isoCurrency + item.startsAt + item.endsAt;
         });
         theQuote["total"] = theQuote.upcomingBills.total / 100.0;
         theQuote["subTotal"] = theQuote.upcomingBills.subTotal / 100.0;
@@ -200,35 +242,17 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         console.log('getEntitlementInformation');
         this.isLoading = true;
         let calls = 0;
-        const totalCalls = Object.keys(this.entitlementIds).length * 2; // Each entitlement has 2 async calls
+        const totalCalls = Object.keys(this.entitlementIds).length;
 
         Object.keys(this.entitlementIds).forEach(id => {
             let item = this.entitlementIds[id];
 
-            apexGetEntitlementDisplayInfo({ opportunityId: this.recordId, entitlementId: item.id })
+            apexGetEntitlementPartnerInfo({ opportunityId: this.recordId, entitlementId: item.id })
                 .then(result => {
                     console.log('result', result);
                     if (result.missingAccountId === false) {
                         item['name'] = result.provisionedResource.name;
                         item['ari'] = result.provisionedResource.ari;
-                        console.log('item', item);
-                    }
-                    calls++;
-                    if (calls === totalCalls) {
-                        this.isLoading = false;
-                        if (callback) {
-                            callback();
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('error', error);
-                    this.isLoading = false;
-                });
-            apexGetEntitlementDetails({ opportunityId: this.recordId, entitlementId: item.id })
-                .then(result => {
-                    console.log('result', result);
-                    if (result.missingAccountId === false) {
                         item['slug'] = result.slug;
                         console.log('item', item);
                     }
@@ -242,7 +266,14 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 })
                 .catch(error => {
                     console.error('error', error);
-                    this.isLoading = false;
+                    console.error('error', JSON.stringify(error));
+                    calls++;
+                    if (calls === totalCalls) {
+                        this.isLoading = false;
+                        if (callback) {
+                            callback();
+                        }
+                    }
                 });
         });
     }
@@ -250,16 +281,16 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     populateEntitlements(theQuote) {
         theQuote._children.forEach(item => {
             let lineId = this.lineItems[item.quoteLineId];
-            item['entName'] = this.entitlementIds[lineId].name;
-            item['entAri'] = this.entitlementIds[lineId].ari;
-            item['entSlug'] = this.entitlementIds[lineId].slug;
+            item['entName'] = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null ;
+            item['entAri'] = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null ;
+            item['entSlug'] = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null ;
             console.log('POPULATED item', JSON.stringify(item));
         });
         theQuote.upcomingBills.lines.forEach(item => {
             let lineId = this.lineItems[item.quoteLineId];
-            item['entName'] = this.entitlementIds[lineId].name;
-            item['entAri'] = this.entitlementIds[lineId].ari;
-            item['entSlug'] = this.entitlementIds[lineId].slug;
+            item['entName'] = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null;
+            item['entAri'] = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null;
+            item['entSlug'] = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null;
             console.log('POPULATED item', JSON.stringify(item));
         });
     }
@@ -297,12 +328,19 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         apexImportQuote({
             jsonText: JSON.stringify(quote),
             oppId: this.recordId,
-            createProducts: createProducts
+            createProducts: createProducts,
+            mergeLineItems: this.mergeLineItems
         })
             .then(result => {
                 console.log('result', result, JSON.stringify(result, null, 3));
                 this.isLoading = false;
-                this.conversionResult = result;
+                this.conversionResult = this.mapResults(result);
+                const toastEvent = new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Quote imported successfully' + (createProducts ? ' and products created' : ''),
+                    variant: 'success',
+                });
+                this.dispatchEvent(toastEvent);
             })
             .catch(error => {
                 this.isLoading = false;
@@ -320,9 +358,45 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     missingAccountId: true
                 };
                 if (error.status && error.status === 500) {
-                    this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                    if (error.body.message) {
+                        this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                    }
+                    else if (error.body.pageErrors && error.body.pageErrors.length > 0) {
+                        this.quoteResults.error = error.body.pageErrors[0].statusCode + ' : ' + error.body.pageErrors[0].message;
+                    }
+                    else {
+                        this.quoteResults.error = JSON.stringify(error);
+                    }
                 }
+                const toastEvent = new ShowToastEvent({
+                    title: 'Error',
+                    message: 'Error when importing quote ' + (createProducts ? ' and creating products.' : '.') + JSON.stringify(error),
+                    variant: 'error',
+                });
+                this.dispatchEvent(toastEvent);
             });
+    }
+
+    mapResults(result) {
+        // iterate through productLog, pbeLog and errorLog and map each element into an object with a key and value where key is a unique number and value is the element
+        let productLog = result.productLog.map((element, index) => {
+            return { key: index, value: element };
+        });
+        let pbeLog = result.pbeLog.map((element, index) => {
+            return { key: index, value: element };
+        });
+        let errorLog = result.errorLog.map((element, index) => {
+            return { key: index, value: element };
+        });
+        let successLog = result.successLog.map((element, index) => {
+            return { key: index, value: element };
+        });
+        return {
+            productLog: productLog,
+            pbeLog: pbeLog,
+            errorLog: errorLog,
+            successLog: successLog
+        };
     }
 
     getQuotes() {
@@ -367,8 +441,16 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     quantity: item.quantity,
                     subTotal: item.subTotal,
                     total: item.total,
-                    isoCurrency: item.isoCurrency
+                    isoCurrency: item.isoCurrency,
+                    startsAt: new Date(item.period.startsAt).toLocaleDateString(
+                        'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' }),
+                    endsAt: new Date(item.period.endsAt).toLocaleDateString(
+                        'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' })
                 });
+                item.startsAt= new Date(item.period.startsAt).toLocaleDateString(
+                    'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+                item.endsAt = new Date(item.period.endsAt).toLocaleDateString(
+                    'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
             });
         });
         if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {

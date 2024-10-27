@@ -46,6 +46,13 @@
                     class="slds-m-left_small"
                     data-id={quoteId}
             ></lightning-button>
+            <lightning-input
+                    type="checkbox"
+                    label="Merge Line Items"
+                    checked={mergeLineItems}
+                    onchange={handleMergeLineItemsChange}
+                    class="slds-m-top_medium"
+            ></lightning-input>
         </div>
 
         <template if:false={quoteResults.missingAccountId}>
@@ -104,24 +111,34 @@
                                                     <th class="td-pad">Ent.name</th>
                                                     <th class="td-pad">Ent.ari</th>
                                                     <th class="td-pad">Ent.slug</th>
+                                                    <th class="td-pad">Starts At</th>
+                                                    <th class="td-pad">Ends At</th>
                                                     <th class="td-pad number">Quantity</th>
                                                     <th class="td-pad currency">Subtotal</th>
                                                     <th class="td-pad currency">Total</th>
+                                                    <th class="td-pad currency">Margin</th>
+                                                    <th class="td-pad currency">Adjustments</th>
+                                                    <th class="td-pad currency">Total excl. VAT</th>
                                                     <th class="td-pad left-pad">Currency</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <template for:each={qt.upcomingBills.lines} for:item="li">
-                                                    <tr key={li.id}>
+                                                    <tr key={li.uniqueKey}>
                                                         <td class="td-indent">&nbsp;</td>
 <!--                                                        <td class="td-pad">{li.id}</td>-->
                                                         <td class="td-pad">{li.description}</td>
                                                         <td class="td-pad">{li.entName}</td>
                                                         <td class="td-pad">{li.entAri}</td>
                                                         <td class="td-pad">{li.entSlug}</td>
+                                                        <td class="td-pad">{li.startsAt}</td>
+                                                        <td class="td-pad">{li.endsAt}</td>
                                                         <td class="td-pad number">{li.quantity}</td>
                                                         <td class="td-pad currency">{li.subTotalDecimal}</td>
                                                         <td class="td-pad currency">{li.totalDecimal}</td>
+                                                        <td class="td-pad currency">{li.discountAmount}</td>
+                                                        <td class="td-pad currency">{li.adjustmentAmount}</td>
+                                                        <td class="td-pad currency">{li.amountExcludingTaxDecimal}</td>
                                                         <td class="td-pad left-pad">{li.isoCurrency}</td>
                                                     </tr>
                                                 </template>
@@ -141,7 +158,7 @@
                     <h2>Conversion Results</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.productLog} for:item="log">
-                            <li key={log}>{log}</li>
+                            <li key={log.key}>{log.value}</li>
                         </template>
                     </ul>
                 </div>
@@ -149,7 +166,7 @@
                     <h2>Oppty Lines</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.pbeLog} for:item="log">
-                            <li key={log}>{log}</li>
+                            <li key={log.key}>{log.value}</li>
                         </template>
                     </ul>
                 </div>
@@ -157,7 +174,7 @@
                     <h2>Error Log</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.errorLog} for:item="log">
-                            <li key={log}>{log}</li>
+                            <li key={log.key}>{log.value}</li>
                         </template>
                     </ul>
                 </div>
@@ -165,7 +182,7 @@
                     <h2>Success Log</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.successLog} for:item="log">
-                            <li key={log}>{log}</li>
+                            <li key={log.key}>{log.value}</li>
                         </template>
                     </ul>
                 </div>

@@ -58,6 +58,7 @@ public with sharing class OpportunityProductMapper {
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
+                log.errorLog.add('MISSING Product: ' + orderLine.productName + ' ' + orderLine.platform + ' ' + orderLine.edition);
             }
         }
 
@@ -102,6 +103,13 @@ public with sharing class OpportunityProductMapper {
             System.debug('Multiple products with zero SEN: ' + productCountWithZeroSEN);
             log.successLog.add(productCountWithZeroSEN + ' Opportunity Products with zero SEN applied');
         }
+
+        Integer i = 1;
+        for (OpportunityLineItem oli : opptyProductsToInsert) {
+            log.successLog.add('Resulting product (' + i + ') = ' + JSON.serialize(oli).replaceAll(',', ', '));
+            i++;
+        }
+
         return opptyProductsToInsert;
     }
 
@@ -163,6 +171,7 @@ public with sharing class OpportunityProductMapper {
         oli.QuoteOriginalProduct__c = orderLine.productName;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = orderLine.unitPrice - orderLine.upgradeCredit - orderLine.loyaltyDiscountTotal;
+        oli.Atlassian_Partner_Discount__c = orderLine.partnerDiscountTotal;
 
         return oli;
     }

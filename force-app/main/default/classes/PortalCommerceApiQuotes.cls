@@ -143,13 +143,22 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String description;
         @AuraEnabled public Long total;
         @AuraEnabled public Long subTotal;
+        @AuraEnabled public Long amountExcludingTax;
+        @AuraEnabled public Double amountExcludingTaxDecimal;
+        @AuraEnabled public Long tax;
         @AuraEnabled public String isoCurrency;
         @AuraEnabled public PeriodType period;
         @AuraEnabled public Integer quantity;
         @AuraEnabled public String entName;
         @AuraEnabled public String entSlug;
         @AuraEnabled public String entAri;
+        @AuraEnabled public List<AdjustmentType> adjustments;
         @AuraEnabled public List<MarginType> margins;
+        @AuraEnabled public Long discount;
+        @AuraEnabled public Double discountAmount;
+        @AuraEnabled public Long adjustment;
+        @AuraEnabled public Double adjustmentAmount;
+        @AuraEnabled public String saleType;
     }
 
     public class PeriodType {
@@ -161,6 +170,13 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String type;
         @AuraEnabled public String reasonCode;
         @AuraEnabled public Long amount;
-        @AuraEnabled public Double percent;
+        @AuraEnabled public Integer percent;
+    }
+
+    public class AdjustmentType {
+        @AuraEnabled public String type;
+        @AuraEnabled public String reasonCode;
+        @AuraEnabled public Long amount;
+        @AuraEnabled public Integer percent;
     }
 }

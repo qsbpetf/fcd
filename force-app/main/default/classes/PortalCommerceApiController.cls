@@ -7,6 +7,7 @@ public with sharing class PortalCommerceApiController {
     @TestVisible static private PortalCommerceApiQuotes apiQuotes = PortalCommerceApiQuotes.getInstance();
     @TestVisible static private PortalCommerceApiEntitlements apiEntitlements = PortalCommerceApiEntitlements.getInstance();
     @TestVisible static private PortalCommerceApiInvoices apiInvoices = PortalCommerceApiInvoices.getInstance();
+    @TestVisible static private PortalCommerceApiOrders apiOrders = PortalCommerceApiOrders.getInstance();
 
     public static void setApiQuotes(PortalCommerceApiQuotes api) {
         apiQuotes = api;
@@ -18,6 +19,10 @@ public with sharing class PortalCommerceApiController {
 
     public static void setApiInvoices(PortalCommerceApiInvoices api) {
         apiInvoices = api;
+    }
+
+    public static void setApiOrders(PortalCommerceApiOrders api) {
+        apiOrders = api;
     }
 
     @AuraEnabled
@@ -70,6 +75,22 @@ public with sharing class PortalCommerceApiController {
     }
 
     @AuraEnabled
+    static public PortalCommerceApiInvoices.InvoiceInfo getInvoice(String opportunityId, String invoiceId) {
+        Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
+        PortalCommerceApiInvoices.InvoiceInfo theInvoice = apiInvoices.getInvoice(opp.Account.CV_Subsidiary__c, invoiceId);
+        theInvoice.office = opp.Account.CV_Subsidiary__c;
+        return theInvoice;
+    }
+
+    @AuraEnabled
+    static public PortalCommerceApiOrders.OrderInfo getOrder(String opportunityId, String orderId) {
+        Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
+        PortalCommerceApiOrders.OrderInfo theOrder = apiOrders.getOrder(opp.Account.CV_Subsidiary__c, orderId);
+        theOrder.office = opp.Account.CV_Subsidiary__c;
+        return theOrder;
+    }
+
+    @AuraEnabled
     static public PortalCommerceApiEntitlements.EntitlementDisplayInfo getEntitlementDisplayInfo(String opportunityId, String entitlementId) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiEntitlements.EntitlementDisplayInfo entitlementDisplayInfo = apiEntitlements.getEntitlementDisplayInfo(opp.Account.CV_Subsidiary__c, entitlementId);
@@ -81,6 +102,13 @@ public with sharing class PortalCommerceApiController {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiEntitlements.EntitlementDetails entitlementDetails = apiEntitlements.getEntitlementDetails(opp.Account.CV_Subsidiary__c, entitlementId);
         return entitlementDetails;
+    }
+
+    @AuraEnabled
+    static public PortalCommerceApiEntitlements.EntitlementPartnerInfo getEntitlementPartnerInfo(String opportunityId, String entitlementId) {
+        Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
+        PortalCommerceApiEntitlements.EntitlementPartnerInfo entitlementPartnerInfo = apiEntitlements.getEntitlementPartnerInfo(opp.Account.CV_Subsidiary__c, entitlementId);
+        return entitlementPartnerInfo;
     }
 
     @AuraEnabled

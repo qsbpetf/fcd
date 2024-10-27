@@ -18,8 +18,10 @@ public with sharing class PortalCommerceApiClient {
     @TestVisible static private final String QUOTE_PDF_ENDPOINT = '/v3/quotes/{{QUOTE_ID}}/download';
     @TestVisible static private final String INVOICES_ENDPOINT = '/v2/invoices';
     @TestVisible static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
+    @TestVisible static private final String ORDER_ENDPOINT = '/v2/orders';
     @TestVisible static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
     @TestVisible static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
+    @TestVisible static private final String ENTITLEMENT_PARTNER_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/partner-acquisition-info';
 
     @TestVisible private Map<String, String> namedCredentials = new Map<String, String> { };
 
@@ -75,6 +77,20 @@ public with sharing class PortalCommerceApiClient {
         return new Http().send(req);
     }
 
+    public HttpResponse getInvoice(String office, String invoiceId) {
+        HttpRequest req = createRequestHeader(true);
+        req.setEndpoint(generateEndpoint(office, INVOICES_ENDPOINT, null, null, null) + '/' + invoiceId);
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getOrder(String office, String orderId) {
+        HttpRequest req = createRequestHeader(true);
+        req.setEndpoint(generateEndpoint(office, ORDER_ENDPOINT, null, null, null) + '/' + orderId);
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
     public HttpResponse getInvoiceGroups(String office, Integer pageSize, String nextId) {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, INVOICE_GROUPS_ENDPOINT, pageSize, nextId, null));
@@ -92,6 +108,13 @@ public with sharing class PortalCommerceApiClient {
     public HttpResponse getEntitlementDetails(String office, String entitlementId) {
         HttpRequest req = createRequestHeader(false);
         req.setEndpoint(generateEndpoint(office, ENTITLEMENT_DETAILS_ENDPOINT.replace('{{ENTITLEMENT_ID}}', entitlementId), null, null, null));
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getEntitlementPartnerInfo(String office, String entitlementId) {
+        HttpRequest req = createRequestHeader(false);
+        req.setEndpoint(generateEndpoint(office, ENTITLEMENT_PARTNER_INFO_ENDPOINT.replace('{{ENTITLEMENT_ID}}', entitlementId), null, null, null));
         req.setMethod('GET');
         return new Http().send(req);
     }

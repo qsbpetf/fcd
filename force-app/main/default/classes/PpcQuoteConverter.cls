@@ -5,14 +5,14 @@
 public with sharing class PpcQuoteConverter {
 
     @AuraEnabled
-    public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts) {
+    public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts, Boolean mergeLineItems) {
         Opportunity opp = PortalQuoteConverter.getOpportunity(oppId);
         Double conversionFactor = PortalQuoteConverter.getLatestCurrencyConversionFactor(opp.CurrencyIsoCode);
         OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
         PortalCommerceApiQuotes.QuoteInfo quoteData = (PortalCommerceApiQuotes.QuoteInfo) JSON.deserialize(jsonText, PortalCommerceApiQuotes.QuoteInfo.class);
         System.debug('QUOTE IN JSON:\n' + JSON.serializePretty(quoteData));
 
-        List<OpportunityLineItem> oppProducts = mapProducts(quoteData, opp, conversionFactor, log);
+        List<OpportunityLineItem> oppProducts = mapProducts(quoteData, opp, conversionFactor, log, mergeLineItems);
 
         System.debug('INSERTING PRODUCTS: ' + createProducts);
         for (OpportunityLineItem oppProduct : oppProducts) {
@@ -35,9 +35,14 @@ public with sharing class PpcQuoteConverter {
     }
 
     @TestVisible
-    private static List<OpportunityLineItem> mapProducts(PortalCommerceApiQuotes.QuoteInfo quoteData, Opportunity opp, Double conversionFactor, OpportunityProductMapper.LogData log) {
+    private static List<OpportunityLineItem> mapProducts(
+        PortalCommerceApiQuotes.QuoteInfo quoteData,
+        Opportunity opp, Double conversionFactor,
+        OpportunityProductMapper.LogData log,
+        Boolean mergeLineItems)
+    {
         PpcOpportunityProductMapper oppMapper = PpcOpportunityProductMapper.getInstance();
-        List<OpportunityLineItem> oppProducts = oppMapper.mapProducts(quoteData, opp, conversionFactor, log);
+        List<OpportunityLineItem> oppProducts = oppMapper.mapProducts(quoteData, opp, conversionFactor, log, mergeLineItems);
 
         return oppProducts;
     }

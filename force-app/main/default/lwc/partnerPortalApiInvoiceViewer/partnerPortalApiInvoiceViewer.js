@@ -55,6 +55,18 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
         result.forEach(invoiceList => {
             invoiceList.data.forEach(invoice => {
                 invoice.length = invoice.items.length;
+
+                invoice.items.forEach(item => {
+                    item.subTotalDecimal = item.subTotal;
+                    item.totalDecimal = item.total;
+                    item.startAt = item.period.startAt;
+                    item.startAtStr= new Date(item.period.startAt).toLocaleDateString(
+                        'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+                    item.endAt = item.period.endAt;
+                    item.endAtStr = new Date(item.period.endAt).toLocaleDateString(
+                        'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
+                    item.discountAmount = (item.margins && item.margins.length > 0) ? item.margins[0].amount : null;
+                });
             });
             if (invoiceList.missingAccountId && (invoiceList.error === undefined || invoiceList.error === null || invoiceList.error === '')) {
                 invoiceList.error = this.errorMessage;

@@ -61,18 +61,39 @@ public with sharing class PortalCommerceApiEntitlements {
         return instance.getEntitlementDetails(office, entitlementId);
     }
 
+    public EntitlementPartnerInfo getEntitlementPartnerInfo(String office, String entitlementId) {
+        HttpResponse response = client.getEntitlementPartnerInfo(office, entitlementId);
+        if (response.getStatusCode() != 200) {
+            EntitlementPartnerInfo entitlementPartnerInfo = new EntitlementPartnerInfo();
+            entitlementPartnerInfo.error = response.getBody();
+            entitlementPartnerInfo.missingAccountId = true;
+            return entitlementPartnerInfo;
+        }
+        EntitlementPartnerInfo entitlementPartnerInfo = (EntitlementPartnerInfo) JSON.deserialize(
+            response.getBody().replaceAll('"id"', '"subscriptionId"'),
+            EntitlementPartnerInfo.class);
+        entitlementPartnerInfo.error = null;
+        entitlementPartnerInfo.missingAccountId = false;
+        return entitlementPartnerInfo;
+    }
+
+    public static EntitlementPartnerInfo getEntitlementPartnerInfoStatic(String office, String entitlementId) {
+        PortalCommerceApiEntitlements instance = PortalCommerceApiEntitlements.getInstance();
+        return instance.getEntitlementPartnerInfo(office, entitlementId);
+    }
+
     // ==================
     //  WRAPPER CLASSES
     // ==================
 
     public class EntitlementDisplayInfo {
         @AuraEnabled public String entitlementId;
-        @AuraEnabled public provisionedResourceInfo provisionedResource;
+        @AuraEnabled public ProvisionedResourceInfo provisionedResource;
         @AuraEnabled public String error;
         @AuraEnabled public Boolean missingAccountId;
     }
 
-    public class provisionedResourceInfo {
+    public class ProvisionedResourceInfo {
         @AuraEnabled public String name;
         @AuraEnabled public String ari;
     }
@@ -83,5 +104,20 @@ public with sharing class PortalCommerceApiEntitlements {
         @AuraEnabled public String slug;
         @AuraEnabled public String error;
         @AuraEnabled public Boolean missingAccountId;
+    }
+
+    public class EntitlementPartnerInfo {
+        @AuraEnabled public String entitlementId;
+        @AuraEnabled public String status;
+        @AuraEnabled public String slug;
+        @AuraEnabled public SubscriptionInfo subscription;
+        @AuraEnabled public ProvisionedResourceInfo provisionedResource;
+        @AuraEnabled public String error;
+        @AuraEnabled public Boolean missingAccountId;
+    }
+
+    public class SubscriptionInfo {
+        @AuraEnabled public String subscriptionId;
+        @AuraEnabled public String status;
     }
 }
