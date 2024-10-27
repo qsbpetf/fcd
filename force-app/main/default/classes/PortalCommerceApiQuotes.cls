@@ -117,6 +117,7 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String lineItemId;
         @AuraEnabled public String entitlementId;
         @AuraEnabled public String lineItemType;
+        @AuraEnabled public String orderItemId;
         @AuraEnabled public TimeInfo startsAt;
         @AuraEnabled public TimeInfo endsAt;
     }

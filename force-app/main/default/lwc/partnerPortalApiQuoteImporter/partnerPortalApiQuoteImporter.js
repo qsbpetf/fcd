@@ -7,6 +7,7 @@ import apexGetQuotes from '@salesforce/apex/PortalCommerceApiController.getQuote
 import apexGetQuote from '@salesforce/apex/PortalCommerceApiController.getQuote';
 import apexImportQuote from '@salesforce/apex/PpcQuoteConverter.convertQuote';
 import apexGetOrderPreview from '@salesforce/apex/PortalCommerceApiController.getOrderPreview';
+import apexGetOrder from '@salesforce/apex/PortalCommerceApiController.getOrder';
 import apexGetEntitlementDisplayInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementDisplayInfo';
 import apexGetEntitlementDetails from '@salesforce/apex/PortalCommerceApiController.getEntitlementDetails';
 import apexGetEntitlementPartnerInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementPartnerInfo';
@@ -156,7 +157,10 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     this.quoteId = this.quote.data[0].id;
                 });
 
+                // -------------
                 // Quote is OPEN
+                // -------------
+
                 if (this.quote.data[0].status === 'OPEN') {
                     apexGetOrderPreview({
                         opportunityId: this.recordId,
@@ -164,44 +168,8 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                         quoteVersion: this.quote.data[0].version
                     })
                         .then(order => {
-                            console.log('order', JSON.stringify(order));
-
-                            if (order.missingAccountId) {
-                                this.quote = {
-                                    error: JSON.stringify(order),
-                                    data: [],
-                                    nextId: null,
-                                    missingAccountId: true
-                                };
-                                if (order.status && order.status === 500) {
-                                    this.quote.error = order.body.exceptionType + ': ' + order.body.message;
-                                }
-                            }
-
-                            let orderItems = order.items.map(item => {
-                                return {
-                                    quoteLineItemId: item.quoteLineItemDetailsReference.quoteLineItemId,
-                                    salesType: item.processingInfo.saleTransitionType
-                                }
-                            });
-
-                            console.log('orderItems', (orderItems));
-
-                            let orderItemsMap = order.items.reduce((acc, item) => {
-                                acc[item.quoteLineItemDetailsReference.quoteLineItemId] = {
-                                    salesType: item.processingInfo.saleTransitionType
-                                };
-                                return acc;
-                            }, {});
-
-                            console.log('orderItemsMap', orderItemsMap);
-
-                            this.quote.data[0].upcomingBills.lines.forEach(item => {
-                                item.salesType = orderItemsMap[item.quoteLineId].salesType;
-                            });
-
-                            console.log('this.quote.data[0]', this.quote.data[0]);
-
+                            console.log('order OPEN', JSON.stringify(order));
+                            this.parseOrderData(order);
                             this.isLoading = false;
                         })
                         .catch(error => {
@@ -217,8 +185,36 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                                 this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
                             }
                         });
-                }
+                } else if (this.quote.data[0].status === 'ACCEPTED') {
+                    // -----------------
+                    // Quote is ACCEPTED
+                    // -----------------
 
+                    // Remove last '-' and the digits after '-' from the orderItemId
+                    let orderId = this.quote.data[0].lineItems[0].orderItemId.replace(/-\d+$/, '');
+
+                    apexGetOrder({
+                        opportunityId: this.recordId,
+                        orderId: orderId
+                    })
+                        .then(order => {
+                            console.log('order ACCEPTED', JSON.stringify(order));
+                            this.parseOrderData(order);
+                            this.isLoading = false;
+                        })
+                        .catch(error => {
+                            this.isLoading = false;
+                            this.quoteResults = {
+                                error: JSON.stringify(error),
+                                data: [],
+                                nextId: null,
+                                missingAccountId: true
+                            };
+                            if (error.status && error.status === 500) {
+                                this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                            }
+                        });
+                }
             })
             .catch(error => {
                 console.error('error', error);
@@ -233,6 +229,44 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
                 }
             });
+    }
+
+    parseOrderData(order) {
+        if (order.missingAccountId) {
+            this.quote = {
+                error: JSON.stringify(order),
+                data: [],
+                nextId: null,
+                missingAccountId: true
+            };
+            if (order.status && order.status === 500) {
+                this.quote.error = order.body.exceptionType + ': ' + order.body.message;
+            }
+        }
+
+        let orderItems = order.items.map(item => {
+            return {
+                quoteLineItemId: item.quoteLineItemDetailsReference.quoteLineItemId,
+                salesType: item.processingInfo.saleTransitionType
+            }
+        });
+
+        console.log('orderItems', (orderItems));
+
+        let orderItemsMap = order.items.reduce((acc, item) => {
+            acc[item.quoteLineItemDetailsReference.quoteLineItemId] = {
+                salesType: item.processingInfo.saleTransitionType
+            };
+            return acc;
+        }, {});
+
+        console.log('orderItemsMap', orderItemsMap);
+
+        this.quote.data[0].upcomingBills.lines.forEach(item => {
+            item.salesType = orderItemsMap[item.quoteLineId].salesType;
+        });
+
+        console.log('this.quote.data[0]', this.quote.data[0]);
     }
 
     prepare(theQuote) {
@@ -350,14 +384,14 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             item['entName'] = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null ;
             item['entAri'] = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null ;
             item['entSlug'] = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null ;
-            console.log('POPULATED item', JSON.stringify(item));
+            // console.log('POPULATED item', JSON.stringify(item));
         });
         theQuote.upcomingBills.lines.forEach(item => {
             let lineId = this.lineItems[item.quoteLineId];
             item['entName'] = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null;
             item['entAri'] = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null;
             item['entSlug'] = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null;
-            console.log('POPULATED item', JSON.stringify(item));
+            // console.log('POPULATED item', JSON.stringify(item));
         });
     }
 
