@@ -159,7 +159,7 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public Double discountAmount;
         @AuraEnabled public Long adjustment;
         @AuraEnabled public Double adjustmentAmount;
-        @AuraEnabled public String saleType;
+        @AuraEnabled public String salesType;
     }
 
     public class PeriodType {

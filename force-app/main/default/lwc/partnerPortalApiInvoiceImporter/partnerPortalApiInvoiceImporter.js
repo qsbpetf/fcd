@@ -20,7 +20,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
         error: ''
     };
 
-    invoice = { };
+    @track invoice = { };
 
     @track conversionResult = {
         errorLog: [],
@@ -138,7 +138,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                         console.log('orderItemsMap', orderItemsMap);
 
                         this.invoice.data[0].items.forEach(item => {
-                            item.saleType = orderItemsMap[item.orderItemId].salesType;
+                            item.salesType = orderItemsMap[item.orderItemId].salesType;
                         });
 
                         console.log('invoice', this.invoice);

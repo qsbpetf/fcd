@@ -289,7 +289,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.QuoteOriginalProduct__c = quoteLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = (quoteLine.subTotal == null) ? 0 : quoteLine.subTotal / 100.0;
-        oli.Renewal__c = SALE_TYPE_MAPPING.get(quoteLine.saleType);
+        oli.Renewal__c = SALE_TYPE_MAPPING.get(quoteLine.salesType);
         oli.Atlassian_Partner_Discount__c = quoteLine.discountAmount;
 
         return oli;
@@ -326,7 +326,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.QuoteOriginalProduct__c = invoiceLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = invoiceLine.subTotal;
-        oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.saleType);
+        oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.salesType);
         oli.Atlassian_Partner_Discount__c = invoiceLine.discountAmount;
 
         return oli;
