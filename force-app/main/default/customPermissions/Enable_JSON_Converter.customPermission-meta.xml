@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Enable JSON Converter LWC on Opportunity page layout.</description>
+    <isLicensed>false</isLicensed>
+    <label>Enable JSON Converter</label>
+</CustomPermission>
