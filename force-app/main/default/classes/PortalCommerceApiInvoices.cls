@@ -42,6 +42,20 @@ public with sharing class PortalCommerceApiInvoices
         return instance.getInvoices(office, invoiceGroupId, pageSize, nextId);
     }
 
+    public InvoiceInfo getInvoice(String office, String invoiceId) {
+        HttpResponse response = client.getInvoice(office, invoiceId);
+        if (response.getStatusCode() != 200) {
+            return null;
+        }
+        System.debug('JSON = ' + response.getBody());
+        InvoiceInfo invoice = (InvoiceInfo) JSON.deserialize(
+            response.getBody()
+                .replaceAll('"number"', '"invoiceNumber"')
+                .replaceAll('"currency"', '"isoCurrency"'),
+            InvoiceInfo.class);
+        return invoice;
+    }
+
     // ==================
     //  WRAPPER CLASSES
     // ==================
@@ -50,6 +64,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public List<InvoiceInfo> data;
         @AuraEnabled public List<EntitlementDetail> EntitlementDetails;
         @AuraEnabled public List<EntitlementDisplayInfo> EntitlementDisplayInfos;
+        @AuraEnabled public List<OrderDetailsType> orderDetails;
         @AuraEnabled public String nextId;
         @AuraEnabled public String error;
         @AuraEnabled public Boolean missingAccountId;
@@ -73,6 +88,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Long dueAt;
         @AuraEnabled public Long paidAt;
         @AuraEnabled public List<InvoiceItem> items;
+        @AuraEnabled public String office;
     }
 
     public class InvoiceItem {
@@ -82,13 +98,57 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Double unitAmount;
         @AuraEnabled public Double total;
         @AuraEnabled public Double subTotal;
+        @AuraEnabled public Long amountExcludingTax;
+        @AuraEnabled public Double amountExcludingTaxDecimal;
+        @AuraEnabled public Long tax;
         @AuraEnabled public PeriodInfo period;
         @AuraEnabled public String entitlementId;
+        @AuraEnabled public String entitlementNumber;
+        @AuraEnabled public PlanObjectInfo planObj;
+        @AuraEnabled public List<AdjustmentType> adjustments;
+        @AuraEnabled public List<MarginType> margins;
+        @AuraEnabled public Double discountAmount;
+        @AuraEnabled public Long adjustment;
+        @AuraEnabled public Double adjustmentAmount;
+        @AuraEnabled public String saleType;
+        @AuraEnabled public String orderId;
+        @AuraEnabled public String orderItemId;
+    }
+
+    public class OrderDetailsType {
+        @AuraEnabled public List<OrderLineType> items;
+    }
+
+    public class OrderLineType {
+        @AuraEnabled public ProcessingInfoType processingInfo;
+    }
+
+    public class ProcessingInfoType {
+        @AuraEnabled public String saleTransitionType;
+    }
+
+    public class PlanObjectInfo {
+        @AuraEnabled public String type;
+        @AuraEnabled public String hostingType;
     }
 
     public class PeriodInfo {
         @AuraEnabled public Long startAt;
         @AuraEnabled public Long endAt;
+    }
+
+    public class MarginType {
+        @AuraEnabled public String type;
+        @AuraEnabled public String reasonCode;
+        @AuraEnabled public Double amount;
+        @AuraEnabled public Integer percent;
+    }
+
+    public class AdjustmentType {
+        @AuraEnabled public String type;
+        @AuraEnabled public String reasonCode;
+        @AuraEnabled public Double amount;
+        @AuraEnabled public Integer percent;
     }
 
     public class EntitlementDetail {

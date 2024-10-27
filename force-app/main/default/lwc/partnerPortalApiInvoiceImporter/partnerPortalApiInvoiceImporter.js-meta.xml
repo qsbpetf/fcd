@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <description>Partner Portal Api Invoice Importer</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Partner Portal Api Invoice Importer</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="recordId" type="String" label="Record ID" description="The value should be {!recordId}."/>
+            <property name="errorMessage" type="String" label="Error Message" description="Add your error message to present when the related account do not have a Atlassian Account Id defined."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

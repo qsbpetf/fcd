@@ -1,0 +1,175 @@
+<!--
+ - Created by peterfriberg on 2024-10-14.
+ -->
+
+<!-- Partner Portal Api Invoice Importer -->
+<template>
+    <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
+
+    <lightning-card title="Import Atlassian Partner Portal Invoice via API into Salesforce Opportunity Products" icon-name="custom:custom41">
+        <template if:true={invoiceResults.missingAccountId}>
+            <h2 class="slds-text-color_error">{invoiceResults.error}</h2>
+        </template>
+
+        <div class="slds-m-around_medium">
+            <lightning-input
+                    type="text"
+                    label="Atlassian Partner Portal Invoice URL"
+                    value={invoiceUrl}
+                    onchange={handleInvoiceUrlChange}
+                    class="slds-m-bottom_small"
+            ></lightning-input>
+            <lightning-button
+                    label="Fetch Invoice"
+                    onclick={handleFetchInvoice}
+                    variant="brand"
+            ></lightning-button>
+            <lightning-button
+                    label="Import fetched Invoice"
+                    onclick={handleImportInvoice}
+                    variant="brand"
+                    disabled={importDisabled}
+                    class="slds-m-left_small"
+            ></lightning-button>
+            <lightning-button
+                    label="Import fetched Invoice and create products!"
+                    onclick={handleImportInvoiceProducts}
+                    variant="brand"
+                    disabled={importDisabled}
+                    class="slds-m-left_small"
+            ></lightning-button>
+            <lightning-input
+                    type="checkbox"
+                    label="Merge Line Items"
+                    checked={mergeLineItems}
+                    onchange={handleMergeLineItemsChange}
+                    class="slds-m-top_medium"
+            ></lightning-input>
+        </div>
+
+        <template if:false={invoiceResults.missingAccountId}>
+
+            <div class="conv-result">
+                <h1>Invoice fetched through API</h1>
+                <div class="rounded-rect">
+                    <table class="bordered-table">
+                        <thead>
+                        <tr>
+                            <th class="td-pad">Invoice Id</th>
+                            <th class="td-pad">Invoice Number</th>
+                            <th class="td-pad">Status</th>
+                            <th class="td-pad number"># Items</th>
+                            <th class="td-pad number">Subtotal</th>
+                            <th class="td-pad number">Total</th>
+                            <th class="td-pad">Preview</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template for:each={invoiceResults.data} for:item="inv">
+                            <tr key={inv.id} class="tr-yellow">
+                                <td class="td-pad">{inv.id}</td>
+                                <td class="td-pad">{inv.invoiceNumber}</td>
+                                <td class="td-pad"><strong>{inv.status}</strong></td>
+                                <td class="number td-pad">{inv.length}</td>
+                                <td class="currency td-pad">{inv.subTotal}</td>
+                                <td class="currency td-pad">{inv.total}</td>
+<!--                                <td class="button-around">-->
+<!--                                    <lightning-button-->
+<!--                                            label="Preview"-->
+<!--                                            onclick={handlePreview}-->
+<!--                                            variant="neutral"-->
+<!--                                            data-id={inv.id}-->
+<!--                                    ></lightning-button>-->
+<!--                                </td>-->
+                            </tr>
+                            <tr key={inv.id2}>
+                                <td colspan=100>
+                                    <table class="table-green">
+                                        <thead>
+                                        <tr>
+                                            <th>&nbsp;</th>
+<!--                                            <th class="td-pad">Id</th>-->
+                                            <th class="td-pad">Description</th>
+                                            <th class="td-pad">Ent.number</th>
+<!--                                            <th class="td-pad">Hosting</th>-->
+<!--                                            <th class="td-pad">Type</th>-->
+                                            <th class="td-pad">Starts At</th>
+                                            <th class="td-pad">Ends At</th>
+                                            <th class="td-pad number">Quantity</th>
+                                            <th class="td-pad currency">Subtotal</th>
+                                            <th class="td-pad currency">Total</th>
+                                            <th class="td-pad currency">Margin</th>
+                                            <th class="td-pad currency">Adjustments</th>
+                                            <th class="td-pad currency">Total excl. VAT</th>
+                                            <th class="td-pad left-pad">Currency</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template for:each={inv.items} for:item="li">
+                                            <tr key={li.id}>
+                                                <td class="td-indent">&nbsp;</td>
+<!--                                                <td class="td-pad">{li.id}</td>-->
+                                                <td class="td-pad">{li.description}</td>
+                                                <td class="td-pad">{li.entitlementNumber}</td>
+<!--                                                <td class="td-pad">{li.planObj.hostingType}</td>-->
+<!--                                                <td class="td-pad">{li.planObj.type}</td>-->
+                                                <td class="td-pad">{li.startAtStr}</td>
+                                                <td class="td-pad">{li.endAtStr}</td>
+                                                <td class="td-pad number">{li.quantity}</td>
+                                                <td class="td-pad currency">{li.subTotalDecimal}</td>
+                                                <td class="td-pad currency">{li.totalDecimal}</td>
+                                                <td class="td-pad currency">{li.discountAmount}</td>
+                                                <td class="td-pad currency">{li.adjustmentAmount}</td>
+                                                <td class="td-pad currency">{li.amountExcludingTaxDecimal}</td>
+                                                <td class="td-pad left-pad">{li.isoCurrency}</td>
+                                            </tr>
+                                        </template>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="conv-result">
+                <h1>Converted results:</h1>
+                <div class="rounded-rect">
+                    <h2>Conversion Results</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.productLog} for:item="log">
+                            <li key={log.key}>{log.value}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect">
+                    <h2>Oppty Lines</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.pbeLog} for:item="log">
+                            <li key={log.key}>{log.value}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect-error">
+                    <h2>Error Log</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.errorLog} for:item="log">
+                            <li key={log.key}>{log.value}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect-success">
+                    <h2>Success Log</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.successLog} for:item="log">
+                            <li key={log.key}>{log.value}</li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+        </template>
+    </lightning-card>
+</template>
