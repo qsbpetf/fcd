@@ -57,6 +57,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PortalCommerceApiOrders</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PortalCommerceApiProducts</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -109,7 +113,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PpcInvoiceConverter</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PpcOpportunityProductMapper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PpcOpportunityProductMapperTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

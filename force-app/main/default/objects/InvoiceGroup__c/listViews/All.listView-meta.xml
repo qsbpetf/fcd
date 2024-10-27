@@ -5,8 +5,14 @@
     <columns>Account__c</columns>
     <columns>ShipToPartyName__c</columns>
     <columns>ShipToPartyVatTaxId__c</columns>
+    <columns>CV_Subsidiary__c</columns>
+    <columns>CURRENCY_ISO_CODE</columns>
+    <columns>Slug__c</columns>
+    <columns>AtlassianInvoiceGroupId__c</columns>
     <columns>Version__c</columns>
-    <columns>LastSynhcronized__c</columns>
+    <columns>Active__c</columns>
+    <columns>CreatedAt__c</columns>
+    <columns>LastSynchronized__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

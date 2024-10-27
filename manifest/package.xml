@@ -93,11 +93,13 @@
         <members>Eficode_Office_DE</members>
         <members>Eficode_Office_DK</members>
         <members>Eficode_Office_FI</members>
+        <members>Eficode_Office_JODOCUS</members>
         <members>Eficode_Office_NL</members>
         <members>Eficode_Office_NO</members>
         <members>Eficode_Office_SE</members>
         <members>Eficode_Office_UK</members>
         <members>Eficode_Office_US</members>
+        <members>Enable_JSON_Converter</members>
         <name>CustomPermission</name>
     </types>
     <types>
