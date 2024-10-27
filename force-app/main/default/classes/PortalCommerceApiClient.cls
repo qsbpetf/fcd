@@ -19,6 +19,7 @@ public with sharing class PortalCommerceApiClient {
     @TestVisible static private final String INVOICES_ENDPOINT = '/v2/invoices';
     @TestVisible static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
     @TestVisible static private final String ORDER_ENDPOINT = '/v2/orders';
+    @TestVisible static private final String ORDER_PREVIEW_ENDPOINT = '/v2/order-intent/preview';
     @TestVisible static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
     @TestVisible static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
     @TestVisible static private final String ENTITLEMENT_PARTNER_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/partner-acquisition-info';
@@ -88,6 +89,18 @@ public with sharing class PortalCommerceApiClient {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, ORDER_ENDPOINT, null, null, null) + '/' + orderId);
         req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getOrderPreview(String office, String body) {
+        HttpRequest req = createRequestHeader(true);
+        req.setEndpoint(generateEndpoint(office, ORDER_PREVIEW_ENDPOINT, null, null, null));
+        req.setHeader('Content-Type', 'application/json');
+        req.setMethod('POST');
+        req.setBody(body);
+
+        System.debug(req);
+        System.debug(req.getBody());
         return new Http().send(req);
     }
 

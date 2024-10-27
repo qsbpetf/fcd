@@ -6,6 +6,7 @@ import { api, track, LightningElement } from 'lwc';
 import apexGetQuotes from '@salesforce/apex/PortalCommerceApiController.getQuotes';
 import apexGetQuote from '@salesforce/apex/PortalCommerceApiController.getQuote';
 import apexImportQuote from '@salesforce/apex/PpcQuoteConverter.convertQuote';
+import apexGetOrderPreview from '@salesforce/apex/PortalCommerceApiController.getOrderPreview';
 import apexGetEntitlementDisplayInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementDisplayInfo';
 import apexGetEntitlementDetails from '@salesforce/apex/PortalCommerceApiController.getEntitlementDetails';
 import apexGetEntitlementPartnerInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementPartnerInfo';
@@ -23,7 +24,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         error: ''
     };
 
-    quote = { };
+    @track quote = { };
 
     @track conversionResult = {
         errorLog: [],
@@ -146,6 +147,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 }
                 this.quote = this.prepare(result);
                 let self = this;
+
                 this.getEntitlementInformation(() => {
                     this.populateEntitlements(this.quote.data[0]);
                     this.quoteResults = { ...this.quote, value: 'Updated data' };
@@ -153,6 +155,70 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     this.importDisabled = false;
                     this.quoteId = this.quote.data[0].id;
                 });
+
+                // Quote is OPEN
+                if (this.quote.data[0].status === 'OPEN') {
+                    apexGetOrderPreview({
+                        opportunityId: this.recordId,
+                        quoteId: this.quote.data[0].id,
+                        quoteVersion: this.quote.data[0].version
+                    })
+                        .then(order => {
+                            console.log('order', JSON.stringify(order));
+
+                            if (order.missingAccountId) {
+                                this.quote = {
+                                    error: JSON.stringify(order),
+                                    data: [],
+                                    nextId: null,
+                                    missingAccountId: true
+                                };
+                                if (order.status && order.status === 500) {
+                                    this.quote.error = order.body.exceptionType + ': ' + order.body.message;
+                                }
+                            }
+
+                            let orderItems = order.items.map(item => {
+                                return {
+                                    quoteLineItemId: item.quoteLineItemDetailsReference.quoteLineItemId,
+                                    salesType: item.processingInfo.saleTransitionType
+                                }
+                            });
+
+                            console.log('orderItems', (orderItems));
+
+                            let orderItemsMap = order.items.reduce((acc, item) => {
+                                acc[item.quoteLineItemDetailsReference.quoteLineItemId] = {
+                                    salesType: item.processingInfo.saleTransitionType
+                                };
+                                return acc;
+                            }, {});
+
+                            console.log('orderItemsMap', orderItemsMap);
+
+                            this.quote.data[0].upcomingBills.lines.forEach(item => {
+                                item.salesType = orderItemsMap[item.quoteLineId].salesType;
+                            });
+
+                            console.log('this.quote.data[0]', this.quote.data[0]);
+
+                            this.isLoading = false;
+                        })
+                        .catch(error => {
+                            console.error('error', error);
+                            this.isLoading = false;
+                            this.quoteResults = {
+                                error: JSON.stringify(error),
+                                data: [],
+                                nextId: null,
+                                missingAccountId: true
+                            };
+                            if (error.status && error.status === 500) {
+                                this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
+                            }
+                        });
+                }
+
             })
             .catch(error => {
                 console.error('error', error);

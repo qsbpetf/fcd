@@ -99,6 +99,7 @@ public with sharing class PortalCommerceApiQuotes
 
     public class QuoteInfo {
         @AuraEnabled public String id;
+        @AuraEnabled public Integer version;
         @AuraEnabled public String contractType;
         @AuraEnabled public String quoteNumber;
         @AuraEnabled public String reasonCode;

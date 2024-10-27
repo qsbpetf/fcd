@@ -91,6 +91,14 @@ public with sharing class PortalCommerceApiController {
     }
 
     @AuraEnabled
+    static public PortalCommerceApiOrders.OrderInfo getOrderPreview(String opportunityId, String quoteId, Integer quoteVersion) {
+        Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
+        PortalCommerceApiOrders.OrderInfo theOrder = apiOrders.getOrderPreview(opp.Account.CV_Subsidiary__c, quoteId, quoteVersion);
+        theOrder.office = opp.Account.CV_Subsidiary__c;
+        return theOrder;
+    }
+
+    @AuraEnabled
     static public PortalCommerceApiEntitlements.EntitlementDisplayInfo getEntitlementDisplayInfo(String opportunityId, String entitlementId) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiEntitlements.EntitlementDisplayInfo entitlementDisplayInfo = apiEntitlements.getEntitlementDisplayInfo(opp.Account.CV_Subsidiary__c, entitlementId);
