@@ -97,12 +97,15 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                 this.importDisabled = false;
                 this.invoiceId = this.invoice.data[0].id;
 
+                // TODO: Make this a associative array due to multiple orders may exist
                 let orderData = {
                     orderId: this.invoice.data[0].items[0].orderId,
                     orderItemIds: this.invoice.data[0].items.map(item => item.orderItemId)
                 };
                 console.log(orderData);
 
+                // This must be done to get the sales type for each order item
+                // TODO: Make sure to get all orders, may be multiple orders for one invoice
                 apexGetOrder({ opportunityId: this.recordId, orderId: orderData.orderId })
                     .then(order => {
                         console.log('order', JSON.stringify(order));
@@ -138,7 +141,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                         console.log('orderItemsMap', orderItemsMap);
 
                         this.invoice.data[0].items.forEach(item => {
-                            item.salesType = orderItemsMap[item.orderItemId].salesType;
+                            item["salesType"] = orderItemsMap[item.orderItemId]?.salesType;
                         });
 
                         console.log('invoice', this.invoice);
