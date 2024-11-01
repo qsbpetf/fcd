@@ -5,6 +5,7 @@
 public with sharing class PpcOpportunityProductMapper {
 
     private static final Map<String, String> SALE_TYPE_MAPPING = new Map<String, String> {
+        'NA' => 'Renewal (CV Owned)',
         'NEW' => 'New',
         'RENEWAL' => 'Renewal (CV Owned)',
         'RENEWAL_NEW' => 'Renewal (New to CV)',

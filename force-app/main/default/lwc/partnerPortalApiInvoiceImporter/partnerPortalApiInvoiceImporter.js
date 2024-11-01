@@ -97,46 +97,23 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                 this.importDisabled = false;
                 this.invoiceId = this.invoice.data[0].id;
 
-                // TODO: Make this a associative array due to multiple orders may exist
-                let orderData = {
-                    orderId: this.invoice.data[0].items[0].orderId,
-                    orderItemIds: this.invoice.data[0].items.map(item => item.orderItemId)
-                };
-                console.log(orderData);
+                // Extract all unique order numbers
+                let orderIds = [...new Set(this.invoice.data[0].items.map(item => item.orderId))];
+                console.log('orderIds', orderIds);
 
-                // This must be done to get the sales type for each order item
-                // TODO: Make sure to get all orders, may be multiple orders for one invoice
-                apexGetOrder({ opportunityId: this.recordId, orderId: orderData.orderId })
-                    .then(order => {
-                        console.log('order', JSON.stringify(order));
+                // Fetch all orders
+                let orderPromises = orderIds.map(orderId => apexGetOrder({ opportunityId: this.recordId, orderId: orderId }));
 
-                        if (order.missingAccountId) {
-                            this.invoiceResults = {
-                                error: JSON.stringify(order),
-                                data: [],
-                                nextId: null,
-                                missingAccountId: true
-                            };
-                            if (order.status && order.status === 500) {
-                                this.invoiceResults.error = order.body.exceptionType + ': ' + order.body.message;
-                            }
-                        }
-
-                        let orderItems = order.items.map(item => {
-                            return {
-                                orderItemId: item.orderItemId,
-                                salesType: item.processingInfo.saleTransitionType
-                            }
+                Promise.all(orderPromises)
+                    .then(orders => {
+                        let orderItemsMap = {};
+                        orders.forEach(order => {
+                            order.items.forEach(item => {
+                                orderItemsMap[item.orderItemId] = {
+                                    salesType: item.processingInfo.saleTransitionType
+                                };
+                            });
                         });
-
-                        console.log('orderItems', (orderItems));
-
-                        let orderItemsMap = order.items.reduce((acc, item) => {
-                            acc[item.orderItemId] = {
-                                salesType: item.processingInfo.saleTransitionType
-                            };
-                            return acc;
-                        }, {});
 
                         console.log('orderItemsMap', orderItemsMap);
 
@@ -173,7 +150,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                             this.invoiceResults.error = error.body.exceptionType + ': ' + error.body.message;
                         }
                         this.isLoading = false;
-                    })
+                    });
             })
             .catch(error => {
                 console.error('error', error);

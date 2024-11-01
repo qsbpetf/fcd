@@ -130,6 +130,11 @@ public with sharing class PortalCommerceApiInvoices
     public class PlanObjectInfo {
         @AuraEnabled public String type;
         @AuraEnabled public String hostingType;
+        @AuraEnabled public CycleType cycle;
+    }
+
+    public class CycleType {
+        @AuraEnabled public String interval;
     }
 
     public class PeriodInfo {
