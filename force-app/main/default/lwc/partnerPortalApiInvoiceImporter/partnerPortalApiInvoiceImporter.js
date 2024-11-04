@@ -48,7 +48,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
     }
 
     handleInvoiceUrlChange(event) {
-        this.invoiceUrl = event.target.value;
+        this.invoiceUrl = (event.target.value || '').trim();
     }
 
     handleFetchInvoice() {

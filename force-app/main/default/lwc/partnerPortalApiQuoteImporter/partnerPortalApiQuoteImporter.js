@@ -102,7 +102,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     }
 
     handleQuoteUrlChange(event) {
-        this.quoteUrl = event.target.value;
+        this.quoteUrl = (event.target.value || '').trim();
     }
 
     handleFetchQuote() {
