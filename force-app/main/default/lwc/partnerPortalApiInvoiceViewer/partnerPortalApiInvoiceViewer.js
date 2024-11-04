@@ -67,6 +67,7 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
                         'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' });
                     item.discountAmount = (item.margins && item.margins.length > 0) ? item.margins[0].amount : null;
                 });
+                totalList.data.push(invoice);
             });
             if (invoiceList.missingAccountId && (invoiceList.error === undefined || invoiceList.error === null || invoiceList.error === '')) {
                 invoiceList.error = this.errorMessage;
@@ -75,13 +76,17 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
             if (invoiceList.missingAccountId && invoiceList.error) {
                 totalList.missingAccountId = true;
             }
-            if (!invoiceList.missingAccountId && invoiceList.data.length === 0) {
-                invoiceList.error = 'No invoices found';
-                totalList.missingAccountId = true;
-            }
-            totalList.data = totalList.data.concat(invoiceList.data);
-            totalList.error = totalList.error + '; ' + invoiceList.error;
+            // if (!invoiceList.missingAccountId && invoiceList.data.length === 0) {
+            //     invoiceList.error = 'No invoices found';
+            //     totalList.missingAccountId = true;
+            // }
+            // totalList.data = totalList.data.concat(invoiceList.data);
+            totalList.error = totalList.error + (invoiceList.error ? '; ' + invoiceList.error : '');
         });
+        if (totalList.data.length === 0) {
+            totalList.error = 'No invoices found';
+            totalList.missingAccountId = true;
+        }
         return totalList;
     }
 }

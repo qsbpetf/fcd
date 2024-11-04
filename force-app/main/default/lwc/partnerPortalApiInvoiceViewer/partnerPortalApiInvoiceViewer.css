@@ -36,16 +36,28 @@ h2 {
     width: 40px;
 }
 
+.td-id {
+    width: 290px;
+}
+
+.td-pad {
+    /*padding-left: 5px;*/
+    /*padding-right: 5px;*/
+    width: 82px
+}
+
 .tr-yellow {
     background-color: #FFFFD0; /* Yellow */
 }
 
 .number {
     text-align: right;
+    width: 60px;
 }
 
 .currency {
     text-align: right;
+    width: 66px;
 }
 
 .left-pad {
