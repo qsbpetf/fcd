@@ -6,62 +6,65 @@
   @last modified by  : tatu.lappetelainen@ceili.fi
 -->
 <template>
-  <div class="slds-is-relative">
-    <template lwc:if={isFetching}>
-      <div class="eu-spinner-container">
-        <lightning-spinner variant="brand" alternative-text="Loading...">
-        </lightning-spinner>
-      </div>
-    </template>
-    <div class="slds-var-m-bottom_small eu-actions-container">
-      <lightning-button
-        aria-haspopup="dialog"
-        label="Add Opportunity Products"
-        variant="brand"
-        onclick={handleOpportunityLineItemsAdd}
-      >
-      </lightning-button>
-      <div>
-        <span class="slds-text-body_small slds-var-m-right_small">
-          {selectedRowsCount} Opportunity Product(s) selected
-        </span>
-        <lightning-button
-          aria-haspopup="dialog"
-          label="Edit Selected"
-          variant="neutral"
-          disabled={isSelectedRowsEmpty}
-          onclick={handleOpportunityLineItemsEdit}
-        ></lightning-button>
-        <lightning-button
-          aria-haspopup="dialog"
-          label="Delete Selected"
-          variant="neutral"
-          disabled={isSelectedRowsEmpty}
-          onclick={handleOpportunityLineItemsDelete}
-        ></lightning-button>
-      </div>
+    <div class="slds-is-relative">
+        <template lwc:if={isFetching}>
+            <div class="eu-spinner-container">
+                <lightning-spinner variant="brand" alternative-text="Loading...">
+                </lightning-spinner>
+            </div>
+        </template>
+
+        <div class="slds-var-m-bottom_small eu-actions-container">
+            <lightning-button
+                    aria-haspopup="dialog"
+                    label="Add Opportunity Products"
+                    variant="brand"
+                    onclick={handleOpportunityLineItemsAdd}
+            >
+            </lightning-button>
+            <div>
+                <span class="slds-text-body_small slds-var-m-right_small">
+                    {selectedRowsCount} Opportunity Product(s) selected
+                </span>
+                <lightning-button
+                        aria-haspopup="dialog"
+                        label="Edit Selected"
+                        variant="neutral"
+                        disabled={isSelectedRowsEmpty}
+                        onclick={handleOpportunityLineItemsEdit}
+                ></lightning-button>
+                <lightning-button
+                        aria-haspopup="dialog"
+                        label="Delete Selected"
+                        variant="neutral"
+                        disabled={isSelectedRowsEmpty}
+                        onclick={handleOpportunityLineItemsDelete}
+                ></lightning-button>
+            </div>
+        </div>
+
+        <template lwc:if={isOpportunityLineItemsEmpty}>
+            <p class="slds-text-body_regular slds-var-p-vertical_medium">
+                No opportunity products have been added.
+            </p>
+        </template>
+
+        <template lwc:else>
+            <c-eficode-datatable
+                    key-field="Id"
+                    class="eu-datatable"
+                    data={opportunityLineItems}
+                    columns={opportunityLineItemColumns}
+                    enable-infinite-loading="true"
+                    selected-rows={selectedRows}
+                    sorted-by={sortBy}
+                    sorted-direction={sortDirection}
+                    onrowselection={handleOpportunityLineItemsRowSelection}
+                    onloadmore={handleOpportunityLineItemsLoadMore}
+                    onsort={handleOpportunityLineItemsSort}
+                    wrap-table-header
+            >
+            </c-eficode-datatable>
+        </template>
     </div>
-    <template lwc:if={isOpportunityLineItemsEmpty}>
-      <p class="slds-text-body_regular slds-var-p-vertical_medium">
-        No opportunity products have been added.
-      </p>
-    </template>
-    <template lwc:else>
-      <c-eficode-datatable
-        key-field="Id"
-        class="eu-datatable"
-        data={opportunityLineItems}
-        columns={opportunityLineItemColumns}
-        enable-infinite-loading="true"
-        selected-rows={selectedRows}
-        sorted-by={sortBy}
-        sorted-direction={sortDirection}
-        onrowselection={handleOpportunityLineItemsRowSelection}
-        onloadmore={handleOpportunityLineItemsLoadMore}
-        onsort={handleOpportunityLineItemsSort}
-        wrap-table-header
-      >
-      </c-eficode-datatable>
-    </template>
-  </div>
 </template>
