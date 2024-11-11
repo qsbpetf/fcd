@@ -53,7 +53,7 @@ public with sharing class PpcInvoiceConverter {
         opp.Atlassian_AT_Quote_ref__c = invoiceData.invoiceNumber;
         opp.Atlassian_AT_Quote_amount__c = invoiceData.subTotal;
         opp.AT_quote_expiry__c = invoiceData.dueAt != null ? Datetime.newInstance(invoiceData.dueAt).date() : null;
-        opp.QuoteImportResult__c = String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n');
+        opp.PpcQuoteImportResult__c = (String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n')).left(32766);
         update opp;
     }
 }
