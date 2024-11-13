@@ -70,6 +70,7 @@ public with sharing class PpcOpportunityProductMapper {
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
+                log.errorLog.add('MISSING Product: ' + quoteLine.description);
             }
         }
 
@@ -82,7 +83,7 @@ public with sharing class PpcOpportunityProductMapper {
                 OpportunityLineItem oppProduct = oppProductMapper.mapQuoteLineToOpportunityLineItem(pbe, opp.Id, quoteLine, conversionFactor);
                 if (oppProduct != null) {
                     opptyProductsToInsert.add(oppProduct);
-                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + ' OLI = ' + JSON.serialize(oppProduct));
+                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + '  _____FROM: ' + quoteLine.description);
                 } else {
                     System.debug('Skipping zero unit price order line: ' + quoteLine.description);
                     log.pbeLog.add('Skipping zero unit price order line for product: ' + quoteLine.description);
@@ -142,6 +143,7 @@ public with sharing class PpcOpportunityProductMapper {
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
+                log.errorLog.add('MISSING Product: ' + invoiceLine.description);
             }
         }
 
@@ -154,7 +156,7 @@ public with sharing class PpcOpportunityProductMapper {
                 OpportunityLineItem oppProduct = oppProductMapper.mapInvoiceLineToOpportunityLineItem(pbe, opp.Id, invoiceLine, conversionFactor);
                 if (oppProduct != null) {
                     opptyProductsToInsert.add(oppProduct);
-                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + ' OLI = ' + JSON.serialize(oppProduct));
+                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + '  _____FROM: ' + invoiceLine.description);
                 } else {
                     System.debug('Skipping zero unit price order line: ' + invoiceLine.description);
                     log.pbeLog.add('Skipping zero unit price order line for product: ' + invoiceLine.description);
