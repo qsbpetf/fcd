@@ -100,7 +100,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Double subTotal;
         @AuraEnabled public Long amountExcludingTax;
         @AuraEnabled public Double amountExcludingTaxDecimal;
-        @AuraEnabled public Long tax;
+        @AuraEnabled public Decimal tax;
         @AuraEnabled public PeriodInfo period;
         @AuraEnabled public String entitlementId;
         @AuraEnabled public String entitlementNumber;

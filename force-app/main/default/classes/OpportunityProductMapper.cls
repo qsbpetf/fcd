@@ -83,7 +83,7 @@ public with sharing class OpportunityProductMapper {
                         System.debug('Found zero SEN for product: ' + orderLine.productName);
                     }
                     opptyProductsToInsert.add(oppProduct);
-                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name);
+                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name  + '  _____FROM: ' + orderLine.productName);
                 } else {
                     System.debug('Skipping zero unit price order line: ' + orderLine.productName);
                     log.pbeLog.add('Skipping zero unit price order line for product: ' + orderLine.productName);
