@@ -172,13 +172,13 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String type;
         @AuraEnabled public String reasonCode;
         @AuraEnabled public Long amount;
-        @AuraEnabled public Integer percent;
+        @AuraEnabled public Decimal percent;
     }
 
     public class AdjustmentType {
         @AuraEnabled public String type;
         @AuraEnabled public String reasonCode;
         @AuraEnabled public Long amount;
-        @AuraEnabled public Integer percent;
+        @AuraEnabled public Decimal percent;
     }
 }
