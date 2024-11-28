@@ -14,7 +14,7 @@ public with sharing class PpcOpportunityProductMapper {
         'DOWNGRADE' => 'Downgrade (Same Platform)'
     };
 
-    private static PpcOpportunityProductMapper instance;
+    @TestVisible private static PpcOpportunityProductMapper instance;
 
     public static PpcOpportunityProductMapper getInstance() {
         if (instance == null) {
@@ -192,8 +192,8 @@ public with sharing class PpcOpportunityProductMapper {
     private static List<OpportunityLineItem> mergeEqualProducts(List<OpportunityLineItem> items, OpportunityProductMapper.LogData log) {
         Map<String, OpportunityLineItem> itemsByProduct = new Map<String, OpportunityLineItem>();
         for (OpportunityLineItem item : items) {
-            if (itemsByProduct.containsKey(item.Product2Id + '-' + item.Entitlement_Number__c)) {
-                OpportunityLineItem existingItem = itemsByProduct.get(item.Product2Id + '-' + item.Entitlement_Number__c);
+            if (itemsByProduct.containsKey(item.PpcLineItemId__c)) {
+                OpportunityLineItem existingItem = itemsByProduct.get(item.PpcLineItemId__c);
 
                 if (item.Editable_Unit_List_Price_in_USD__c == 0) {
                     existingItem.User_Count__c = item.User_Count__c;
@@ -209,7 +209,7 @@ public with sharing class PpcOpportunityProductMapper {
                 existingPartnerDiscount += itemPartnerDiscount;
                 existingItem.Atlassian_Partner_Discount__c = existingPartnerDiscount;
             } else {
-                itemsByProduct.put(item.Product2Id + '-' + item.Entitlement_Number__c, item);
+                itemsByProduct.put(item.PpcLineItemId__c, item);
             }
         }
 
@@ -296,7 +296,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.Renewal__c = SALE_TYPE_MAPPING.get(quoteLine.salesType) == null
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(quoteLine.salesType);
-        oli.Atlassian_Partner_Discount__c = quoteLine.discountAmount;
+        oli.PpcLineItemId__c = quoteLine.quoteLineId;
 
         return oli;
     }
@@ -335,7 +335,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.salesType) == null
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(invoiceLine.salesType);
-        oli.Atlassian_Partner_Discount__c = invoiceLine.discountAmount;
+        oli.PpcLineItemId__c = invoiceLine.orderItemId;
 
         return oli;
     }

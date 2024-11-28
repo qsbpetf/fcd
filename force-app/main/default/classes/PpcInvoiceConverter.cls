@@ -2,7 +2,7 @@
  * Created by peterfriberg on 2024-10-15.
  */
 
-public with sharing class PpcInvoiceConverter {
+public without sharing class PpcInvoiceConverter {
 
     @AuraEnabled
     public static OpportunityProductMapper.LogData convertInvoice(String jsonText, String oppId, Boolean createProducts, Boolean mergeLineItems) {
@@ -25,9 +25,18 @@ public with sharing class PpcInvoiceConverter {
                 updateOpportunity(opp, invoiceData, log);
                 log.successLog.add('Opportunity updated successfully');
             } catch (Exception ex) {
-                String error = 'ERROR: Failed updating Opportunity/Contact: ' + ex.getMessage() + ex.getStackTraceString();
+                String error = 'ERROR: Failed updating Opportunity: ' + ex.getMessage() + ex.getStackTraceString();
                 log.errorLog.add(error);
-                System.debug(error);
+                System.debug('ERROR: ' + error);
+                try {
+                    delete oppProducts;
+                    String action = 'INFORMATION: Opportunity Line Items that were added, has now been removed!';
+                    log.errorLog.add(action);
+                }
+                catch (Exception ex2) {
+                    String message = 'ERROR: Failed removing Opportunity Line Items that were added!';
+                    log.errorLog.add(message);
+                }
             }
         }
 
@@ -50,10 +59,13 @@ public with sharing class PpcInvoiceConverter {
 
     @TestVisible
     private static void updateOpportunity(Opportunity opp, PortalCommerceApiInvoices.InvoiceInfo invoiceData, OpportunityProductMapper.LogData log) {
-        opp.Atlassian_AT_Quote_ref__c = invoiceData.invoiceNumber;
-        opp.Atlassian_AT_Quote_amount__c = invoiceData.subTotal;
-        opp.AT_quote_expiry__c = invoiceData.dueAt != null ? Datetime.newInstance(invoiceData.dueAt).date() : null;
-        opp.PpcQuoteImportResult__c = (String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n')).left(32766);
-        update opp;
+        Opportunity updatedOpp = new Opportunity(
+            Id = opp.Id,
+            Atlassian_AT_Quote_ref__c = invoiceData.invoiceNumber,
+            Atlassian_AT_Quote_amount__c = invoiceData.subTotal,
+            AT_quote_expiry__c = invoiceData.dueAt != null ? Datetime.newInstance(invoiceData.dueAt).date() : null,
+            PpcQuoteImportResult__c = (String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n')).left(32766)
+        );
+        update updatedOpp;
     }
 }

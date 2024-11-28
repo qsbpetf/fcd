@@ -2,13 +2,13 @@
  * Created by peterfriberg on 2024-09-03.
  */
 
-public with sharing class PpcQuoteConverter {
+public without sharing class PpcQuoteConverter {
 
     @AuraEnabled
     public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts, Boolean mergeLineItems) {
+        OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
         Opportunity opp = PortalQuoteConverter.getOpportunity(oppId);
         Double conversionFactor = PortalQuoteConverter.getLatestCurrencyConversionFactor(opp.CurrencyIsoCode);
-        OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
         PortalCommerceApiQuotes.QuoteInfo quoteData = (PortalCommerceApiQuotes.QuoteInfo) JSON.deserialize(jsonText, PortalCommerceApiQuotes.QuoteInfo.class);
         System.debug('QUOTE IN JSON:\n' + JSON.serializePretty(quoteData));
 
@@ -25,9 +25,18 @@ public with sharing class PpcQuoteConverter {
                 updateOpportunity(opp, quoteData, log);
                 log.successLog.add('Opportunity updated successfully');
             } catch (Exception ex) {
-                String error = 'ERROR: Failed updating Opportunity/Contact: ' + ex.getMessage() + ex.getStackTraceString();
+                String error = 'ERROR: Failed updating Opportunity: ' + ex.getMessage() + ex.getStackTraceString();
                 log.errorLog.add(error);
-                System.debug(error);
+                System.debug('ERROR: ' + error);
+                try {
+                    delete oppProducts;
+                    String action = 'INFORMATION: Opportunity Line Items that were added, has now been removed!';
+                    log.errorLog.add(action);
+                }
+                catch (Exception ex2) {
+                    String message = 'ERROR: Failed removing Opportunity Line Items that were added!';
+                    log.errorLog.add(message);
+                }
             }
         }
 
@@ -37,7 +46,8 @@ public with sharing class PpcQuoteConverter {
     @TestVisible
     private static List<OpportunityLineItem> mapProducts(
         PortalCommerceApiQuotes.QuoteInfo quoteData,
-        Opportunity opp, Double conversionFactor,
+        Opportunity opp,
+        Double conversionFactor,
         OpportunityProductMapper.LogData log,
         Boolean mergeLineItems)
     {
@@ -49,10 +59,13 @@ public with sharing class PpcQuoteConverter {
 
     @TestVisible
     private static void updateOpportunity(Opportunity opp, PortalCommerceApiQuotes.QuoteInfo quoteData, OpportunityProductMapper.LogData log) {
-        opp.Atlassian_AT_Quote_ref__c = quoteData.quoteNumber;
-        opp.Atlassian_AT_Quote_amount__c = quoteData.upcomingBills.subTotal;
-        opp.AT_quote_expiry__c = quoteData.expiresAt != null ? Datetime.newInstance(quoteData.expiresAt).date() : null;
-        opp.PpcQuoteImportResult__c = (String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n')).left(32766);
-        update opp;
+        Opportunity updatedOpp = new Opportunity(
+            Id = opp.Id,
+            Atlassian_AT_Quote_ref__c = quoteData.quoteNumber,
+            Atlassian_AT_Quote_amount__c = quoteData.upcomingBills.subTotal / 100.0,
+            AT_quote_expiry__c = quoteData.expiresAt != null ? Datetime.newInstance(quoteData.expiresAt).date() : null,
+            PpcQuoteImportResult__c = (String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n')).left(32766)
+        );
+        update updatedOpp;
     }
 }

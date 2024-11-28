@@ -113,14 +113,14 @@ private class KAMPlanCalculateSalesResultTest {
     KAMplan__c plan1 = new KAMplan__c();
     plan1.Name = 'Test Plan 1';
     plan1.Account__c = acc1.Id;
-    plan1.Plan_Year__c = '2024';
+    plan1.Plan_Year__c = String.valueOf(Date.today().addYears(1).year());
     plan1.Calculate_Account_Hierarchy__c = true;
     insert plan1;
 
     Opportunity opp1 = new Opportunity();
     opp1.Name = 'Test Opportunity';
     opp1.StageName = 'Closed Won';
-    opp1.CloseDate = Date.newInstance(2024, 1, 1);
+    opp1.CloseDate = Date.newInstance((Date.today().addYears(1).year()), 1, 1);
     opp1.Pricebook2Id = Test.getStandardPricebookId();
     opp1.AccountId = acc1.Id;
     insert opp1;
@@ -132,7 +132,7 @@ private class KAMPlanCalculateSalesResultTest {
     Opportunity opp2 = new Opportunity();
     opp2.Name = 'Test Opportunity';
     opp2.StageName = 'Closed won - awaiting approval';
-    opp2.CloseDate = Date.newInstance(2024, 1, 1);
+    opp2.CloseDate = Date.newInstance((Date.today().addYears(1).year()), 1, 1);
     opp2.Pricebook2Id = Test.getStandardPricebookId();
     opp2.AccountId = acc1.Id;
     insert opp2;
@@ -144,7 +144,7 @@ private class KAMPlanCalculateSalesResultTest {
     Opportunity opp3 = new Opportunity();
     opp3.Name = 'Test Opportunity';
     opp3.StageName = 'Explore';
-    opp3.CloseDate = Date.newInstance(2024, 1, 1);
+    opp3.CloseDate = Date.newInstance((Date.today().addYears(1).year()), 1, 1);
     opp3.Pricebook2Id = Test.getStandardPricebookId();
     opp3.AccountId = acc1.Id;
     insert opp3;
@@ -215,7 +215,7 @@ private class KAMPlanCalculateSalesResultTest {
   }
 
   static void createTestProduct(
-    ID opportunityId,
+    Id opportunityId,
     String revenueType,
     Decimal price
   ) {
@@ -251,6 +251,8 @@ private class KAMPlanCalculateSalesResultTest {
     oli.Discount__c = 0;
     oli.Quantity = 1;
     oli.Renewal__c = 'New';
+    oli.License_Start_date__c = Date.today();
+    oli.License_end_date__c = Date.today().addYears(1);
     insert oli;
   }
 }

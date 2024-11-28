@@ -98,7 +98,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                 this.invoiceId = this.invoice.data[0].id;
 
                 // Extract all unique order numbers
-                let orderIds = [...new Set(this.invoice.data[0].items.map(item => item.orderId))];
+                let orderIds = [...new Set(this.invoice.data[0].items.map(item => item.orderItemId.replace(/-\d+$/, '')))];
                 console.log('orderIds', orderIds);
 
                 // Fetch all orders
