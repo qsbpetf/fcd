@@ -297,6 +297,8 @@ public with sharing class PpcOpportunityProductMapper {
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(quoteLine.salesType);
         oli.PpcLineItemId__c = quoteLine.quoteLineId;
+        oli.AtlassianOfferingKey__c = quoteLine.offeringId;
+        oli.AtlassianOffering__r = new AtlassianOffering__c(AtlassianId__c = quoteLine.offeringId);
 
         return oli;
     }
@@ -336,6 +338,8 @@ public with sharing class PpcOpportunityProductMapper {
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(invoiceLine.salesType);
         oli.PpcLineItemId__c = invoiceLine.orderItemId;
+        oli.AtlassianOfferingKey__c = invoiceLine.offeringKey;
+        oli.AtlassianOffering__r = new AtlassianOffering__c(AtlassianId__c = invoiceLine.offeringKey);
 
         return oli;
     }

@@ -80,6 +80,8 @@
         <name>CustomMetadata</name>
     </types>
     <types>
+        <members>AtlassianOffering__c</members>
+        <members>AtlassianProduct__c</members>
         <members>InvoiceGroup__c</members>
         <members>Opportunity</members>
         <members>OpportunityLineItem</members>
@@ -103,6 +105,8 @@
         <name>CustomPermission</name>
     </types>
     <types>
+        <members>AtlassianOffering__c</members>
+        <members>AtlassianProduct__c</members>
         <members>InvoiceGroup__c</members>
         <name>CustomTab</name>
     </types>

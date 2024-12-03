@@ -92,6 +92,7 @@ public with sharing class PortalCommerceApiOrders {
 
     public class OrderItem {
         @AuraEnabled public String orderItemId;
+        @AuraEnabled public String offeringId;
         @AuraEnabled public QuoteLineItemDetailsReferenceType quoteLineItemDetailsReference;
         @AuraEnabled public ProcessingInfoType processingInfo;
     }
