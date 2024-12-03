@@ -6,44 +6,42 @@
   @last modified by  : tatu.lappetelainen@ceili.fi
 -->
 <template>
-  <div class="slds-is-relative">
-    <template lwc:if={isFetching}>
-      <div class="eu-spinner-container">
-        <lightning-spinner variant="brand" alternative-text="Loading...">
-        </lightning-spinner>
-      </div>
-    </template>
-    <template lwc:if={isSubmitting}>
-      <div class="eu-spinner-container">
-        <lightning-spinner variant="brand" alternative-text="Loading...">
-        </lightning-spinner>
-      </div>
-    </template>
-    <template lwc:if={isOpportunityLineItemsEmpty}>
-      <p class="slds-text-body_regular slds-var-p-vertical_medium">
-        No products have been added. Go
-        <lightning-button
-          onclick={handleBackClick}
-          label="back to previous"
-          variant="base"
-          class="slds-var-m-horizontal_xx-small"
-        ></lightning-button>
-        step to add products.
-      </p>
-    </template>
-    <template lwc:else>
-      <c-eficode-datatable
-        columns={opportunityLineItemColumns}
-        data={opportunityLineItems}
-        errors={opportunityLineItemErrors}
-        key-field="Id"
-        class="eu-datatable"
-        hide-checkbox-column="true"
-        suppress-bottom-bar="true"
-        onrowaction={handleOpportunityLineItemsRowAction}
-        oncellchange={handleOpportunityLineItemsCellChange}
-      >
-      </c-eficode-datatable>
-    </template>
-  </div>
+    <div class="slds-is-relative">
+        <template lwc:if={isFetching}>
+            <div class="eu-spinner-container">
+                <lightning-spinner variant="brand" alternative-text="Loading..."> </lightning-spinner>
+            </div>
+        </template>
+        <template lwc:if={isSubmitting}>
+            <div class="eu-spinner-container">
+                <lightning-spinner variant="brand" alternative-text="Loading..."> </lightning-spinner>
+            </div>
+        </template>
+        <template lwc:if={isOpportunityLineItemsEmpty}>
+            <p class="slds-text-body_regular slds-var-p-vertical_medium">
+                No products have been added. Go
+                <lightning-button
+                    onclick={handleBackClick}
+                    label="back to previous"
+                    variant="base"
+                    class="slds-var-m-horizontal_xx-small"
+                ></lightning-button>
+                step to add products.
+            </p>
+        </template>
+        <template lwc:else>
+            <c-eficode-datatable
+                columns={opportunityLineItemColumns}
+                data={opportunityLineItems}
+                errors={opportunityLineItemErrors}
+                key-field="Id"
+                class="eu-datatable"
+                hide-checkbox-column="true"
+                suppress-bottom-bar="true"
+                onrowaction={handleOpportunityLineItemsRowAction}
+                oncellchange={handleOpportunityLineItemsCellChange}
+            >
+            </c-eficode-datatable>
+        </template>
+    </div>
 </template>

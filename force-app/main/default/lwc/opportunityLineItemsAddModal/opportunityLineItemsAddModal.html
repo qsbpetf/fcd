@@ -6,72 +6,72 @@
   @last modified by  : tatu.lappetelainen@ceili.fi
 -->
 <template>
-  <lightning-modal-header
-    label="Add Opportunity Products"
-  ></lightning-modal-header>
-  <lightning-modal-body>
-    <template lwc:if={isPhase1}>
-      <c-pricebook-entry-search-form
-        opportunity-id={opportunityId}
-        opportunity-line-items={opportunityLineItems}
-        onopportunitylineitemschange={handleOpportunityLineItemsChange}
-      ></c-pricebook-entry-search-form>
-    </template>
-    <template lwc:if={isPhase2}>
-      <c-opportunity-line-items-edit-datatable
-        opportunity-id={opportunityId}
-        opportunity-line-items={opportunityLineItems}
-        opportunity-line-item-errors={opportunityLineItemErrors}
-        is-submitting={isSubmitting}
-        is-deletable
-        onopportunitylineitemschange={handleOpportunityLineItemsChange}
-        onphasechange={handlePhaseChange}
-      ></c-opportunity-line-items-edit-datatable>
-    </template>
-  </lightning-modal-body>
-  <div class="slds-modal__footer slds-grid slds-grid_align-spread">
-    <lightning-button
-      label="Cancel"
-      disabled={isSubmitting}
-      onclick={handleCancelClick}
-    ></lightning-button>
-    <lightning-progress-indicator
-      current-step={phase}
-      type="base"
-      variant="base"
-      class="eu-progress-indicator"
-    >
-      <template for:each={phases} for:item="phase">
-        <lightning-progress-step
-          key={phase.label}
-          label={phase.label}
-          value={phase.value}
-        ></lightning-progress-step>
-      </template>
-    </lightning-progress-indicator>
-    <template lwc:if={isPhase1}>
-      <lightning-button
-        label="Next"
-        variant="brand"
-        onclick={handleNextClick}
-      ></lightning-button>
-    </template>
-    <template lwc:if={isPhase2}>
-      <div>
+    <lightning-modal-header
+            label="Add Opportunity Products"
+    ></lightning-modal-header>
+    <lightning-modal-body>
+        <template lwc:if={isPhase1}>
+            <c-pricebook-entry-search-form
+                    opportunity-id={opportunityId}
+                    opportunity-line-items={opportunityLineItems}
+                    onopportunitylineitemschange={handleOpportunityLineItemsChange}
+            ></c-pricebook-entry-search-form>
+        </template>
+        <template lwc:if={isPhase2}>
+            <c-opportunity-line-items-edit-datatable
+                    opportunity-id={opportunityId}
+                    opportunity-line-items={opportunityLineItems}
+                    opportunity-line-item-errors={opportunityLineItemErrors}
+                    is-submitting={isSubmitting}
+                    is-deletable
+                    onopportunitylineitemschange={handleOpportunityLineItemsChange}
+                    onphasechange={handlePhaseChange}
+            ></c-opportunity-line-items-edit-datatable>
+        </template>
+    </lightning-modal-body>
+    <div class="slds-modal__footer slds-grid slds-grid_align-spread">
         <lightning-button
-          label="Back"
-          variant="neutral"
-          disabled={isSubmitting}
-          onclick={handleBackClick}
-          class="slds-var-m-right_small"
+                label="Cancel"
+                disabled={isSubmitting}
+                onclick={handleCancelClick}
         ></lightning-button>
-        <lightning-button
-          label="Done"
-          variant="brand"
-          disabled={isSubmitting}
-          onclick={handleSubmitClick}
-        ></lightning-button>
-      </div>
-    </template>
-  </div>
+        <lightning-progress-indicator
+                current-step={phase}
+                type="base"
+                variant="base"
+                class="eu-progress-indicator"
+        >
+            <template for:each={phases} for:item="phase">
+                <lightning-progress-step
+                        key={phase.label}
+                        label={phase.label}
+                        value={phase.value}
+                ></lightning-progress-step>
+            </template>
+        </lightning-progress-indicator>
+        <template lwc:if={isPhase1}>
+            <lightning-button
+                    label="Next"
+                    variant="brand"
+                    onclick={handleNextClick}
+            ></lightning-button>
+        </template>
+        <template lwc:if={isPhase2}>
+            <div>
+                <lightning-button
+                        label="Back"
+                        variant="neutral"
+                        disabled={isSubmitting}
+                        onclick={handleBackClick}
+                        class="slds-var-m-right_small"
+                ></lightning-button>
+                <lightning-button
+                        label="Done"
+                        variant="brand"
+                        disabled={isSubmitting}
+                        onclick={handleSubmitClick}
+                ></lightning-button>
+            </div>
+        </template>
+    </div>
 </template>
