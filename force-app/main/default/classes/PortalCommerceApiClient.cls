@@ -23,6 +23,7 @@ public with sharing class PortalCommerceApiClient {
     @TestVisible static private final String ENTITLEMENT_DISPLAY_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/display-info';
     @TestVisible static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
     @TestVisible static private final String ENTITLEMENT_PARTNER_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/partner-acquisition-info';
+    @TestVisible static private final String OFFERINGS_ENDPOINT = '/v2/products/{{PRODUCT_ID}}/offerings';
 
     @TestVisible private Map<String, String> namedCredentials = new Map<String, String> { };
 
@@ -40,6 +41,13 @@ public with sharing class PortalCommerceApiClient {
             instance.namedCredentials = PortalCommerceApiAccessMgmt.getOfficesAccess();
         }
         return instance;
+    }
+
+    public HttpResponse getOfferings(String office, String productId, Integer pageSize, String nextId) {
+        HttpRequest req = createRequestHeader(false);
+        req.setEndpoint(generateEndpoint(office, OFFERINGS_ENDPOINT.replace('{{PRODUCT_ID}}', productId), pageSize, nextId, null));
+        req.setMethod('GET');
+        return new Http().send(req);
     }
 
     public HttpResponse getProducts(String office, String invoiceGroupId, Integer pageSize, String nextId) {
