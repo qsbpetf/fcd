@@ -60,7 +60,7 @@ public class PortalInvoiceGroupSyncQueueable implements Queueable, Database.Allo
         List<InvoiceGroup__c> invoiceGroups = new List<InvoiceGroup__c>();
         for (PortalCommerceApiInvoiceGroups.InvoiceGroupInfo invoiceGroup : invoiceGroupList.data) {
             InvoiceGroup__c invGroup = new InvoiceGroup__c();
-            invGroup.Name = invoiceGroup.name;
+            invGroup.Name = invoiceGroup.name?.left(79);
             invGroup.AtlassianInvoiceGroupId__c = invoiceGroup.id;
             invGroup.Version__c = invoiceGroup.version;
             invGroup.CurrencyIsoCode = invoiceGroup.isoCurrency;

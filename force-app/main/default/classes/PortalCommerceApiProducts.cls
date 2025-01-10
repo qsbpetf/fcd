@@ -4,8 +4,8 @@
 
 public with sharing class PortalCommerceApiProducts {
 
-    static private PortalCommerceApiProducts instance;
-    static private PortalCommerceApiClient client;
+    @TestVisible static private PortalCommerceApiProducts instance;
+    @TestVisible static private PortalCommerceApiClient client;
 
     static public PortalCommerceApiProducts getInstance() {
         if (instance == null) {
@@ -13,6 +13,10 @@ public with sharing class PortalCommerceApiProducts {
             client = PortalCommerceApiClient.getInstance();
         }
         return instance;
+    }
+
+    public static void setApiClient(PortalCommerceApiClient apiClient) {
+        client = apiClient;
     }
 
     public ProductList getProducts(String office, Integer pageSize, String nextId) {
