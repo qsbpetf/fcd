@@ -1,0 +1,1061 @@
+{
+    "info": {
+        "_postman_id": "fc21f007-06ea-481c-8164-3cfef7e8e7db",
+        "name": "Commerce Cloud REST API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Products",
+            "description": "A _product_ is a container for all catalog definitions of a product that Atlassian is making available to the market.",
+            "item": [
+                {
+                    "name": "List products",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/products",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "{{status}}",
+                                    "disabled": true,
+                                    "description": "Product status(DRAFT, ACTIVE, AT_NOTICE, EXPIRED)"
+                                },
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true,
+                                    "description": "Pagination size"
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "Pagination offset cursor"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "List all products\n\nRate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get product by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/products/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 900 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get opt-out by product",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/product-ignore-rule/:productId/promotion-type/partner",
+                            "query": [
+                                {
+                                    "key": "hosting-type",
+                                    "value": "{{hosting-type}}",
+                                    "disabled": true
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "{{productId}}",
+                                    "description": "productId",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get products that opted out",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/product-ignore-rule/promotion-type/partner",
+                            "query": [
+                                {
+                                    "key": "hosting-type",
+                                    "value": "{{hosting-type}}",
+                                    "disabled": true
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Offerings",
+            "description": "An _offering_ represents a packaging of a product that'll result in an entitlement.",
+            "item": [
+                {
+                    "name": "Get offering by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v3/offerings/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 900 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get related offerings",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/offerings/:id/related/:type",
+                            "query": [
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true,
+                                    "description": "Pagination size"
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "Pagination offset cursor"
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "{{type}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get offerings by product",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/products/:productId/offerings",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "{{status}}",
+                                    "disabled": true,
+                                    "description": "offering status(DRAFT, ACTIVE, AT_NOTICE, EXPIRED)"
+                                },
+                                {
+                                    "key": "creation-type",
+                                    "value": "{{creation-type}}",
+                                    "disabled": true,
+                                    "description": "offering creation-type(DEFAULT_OFFERING, SYNTHETIC_OFFERING)"
+                                },
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true,
+                                    "description": "Pagination size"
+                                },
+                                {
+                                    "key": "hosting-type",
+                                    "value": "{{hosting-type}}",
+                                    "disabled": true,
+                                    "description": "hosting type(CLOUD, DATACENTER, SERVER)"
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "Pagination offset cursor"
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "{{productId}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "List all offerings under the provided product key\n\nRate limit: 600 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "PricingPlans",
+            "description": "_Pricing plans_ define how paid offerings are priced and charged for, and result in subscriptions.",
+            "item": [
+                {
+                    "name": "Get pricing plan by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/pricing-plans/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 900 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get pricing plans by offering",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/offerings/:offeringId/pricing-plans",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "{{status}}",
+                                    "disabled": true,
+                                    "description": "pricing plans status(ACTIVE, AT_NOTICE, EXPIRED)"
+                                },
+                                {
+                                    "key": "activation-reason-code",
+                                    "value": "{{activation-reason-code}}",
+                                    "disabled": true,
+                                    "description": "pricing plan activation-reason-code(DEFAULT_PRICING, ADVANTAGE_PRICING, EXPERIMENTAL_PRICING)"
+                                },
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true,
+                                    "description": "Pagination size"
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "Pagination offset cursor"
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "offeringId",
+                                    "value": "{{offeringId}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "List all pricing plans under the provided offering key\n\nRate limit: 600 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Invoices",
+            "description": "An _invoice_ is an itemized statement of amounts owed by a customer as a result of using one or more products.",
+            "item": [
+                {
+                    "name": "List invoices",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/invoices",
+                            "query": [
+                                {
+                                    "key": "invoice-group",
+                                    "value": "{{invoice-group}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "status-filter",
+                                    "value": "{{status-filter}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "description": "Transaction Account",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "If the query param statusFilter is not present, all invoice are listed.\nIf statusFilter=PAID (case-sensitive), only paid invoice (instant or deferred) are included.\nIf statusFilter=UNPAID (case-sensitive), only unpaid invoices (that are finalised) are included.\n\nRate limit: 3000 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get invoice by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/invoices/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "description": "Transaction Account",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Retrieve the invoice by id.\n\nIn countries like Canada, Government collects taxes at national and state level.\nTo show these different taxes, we have taxItems.\nSo Tax calculation will have multiple taxes to be considered.\n\nTax summaries can be constructed by grouping on the taxAmountLabel property.\n\ne.g. multiple tax items - Canada.\n```\n//InvoiceItem (“item1”)\n  {\n  // other invoice item properties...\n\n   taxItems: [\n      {\n        id: “taxItem1\",\n        tax: 5.00,\n        taxPercent: 10.00,\n        taxId: null,\n        taxAmountLabel: “GST”\n      },\n      {\n        id: “taxItem2\",\n        tax: 10.00,\n        taxPercent: 20.00,\n        taxId: “bc_tax_id_456”,\n        taxAmountLabel: “HST”\n      }\n    ]\n  },\n\n//InvoiceItem (“item2”)\n  {\n  // other invoice item properties...\n\n   taxItems: [\n      {\n        id: “taxItem1\",\n        tax: 3.00,\n        taxPercent: 10.00,\n        taxId: null,\n        taxAmountLabel: “GST”\n      },\n      {\n        id: “taxItem2\",\n        tax: 6.00,\n        taxPercent: 20.00,\n        taxId: “bc_tax_id_456”,\n        taxAmountLabel: “HST”\n      }\n    ]\n  }\n```\nConsumers themselves will need to calculate TaxSummary as below.\n\n```\n{\n  taxSummary[\n    {\n      id: “taxItem1”,\n      tax: 8.00,     // summed GST of both invoice items\n      taxPercent: 10.00,\n      taxId: null,\n      taxAmountLabel: “GST”\n    },\n    {\n      id: “taxItem2”,\n      tax: 16.00,     // summed HST of both invoice items\n      taxPercent: 20.00,\n      taxId: “bc_tax_id_456\",\n      taxAmountLabel: “HST”\n     }\n   ]\n  }\n```\n\n\nRate limit: 3000 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "InvoiceGroups",
+            "description": "An _invoice group_ is a container that allows you to manage invoices.",
+            "item": [
+                {
+                    "name": "Get invoice group by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/invoice-groups/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "description": "Transaction Account",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Retrieve invoice group by id\n\nRate limit: 3000 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get invoice groups for a transaction account ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/invoice-groups",
+                            "query": [
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "description": "Transaction Account",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Get the n invoice groups of the transaction account\n\nRate limit: 600 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Orders",
+            "description": "An _order_ is an entity representing a user's intent to create, amend, or delete a contract to provide the enumerated service from a billing perspective.",
+            "item": [
+                {
+                    "name": "Get order by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/orders/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get order item by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/orders/:orderId/orderItem/:orderItemId",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "orderId",
+                                    "value": "{{orderId}}",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderItemId",
+                                    "value": "{{orderItemId}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get orders for a transaction account ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/orders",
+                            "query": [
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true,
+                                    "description": "Pagination size"
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "Pagination offset cursor"
+                                },
+                                {
+                                    "key": "invoice-group",
+                                    "value": "{{invoice-group}}",
+                                    "disabled": true,
+                                    "description": "Invoice group id"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Place order v2",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/orders",
+                            "query": [
+                                {
+                                    "key": "errorResponseVersion",
+                                    "value": "{{errorResponseVersion}}",
+                                    "disabled": true
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "disabled": true
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 100 requests per minute.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get order preview for quote",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/order-intent/preview",
+                            "query": [],
+                            "variable": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 100 requests per minute.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Quotes",
+            "description": "A _quote_ is a legally non-binding offer of products or services typically sent to a customer for consideration before making a buying decision.",
+            "item": [
+                {
+                    "name": "Get quote by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/quotes/:id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Transaction-Account",
+                                "value": "{{X-Transaction-Account}}",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Quotes for a Transaction Account ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/quotes",
+                            "query": [
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "The start id of the paginated response"
+                                },
+                                {
+                                    "key": "status-filter",
+                                    "value": "{{status-filter}}",
+                                    "disabled": true,
+                                    "description": "Returns the quotes with this particular status, quotes with all status within the Transaction Account Id will be returned if this is not set. The possible values for this field are : [ DRAFT, OPEN, ACCEPTED, CANCELLED, STALE ]"
+                                },
+                                {
+                                    "key": "invoice-group",
+                                    "value": "{{invoice-group}}",
+                                    "disabled": true,
+                                    "description": "Returns the quotes having this invoice group Id, quotes with all invoice group ids within the Transaction Account Id will be returned if this is not set"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-transaction-account",
+                                "value": "{{X-transaction-account}}",
+                                "description": "The transaction account Id for which quotes are needed",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Download PDF for a Quote ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v3/quotes/:id/download",
+                            "query": [
+                                {
+                                    "key": "transactionAccountId",
+                                    "value": "{{transactionAccountId}}",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{id}}",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/pdf"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Entitlements",
+            "description": "An _entitlement_ is an instantiated offering from the product catalog.",
+            "item": [
+                {
+                    "name": "Get entitlement details by ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v2/entitlements/:entitlementId/details",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "entitlementId",
+                                    "value": "{{entitlementId}}",
+                                    "description": "Entitlement ID",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 3000 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get entitlements display info",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/entitlements/:entitlementId/display-info",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "entitlementId",
+                                    "value": "{{entitlementId}}",
+                                    "description": "Entitlement ID",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Transaction-Account",
+                                "value": "{{X-Transaction-Account}}",
+                                "disabled": true
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get entitlements for a transaction account ID",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/entitlements",
+                            "query": [
+                                {
+                                    "key": "page-size",
+                                    "value": "{{page-size}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "start-id",
+                                    "value": "{{start-id}}",
+                                    "disabled": true,
+                                    "description": "The start id of the paginated response"
+                                },
+                                {
+                                    "key": "status-filter",
+                                    "value": "{{status-filter}}",
+                                    "disabled": true,
+                                    "description": "Returns the entitlements having this status, entitlements with all status within the Transaction Account Id will be returned if this is not set. The possible values for this field are : [ ACTIVE, INACTIVE ]"
+                                },
+                                {
+                                    "key": "invoice-group",
+                                    "value": "{{invoice-group}}",
+                                    "disabled": true,
+                                    "description": "Returns the entitlements having this invoice group id, entitlements with all invoice group id within the Transaction Account Id will be returned if this is not set."
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Transaction-Account",
+                                "value": "{{X-Transaction-Account}}",
+                                "description": "The transaction account id for which the entitlements are to be fetched",
+                                "disabled": false
+                            },
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get summary of an entitlement for partners",
+                    "request": {
+                        "url": {
+                            "protocol": "{{protocol}}",
+                            "host": "{{host}}",
+                            "path": "{{basePath}}v1/entitlements/:entitlementId/partner-acquisition-info",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "key": "entitlementId",
+                                    "value": "{{entitlementId}}",
+                                    "description": "Entitlement ID",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "description": "",
+                                "disabled": false,
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "description": "Rate limit: 600 requests per minute."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "protocol",
+            "name": "Protocol",
+            "description": "The HTTP Protocol that should be used for this REST API.",
+            "type": "string",
+            "value": "https"
+        },
+        {
+            "key": "host",
+            "name": "Host",
+            "description": "The HTTP host that should be used for this REST API.",
+            "type": "string",
+            "value": "api.atlassian.com"
+        },
+        {
+            "key": "basePath",
+            "name": "Base Path",
+            "description": "The path, after the host, of the base of the REST API.",
+            "type": "string",
+            "value": "commerce/api/"
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "id": "a016879b-37f5-4288-be8e-49bab85b507e",
+    "version": 3,
+    "name": "Canatu",
+    "slug": null,
+    "currency": "USD",
+    "shipToParty": {
+        "id": "3b7404aa-1fb1-46f3-a084-cea831fb4334",
+        "version": 2,
+        "name": "Canatu Oy",
+        "postalAddress": {
+            "line1": "Tiilenlyöjänkuja 9 A",
+            "line2": null,
+            "city": "Vantaa",
+            "country": "FI",
+            "state": "18",
+            "phone": null,
+            "postcode": "01720"
+        },
+        "priceEligibility": {
+            "commercial": true
+        },
+        "taxId": "FI18860981",
+        "taxIds": [
+            {
+                "id": "FI18860981",
+                "label": "vatNumber",
+                "taxIdLabel": "VAT No.",
+                "taxIdDescription": "Value-added tax registration number",
+                "metadata": {}
+            }
+        ],
+        "createdAt": 1715598367897
+    },
+    "billToParty": null,
+    "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+    "purchaseOrder": null,
+    "active": true,
+    "memo": null,
+    "createdAt": 1715598398180,
+    "recipients": []
+}

@@ -1,0 +1,1684 @@
+{
+    "id": "c1d0848d-105a-4132-9823-3acda1ae1ed4",
+    "name": null,
+    "version": 39,
+    "contractType": "STANDARD",
+    "clonedFrom": null,
+    "number": "QT-42W-UDK-G6M-JEJ",
+    "expiresAt": 1738264759248,
+    "expiresAfterDays": 90,
+    "fromQuote": null,
+    "revision": 2,
+    "locale": "en-US",
+    "transactionAccountId": "77e4e84e-c42b-43f7-ab3d-d942d8bbc779",
+    "reasonCode": "Accepted Quote",
+    "invoiceGroupId": "ec5a63cf-0d88-4191-816a-d88eaf4bf630",
+    "status": "ACCEPTED",
+    "externalNotes": [],
+    "createdBy": {
+        "subject": "70121:127884b8-a88c-49f6-9938-40c6925b0808",
+        "subjectType": "STAFFID",
+        "isCustomerAdvocate": true,
+        "isSystemDrivenAction": false
+    },
+    "createdAt": 1730488663156,
+    "updatedBy": {
+        "subject": "712020:75f18e47-0e8d-4e69-8b24-8e1a5ae271d1",
+        "subjectType": "AAID",
+        "isCustomerAdvocate": false,
+        "isSystemDrivenAction": false
+    },
+    "updatedAt": 1730966782717,
+    "lineItems": [
+        {
+            "lineItemId": "892647cd-c88b-450e-a551-dde9bbea69d1",
+            "entitlementId": "41ac0ecd-d152-45af-910b-b4099d7ff7c1",
+            "entitlementVersion": "8",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "6dd805b4-da75-4374-a7a7-cf0b12f7ea07",
+            "pricingPlanId": "7da26482-554b-420a-b665-c422d3f419b3",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 300
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [
+                {
+                    "referenceType": "ENTITLEMENT",
+                    "entitlementId": "9ef279ef-de72-37e1-9939-78d6200091e6",
+                    "lineItemId": null,
+                    "relationshipType": "FAMILY_CONTAINER"
+                }
+            ],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-1",
+            "subscriptionId": "67223942-753c-4ad9-8364-de0434cf3c71",
+            "startsAt": {
+                "type": "TIMESTAMP",
+                "timestamp": 1731024000000
+            },
+            "billingAnchor": {
+                "type": "TIMESTAMP",
+                "timestamp": 1731024000000
+            },
+            "endsAt": {
+                "type": "TIMESTAMP",
+                "duration": null,
+                "timestamp": 1764201600000
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "TIMESTAMP",
+                    "timestamp": 1731024000000
+                },
+                "billTo": {
+                    "type": "TIMESTAMP",
+                    "duration": null,
+                    "timestamp": 1764201600000
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "a086dd39-5c4b-4e19-a80c-3413784ee557",
+            "entitlementId": "3acb82a2-c788-4a7a-a8c2-b1b76dfa47c9",
+            "entitlementVersion": "6",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "0c6683b4-4633-4673-beca-690d171de6a5",
+            "pricingPlanId": "ddf475a9-290a-4177-b2f1-2b17416fa138",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "agent",
+                    "quantity": 10
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [
+                {
+                    "referenceType": "ENTITLEMENT",
+                    "entitlementId": "9ef279ef-de72-37e1-9939-78d6200091e6",
+                    "lineItemId": null,
+                    "relationshipType": "FAMILY_CONTAINER"
+                }
+            ],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-12",
+            "subscriptionId": "c09287c5-89f3-41b6-a65d-75611bdc93e6",
+            "startsAt": {
+                "type": "TIMESTAMP",
+                "timestamp": 1731024000000
+            },
+            "billingAnchor": {
+                "type": "TIMESTAMP",
+                "timestamp": 1731024000000
+            },
+            "endsAt": {
+                "type": "TIMESTAMP",
+                "duration": null,
+                "timestamp": 1764201600000
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "TIMESTAMP",
+                    "timestamp": 1731024000000
+                },
+                "billTo": {
+                    "type": "TIMESTAMP",
+                    "duration": null,
+                    "timestamp": 1764201600000
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "2e7dcd6d-d0f1-4624-8dcf-4516c4a0bf00",
+            "entitlementId": "3bd57b4e-cd8d-352c-8fd1-76d7bfc4b91c",
+            "entitlementVersion": "4",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "87b08a8e-69a2-4fa3-b7d4-dfd37e1f5026",
+            "pricingPlanId": "2e795558-4c71-4ddb-ba03-82a4a98f4cb6",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 800
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "46b62cbb-4cfc-4e53-b461-e87a6cefc79e",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [
+                {
+                    "referenceType": "ENTITLEMENT",
+                    "entitlementId": "9031f062-da54-4923-9813-13e81b99d32a",
+                    "lineItemId": null,
+                    "relationshipType": "APP_DEPENDENCE"
+                }
+            ],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-13",
+            "subscriptionId": "3fffb0b1-550e-4e29-bcf3-f1524dd10851",
+            "startsAt": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "billingAnchor": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "endsAt": {
+                "type": "DURATION",
+                "duration": {
+                    "interval": "YEAR",
+                    "intervalCount": 1
+                },
+                "timestamp": null
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "TIMESTAMP",
+                    "timestamp": 1732717913000
+                },
+                "billTo": {
+                    "type": "DURATION",
+                    "duration": {
+                        "interval": "YEAR",
+                        "intervalCount": 1
+                    },
+                    "timestamp": null
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "5abd4d04-4fe3-47e5-a98e-7e4c960f9aa4",
+            "entitlementId": "284330cf-43a8-484a-89b5-b422c2b2a173",
+            "entitlementVersion": "9",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "93e56634-7935-44d7-ac53-f59432750a46",
+            "pricingPlanId": "c501d85e-1452-4d1f-b32e-3f0ebe267a1f",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 800
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "837cd50b-4d6f-44e7-acc0-cfe9d9f648bc",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [
+                {
+                    "referenceType": "ENTITLEMENT",
+                    "entitlementId": "9031f062-da54-4923-9813-13e81b99d32a",
+                    "lineItemId": null,
+                    "relationshipType": "APP_DEPENDENCE"
+                }
+            ],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-14",
+            "subscriptionId": "b7aa3753-64ea-4336-a81c-33b4a099a8e3",
+            "startsAt": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "billingAnchor": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "endsAt": {
+                "type": "DURATION",
+                "duration": {
+                    "interval": "YEAR",
+                    "intervalCount": 1
+                },
+                "timestamp": null
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "TIMESTAMP",
+                    "timestamp": 1732717913000
+                },
+                "billTo": {
+                    "type": "DURATION",
+                    "duration": {
+                        "interval": "YEAR",
+                        "intervalCount": 1
+                    },
+                    "timestamp": null
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "24d870c9-2b9e-4fdb-a7e7-549e8e8cbaad",
+            "entitlementId": "2eb2beb9-4af8-423a-a40c-54a1876b2f4b",
+            "entitlementVersion": "2",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "29dea911-3599-4364-88ab-efbff28cdaaf",
+            "pricingPlanId": "3acd4669-e451-4f54-989d-ef9f15b5d138",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 800
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "837cd50b-4d6f-44e7-acc0-cfe9d9f648bc",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [
+                {
+                    "referenceType": "ENTITLEMENT",
+                    "entitlementId": "9031f062-da54-4923-9813-13e81b99d32a",
+                    "lineItemId": null,
+                    "relationshipType": "APP_DEPENDENCE"
+                }
+            ],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-15",
+            "subscriptionId": "21dfb22d-271a-435a-80ce-4151d8dcd913",
+            "startsAt": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "billingAnchor": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "endsAt": {
+                "type": "DURATION",
+                "duration": {
+                    "interval": "YEAR",
+                    "intervalCount": 1
+                },
+                "timestamp": null
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "TIMESTAMP",
+                    "timestamp": 1732717913000
+                },
+                "billTo": {
+                    "type": "DURATION",
+                    "duration": {
+                        "interval": "YEAR",
+                        "intervalCount": 1
+                    },
+                    "timestamp": null
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "90ce8c7c-ef17-4c52-8945-db01b6112b5f",
+            "entitlementId": "9031f062-da54-4923-9813-13e81b99d32a",
+            "entitlementVersion": "16",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "06ef245c-5fa3-473b-8822-5e6fe072ae4b",
+            "pricingPlanId": "ef8a3865-0acd-46df-a400-e4acedf4225c",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 800
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-16",
+            "subscriptionId": "16f44982-2927-423f-849a-5d665991c9b7",
+            "startsAt": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "billingAnchor": {
+                "type": "TIMESTAMP",
+                "timestamp": 1732717913000
+            },
+            "endsAt": {
+                "type": "DURATION",
+                "duration": {
+                    "interval": "YEAR",
+                    "intervalCount": 1
+                },
+                "timestamp": null
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "TIMESTAMP",
+                    "timestamp": 1732717913000
+                },
+                "billTo": {
+                    "type": "DURATION",
+                    "duration": {
+                        "interval": "YEAR",
+                        "intervalCount": 1
+                    },
+                    "timestamp": null
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "58073cbb-eb0a-4389-89e5-755acd74da21",
+            "entitlementId": "f50cd4e5-a3de-45c2-b2d1-7abb116f1520",
+            "entitlementVersion": "5",
+            "lineItemType": "AMEND_ENTITLEMENT",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "pricingPlanId": "f439ea45-e244-4958-af39-b8c8871d793c",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 600
+                }
+            ],
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "applicationContext": {
+                            "promotionLock": true
+                        }
+                    }
+                }
+            ],
+            "relatesFromEntitlements": [],
+            "lockContext": {
+                "isPriceLocked": true,
+                "isPromotionLocked": null
+            },
+            "skipTrial": true,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-17",
+            "subscriptionId": "f5aac31d-1021-4771-8e1d-3173fd2183d0",
+            "startsAt": {
+                "type": "UPCOMING_INVOICE",
+                "timestamp": null
+            },
+            "billingAnchor": {
+                "type": "UPCOMING_INVOICE",
+                "timestamp": null
+            },
+            "endsAt": {
+                "type": "TIMESTAMP",
+                "duration": null,
+                "timestamp": 1764201600000
+            },
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": {
+                "billFrom": {
+                    "type": "UPCOMING_INVOICE",
+                    "timestamp": null
+                },
+                "billTo": {
+                    "type": "TIMESTAMP",
+                    "duration": null,
+                    "timestamp": 1764201600000
+                }
+            },
+            "metadata": {}
+        },
+        {
+            "lineItemId": "1c7422c7-4076-41f6-ad6a-05f77063f369",
+            "entitlementId": "26d901d7-3dcb-3dd1-b341-086eb79e62ff",
+            "entitlementVersion": "2",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-18",
+            "subscriptionId": null,
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "42944141-3998-4a80-bbaa-c31ff5f6bab2",
+            "entitlementId": "284330cf-43a8-484a-89b5-b422c2b2a173",
+            "entitlementVersion": "9",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-19",
+            "subscriptionId": "b7aa3753-64ea-4336-a81c-33b4a099a8e3",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "d2da71ee-d523-4d41-91b9-282d201b9f60",
+            "entitlementId": "2eb2beb9-4af8-423a-a40c-54a1876b2f4b",
+            "entitlementVersion": "2",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-2",
+            "subscriptionId": "21dfb22d-271a-435a-80ce-4151d8dcd913",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "167ed218-920f-429f-9abd-9ab53acb4acc",
+            "entitlementId": "3acb82a2-c788-4a7a-a8c2-b1b76dfa47c9",
+            "entitlementVersion": "6",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-3",
+            "subscriptionId": "c09287c5-89f3-41b6-a65d-75611bdc93e6",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "179015f9-ff36-4110-93bb-359b48006dba",
+            "entitlementId": "3bd57b4e-cd8d-352c-8fd1-76d7bfc4b91c",
+            "entitlementVersion": "4",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-4",
+            "subscriptionId": "3fffb0b1-550e-4e29-bcf3-f1524dd10851",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "0e142694-7a8d-408f-9363-9dcf612893a2",
+            "entitlementId": "41ac0ecd-d152-45af-910b-b4099d7ff7c1",
+            "entitlementVersion": "8",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-5",
+            "subscriptionId": "67223942-753c-4ad9-8364-de0434cf3c71",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "daffbf00-48a1-4826-b2b4-a13e4f7b5bbd",
+            "entitlementId": "824a5938-4558-4dc9-ad96-9d9b1cd15d74",
+            "entitlementVersion": "4",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-6",
+            "subscriptionId": null,
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "8b395ac7-9af9-4ae8-9c5a-78ff1f3232d2",
+            "entitlementId": "9031f062-da54-4923-9813-13e81b99d32a",
+            "entitlementVersion": "16",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-7",
+            "subscriptionId": "16f44982-2927-423f-849a-5d665991c9b7",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "2781057c-0b28-4b95-9686-5c1885e1f77c",
+            "entitlementId": "9da3fa64-23a5-39da-9b30-f0b210d5d968",
+            "entitlementVersion": "1",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-8",
+            "subscriptionId": null,
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "bc8baec8-2c49-4381-b86e-25c68f5a46b8",
+            "entitlementId": "9ef279ef-de72-37e1-9939-78d6200091e6",
+            "entitlementVersion": "5",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-9",
+            "subscriptionId": null,
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "459818eb-8d81-4022-ab5e-a6f3bd407084",
+            "entitlementId": "df936415-712c-4e1d-a4e4-22ae1c2361d3",
+            "entitlementVersion": "2",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-10",
+            "subscriptionId": null,
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        },
+        {
+            "lineItemId": "f73f5e64-c11a-471e-8087-4701a40a7a5f",
+            "entitlementId": "f50cd4e5-a3de-45c2-b2d1-7abb116f1520",
+            "entitlementVersion": "5",
+            "lineItemType": "ACCOUNT_MODIFICATION",
+            "offeringKey": null,
+            "pricingPlanId": null,
+            "chargeQuantities": null,
+            "promotions": [],
+            "relatesFromEntitlements": null,
+            "lockContext": null,
+            "skipTrial": null,
+            "orderItemId": "df912459-15b8-495a-afe6-8812f3063b6b-11",
+            "subscriptionId": "f5aac31d-1021-4771-8e1d-3173fd2183d0",
+            "startsAt": null,
+            "billingAnchor": null,
+            "endsAt": null,
+            "status": null,
+            "staleReason": null,
+            "cancelledReason": null,
+            "preBillingConfiguration": null,
+            "metadata": null
+        }
+    ],
+    "metadata": {
+        "quoteContact": "61c4a511567cb70070374962"
+    },
+    "finalizedAt": 1730488759248,
+    "staleReason": null,
+    "cancelledReason": null,
+    "upcomingBillsRequestedAt": 1730966650079,
+    "upcomingBillsComputedAt": 1730966652000,
+    "upcomingBills": {
+        "tax": 917766,
+        "total": 12248213,
+        "subTotal": 14948625,
+        "lines": [
+            {
+                "id": "il_tmp_1f5c7dIMDPKDwF2o86cd0c7c",
+                "quoteLineId": "2e7dcd6d-d0f1-4624-8dcf-4516c4a0bf00",
+                "description": "Comala Document Management Cloud Standard ANNUAL USD COMMERCIAL",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "87b08a8e-69a2-4fa3-b7d4-dfd37e1f5026",
+                "pricingPlanId": "2e795558-4c71-4ddb-ba03-82a4a98f4cb6",
+                "quantity": 800,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "46b62cbb-4cfc-4e53-b461-e87a6cefc79e",
+                        "amount": 0,
+                        "percent": 20,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1ffe64IMDPKDwF2o66107ae7",
+                "quoteLineId": "2e7dcd6d-d0f1-4624-8dcf-4516c4a0bf00",
+                "description": "Comala Document Management Cloud Standard ANNUAL USD COMMERCIAL",
+                "currency": "USD",
+                "total": 689678,
+                "subTotal": 797500,
+                "tax": 51678,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "87b08a8e-69a2-4fa3-b7d4-dfd37e1f5026",
+                "pricingPlanId": "2e795558-4c71-4ddb-ba03-82a4a98f4cb6",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "46b62cbb-4cfc-4e53-b461-e87a6cefc79e",
+                        "amount": 159500,
+                        "percent": 20,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 51678,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1b1fd9IMDPKDwF2o7a40d273",
+                "quoteLineId": "a086dd39-5c4b-4e19-a80c-3413784ee557",
+                "description": "Jira Service Management Monthly Standard (USD, DEFAULT, 2024)",
+                "currency": "USD",
+                "total": -4240,
+                "subTotal": -5230,
+                "tax": -318,
+                "period": {
+                    "endsAt": 1732717913000,
+                    "startsAt": 1731024000000
+                },
+                "offeringId": "396efb16-749b-41fa-9cd1-ad10cfefa1d0",
+                "pricingPlanId": "47f6675c-d4dd-4c36-adaa-9f12c5f765b0",
+                "quantity": 5,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": -1308,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": -318,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_135558IMDPKDwF2of20377e9",
+                "quoteLineId": "a086dd39-5c4b-4e19-a80c-3413784ee557",
+                "description": "Jira Service Management, Annual, Premium (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1762560000000,
+                    "startsAt": 1731024000000
+                },
+                "offeringId": "0c6683b4-4633-4673-beca-690d171de6a5",
+                "pricingPlanId": "ddf475a9-290a-4177-b2f1-2b17416fa138",
+                "quantity": 10,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1a9959IMDPKDwF2od373a056",
+                "quoteLineId": "a086dd39-5c4b-4e19-a80c-3413784ee557",
+                "description": "Jira Service Management, Annual, Premium (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 433751,
+                "subTotal": 535000,
+                "tax": 32501,
+                "period": {
+                    "endsAt": 1762560000000,
+                    "startsAt": 1731024000000
+                },
+                "offeringId": "0c6683b4-4633-4673-beca-690d171de6a5",
+                "pricingPlanId": "ddf475a9-290a-4177-b2f1-2b17416fa138",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 133750,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 32501,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_146318IMDPKDwF2odcb4d15a",
+                "quoteLineId": "a086dd39-5c4b-4e19-a80c-3413784ee557",
+                "description": "Jira Service Management, Annual, Premium (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764201600000,
+                    "startsAt": 1762560000000
+                },
+                "offeringId": "0c6683b4-4633-4673-beca-690d171de6a5",
+                "pricingPlanId": "ddf475a9-290a-4177-b2f1-2b17416fa138",
+                "quantity": 10,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 10,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_10bc1dIMDPKDwF2oe6fa0301",
+                "quoteLineId": "a086dd39-5c4b-4e19-a80c-3413784ee557",
+                "description": "Jira Service Management, Annual, Premium (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 27094,
+                "subTotal": 27849,
+                "tax": 2030,
+                "period": {
+                    "endsAt": 1764201600000,
+                    "startsAt": 1762560000000
+                },
+                "offeringId": "0c6683b4-4633-4673-beca-690d171de6a5",
+                "pricingPlanId": "ddf475a9-290a-4177-b2f1-2b17416fa138",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 2785,
+                        "percent": 10,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 2030,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1746daIMDPKDwF2oc0c72638",
+                "quoteLineId": "90ce8c7c-ef17-4c52-8945-db01b6112b5f",
+                "description": "Confluence, Annual, Premium (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "06ef245c-5fa3-473b-8822-5e6fe072ae4b",
+                "pricingPlanId": "ef8a3865-0acd-46df-a400-e4acedf4225c",
+                "quantity": 800,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1368adIMDPKDwF2o7869b8cd",
+                "quoteLineId": "90ce8c7c-ef17-4c52-8945-db01b6112b5f",
+                "description": "Confluence, Annual, Premium (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 5223257,
+                "subTotal": 6442500,
+                "tax": 391382,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "06ef245c-5fa3-473b-8822-5e6fe072ae4b",
+                "pricingPlanId": "ef8a3865-0acd-46df-a400-e4acedf4225c",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 1610625,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 391382,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_14484cIMDPKDwF2o1176bb4d",
+                "quoteLineId": "892647cd-c88b-450e-a551-dde9bbea69d1",
+                "description": "Jira, Premium, Monthly (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": -71749,
+                "subTotal": -88497,
+                "tax": -5376,
+                "period": {
+                    "endsAt": 1732717913000,
+                    "startsAt": 1731024000000
+                },
+                "offeringId": "6dd805b4-da75-4374-a7a7-cf0b12f7ea07",
+                "pricingPlanId": "e0c764fc-be1b-41fb-8832-d6f02605f53c",
+                "quantity": 113,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": -22124,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": -5376,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1924f9IMDPKDwF2of94e8102",
+                "quoteLineId": "892647cd-c88b-450e-a551-dde9bbea69d1",
+                "description": "Jira, Premium, Annual (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1762560000000,
+                    "startsAt": 1731024000000
+                },
+                "offeringId": "6dd805b4-da75-4374-a7a7-cf0b12f7ea07",
+                "pricingPlanId": "7da26482-554b-420a-b665-c422d3f419b3",
+                "quantity": 300,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_13b2c3IMDPKDwF2oe8e5bc60",
+                "quoteLineId": "892647cd-c88b-450e-a551-dde9bbea69d1",
+                "description": "Jira, Premium, Annual (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 3283538,
+                "subTotal": 4050000,
+                "tax": 246038,
+                "period": {
+                    "endsAt": 1762560000000,
+                    "startsAt": 1731024000000
+                },
+                "offeringId": "6dd805b4-da75-4374-a7a7-cf0b12f7ea07",
+                "pricingPlanId": "7da26482-554b-420a-b665-c422d3f419b3",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 1012500,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 246038,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1fc31bIMDPKDwF2oea789d38",
+                "quoteLineId": "892647cd-c88b-450e-a551-dde9bbea69d1",
+                "description": "Jira, Premium, Annual (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764201600000,
+                    "startsAt": 1762560000000
+                },
+                "offeringId": "6dd805b4-da75-4374-a7a7-cf0b12f7ea07",
+                "pricingPlanId": "7da26482-554b-420a-b665-c422d3f419b3",
+                "quantity": 300,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 10,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1cb040IMDPKDwF2oc0cbdae9",
+                "quoteLineId": "892647cd-c88b-450e-a551-dde9bbea69d1",
+                "description": "Jira, Premium, Annual (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 205109,
+                "subTotal": 210822,
+                "tax": 15369,
+                "period": {
+                    "endsAt": 1764201600000,
+                    "startsAt": 1762560000000
+                },
+                "offeringId": "6dd805b4-da75-4374-a7a7-cf0b12f7ea07",
+                "pricingPlanId": "7da26482-554b-420a-b665-c422d3f419b3",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 21082,
+                        "percent": 10,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 15369,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1ea29bIMDPKDwF2oa9daa94e",
+                "quoteLineId": "58073cbb-eb0a-4389-89e5-755acd74da21",
+                "description": "Guard, Annual, Standard (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764146846000,
+                    "startsAt": 1732610846000
+                },
+                "offeringId": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+                "pricingPlanId": "f439ea45-e244-4958-af39-b8c8871d793c",
+                "quantity": 600,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1f840eIMDPKDwF2oce4ace78",
+                "quoteLineId": "58073cbb-eb0a-4389-89e5-755acd74da21",
+                "description": "Guard, Annual, Standard (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 1718790,
+                "subTotal": 2120000,
+                "tax": 128790,
+                "period": {
+                    "endsAt": 1764146846000,
+                    "startsAt": 1732610846000
+                },
+                "offeringId": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+                "pricingPlanId": "f439ea45-e244-4958-af39-b8c8871d793c",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 530000,
+                        "percent": 25,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 128790,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_117b0cIMDPKDwF2oec1e7e59",
+                "quoteLineId": "58073cbb-eb0a-4389-89e5-755acd74da21",
+                "description": "Guard, Annual, Standard (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764201600000,
+                    "startsAt": 1764146846000
+                },
+                "offeringId": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+                "pricingPlanId": "f439ea45-e244-4958-af39-b8c8871d793c",
+                "quantity": 600,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 0,
+                        "percent": 10,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1f8acfIMDPKDwF2o6a03df68",
+                "quoteLineId": "58073cbb-eb0a-4389-89e5-755acd74da21",
+                "description": "Guard, Annual, Standard (USD, Default, 16-10-2024)",
+                "currency": "USD",
+                "total": 3581,
+                "subTotal": 3681,
+                "tax": 268,
+                "period": {
+                    "endsAt": 1764201600000,
+                    "startsAt": 1764146846000
+                },
+                "offeringId": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+                "pricingPlanId": "f439ea45-e244-4958-af39-b8c8871d793c",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "amount": 368,
+                        "percent": 10,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 268,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_19096cIMDPKDwF2o49aa542d",
+                "quoteLineId": "5abd4d04-4fe3-47e5-a98e-7e4c960f9aa4",
+                "description": "draw.io Diagrams & Whiteboards Cloud Standard ANNUAL USD COMMERCIAL CLOUD",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "93e56634-7935-44d7-ac53-f59432750a46",
+                "pricingPlanId": "c501d85e-1452-4d1f-b32e-3f0ebe267a1f",
+                "quantity": 800,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "837cd50b-4d6f-44e7-acc0-cfe9d9f648bc",
+                        "amount": 0,
+                        "percent": 20,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1a1b0fIMDPKDwF2o75b9c080",
+                "quoteLineId": "5abd4d04-4fe3-47e5-a98e-7e4c960f9aa4",
+                "description": "draw.io Diagrams & Whiteboards Cloud Standard ANNUAL USD COMMERCIAL CLOUD",
+                "currency": "USD",
+                "total": 466992,
+                "subTotal": 540000,
+                "tax": 34992,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "93e56634-7935-44d7-ac53-f59432750a46",
+                "pricingPlanId": "c501d85e-1452-4d1f-b32e-3f0ebe267a1f",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "837cd50b-4d6f-44e7-acc0-cfe9d9f648bc",
+                        "amount": 108000,
+                        "percent": 20,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 34992,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_17333dIMDPKDwF2o33b2024f",
+                "quoteLineId": "24d870c9-2b9e-4fdb-a7e7-549e8e8cbaad",
+                "description": "Scroll PDF Exporter for Confluence Cloud Standard ANNUAL USD COMMERCIAL",
+                "currency": "USD",
+                "total": 0,
+                "subTotal": 0,
+                "tax": 0,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "29dea911-3599-4364-88ab-efbff28cdaaf",
+                "pricingPlanId": "3acd4669-e451-4f54-989d-ef9f15b5d138",
+                "quantity": 800,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "837cd50b-4d6f-44e7-acc0-cfe9d9f648bc",
+                        "amount": 0,
+                        "percent": 20,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 0,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 0,
+                "accruedCharges": false,
+                "metadata": null
+            },
+            {
+                "id": "il_tmp_1b6fe1IMDPKDwF2o007f96a2",
+                "quoteLineId": "24d870c9-2b9e-4fdb-a7e7-549e8e8cbaad",
+                "description": "Scroll PDF Exporter for Confluence Cloud Standard ANNUAL USD COMMERCIAL",
+                "currency": "USD",
+                "total": 272412,
+                "subTotal": 315000,
+                "tax": 20412,
+                "period": {
+                    "endsAt": 1764253913000,
+                    "startsAt": 1732717913000
+                },
+                "offeringId": "29dea911-3599-4364-88ab-efbff28cdaaf",
+                "pricingPlanId": "3acd4669-e451-4f54-989d-ef9f15b5d138",
+                "quantity": 0,
+                "adjustments": [],
+                "margins": [
+                    {
+                        "promotionId": "837cd50b-4d6f-44e7-acc0-cfe9d9f648bc",
+                        "amount": 63000,
+                        "percent": 20,
+                        "reasonCode": "partner.discount",
+                        "type": "PARTNER_MARGIN",
+                        "promoCode": null,
+                        "blended": false,
+                        "blendedComputation": null
+                    }
+                ],
+                "taxItems": [
+                    {
+                        "tax": 20412,
+                        "taxAmountLabel": "VAT",
+                        "taxPercent": 8.1
+                    }
+                ],
+                "taxPercent": 8.1,
+                "accruedCharges": false,
+                "metadata": null
+            }
+        ]
+    },
+    "autoRefresh": null
+}

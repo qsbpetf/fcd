@@ -1,0 +1,7 @@
+{
+    "entitlementId": "a8891eaa-bc0a-3405-990b-8b4b86b60814",
+    "provisionedResource": {
+        "ari": "ari:cloud:platform::site/8993f935-f17a-4bc8-a9c3-8ebebb9e640a",
+        "name": "canatu.atlassian.net"
+    }
+}

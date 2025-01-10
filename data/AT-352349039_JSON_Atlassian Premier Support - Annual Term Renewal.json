@@ -1,0 +1,73 @@
+{
+  "orderNumber" : "AT-352349039",
+  "poNumber" : null,
+  "createdDate" : "2024-10-18T04:56:07.380-0500",
+  "dueDate" : "2025-01-16T00:00:00.000-0600",
+  "billingContact" : {
+    "companyName" : "Eficode Switzerland AG",
+    "firstName" : "Barbara",
+    "lastName" : "Gabriel",
+    "email" : "barbara.gabriel@eficode.com",
+    "phone" : "+41433363300",
+    "taxId" : "CHE 101.061.401 MWST",
+    "address" : {
+      "address1" : "Aargauerstrasse 180",
+      "address2" : null,
+      "city" : "Zürich",
+      "postalCode" : "8048",
+      "state" : "ZH",
+      "country" : "Switzerland"
+    }
+  },
+  "technicalContact" : {
+    "companyName" : "Swisscom AG",
+    "firstName" : "Evelyne",
+    "lastName" : "Birrer",
+    "email" : "evelyne.birrer@swisscom.com",
+    "phone" : ".",
+    "taxId" : null,
+    "address" : {
+      "address1" : "Waldeggstrasse 51",
+      "address2" : null,
+      "city" : "Liebefeld",
+      "postalCode" : null,
+      "state" : null,
+      "country" : "Switzerland"
+    }
+  },
+  "currency" : "USD",
+  "partnerName" : "Eficode Switzerland AG",
+  "orderItems" : [ {
+    "productName" : "Atlassian Premier Support",
+    "startDate" : "2025-01-10T00:00:00.000-0600",
+    "endDate" : "2027-01-10T00:00:00.000-0600",
+    "licensedTo" : "Swisscom AG",
+    "description" : "Atlassian Premier Support - Annual Term Renewal",
+    "edition" : null,
+    "cloudSiteHostname" : null,
+    "supportEntitlementNumber" : "SEN-10786723",
+    "saleType" : "RENEWAL",
+    "unitPrice" : 79000.00,
+    "platform" : "SERVICES",
+    "taxExempt" : false,
+    "licenseType" : "COMMERCIAL",
+    "unitCount" : 1,
+    "isTrialPeriod" : false,
+    "isUnlimitedUsers" : false,
+    "maintenanceMonths" : null,
+    "priceAdjustment" : 7900.00,
+    "upgradeCredit" : 0.00,
+    "partnerDiscountTotal" : 7900.00,
+    "loyaltyDiscountTotal" : 0,
+    "discounts" : [ {
+      "amount" : 7900.00,
+      "percentage" : 10.00,
+      "reason" : "PARTNER_DISCOUNT",
+      "type" : "EXPERT"
+    } ],
+    "total" : 71100.00
+  } ],
+  "totalExTax" : 71100.00,
+  "totalIncTax" : 76859.10,
+  "totalTax" : 5759.10
+}

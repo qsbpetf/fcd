@@ -1,0 +1,181 @@
+{
+    "id": "411fdc83-70ed-48f9-8789-ae99d4311697",
+    "version": 4,
+    "number": "IN-EU-001-007-614",
+    "invoiceGroup": "1993ef9a-8619-4bc1-9a51-24bbfe135763",
+    "memo": null,
+    "status": "PAID",
+    "createdAt": 1732018334000,
+    "updatedAt": 1732018341436,
+    "finalizedAt": 1732018336000,
+    "dueAt": 1732018335676,
+    "paidAt": 1732018338000,
+    "uncollectibleAt": null,
+    "billTo": {
+        "name": "Eficode Finland",
+        "taxId": "FI19718143",
+        "taxIds": [
+            {
+                "id": "FI19718143",
+                "label": "vatNumber",
+                "taxIdLabel": "Tax ID",
+                "taxIdDescription": "Tax identification number",
+                "metadata": {}
+            }
+        ],
+        "postalAddress": {
+            "line1": "Pohjoinen Rautatiekatu 25",
+            "line2": null,
+            "city": "Helsinki",
+            "country": "FI",
+            "state": "Uusimaa",
+            "phone": null,
+            "postcode": "00100"
+        },
+        "priceEligibility": {}
+    },
+    "shipTo": {
+        "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884",
+        "version": 2,
+        "name": "Kempower",
+        "postalAddress": {
+            "line1": "Ala-Okeroistentie 29",
+            "line2": null,
+            "city": "Lahti",
+            "country": "FI",
+            "state": "18",
+            "phone": null,
+            "postcode": "15700"
+        },
+        "priceEligibility": {
+            "commercial": true
+        },
+        "taxId": "FI28568685",
+        "taxIds": [
+            {
+                "id": "FI28568685",
+                "label": "vatNumber",
+                "taxIdLabel": "VAT No.",
+                "taxIdDescription": "Value-added tax registration number",
+                "metadata": {}
+            }
+        ],
+        "createdAt": 1719386301225,
+        "updatedAt": 1719386301301
+    },
+    "paymentMethod": "0db59869-94a0-4d92-ad09-9debb6d52b70",
+    "paymentMethodObj": {
+        "id": "0db59869-94a0-4d92-ad09-9debb6d52b70",
+        "type": "CARD",
+        "currency": "USD",
+        "createdAt": 1728302760673,
+        "updatedAt": 1730361066017,
+        "card": {
+            "brand": "visa",
+            "country": "FI",
+            "expMonth": 10,
+            "expYear": 2027,
+            "funding": "credit",
+            "last4": "1409",
+            "cardHolderName": "Tuomas Saranen",
+            "postalCode": null
+        },
+        "default": false
+    },
+    "currency": "USD",
+    "subtotal": 190,
+    "total": 142.5,
+    "tax": 0,
+    "taxIdLabel": "VAT Number",
+    "headerTaxId": "EU372001951",
+    "headerTaxIds": [
+        {
+            "headerTaxID": "EU372001951",
+            "taxIdLabel": "VAT Number"
+        }
+    ],
+    "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice to the customer's local revenue authorities. The total amount shown on this invoice is VAT exclusive",
+    "items": [
+        {
+            "id": "7d0ba129-ed5d-4149-b337-3346046a07b6",
+            "currency": "USD",
+            "description": "Jira Product Discovery (Cloud, Standard, Monthly, Default List, USD, 2023)",
+            "period": {
+                "startAt": 1731998955000,
+                "endAt": 1734590955000
+            },
+            "subtotal": 190,
+            "total": 142.5,
+            "quantity": 19,
+            "unitAmount": 0.01,
+            "adjustments": [
+                {
+                    "reason": "partner.discount",
+                    "reasonCode": "partner.discount",
+                    "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                    "type": "PARTNER_DISCOUNT",
+                    "amount": 47.5,
+                    "percent": 25,
+                    "promoCode": null
+                }
+            ],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "520832c7-5d50-47aa-a4c8-b8a38b27b0d7",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "019b529c-9c7d-434e-b157-2c28835472d3",
+            "invoiceRequestItem": 0,
+            "invoiceRequestItemId": "6cf22c89-f340-4c54-8272-15f44b2c6a83",
+            "subscriptionObj": {
+                "id": "74d012d8-0d33-482d-b367-2962e9888380",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38bd379a-d16b-4dd9-bdbf-44c240841286",
+                "type": "COMMERCIAL",
+                "sku": "jira-product-discovery-standard",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "272886de-d7df-3469-a81a-9962a5837616",
+            "entitlementNumber": "E-3ZT-P4B-FW8-DH4",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "b33ebfea-7367-40f7-a73e-d8bef7019bf1-1",
+            "offeringKey": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.94768764,
+            "exchangeRateDate": 1731888000000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "b33ebfea-7367-40f7-a73e-d8bef7019bf1",
+            "irIssuedTimestamp": 1731999012000,
+            "accruedCharges": false
+        }
+    ],
+    "dunningHistory": [],
+    "dunningStatus": null,
+    "purchaseOrderNumber": null,
+    "appliedBalance": 0,
+    "reInvoiced": null,
+    "prePaymentCreditNotesAmount": 0,
+    "userDefinedNotes": {},
+    "paymentStatus": {
+        "status": "NO_ACTION",
+        "updatedAt": 1732018338000
+    }
+}

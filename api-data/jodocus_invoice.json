@@ -1,0 +1,561 @@
+{
+    "id": "54af9e98-a0be-4c69-93d1-f9561e702f1a",
+    "version": 4,
+    "number": "IN-EU-000-928-860",
+    "invoiceGroup": "41ad2c81-c8d8-46fb-ae87-b1e7df5e0afc",
+    "memo": null,
+    "status": "PAID",
+    "createdAt": 1729302546000,
+    "updatedAt": 1729302554098,
+    "finalizedAt": 1729302549000,
+    "dueAt": 1729302548589,
+    "paidAt": 1729302551000,
+    "uncollectibleAt": null,
+    "billTo": {
+        "name": "Jodocus GmbH",
+        "taxId": "DE322394025",
+        "taxIds": [
+            {
+                "id": "DE322394025",
+                "label": "vatNumber",
+                "taxIdLabel": "Tax ID",
+                "taxIdDescription": "Tax identification number",
+                "metadata": {}
+            }
+        ],
+        "postalAddress": {
+            "line1": "Bergeshöveder Str. 64",
+            "line2": null,
+            "city": "Hörstel",
+            "country": "DE",
+            "state": "NY",
+            "phone": null,
+            "postcode": "48477"
+        },
+        "priceEligibility": {}
+    },
+    "shipTo": {
+        "id": "77e25174-c9b3-46b6-841e-bf653708cc76",
+        "version": 2,
+        "name": "ICS GmbH",
+        "postalAddress": {
+            "line1": "Schenefelder Straße 17",
+            "line2": null,
+            "city": "Wacken",
+            "country": "DE",
+            "state": "SH",
+            "phone": "0491724173223",
+            "postcode": "25596"
+        },
+        "priceEligibility": {
+            "COMMERCIAL": true
+        },
+        "taxId": "DE200448733",
+        "taxIds": [
+            {
+                "id": "DE200448733",
+                "label": "vatNumber",
+                "taxIdLabel": "VAT No.",
+                "taxIdDescription": "Value-added tax registration number",
+                "metadata": {}
+            }
+        ],
+        "createdAt": 1729043308750,
+        "updatedAt": 1729043308811
+    },
+    "paymentMethod": "94d62014-992a-46f9-85ec-81e064317f73",
+    "paymentMethodObj": {
+        "id": "94d62014-992a-46f9-85ec-81e064317f73",
+        "type": "CARD",
+        "currency": "USD",
+        "createdAt": 1725618106594,
+        "updatedAt": 1725618106594,
+        "card": {
+            "brand": "visa",
+            "country": "DE",
+            "expMonth": 9,
+            "expYear": 2027,
+            "funding": "credit",
+            "last4": "6321",
+            "cardHolderName": "Tim-Hauke Eckhardt",
+            "postalCode": null
+        },
+        "default": false
+    },
+    "currency": "USD",
+    "subtotal": 384,
+    "total": 345.6,
+    "tax": 0,
+    "taxIdLabel": "VAT Number",
+    "headerTaxId": "EU372001951",
+    "headerTaxIds": [
+        {
+            "headerTaxID": "EU372001951",
+            "taxIdLabel": "VAT Number"
+        }
+    ],
+    "additionalNotes": "Reverse charge supply: It is the responsibility of the customer to remit any VAT relating to goods or services covered by this invoice to the customer's local revenue authorities. The total amount shown on this invoice is VAT exclusive",
+    "items": [
+        {
+            "id": "0d52d1ab-37dd-4850-8dc4-35cf313ae3bc",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 30,
+            "total": 27,
+            "quantity": 1,
+            "unitAmount": 0.01,
+            "adjustments": [
+                {
+                    "reason": "partner.discount",
+                    "reasonCode": "partner.discount",
+                    "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                    "type": "PARTNER_DISCOUNT",
+                    "amount": 3,
+                    "percent": 10,
+                    "promoCode": null
+                }
+            ],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "b2ee7820-fe98-44e4-8798-19024f19ad9e",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 0,
+            "invoiceRequestItemId": "bb5301af-d281-48ad-96e6-7cfcc62bb60d",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        },
+        {
+            "id": "2e29d7e8-1811-48b1-ae39-9a825f18861a",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 0,
+            "total": 0,
+            "quantity": 0,
+            "unitAmount": 0.01,
+            "adjustments": [],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "e1f999d1-e97e-49bd-99f0-1c10525c7dd9",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 1,
+            "invoiceRequestItemId": "e03e4db7-60db-49ae-af18-45d9ab6938e7",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        },
+        {
+            "id": "09de3b94-419a-4ad3-9e97-6f219e372822",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 0,
+            "total": 0,
+            "quantity": 9,
+            "unitAmount": 0.01,
+            "adjustments": [],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "390098d3-5a53-4b3f-918e-549b5e849952",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 2,
+            "invoiceRequestItemId": "6ffdae63-8086-4040-91a0-40440c49ea0d",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        },
+        {
+            "id": "eacef909-e6f2-44ab-b8ca-a95980508635",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 0,
+            "total": 0,
+            "quantity": 0,
+            "unitAmount": 0.01,
+            "adjustments": [],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "c8f11601-6e4d-423c-ade6-80790dbea37d",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 3,
+            "invoiceRequestItemId": "466fea1a-6b84-444c-b7cf-0a2f05da219b",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        },
+        {
+            "id": "3b6c089b-c86d-420f-b0bb-3c000aef41d0",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 0,
+            "total": 0,
+            "quantity": 1,
+            "unitAmount": 0.01,
+            "adjustments": [],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "c53f9942-b79d-4164-8782-73fce2c7dc3e",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 4,
+            "invoiceRequestItemId": "8a1f9642-4ff0-40ad-9a83-988be9bce27f",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        },
+        {
+            "id": "aaae4d28-c8db-4f6a-9a2d-8887a47712dc",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 14,
+            "total": 12.6,
+            "quantity": 0,
+            "unitAmount": 0.01,
+            "adjustments": [
+                {
+                    "reason": "partner.discount",
+                    "reasonCode": "partner.discount",
+                    "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                    "type": "PARTNER_DISCOUNT",
+                    "amount": 1.4,
+                    "percent": 10,
+                    "promoCode": null
+                }
+            ],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "2f604537-351e-4d87-8208-594b4728db30",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 5,
+            "invoiceRequestItemId": "5fec85f4-14ba-4a46-acf1-6ee8ad6c31d1",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        },
+        {
+            "id": "54a20e1f-595f-4955-8fa1-4f8601a698dc",
+            "currency": "USD",
+            "description": "Guard, Monthly, Standard (USD, LEGACY, 16-10-2024)",
+            "period": {
+                "startAt": 1729289232000,
+                "endAt": 1731967632000
+            },
+            "subtotal": 340,
+            "total": 306,
+            "quantity": 85,
+            "unitAmount": 0.01,
+            "adjustments": [
+                {
+                    "reason": "partner.discount",
+                    "reasonCode": "partner.discount",
+                    "promotionId": "ee98bc94-d300-4b9d-b292-f46e12c6dacc",
+                    "type": "PARTNER_DISCOUNT",
+                    "amount": 34,
+                    "percent": 10,
+                    "promoCode": null
+                }
+            ],
+            "margins": [],
+            "taxItems": [
+                {
+                    "id": "295a433f-7f24-46b7-884d-281902471697",
+                    "tax": 0,
+                    "taxPercent": 0,
+                    "taxId": null,
+                    "taxAmountLabel": "VAT",
+                    "taxIdLabel": null
+                }
+            ],
+            "invoiceRequest": "404597ca-3b96-4de6-a891-c344a7c0ab2d",
+            "invoiceRequestItem": 6,
+            "invoiceRequestItemId": "f3b8a4a1-e848-43cd-a0d1-f2c290347388",
+            "subscriptionObj": {
+                "id": "75e8d527-3e6d-4e7c-a9f6-47ff48ab6f09",
+                "itemId": "user",
+                "chargeType": "LICENSED"
+            },
+            "planObj": {
+                "id": "38b2ecea-ce31-4966-bdeb-dde0f578b2a9",
+                "type": "COMMERCIAL",
+                "sku": "atlassian-access-standard-sku",
+                "hostingType": "CLOUD",
+                "cycle": {
+                    "interval": "MONTHLY"
+                }
+            },
+            "entitlementId": "c3a3cea2-439a-4d43-9384-33afd87e1721",
+            "entitlementNumber": "E-3WN-Z4B-RUH-X2B",
+            "relationship": {
+                "relatesToEntitlements": [],
+                "relatesFromEntitlements": []
+            },
+            "orderItemId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c-1",
+            "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0",
+            "tax": 0,
+            "taxPercent": 0,
+            "originalInvoiceReferral": null,
+            "exchangeRate": 0.92191389,
+            "exchangeRateDate": 1729209600000,
+            "proration": false,
+            "metadata": null,
+            "orderId": "7c92bcaa-0c25-4cb0-b12b-db4f835c284c",
+            "irIssuedTimestamp": 1729289236000,
+            "accruedCharges": false
+        }
+    ],
+    "dunningHistory": [],
+    "dunningStatus": null,
+    "purchaseOrderNumber": null,
+    "appliedBalance": 0,
+    "reInvoiced": null,
+    "prePaymentCreditNotesAmount": 0,
+    "userDefinedNotes": {},
+    "paymentStatus": {
+        "status": "NO_ACTION",
+        "updatedAt": 1729302551000
+    }
+}

@@ -1,0 +1,160 @@
+{
+    "entitlementId": "a8891eaa-bc0a-3405-990b-8b4b86b60814",
+    "version": 11,
+    "status": "ACTIVE",
+    "slug": "E-3ZW-YPE-ERD-VSN",
+    "offeringKey": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+    "optedQuantities": [
+        {
+            "chargeElement": "user",
+            "quantity": 100,
+            "source": "USER_OPTED"
+        }
+    ],
+    "featureVariables": {
+        "user": "100"
+    },
+    "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874",
+    "order": {
+        "id": "16659cfd-f2d9-490c-b202-193e8c9310b3",
+        "itemId": "16659cfd-f2d9-490c-b202-193e8c9310b3-1"
+    },
+    "relatesToEntitlements": [],
+    "relatesFromEntitlements": [
+        {
+            "entitlementId": "f061e83e-deb7-328d-a85f-bb80aa10c068",
+            "relationshipType": "FAMILY_CONTAINER",
+            "relationshipId": "c3758d24-c5ec-42f3-81f6-eec7a3cd9420"
+        }
+    ],
+    "createdAt": 1703081145696,
+    "updatedAt": 1723680054144,
+    "invoiceGroupId": "a016879b-37f5-4288-be8e-49bab85b507e",
+    "entitlementTemplate": {
+        "key": "63d6dd64-04f7-4a75-925f-3e2fad6e0153",
+        "version": 17,
+        "data": {
+            "auditLog": {
+                "allInclusive": false,
+                "events": []
+            },
+            "insights": {
+                "isEnabled": false
+            },
+            "ai": {
+                "available": false
+            },
+            "sandbox": {
+                "limit": 0,
+                "entitledSandbox": "none"
+            },
+            "allowlisting": {
+                "ip": 0
+            },
+            "aggregateStorage": {
+                "bytes": 250000000000,
+                "unlimited": false
+            },
+            "notifyMaintenance": false,
+            "customDomain": {
+                "self": {
+                    "limit": 0
+                },
+                "portal": {
+                    "limit": 0
+                },
+                "parent": {
+                    "limit": 0
+                }
+            },
+            "dataResidency": {
+                "realms": [
+                    "eu",
+                    "us",
+                    "au",
+                    "global",
+                    "de",
+                    "sg",
+                    "ca",
+                    "gb",
+                    "jp",
+                    "ch",
+                    "br",
+                    "in",
+                    "kr"
+                ],
+                "isDataResidencyAllowed": true
+            },
+            "automation": {
+                "executionLimit": 2000,
+                "multiProjectRules": false,
+                "automationEdition": "standard",
+                "workspaceExecutionLimit": {
+                    "limitType": "flat",
+                    "limitAmount": 1700
+                }
+            },
+            "supportEligibility": {
+                "level": "standard"
+            },
+            "proforma": {
+                "isEnabled": true
+            },
+            "adminInsight": {
+                "charts": []
+            },
+            "releaseTrack": {
+                "tracks": [
+                    "fastTrack"
+                ]
+            },
+            "fliprEnabled": false,
+            "advancedRoadmaps": false
+        }
+    },
+    "subscriptionv2": {
+        "id": "628a28c0-1dc8-409d-9c51-7a1a5838315e",
+        "orderItemId": "16659cfd-f2d9-490c-b202-193e8c9310b3-1",
+        "entitlementId": "a8891eaa-bc0a-3405-990b-8b4b86b60814",
+        "endTimestamp": 1747914364000,
+        "accountDetails": {
+            "invoiceGroupId": "a016879b-37f5-4288-be8e-49bab85b507e",
+            "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874"
+        },
+        "trial": null,
+        "billingPeriodDetails": {
+            "billingAnchorTimestamp": 1716378364000,
+            "nextBillingAnchorTimestamp": 1716378364000
+        },
+        "status": "ACTIVE",
+        "startTimestamp": null,
+        "pauseBilling": null,
+        "testFeatures": {
+            "billingClockId": null
+        },
+        "chargeDetails": {
+            "offeringId": "a70b5cbb-1ae1-4003-8f4a-9001a4a50526",
+            "pricingPlanId": "00526dea-dd4b-4108-8c96-a2915c48e883",
+            "chargeQuantities": [
+                {
+                    "chargeElement": "user",
+                    "quantity": 100,
+                    "lastUpdatedAt": null
+                }
+            ],
+            "promotionInstances": [
+                {
+                    "promotionInstanceId": "8839e39b-ed3e-40c2-a226-49c187aa2238",
+                    "promotionDefinition": {
+                        "promotionId": "eb9b3481-74a9-4978-b235-bc50c887b7f5",
+                        "promotionCode": null,
+                        "customisedValues": null
+                    }
+                }
+            ]
+        },
+        "scheduledChanges": {},
+        "subscriptionScheduled": false,
+        "subscriptionEvergreen": false
+    }
+}

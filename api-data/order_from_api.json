@@ -1,0 +1,126 @@
+{
+    "orderId": "36d3143c-9257-4e00-8153-7fd3cbf154cc",
+    "slug": "R-42W-25F-DFE-TP4",
+    "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874",
+    "invoiceGroupId": "0757cd5d-d74e-4ef4-85ea-21824915ca4f",
+    "items": [
+        {
+            "offeringId": "35b9268e-66e2-45fb-81d3-dacd1e31831a",
+            "transactionAccountId": "798870d9-acb4-4f8b-a037-937152c5e874",
+            "invoiceGroupId": "0757cd5d-d74e-4ef4-85ea-21824915ca4f",
+            "orderItemId": "36d3143c-9257-4e00-8153-7fd3cbf154cc-1",
+            "optedUsageOptions": {
+                "chargingDetails": {
+                    "chargeQuantities": [
+                        {
+                            "chargeElement": "user",
+                            "quantity": 15
+                        }
+                    ],
+                    "pricingPlanId": "a4677753-0426-454a-ab5c-6bd8726bf689"
+                },
+                "trial": {
+                    "endTimestamp": null,
+                    "behaviourAtEndOfTrial": "CONVERT_TO_PAID",
+                    "skipTrial": true,
+                    "offeringId": null,
+                    "pricingPlanId": null,
+                    "startTimestamp": null
+                },
+                "billingBehaviour": null,
+                "effectiveTime": {
+                    "startsAt": null,
+                    "endsAt": {
+                        "type": "TIMESTAMP",
+                        "endTimestamp": 1753574400000,
+                        "billingFrequencyCount": 0
+                    }
+                }
+            },
+            "type": "AMENDMENT_ORDER",
+            "processingInfo": {
+                "status": "SUCCESS",
+                "entitlement": {
+                    "id": "31812041-28aa-35e8-8974-52148291a823",
+                    "version": "19"
+                },
+                "transitionTimestamp": 1730246400000,
+                "transitionTime": "SCHEDULED",
+                "saleTransitionDetails": {
+                    "glpForLastPaidPlan": 10000,
+                    "glpForCurrentPlan": 100000,
+                    "glpForNextPlan": 150000,
+                    "glpForNextPlanLegacyPricing": null,
+                    "currentOfferingLevel": 200,
+                    "nextOfferingLevel": 200,
+                    "saleTransitionType": "UPGRADE",
+                    "lastPaidOfferingLevel": 200,
+                    "saleTransitionTime": "IMMEDIATE",
+                    "glpForAllPhases": null
+                },
+                "saleTransitionType": "UPGRADE",
+                "computedDetails": {
+                    "computedEndTimestamp": null,
+                    "offeringId": null,
+                    "usageOptions": null,
+                    "computedBillUntilTimestamp": null,
+                    "orderedPromotions": [
+                        {
+                            "promotionInstanceId": null,
+                            "promotionDefinition": {
+                                "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                                "promotionCode": null,
+                                "customisedValues": null,
+                                "promotionLock": true
+                            }
+                        }
+                    ],
+                    "removedPromotions": null,
+                    "pricingPlanTransition": null,
+                    "scheduledChanges": null
+                },
+                "accountModification": null,
+                "additionalTriggeredOrderItems": null,
+                "prorationBehaviour": "ALWAYS_INVOICE",
+                "impactedEntitlements": null
+            },
+            "billingOptions": {
+                "preBill": {
+                    "billUntil": {
+                        "type": "TIMESTAMP_REFERENCE",
+                        "duration": null,
+                        "timestamp": null,
+                        "reference": "END_TIME"
+                    }
+                }
+            },
+            "resetOptions": null,
+            "reasonCode": null,
+            "metadata": null,
+            "triggeredByOrderItem": null,
+            "promotions": [
+                {
+                    "promotionInstanceId": null,
+                    "promotionDefinition": {
+                        "promotionId": "b6e22057-e972-44bb-9b58-ea6b04645439",
+                        "promotionCode": null,
+                        "customisedValues": null,
+                        "promotionLock": true
+                    }
+                }
+            ],
+            "isImmediate": null,
+            "originalOrderItemId": null,
+            "quoteLineItemDetailsReference": {
+                "quoteId": "f772b6f0-c547-4438-9e67-a1e77d0351f1",
+                "version": 46,
+                "quoteLineItemId": "d60a9b5f-507e-4b5e-833d-d250d6724489"
+            },
+            "nextBillingAnchorTimestamp": 1726649746000,
+            "prorationBehaviour": null,
+            "relatesFromEntitlements": []
+        }
+    ],
+    "additionalTriggeredOrders": null,
+    "createdDate": 1729747843118
+}

@@ -1,0 +1,606 @@
+{
+    "data": [
+        {
+            "id": "f25f3d8f-b998-44ce-87cc-a50da306c93b",
+            "version": 2,
+            "name": "Terveystalo ",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "70680acf-46a8-4c5b-b825-6bd0285b76b3",
+                "version": 2,
+                "name": "Suomen Terveystalo Oy",
+                "postalAddress": {
+                    "line1": "Jaakonkatu 3",
+                    "line2": null,
+                    "city": "Helsinki ",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "00100"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI10938633",
+                "taxIds": [
+                    {
+                        "id": "FI10938633",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1724073664522
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "ba3757c8-6740-410e-8059-38234aca5f9c",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1724073735563,
+            "recipients": []
+        },
+        {
+            "id": "1df8183d-359e-4f5f-979f-451319994a09",
+            "version": 2,
+            "name": "Additional products",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "7228aec8-e9b2-4a15-84a9-ec11e4698a9f",
+                "version": 2,
+                "name": "Smartum Oy",
+                "postalAddress": {
+                    "line1": "Yrjönkatu 11 B",
+                    "line2": null,
+                    "city": "Helsinki ",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "00120"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI27801019",
+                "taxIds": [
+                    {
+                        "id": "FI27801019",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1723718104090
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "ba3757c8-6740-410e-8059-38234aca5f9c",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1723718170597,
+            "recipients": []
+        },
+        {
+            "id": "985a5b68-d083-4e6a-bd91-620880a28d32",
+            "version": 2,
+            "name": "ict+atlassian@centervue.com",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "a0a6cea6-3e89-4c7b-83da-60da670c8dbd",
+                "version": 2,
+                "name": "Revenio Group Oyj",
+                "postalAddress": {
+                    "line1": "Äyritie 20",
+                    "line2": null,
+                    "city": "Vantaa",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "01510"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI17006257",
+                "taxIds": [
+                    {
+                        "id": "FI17006257",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1723033474066
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "ba3757c8-6740-410e-8059-38234aca5f9c",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1723703567001,
+            "recipients": []
+        },
+        {
+            "id": "1993ef9a-8619-4bc1-9a51-24bbfe135763",
+            "version": 3,
+            "name": "Additional products",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884",
+                "version": 2,
+                "name": "Kempower",
+                "postalAddress": {
+                    "line1": "Ala-Okeroistentie 29",
+                    "line2": null,
+                    "city": "Lahti",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "15700"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI28568685",
+                "taxIds": [
+                    {
+                        "id": "FI28568685",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1719386301225
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "ba3757c8-6740-410e-8059-38234aca5f9c",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1720008701888,
+            "recipients": []
+        },
+        {
+            "id": "d77361a0-2760-4aec-af59-08d80d9c912c",
+            "version": 3,
+            "name": "Additional products",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "fcf3d865-3dbf-40a4-b1d0-a06b63272884",
+                "version": 2,
+                "name": "Kempower",
+                "postalAddress": {
+                    "line1": "Ala-Okeroistentie 29",
+                    "line2": null,
+                    "city": "Lahti",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "15700"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI28568685",
+                "taxIds": [
+                    {
+                        "id": "FI28568685",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1719386301225
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1719386380757,
+            "recipients": []
+        },
+        {
+            "id": "7e2892ed-2a64-45e0-812a-599853660501",
+            "version": 3,
+            "name": "Management Events",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "41764675-ba7d-4e50-95a2-4013bc0a3365",
+                "version": 3,
+                "name": "Management Events",
+                "postalAddress": {
+                    "line1": "Itämerenkatu 23",
+                    "line2": null,
+                    "city": "Helsinki",
+                    "country": "FI",
+                    "state": "05",
+                    "phone": null,
+                    "postcode": "00180"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI10157300",
+                "taxIds": [
+                    {
+                        "id": "FI10157300",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1719234105223
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1719234105350,
+            "recipients": []
+        },
+        {
+            "id": "3d8a801a-d719-41dc-9753-3692ecbab96f",
+            "version": 2,
+            "name": "Crayon - alexela.atlassian.net",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "99c2b0d6-29ff-4698-932e-d849317349d5",
+                "version": 2,
+                "name": "Crayon Estonia ",
+                "postalAddress": {
+                    "line1": " Tartu mnt 82",
+                    "line2": null,
+                    "city": "Tallinn",
+                    "country": "EE",
+                    "state": "37",
+                    "phone": null,
+                    "postcode": "10112"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": null,
+                "taxIds": [],
+                "createdAt": 1718362337760
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1718362431183,
+            "recipients": []
+        },
+        {
+            "id": "467334f8-a46f-486e-96fc-b1eb97f4a3d1",
+            "version": 3,
+            "name": "Accountor HR - Additional products",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "4ac2ff78-5c11-4136-901b-0581eb951cd9",
+                "version": 2,
+                "name": "Accountor HR-Solutions Oy",
+                "postalAddress": {
+                    "line1": "Hallituskatu 16 A",
+                    "line2": null,
+                    "city": "Tampere",
+                    "country": "FI",
+                    "state": "11",
+                    "phone": null,
+                    "postcode": "33200"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI27761782",
+                "taxIds": [
+                    {
+                        "id": "FI27761782",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1716378916006
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1716378950166,
+            "recipients": []
+        },
+        {
+            "id": "5bac01c0-eed7-485f-99c0-b37fcda9f72d",
+            "version": 2,
+            "name": "Alko - Additional products ",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "c173867a-fcf9-4127-9bc1-e46cf8fa7c48",
+                "version": 2,
+                "name": "Alko Oy",
+                "postalAddress": {
+                    "line1": "Arkadiankatu 2",
+                    "line2": null,
+                    "city": "Helsinki ",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "00100"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI15055514",
+                "taxIds": [
+                    {
+                        "id": "FI15055514",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1715666308973
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1715666336844,
+            "recipients": []
+        },
+        {
+            "id": "a016879b-37f5-4288-be8e-49bab85b507e",
+            "version": 3,
+            "name": "Canatu",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "3b7404aa-1fb1-46f3-a084-cea831fb4334",
+                "version": 2,
+                "name": "Canatu Oy",
+                "postalAddress": {
+                    "line1": "Tiilenlyöjänkuja 9 A",
+                    "line2": null,
+                    "city": "Vantaa",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "01720"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI18860981",
+                "taxIds": [
+                    {
+                        "id": "FI18860981",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1715598367897
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1715598398180,
+            "recipients": []
+        },
+        {
+            "id": "69b0a83d-c085-4d7c-bc20-c9b0f63ae884",
+            "version": 2,
+            "name": "VR - Additional products ",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "04711b98-68b2-42e6-824e-0e16d38b8793",
+                "version": 2,
+                "name": "VR-Yhtymä Oy",
+                "postalAddress": {
+                    "line1": "Radiokatu 3",
+                    "line2": null,
+                    "city": "Helsinki",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "00240"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": null,
+                "taxIds": [],
+                "createdAt": 1714713237262
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1714713275308,
+            "recipients": []
+        },
+        {
+            "id": "77c3b2ea-5ad6-49ce-8d93-fb818222ba0d",
+            "version": 3,
+            "name": "Ensto Oy - additional products ",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "cafea88b-4487-4121-ad86-e05700bf5e87",
+                "version": 4,
+                "name": "Ensto Oy",
+                "postalAddress": {
+                    "line1": "PL 77",
+                    "line2": null,
+                    "city": "Porvoo",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "6101"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI31555578",
+                "taxIds": [
+                    {
+                        "id": "FI31555578",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1712825409787
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "4295ab3b-77bb-4dbc-8159-103638af4827",
+            "purchaseOrder": {
+                "number": "Ensto JPD",
+                "oneTimeUse": false
+            },
+            "active": true,
+            "memo": null,
+            "createdAt": 1714039367747,
+            "recipients": []
+        },
+        {
+            "id": "4f5a59e0-8f47-43cb-bb6c-68ba27bf7954",
+            "version": 2,
+            "name": "FanDuel",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "29242165-da4e-4675-8081-520afecf4566",
+                "version": 1,
+                "name": "FanDuel",
+                "postalAddress": {
+                    "line1": "300 Park Avenue South",
+                    "line2": null,
+                    "city": "New York",
+                    "country": "US",
+                    "state": "NY",
+                    "phone": null,
+                    "postcode": "10022"
+                },
+                "priceEligibility": {},
+                "taxId": null,
+                "taxIds": [],
+                "createdAt": 1713176113543
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1713176113679,
+            "recipients": []
+        },
+        {
+            "id": "fae08de9-5acb-43ca-8b27-e0984bb85638",
+            "version": 2,
+            "name": "Ensto Oy - arteq.atlassian.net",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "cafea88b-4487-4121-ad86-e05700bf5e87",
+                "version": 4,
+                "name": "Ensto Oy",
+                "postalAddress": {
+                    "line1": "PL 77",
+                    "line2": null,
+                    "city": "Porvoo",
+                    "country": "FI",
+                    "state": "18",
+                    "phone": null,
+                    "postcode": "6101"
+                },
+                "priceEligibility": {
+                    "commercial": true
+                },
+                "taxId": "FI31555578",
+                "taxIds": [
+                    {
+                        "id": "FI31555578",
+                        "label": "vatNumber",
+                        "taxIdLabel": "VAT No.",
+                        "taxIdDescription": "Value-added tax registration number",
+                        "metadata": {}
+                    }
+                ],
+                "createdAt": 1712825409787
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": "20ba281c-0481-46dd-9d66-87e00290ff77",
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1712902572025,
+            "recipients": [
+                "licensesfi@eficode.com"
+            ]
+        },
+        {
+            "id": "25d2123f-c4e7-4622-8244-ea60607770ae",
+            "version": 2,
+            "name": "LN Core",
+            "slug": null,
+            "currency": "USD",
+            "shipToParty": {
+                "id": "0d969ca3-4502-4043-8681-f80175376b81",
+                "version": 1,
+                "name": "LN Core",
+                "postalAddress": {
+                    "line1": "PO Box 8808",
+                    "line2": null,
+                    "city": "Dayton",
+                    "country": "US",
+                    "state": "OH",
+                    "phone": null,
+                    "postcode": "45401"
+                },
+                "priceEligibility": {},
+                "taxId": null,
+                "taxIds": [],
+                "createdAt": 1712775377273
+            },
+            "billToParty": null,
+            "defaultPaymentMethod": null,
+            "purchaseOrder": null,
+            "active": true,
+            "memo": null,
+            "createdAt": 1712775377379,
+            "recipients": [
+                "hal.millar@eficode.com"
+            ]
+        }
+    ],
+    "nextId": null
+}
