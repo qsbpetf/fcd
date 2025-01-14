@@ -114,6 +114,10 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public String orderId;
         @AuraEnabled public String orderItemId;
         @AuraEnabled public String offeringKey;
+        @AuraEnabled public String productName;
+        @AuraEnabled public String offeringName;
+        @AuraEnabled public String offeringId;
+        @AuraEnabled public String sfProductName;
     }
 
     public class OrderDetailsType {

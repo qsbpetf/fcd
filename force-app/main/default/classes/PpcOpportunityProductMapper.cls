@@ -42,15 +42,14 @@ public with sharing class PpcOpportunityProductMapper {
         Boolean mergeLineItems)
     {
         PpcPortalProductMapper portalProductMapper = PpcPortalProductMapper.getInstance();
-        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
-
-        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
         Map<String, Product2> mappedProducts = new Map<String, Product2>();
         List<PortalCommerceApiQuotes.BillLineItem> quoteLines = new List<PortalCommerceApiQuotes.BillLineItem>();
         Set<Id> productIds = new Set<Id>();
 
+        PpcPortalProductMapper.mapProductByQuoteLineItems(quoteInfo.upcomingBills.lines);
+
         for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteInfo.upcomingBills.lines) {
-            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(quoteLine.description);
+            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(quoteLine);
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
@@ -63,22 +62,31 @@ public with sharing class PpcOpportunityProductMapper {
                         // orderLine.supportEntitlementNumber = '0';
                         System.debug('* Found zero SEN:');
                     }
-                    mappedProducts.put(quoteLine.description, mapResult.product);
+                    mappedProducts.put(quoteLine.offeringId, mapResult.product);
                     productIds.add(mapResult.product.Id);
                     quoteLines.add(quoteLine);
                 }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
-                log.errorLog.add('MISSING Product: ' + quoteLine.description);
+                log.errorLog.add('MISSING Salesforce Product for: ' + quoteLine.description + ' [' + quoteLine.offeringId + '], Using DEFAULT: ' + mapResult.product.Name);
+                log.links.add(mapResult.link);
+                productIds.add(mapResult.product.Id);
+                quoteLines.add(quoteLine);
             }
         }
 
         Map<Id, PricebookEntry> pbeByProductId = getPriceBookEntriesMappedByProductId(productIds, opp);
 
+        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
+        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
+
         for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteLines) {
-            Product2 mappedProduct = mappedProducts.get(quoteLine.description);
-            PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
+            Product2 mappedProduct = mappedProducts.get(quoteLine.offeringId);
+            PricebookEntry pbe;
+            if (mappedProduct != null) {
+                pbe = pbeByProductId?.get(mappedProduct.Id);
+            }
             if (pbe != null) {
                 OpportunityLineItem oppProduct = oppProductMapper.mapQuoteLineToOpportunityLineItem(pbe, opp.Id, quoteLine, conversionFactor);
                 if (oppProduct != null) {
@@ -90,8 +98,8 @@ public with sharing class PpcOpportunityProductMapper {
                 }
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
-                log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
-                log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                log.pbeLog.add('MISSING PricebookEntry for product: ' /* + mappedProduct.Name */ + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                log.errorLog.add('MISSING PricebookEntry for product: ' /* + mappedProduct.Name */ + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
             }
         }
 
@@ -108,6 +116,17 @@ public with sharing class PpcOpportunityProductMapper {
         return opptyProductsToInsert;
     }
 
+    /**
+     * Maps products from an invoice to OpportunityLineItems
+     *
+     * @param invoiceInfo - InvoiceInfo object from the API
+     * @param opp - Opportunity to map the products to
+     * @param conversionFactor - Currency conversion factor
+     * @param log - LogData object to store logs
+     * @param mergeLineItems - Merge equal products into one OpportunityLineItem
+     *
+     * @return List of OpportunityLineItems
+     */
     public List<OpportunityLineItem> mapProducts(
         PortalCommerceApiInvoices.InvoiceInfo invoiceInfo,
         Opportunity opp, Double conversionFactor,
@@ -115,15 +134,14 @@ public with sharing class PpcOpportunityProductMapper {
         Boolean mergeLineItems)
     {
         PpcPortalProductMapper portalProductMapper = PpcPortalProductMapper.getInstance();
-        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
-
-        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
         Map<String, Product2> mappedProducts = new Map<String, Product2>();
         List<PortalCommerceApiInvoices.InvoiceItem> invoiceLines = new List<PortalCommerceApiInvoices.InvoiceItem>();
         Set<Id> productIds = new Set<Id>();
 
+        PpcPortalProductMapper.mapProductByInvoiceLineItems(invoiceInfo.items);
+
         for (PortalCommerceApiInvoices.InvoiceItem invoiceLine : invoiceInfo.items) {
-            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(invoiceLine.description);
+            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(invoiceLine);
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
@@ -136,21 +154,28 @@ public with sharing class PpcOpportunityProductMapper {
                         // orderLine.supportEntitlementNumber = '0';
                         System.debug('* Found zero SEN:');
                     }
-                    mappedProducts.put(invoiceLine.description, mapResult.product);
+                    mappedProducts.put(invoiceLine.offeringKey, mapResult.product);
                     productIds.add(mapResult.product.Id);
                     invoiceLines.add(invoiceLine);
                 }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
-                log.errorLog.add('MISSING Product: ' + invoiceLine.description);
+                log.errorLog.add('MISSING Salesforce Product for: ' + invoiceLine.description + ' [' + invoiceLine.offeringKey + '], Using DEFAULT: ' + mapResult.product.Name);
+                log.links.add(mapResult.link);
+                mappedProducts.put(invoiceLine.offeringKey, mapResult.product);
+                productIds.add(mapResult.product.Id);
+                invoiceLines.add(invoiceLine);
             }
         }
 
         Map<Id, PricebookEntry> pbeByProductId = getPriceBookEntriesMappedByProductId(productIds, opp);
 
+        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
+        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
+
         for (PortalCommerceApiInvoices.InvoiceItem invoiceLine : invoiceLines) {
-            Product2 mappedProduct = mappedProducts.get(invoiceLine.description);
+            Product2 mappedProduct = mappedProducts.get(invoiceLine.offeringKey);
             PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
             if (pbe != null) {
                 OpportunityLineItem oppProduct = oppProductMapper.mapInvoiceLineToOpportunityLineItem(pbe, opp.Id, invoiceLine, conversionFactor);

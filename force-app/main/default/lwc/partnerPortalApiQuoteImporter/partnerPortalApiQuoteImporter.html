@@ -108,6 +108,8 @@
                                                     <th>&nbsp;</th>
 <!--                                                    <th class="td-pad">Id</th>-->
                                                     <th class="td-pad">Description</th>
+                                                    <th class="td-pad">Atl.Offering</th>
+                                                    <th class="td-pad">Atl.Product</th>
                                                     <th class="td-pad">Ent.name</th>
                                                     <th class="td-pad">Ent.ari</th>
                                                     <th class="td-pad">Ent.slug</th>
@@ -129,6 +131,8 @@
                                                         <td class="td-indent">&nbsp;</td>
 <!--                                                        <td class="td-pad">{li.id}</td>-->
                                                         <td class="td-pad">{li.description}</td>
+                                                        <td class="td-pad">{li.offeringName}</td>
+                                                        <td class="td-pad">{li.productName}</td>
                                                         <td class="td-pad">{li.entName}</td>
                                                         <td class="td-pad">{li.entAri}</td>
                                                         <td class="td-pad">{li.entSlug}</td>
@@ -172,8 +176,16 @@
                         </template>
                     </ul>
                 </div>
-                <div class="rounded-rect-error">
-                    <h2>Error Log</h2>
+                <div class="rounded-rect-warning">
+                    <h2>Missing Links</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.links} for:item="log">
+                            <li key={log.key}>{log.value}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect-warning">
+                    <h2>Warning Log</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.errorLog} for:item="log">
                             <li key={log.key}>{log.value}</li>

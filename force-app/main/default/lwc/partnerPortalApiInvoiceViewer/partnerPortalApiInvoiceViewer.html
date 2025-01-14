@@ -46,6 +46,9 @@
                                                 <th class="td-indent">&nbsp;</th>
                                                 <th class="td-id">Id</th>
                                                 <th>Description</th>
+                                                <th>Atlassian Offering</th>
+                                                <th>Atlassian Product</th>
+                                                <th>Salesforce Product</th>
                                                 <th class="td-pad">Starts At</th>
                                                 <th class="td-pad">Ends At</th>
                                                 <th class="number">Quantity</th>
@@ -56,10 +59,17 @@
                                             </thead>
                                             <tbody>
                                             <template for:each={inv.items} for:item="li">
-                                                <tr key={li.id}>
+                                                <tr key={li.id} class="border">
                                                     <td class="td-indent">&nbsp;</td>
                                                     <td>{li.id}</td>
                                                     <td>{li.description}</td>
+                                                    <td>
+                                                        <a href={li.offeringId} target="_blank" rel="noopener noreferrer">
+                                                            {li.offeringName}
+                                                        </a>
+                                                    </td>
+                                                    <td>{li.productName}</td>
+                                                    <td>{li.sfProductName}</td>
                                                     <td class="td-pad">{li.startAtStr}</td>
                                                     <td class="td-pad">{li.endAtStr}</td>
                                                     <td class="number">{li.quantity}</td>

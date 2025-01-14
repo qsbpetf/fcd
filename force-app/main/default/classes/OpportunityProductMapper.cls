@@ -200,12 +200,14 @@ public with sharing class OpportunityProductMapper {
         @AuraEnabled public List<String> pbeLog;
         @AuraEnabled public List<String> errorLog;
         @AuraEnabled public List<String> successLog;
+        @AuraEnabled public List<String> links;
 
         public LogData() {
             this.productLog = new List<String>();
             this.pbeLog = new List<String>();
             this.errorLog = new List<String>();
             this.successLog = new List<String>();
+            this.links = new List<String>();
         }
     }
 }

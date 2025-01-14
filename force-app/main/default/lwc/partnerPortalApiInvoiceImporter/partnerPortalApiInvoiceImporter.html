@@ -154,8 +154,16 @@
                         </template>
                     </ul>
                 </div>
-                <div class="rounded-rect-error">
-                    <h2>Error Log</h2>
+                <div class="rounded-rect-warning">
+                    <h2>Missing Links</h2>
+                    <ul class="custom-lis">
+                        <template for:each={conversionResult.links} for:item="log">
+                            <li key={log.key}>{log.value}</li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="rounded-rect-warning">
+                    <h2>Warning Log</h2>
                     <ul class="custom-lis">
                         <template for:each={conversionResult.errorLog} for:item="log">
                             <li key={log.key}>{log.value}</li>

@@ -18,8 +18,8 @@
     margin: 5px;
 }
 
-.rounded-rect-error {
-    background-color: #ffb6c1; /* Light red */
+.rounded-rect-warning {
+    background-color: #FFC6B5; /* Light orange */
     border-radius: 5px;
     border: 1px solid #444444;
     padding: 10px;

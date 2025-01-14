@@ -120,6 +120,7 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String orderItemId;
         @AuraEnabled public TimeInfo startsAt;
         @AuraEnabled public TimeInfo endsAt;
+
     }
 
     public class TimeInfo {
@@ -162,6 +163,10 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public Double adjustmentAmount;
         @AuraEnabled public String salesType;
         @AuraEnabled public String offeringId;
+        @AuraEnabled public String offeringKey;
+        @AuraEnabled public String offeringName;
+        @AuraEnabled public String productName;
+        @AuraEnabled public String sfProductName;
     }
 
     public class PeriodType {

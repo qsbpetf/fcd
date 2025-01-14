@@ -26,7 +26,8 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
         errorLog: [],
         pbeLog: [],
         productLog: [],
-        successLog: []
+        successLog: [],
+        links: []
     };
 
     @track selectedItem = { id: '' }; // Used to store the clicked row data handleRowClick(event) {
@@ -76,7 +77,8 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
             errorLog: [],
             pbeLog: [],
             productLog: [],
-            successLog: []
+            successLog: [],
+            links: []
         };
         apexGetInvoice({ opportunityId: this.recordId, invoiceId: invoiceId })
             .then(result => {
@@ -307,11 +309,15 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
         let successLog = result.successLog.map((element, index) => {
             return { key: index, value: element };
         });
+        let links = result.links.map((element, index) => {
+            return { key: index, value: element };
+        });
         return {
             productLog: productLog,
             pbeLog: pbeLog,
             errorLog: errorLog,
-            successLog: successLog
+            successLog: successLog,
+            links: links
         };
     }
 }

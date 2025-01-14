@@ -36,8 +36,34 @@ public with sharing class PortalCommerceApiController {
     static public PortalCommerceApiQuotes.QuoteInfo getQuote(String opportunityId, String quoteId) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiQuotes.QuoteInfo theQuote = apiQuotes.getQuote(opp.Account.CV_Subsidiary__c, quoteId);
+        System.debug('WHAT???');
+        prepareQuoteForDisplay(theQuote.upcomingBills.lines);
         theQuote.office = opp.Account.CV_Subsidiary__c;
         return theQuote;
+    }
+
+    static private void prepareQuoteForDisplay(List<PortalCommerceApiQuotes.BillLineItem> lineItems) {
+        Set<String> offeringIds = new Set<String>();
+        for (PortalCommerceApiQuotes.BillLineItem lineItem : lineItems) {
+            offeringIds.add(lineItem.offeringId);
+        }
+
+        Map<String, AtlassianOffering__c> offeringsByKey = PpcPortalProductMapper.getOfferingsByOfferingKey(offeringIds);
+
+        for (PortalCommerceApiQuotes.BillLineItem lineItem : lineItems) {
+            System.debug('### lineItem: ' + lineItem);
+            AtlassianOffering__c offering = offeringsByKey.get(lineItem.offeringId);
+            System.debug('### Offering: '  + lineItem.offeringKey + ' : ' + offering);
+            if (offering != null) {
+                lineItem.productName = offering.AtlassianProduct__r.Name;
+                lineItem.offeringName = offering.Name;
+                lineItem.offeringKey = lineItem.offeringId;
+                lineItem.offeringId = '/lightning/r/AtlassianOffering__c/' + lineItem.offeringKey + '/view';
+                lineItem.sfProductName = String.isBlank(offering.Product__r.Name)
+                    ? '* MISSING *'
+                    : offering.Product__r.Name;
+            }
+        }
     }
 
     @AuraEnabled
@@ -71,7 +97,37 @@ public with sharing class PortalCommerceApiController {
             } while (nextId != null && calloutsLeft > 0);
         }
         System.debug('### OUT: Callouts left: ' + calloutsLeft);
+        prepareInvoicesForDisplay(allInvoices);
         return allInvoices;
+    }
+
+    static private void prepareInvoicesForDisplay(List<PortalCommerceApiInvoices.InvoiceList> allInvoices) {
+        Set<String> offeringIds = new Set<String>();
+        for (PortalCommerceApiInvoices.InvoiceList invoices : allInvoices) {
+            for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices.data) {
+                for (PortalCommerceApiInvoices.InvoiceItem item : invoice.items) {
+                    offeringIds.add(item.offeringKey);
+                }
+            }
+        }
+
+        Map<String, AtlassianOffering__c> offeringsByKey = PpcPortalProductMapper.getOfferingsByOfferingKey(offeringIds);
+
+        for (PortalCommerceApiInvoices.InvoiceList invoices : allInvoices) {
+            for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices.data) {
+                for (PortalCommerceApiInvoices.InvoiceItem item : invoice.items) {
+                    AtlassianOffering__c offering = offeringsByKey.get(item.offeringKey);
+                    if (offering != null) {
+                        item.productName = offering.AtlassianProduct__r.Name;
+                        item.offeringName = offering.Name;
+                        item.offeringId = '/lightning/r/AtlassianOffering__c/' + offering.Id + '/view';
+                        item.sfProductName = String.isBlank(offering.Product__r.Name)
+                            ? '* MISSING *'
+                            : offering.Product__r.Name;
+                    }
+                }
+            }
+        }
     }
 
     @AuraEnabled
