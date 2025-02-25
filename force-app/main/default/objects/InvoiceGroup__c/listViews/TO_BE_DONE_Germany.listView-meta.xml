@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TO_BE_DONE_Germany</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>ShipToPartyName__c</columns>
+    <columns>ShipToPartyVatTaxId__c</columns>
+    <columns>CV_Subsidiary__c</columns>
+    <columns>CURRENCY_ISO_CODE</columns>
+    <columns>Slug__c</columns>
+    <columns>AtlassianInvoiceGroupId__c</columns>
+    <columns>Version__c</columns>
+    <columns>Active__c</columns>
+    <columns>CreatedAt__c</columns>
+    <columns>LastSynchronized__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Account__c</field>
+        <operation>equals</operation>
+    </filters>
+    <filters>
+        <field>NAME</field>
+        <operation>notContain</operation>
+        <value>zzz-</value>
+    </filters>
+    <filters>
+        <field>CV_Subsidiary__c</field>
+        <operation>equals</operation>
+        <value>DE</value>
+    </filters>
+    <label>TO BE DONE - Germany</label>
+</ListView>

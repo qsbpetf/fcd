@@ -217,8 +217,8 @@ public with sharing class PpcOpportunityProductMapper {
     private static List<OpportunityLineItem> mergeEqualProducts(List<OpportunityLineItem> items, OpportunityProductMapper.LogData log) {
         Map<String, OpportunityLineItem> itemsByProduct = new Map<String, OpportunityLineItem>();
         for (OpportunityLineItem item : items) {
-            if (itemsByProduct.containsKey(item.PpcLineItemId__c)) {
-                OpportunityLineItem existingItem = itemsByProduct.get(item.PpcLineItemId__c);
+            if (itemsByProduct.containsKey(item.AtlassianOfferingKey__c)) {
+                OpportunityLineItem existingItem = itemsByProduct.get(item.AtlassianOfferingKey__c);
 
                 if (item.Editable_Unit_List_Price_in_USD__c == 0) {
                     existingItem.User_Count__c = item.User_Count__c;
@@ -234,7 +234,7 @@ public with sharing class PpcOpportunityProductMapper {
                 existingPartnerDiscount += itemPartnerDiscount;
                 existingItem.Atlassian_Partner_Discount__c = existingPartnerDiscount;
             } else {
-                itemsByProduct.put(item.PpcLineItemId__c, item);
+                itemsByProduct.put(item.AtlassianOfferingKey__c, item);
             }
         }
 
