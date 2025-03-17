@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Batch Job Monitor for PPC Invoice Importer Batch Job</description>
+    <label>Batch Job Monitor</label>
+    <lwcComponent>batchJobMonitor</lwcComponent>
+    <motif>Custom65: Cup</motif>
+</CustomTab>

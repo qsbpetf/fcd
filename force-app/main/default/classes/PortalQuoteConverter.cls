@@ -102,6 +102,7 @@ public with sharing class PortalQuoteConverter {
         Opportunity opp = [
             SELECT
                 Id,
+                StageName,
                 AccountId,
                 Account.Name,
                 Pricebook2Id,

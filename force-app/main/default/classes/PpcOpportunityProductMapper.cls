@@ -84,6 +84,9 @@ public with sharing class PpcOpportunityProductMapper {
         for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteLines) {
             Product2 mappedProduct = mappedProducts.get(quoteLine.offeringId);
             PricebookEntry pbe;
+            if (mappedProduct == null) {
+                mappedProduct = portalProductMapper.defaultCloudProduct;
+            }
             if (mappedProduct != null) {
                 pbe = pbeByProductId?.get(mappedProduct.Id);
             }
@@ -220,19 +223,27 @@ public with sharing class PpcOpportunityProductMapper {
             if (itemsByProduct.containsKey(item.AtlassianOfferingKey__c)) {
                 OpportunityLineItem existingItem = itemsByProduct.get(item.AtlassianOfferingKey__c);
 
-                if (item.Editable_Unit_List_Price_in_USD__c == 0) {
-                    existingItem.User_Count__c = item.User_Count__c;
-                }
+//                if (item.Editable_Unit_List_Price_in_USD__c == 0) {
+//                    existingItem.User_Count__c = item.User_Count__c;
+//                }
 
                 System.debug(existingItem.Editable_Unit_List_Price_in_USD__c + ' + ' + item.Editable_Unit_List_Price_in_USD__c);
                 System.debug(existingItem.Editable_Cost_Price_in_Dollars__c + ' + ' + item.Editable_Cost_Price_in_Dollars__c);
 
                 existingItem.Editable_Unit_List_Price_in_USD__c += item.Editable_Unit_List_Price_in_USD__c;
                 existingItem.Editable_Cost_Price_in_Dollars__c += item.Editable_Cost_Price_in_Dollars__c;
+
                 Double existingPartnerDiscount = (existingItem.Atlassian_Partner_Discount__c == null) ? 0.0 : existingItem.Atlassian_Partner_Discount__c;
                 Double itemPartnerDiscount = (item.Atlassian_Partner_Discount__c == null) ? 0.0 : item.Atlassian_Partner_Discount__c;
                 existingPartnerDiscount += itemPartnerDiscount;
                 existingItem.Atlassian_Partner_Discount__c = existingPartnerDiscount;
+
+                Double existingPriceAdjustment = (existingItem.Atlassian_Price_Adjustment__c == null) ? 0.0 : existingItem.Atlassian_Price_Adjustment__c;
+                Double itemPriceAdjustment = (item.Atlassian_Price_Adjustment__c == null) ? 0.0 : item.Atlassian_Price_Adjustment__c;
+                existingPriceAdjustment += itemPriceAdjustment;
+                existingItem.Atlassian_Price_Adjustment__c = existingPriceAdjustment;
+
+                existingItem.User_Count__c += item.User_Count__c;
             } else {
                 itemsByProduct.put(item.AtlassianOfferingKey__c, item);
             }
@@ -338,6 +349,34 @@ public with sharing class PpcOpportunityProductMapper {
 //            return null;
 //        }
 
+        /*
+            item.discountAmount = (item.margins && item.margins.length > 0)
+                ? item.margins.reduce((sum, margin) => sum + margin.amount, 0)
+                : 0;
+            item.adjustmentAmount = (item.adjustments && item.adjustments.length > 0)
+                ? item.adjustments.reduce((sum, ajdjustment) => sum + ajdjustment.amount, 0)
+                : 0;
+
+         */
+
+        if (invoiceLine.adjustments != null && invoiceLine.adjustments.size() > 0) {
+            System.debug('++ Adjustments: ' + invoiceLine.adjustments);
+            invoiceLine.adjustmentAmount = 0;
+            for (PortalCommerceApiInvoices.AdjustmentType adjustment : invoiceLine.adjustments) {
+                invoiceLine.adjustmentAmount += adjustment.amount;
+                System.debug('  -- Adjustment: ' + adjustment.amount);
+            }
+        }
+
+        if (invoiceLine.margins != null && invoiceLine.margins.size() > 0) {
+            System.debug('++ Margins: ' + invoiceLine.margins);
+            invoiceLine.discountAmount = 0;
+            for (PortalCommerceApiInvoices.MarginType margin : invoiceLine.margins) {
+                invoiceLine.discountAmount += margin.amount;
+                System.debug('  -- Margin: ' + margin.amount);
+            }
+        }
+
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
         oli.OpportunityId = oppId;
@@ -359,6 +398,7 @@ public with sharing class PpcOpportunityProductMapper {
         oli.QuoteOriginalProduct__c = invoiceLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = invoiceLine.subTotal;
+        oli.Editable_Cost_Price_in_Dollars__c = invoiceLine.total;
         oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.salesType) == null
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(invoiceLine.salesType);

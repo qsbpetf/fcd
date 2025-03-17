@@ -58,7 +58,7 @@ public with sharing class PortalCommerceApiController {
                 lineItem.productName = offering.AtlassianProduct__r.Name;
                 lineItem.offeringName = offering.Name;
                 lineItem.offeringKey = lineItem.offeringId;
-                lineItem.offeringId = '/lightning/r/AtlassianOffering__c/' + lineItem.offeringKey + '/view';
+                lineItem.offeringSFUrl = '/lightning/r/AtlassianOffering__c/' + lineItem.offeringKey + '/view';
                 lineItem.sfProductName = String.isBlank(offering.Product__r.Name)
                     ? '* MISSING *'
                     : offering.Product__r.Name;
@@ -76,6 +76,8 @@ public with sharing class PortalCommerceApiController {
                 AtlassianInvoiceGroupId__c
             FROM InvoiceGroup__c
             WHERE Account__c = :accountId
+            AND Active__c = TRUE
+            ORDER BY CreatedAt__c DESC
         ]);
         List<PortalCommerceApiInvoices.InvoiceList> allInvoices = new List<PortalCommerceApiInvoices.InvoiceList>();
         Integer calloutsLeft = Limits.getLimitCallouts() - Limits.getCallouts();
@@ -97,11 +99,48 @@ public with sharing class PortalCommerceApiController {
             } while (nextId != null && calloutsLeft > 0);
         }
         System.debug('### OUT: Callouts left: ' + calloutsLeft);
-        prepareInvoicesForDisplay(allInvoices);
+        prepareInvoicesForDisplay(allInvoices, acc.CV_Subsidiary__c);
         return allInvoices;
     }
 
-    static private void prepareInvoicesForDisplay(List<PortalCommerceApiInvoices.InvoiceList> allInvoices) {
+    @AuraEnabled
+    static public List<PortalCommerceApiInvoices.InvoiceList> getPaidInvoices(String accountId) {
+        Account acc = [SELECT Id, CV_Subsidiary__c FROM Account WHERE Id = :accountId];
+        List<InvoiceGroup__c> invoiceGroups = new List<InvoiceGroup__c>([
+            SELECT
+                Id,
+                Name,
+                AtlassianInvoiceGroupId__c
+            FROM InvoiceGroup__c
+            WHERE Account__c = :accountId
+            AND Active__c = TRUE
+            ORDER BY CreatedAt__c DESC
+        ]);
+        List<PortalCommerceApiInvoices.InvoiceList> allInvoices = new List<PortalCommerceApiInvoices.InvoiceList>();
+        Integer calloutsLeft = Limits.getLimitCallouts() - Limits.getCallouts();
+        System.debug('### IN: Callouts left: ' + calloutsLeft);
+        for (InvoiceGroup__c invoiceGroup : invoiceGroups) {
+            String nextId = null;
+            calloutsLeft = Limits.getLimitCallouts() - Limits.getCallouts();
+            if (calloutsLeft <= 2) {
+                System.debug('### No callouts left. Skipping invoice group: ' + invoiceGroup.Name + ' (' + invoiceGroup.AtlassianInvoiceGroupId__c + ')');
+                break;
+            }
+            do {
+                System.debug('### Fetching invoices for invoice group: ' + invoiceGroup.Name + ' (' + invoiceGroup.AtlassianInvoiceGroupId__c + ')');
+                PortalCommerceApiInvoices.InvoiceList invoices = apiInvoices.getPaidInvoices(acc.CV_Subsidiary__c, invoiceGroup.AtlassianInvoiceGroupId__c, 50, nextId);
+                System.debug('### Fetched ' + invoices.data.size() + ' invoices of max 50. nextId = ' + invoices.nextId);
+                allInvoices.add(invoices);
+                nextId = invoices.nextId;
+                calloutsLeft--;
+            } while (nextId != null && calloutsLeft > 0);
+        }
+        System.debug('### OUT: Callouts left: ' + calloutsLeft);
+        prepareInvoicesForDisplay(allInvoices, acc.CV_Subsidiary__c);
+        return allInvoices;
+    }
+
+    static private void prepareInvoicesForDisplay(List<PortalCommerceApiInvoices.InvoiceList> allInvoices, String office) {
         Set<String> offeringIds = new Set<String>();
         for (PortalCommerceApiInvoices.InvoiceList invoices : allInvoices) {
             for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices.data) {
@@ -115,6 +154,7 @@ public with sharing class PortalCommerceApiController {
 
         for (PortalCommerceApiInvoices.InvoiceList invoices : allInvoices) {
             for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices.data) {
+                invoice.office = office;
                 for (PortalCommerceApiInvoices.InvoiceItem item : invoice.items) {
                     AtlassianOffering__c offering = offeringsByKey.get(item.offeringKey);
                     if (offering != null) {
@@ -178,5 +218,10 @@ public with sharing class PortalCommerceApiController {
     @AuraEnabled
     static public String getQuotePdfStatic(String office, String quoteId) {
         return apiQuotes.getQuotePdf(office, quoteId);
+    }
+
+    @AuraEnabled
+    static public String getInvoicePdfStatic(String office, String invoiceId) {
+        return apiInvoices.getInvoicePdf(office, invoiceId);
     }
 }

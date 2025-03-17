@@ -8,7 +8,7 @@ public with sharing class PpcPortalProductMapper {
     private final Set<String> partnerProducts = new Set<String>();    // Set of all unique partner products
     private final Set<String> salesforceProducts = new Set<String>(); // Set of all unique Salesforce products
     private final Map<String, Product2> productByNameMapping;         // Mapping from Salesforce Product Name to Product2 records
-    private final Product2 defaultCloudProduct;
+    public final Product2 defaultCloudProduct;
     private final List<ProductInfo> productInfos = new List<ProductInfo>();
 
     private static Map<String, Product2> productByOfferingId = new Map<String, Product2>();

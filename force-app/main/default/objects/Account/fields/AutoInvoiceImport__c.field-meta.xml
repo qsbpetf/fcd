@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AutoInvoiceImport__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Check this box to automatically import invoice from PPC and to create corresponding opportunity with line items from invoice with type CARD and period MONTHLY</description>
+    <inlineHelpText>Check this box to automatically import invoice from PPC and to create corresponding opportunity with line items from invoice with type CARD and period MONTHLY</inlineHelpText>
+    <label>Auto Invoice Import</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

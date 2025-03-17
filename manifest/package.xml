@@ -25,6 +25,11 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
+        <members>Account.AutoInvoiceImport__c</members>
+        <members>Opportunity.ImportedInvoiceNumber__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>PPC_TransactionAccount.CH</members>
         <members>PPC_TransactionAccount.DE</members>
         <members>PPC_TransactionAccount.DK</members>
@@ -83,7 +88,6 @@
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>InvoiceGroup__c</members>
-        <members>Opportunity</members>
         <members>OpportunityLineItem</members>
         <members>PPC_TransactionAccount__mdt</members>
         <members>PortalProductToSalesforceMapping__mdt</members>
@@ -107,6 +111,7 @@
     <types>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
+        <members>Batch_Job_Monitor</members>
         <members>InvoiceGroup__c</members>
         <name>CustomTab</name>
     </types>

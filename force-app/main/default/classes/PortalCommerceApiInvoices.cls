@@ -36,6 +36,29 @@ public with sharing class PortalCommerceApiInvoices
         return products;
     }
 
+    public InvoiceList getPaidInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+        HttpResponse response = client.getPaidInvoices(office, invoiceGroupId, pageSize, nextId);
+        if (response.getStatusCode() != 200) {
+            InvoiceList invoices = new InvoiceList();
+            invoices.error = response.getBody();
+            invoices.missingAccountId = true;
+            return invoices;
+        }
+        InvoiceList products = (InvoiceList) JSON.deserialize(
+            response.getBody()
+                .replaceAll('"number"', '"invoiceNumber"')
+                .replaceAll('"currency"', '"isoCurrency"')
+                .replaceAll('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
+            InvoiceList.class);
+        return products;
+    }
+
+    @AuraEnabled
+    public static InvoiceList getPaidInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+        PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
+        return instance.getPaidInvoices(office, invoiceGroupId, pageSize, nextId);
+    }
+
     @AuraEnabled
     public static InvoiceList getInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId) {
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
@@ -54,6 +77,15 @@ public with sharing class PortalCommerceApiInvoices
                 .replaceAll('"currency"', '"isoCurrency"'),
             InvoiceInfo.class);
         return invoice;
+    }
+
+    public String getInvoicePdf(String office, String invoiceId) {
+        HttpResponse response = client.getInvoicePdf(office, invoiceId);
+        if (response.getStatusCode() != 200) {
+            return response.getBody();
+        }
+        String responseBody = EncodingUtil.base64Encode(response.getBodyAsBlob());
+        return responseBody;
     }
 
     // ==================
@@ -88,6 +120,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Long dueAt;
         @AuraEnabled public Long paidAt;
         @AuraEnabled public List<InvoiceItem> items;
+        @AuraEnabled public PaymentMethodObjType paymentMethodObj;
         @AuraEnabled public String office;
     }
 
@@ -118,6 +151,10 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public String offeringName;
         @AuraEnabled public String offeringId;
         @AuraEnabled public String sfProductName;
+    }
+
+    public class PaymentMethodObjType {
+        @AuraEnabled public String type;
     }
 
     public class OrderDetailsType {
@@ -151,14 +188,14 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public String type;
         @AuraEnabled public String reasonCode;
         @AuraEnabled public Double amount;
-        @AuraEnabled public Integer percent;
+        @AuraEnabled public Double percent;
     }
 
     public class AdjustmentType {
         @AuraEnabled public String type;
         @AuraEnabled public String reasonCode;
         @AuraEnabled public Double amount;
-        @AuraEnabled public Integer percent;
+        @AuraEnabled public Double percent;
     }
 
     public class EntitlementDetail {

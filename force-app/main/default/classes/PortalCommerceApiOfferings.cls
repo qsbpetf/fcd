@@ -22,6 +22,9 @@ public with sharing class PortalCommerceApiOfferings {
     public OfferingList getOfferings(String office, String productId, Integer pageSize, String nextId) {
         HttpResponse response = client.getOfferings(office, productId, pageSize, nextId);
         OfferingList products = (OfferingList) JSON.deserialize(response.getBody(), OfferingList.class);
+        if (products.values == null) {
+            products.values = new List<PortalCommerceApiOfferings.OfferingInfo>();
+        }
         return products;
     }
 
