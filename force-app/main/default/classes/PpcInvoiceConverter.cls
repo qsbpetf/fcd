@@ -19,12 +19,7 @@ public without sharing class PpcInvoiceConverter {
             System.debug('   PRODUCT: ' + JSON.serializePretty(oppProduct));
         }
         if (createProducts) {
-
-            // Replaced:
-            //   insert oppProducts;
-            // with a queueable to avoid hitting the DML row limit and flow limits
-            enqueueProductInsertion(opp, oppProducts);
-
+            insert oppProducts;
             log.successLog.add(oppProducts.size() + ' Opportunity Products added successfully');
             try {
                 updateOpportunity(opp, invoiceData, log);
@@ -46,13 +41,6 @@ public without sharing class PpcInvoiceConverter {
         }
 
         return log;
-    }
-
-    @TestVisible
-    private static void enqueueProductInsertion(Opportunity opp, List<OpportunityLineItem> oppProducts) {
-        System.enqueueJob(
-            new ProcessOpportunityLinesQueueable(
-                new OpportunityData(opp.Id, opp.StageName, oppProducts)));
     }
 
     @TestVisible

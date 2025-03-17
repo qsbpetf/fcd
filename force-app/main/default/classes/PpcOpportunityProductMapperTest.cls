@@ -27,12 +27,6 @@ private class PpcOpportunityProductMapperTest {
 
         PricebookEntry pbe = TestDataFactory.getPbEntry(Test.getStandardPricebookId(), prod.Id, 'EUR');
         insert pbe;
-
-        AtlassianOffering__c offering = new AtlassianOffering__c();
-        offering.Name = 'Test Offering';
-        offering.AtlassianId__c = '123';
-        offering.Product__c = prod.Id;
-        insert offering;
     }
 
     @IsTest
@@ -53,13 +47,11 @@ private class PpcOpportunityProductMapperTest {
         quoteInfo.upcomingBills.lines[0].quantity = 50;
         quoteInfo.upcomingBills.lines[0].total = 100;
         quoteInfo.upcomingBills.lines[0].subTotal = 50;
-        quoteInfo.upcomingBills.lines[0].offeringId = '123';
         quoteInfo.upcomingBills.lines.add(new PortalCommerceApiQuotes.BillLineItem());
         quoteInfo.upcomingBills.lines[1].description = 'Use default product';
         quoteInfo.upcomingBills.lines[1].quantity = 40;
         quoteInfo.upcomingBills.lines[1].total = -20;
         quoteInfo.upcomingBills.lines[1].subTotal = -10;
-        quoteInfo.upcomingBills.lines[1].offeringId = '123';
 
         Account acc = TestDataFactory.getAccount('Finland', 'EUR');
         insert acc;

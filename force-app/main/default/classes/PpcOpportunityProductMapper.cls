@@ -42,14 +42,15 @@ public with sharing class PpcOpportunityProductMapper {
         Boolean mergeLineItems)
     {
         PpcPortalProductMapper portalProductMapper = PpcPortalProductMapper.getInstance();
+        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
+
+        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
         Map<String, Product2> mappedProducts = new Map<String, Product2>();
         List<PortalCommerceApiQuotes.BillLineItem> quoteLines = new List<PortalCommerceApiQuotes.BillLineItem>();
         Set<Id> productIds = new Set<Id>();
 
-        PpcPortalProductMapper.mapProductByQuoteLineItems(quoteInfo.upcomingBills.lines);
-
         for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteInfo.upcomingBills.lines) {
-            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(quoteLine);
+            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(quoteLine.description);
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
@@ -62,34 +63,22 @@ public with sharing class PpcOpportunityProductMapper {
                         // orderLine.supportEntitlementNumber = '0';
                         System.debug('* Found zero SEN:');
                     }
-                    mappedProducts.put(quoteLine.offeringId, mapResult.product);
+                    mappedProducts.put(quoteLine.description, mapResult.product);
                     productIds.add(mapResult.product.Id);
                     quoteLines.add(quoteLine);
                 }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
-                log.errorLog.add('MISSING Salesforce Product for: ' + quoteLine.description + ' [' + quoteLine.offeringId + '], Using DEFAULT: ' + mapResult.product.Name);
-                log.links.add(mapResult.link);
-                productIds.add(mapResult.product.Id);
-                quoteLines.add(quoteLine);
+                log.errorLog.add('MISSING Product: ' + quoteLine.description);
             }
         }
 
         Map<Id, PricebookEntry> pbeByProductId = getPriceBookEntriesMappedByProductId(productIds, opp);
 
-        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
-        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
-
         for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteLines) {
-            Product2 mappedProduct = mappedProducts.get(quoteLine.offeringId);
-            PricebookEntry pbe;
-            if (mappedProduct == null) {
-                mappedProduct = portalProductMapper.defaultCloudProduct;
-            }
-            if (mappedProduct != null) {
-                pbe = pbeByProductId?.get(mappedProduct.Id);
-            }
+            Product2 mappedProduct = mappedProducts.get(quoteLine.description);
+            PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
             if (pbe != null) {
                 OpportunityLineItem oppProduct = oppProductMapper.mapQuoteLineToOpportunityLineItem(pbe, opp.Id, quoteLine, conversionFactor);
                 if (oppProduct != null) {
@@ -101,8 +90,8 @@ public with sharing class PpcOpportunityProductMapper {
                 }
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
-                log.pbeLog.add('MISSING PricebookEntry for product: ' /* + mappedProduct.Name */ + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
-                log.errorLog.add('MISSING PricebookEntry for product: ' /* + mappedProduct.Name */ + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
             }
         }
 
@@ -119,17 +108,6 @@ public with sharing class PpcOpportunityProductMapper {
         return opptyProductsToInsert;
     }
 
-    /**
-     * Maps products from an invoice to OpportunityLineItems
-     *
-     * @param invoiceInfo - InvoiceInfo object from the API
-     * @param opp - Opportunity to map the products to
-     * @param conversionFactor - Currency conversion factor
-     * @param log - LogData object to store logs
-     * @param mergeLineItems - Merge equal products into one OpportunityLineItem
-     *
-     * @return List of OpportunityLineItems
-     */
     public List<OpportunityLineItem> mapProducts(
         PortalCommerceApiInvoices.InvoiceInfo invoiceInfo,
         Opportunity opp, Double conversionFactor,
@@ -137,14 +115,15 @@ public with sharing class PpcOpportunityProductMapper {
         Boolean mergeLineItems)
     {
         PpcPortalProductMapper portalProductMapper = PpcPortalProductMapper.getInstance();
+        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
+
+        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
         Map<String, Product2> mappedProducts = new Map<String, Product2>();
         List<PortalCommerceApiInvoices.InvoiceItem> invoiceLines = new List<PortalCommerceApiInvoices.InvoiceItem>();
         Set<Id> productIds = new Set<Id>();
 
-        PpcPortalProductMapper.mapProductByInvoiceLineItems(invoiceInfo.items);
-
         for (PortalCommerceApiInvoices.InvoiceItem invoiceLine : invoiceInfo.items) {
-            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(invoiceLine);
+            PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(invoiceLine.description);
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
@@ -157,28 +136,21 @@ public with sharing class PpcOpportunityProductMapper {
                         // orderLine.supportEntitlementNumber = '0';
                         System.debug('* Found zero SEN:');
                     }
-                    mappedProducts.put(invoiceLine.offeringKey, mapResult.product);
+                    mappedProducts.put(invoiceLine.description, mapResult.product);
                     productIds.add(mapResult.product.Id);
                     invoiceLines.add(invoiceLine);
                 }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
                 log.productLog.add(String.valueOf(mapResult));
-                log.errorLog.add('MISSING Salesforce Product for: ' + invoiceLine.description + ' [' + invoiceLine.offeringKey + '], Using DEFAULT: ' + mapResult.product.Name);
-                log.links.add(mapResult.link);
-                mappedProducts.put(invoiceLine.offeringKey, mapResult.product);
-                productIds.add(mapResult.product.Id);
-                invoiceLines.add(invoiceLine);
+                log.errorLog.add('MISSING Product: ' + invoiceLine.description);
             }
         }
 
         Map<Id, PricebookEntry> pbeByProductId = getPriceBookEntriesMappedByProductId(productIds, opp);
 
-        PpcOpportunityProductMapper oppProductMapper = PpcOpportunityProductMapper.getInstance();
-        List<OpportunityLineItem> opptyProductsToInsert = new List<OpportunityLineItem>();
-
         for (PortalCommerceApiInvoices.InvoiceItem invoiceLine : invoiceLines) {
-            Product2 mappedProduct = mappedProducts.get(invoiceLine.offeringKey);
+            Product2 mappedProduct = mappedProducts.get(invoiceLine.description);
             PricebookEntry pbe = pbeByProductId.get(mappedProduct.Id);
             if (pbe != null) {
                 OpportunityLineItem oppProduct = oppProductMapper.mapInvoiceLineToOpportunityLineItem(pbe, opp.Id, invoiceLine, conversionFactor);
@@ -220,32 +192,24 @@ public with sharing class PpcOpportunityProductMapper {
     private static List<OpportunityLineItem> mergeEqualProducts(List<OpportunityLineItem> items, OpportunityProductMapper.LogData log) {
         Map<String, OpportunityLineItem> itemsByProduct = new Map<String, OpportunityLineItem>();
         for (OpportunityLineItem item : items) {
-            if (itemsByProduct.containsKey(item.AtlassianOfferingKey__c)) {
-                OpportunityLineItem existingItem = itemsByProduct.get(item.AtlassianOfferingKey__c);
+            if (itemsByProduct.containsKey(item.PpcLineItemId__c)) {
+                OpportunityLineItem existingItem = itemsByProduct.get(item.PpcLineItemId__c);
 
-//                if (item.Editable_Unit_List_Price_in_USD__c == 0) {
-//                    existingItem.User_Count__c = item.User_Count__c;
-//                }
+                if (item.Editable_Unit_List_Price_in_USD__c == 0) {
+                    existingItem.User_Count__c = item.User_Count__c;
+                }
 
                 System.debug(existingItem.Editable_Unit_List_Price_in_USD__c + ' + ' + item.Editable_Unit_List_Price_in_USD__c);
                 System.debug(existingItem.Editable_Cost_Price_in_Dollars__c + ' + ' + item.Editable_Cost_Price_in_Dollars__c);
 
                 existingItem.Editable_Unit_List_Price_in_USD__c += item.Editable_Unit_List_Price_in_USD__c;
                 existingItem.Editable_Cost_Price_in_Dollars__c += item.Editable_Cost_Price_in_Dollars__c;
-
                 Double existingPartnerDiscount = (existingItem.Atlassian_Partner_Discount__c == null) ? 0.0 : existingItem.Atlassian_Partner_Discount__c;
                 Double itemPartnerDiscount = (item.Atlassian_Partner_Discount__c == null) ? 0.0 : item.Atlassian_Partner_Discount__c;
                 existingPartnerDiscount += itemPartnerDiscount;
                 existingItem.Atlassian_Partner_Discount__c = existingPartnerDiscount;
-
-                Double existingPriceAdjustment = (existingItem.Atlassian_Price_Adjustment__c == null) ? 0.0 : existingItem.Atlassian_Price_Adjustment__c;
-                Double itemPriceAdjustment = (item.Atlassian_Price_Adjustment__c == null) ? 0.0 : item.Atlassian_Price_Adjustment__c;
-                existingPriceAdjustment += itemPriceAdjustment;
-                existingItem.Atlassian_Price_Adjustment__c = existingPriceAdjustment;
-
-                existingItem.User_Count__c += item.User_Count__c;
             } else {
-                itemsByProduct.put(item.AtlassianOfferingKey__c, item);
+                itemsByProduct.put(item.PpcLineItemId__c, item);
             }
         }
 
@@ -349,34 +313,6 @@ public with sharing class PpcOpportunityProductMapper {
 //            return null;
 //        }
 
-        /*
-            item.discountAmount = (item.margins && item.margins.length > 0)
-                ? item.margins.reduce((sum, margin) => sum + margin.amount, 0)
-                : 0;
-            item.adjustmentAmount = (item.adjustments && item.adjustments.length > 0)
-                ? item.adjustments.reduce((sum, ajdjustment) => sum + ajdjustment.amount, 0)
-                : 0;
-
-         */
-
-        if (invoiceLine.adjustments != null && invoiceLine.adjustments.size() > 0) {
-            System.debug('++ Adjustments: ' + invoiceLine.adjustments);
-            invoiceLine.adjustmentAmount = 0;
-            for (PortalCommerceApiInvoices.AdjustmentType adjustment : invoiceLine.adjustments) {
-                invoiceLine.adjustmentAmount += adjustment.amount;
-                System.debug('  -- Adjustment: ' + adjustment.amount);
-            }
-        }
-
-        if (invoiceLine.margins != null && invoiceLine.margins.size() > 0) {
-            System.debug('++ Margins: ' + invoiceLine.margins);
-            invoiceLine.discountAmount = 0;
-            for (PortalCommerceApiInvoices.MarginType margin : invoiceLine.margins) {
-                invoiceLine.discountAmount += margin.amount;
-                System.debug('  -- Margin: ' + margin.amount);
-            }
-        }
-
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
         oli.OpportunityId = oppId;
@@ -398,7 +334,6 @@ public with sharing class PpcOpportunityProductMapper {
         oli.QuoteOriginalProduct__c = invoiceLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = invoiceLine.subTotal;
-        oli.Editable_Cost_Price_in_Dollars__c = invoiceLine.total;
         oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.salesType) == null
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(invoiceLine.salesType);

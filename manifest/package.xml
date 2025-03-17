@@ -111,7 +111,6 @@
     <types>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
-        <members>Batch_Job_Monitor</members>
         <members>InvoiceGroup__c</members>
         <name>CustomTab</name>
     </types>

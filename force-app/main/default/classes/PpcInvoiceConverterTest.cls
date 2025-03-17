@@ -22,13 +22,10 @@ private class PpcInvoiceConverterTest {
             Exchange_Rate_from_USD_to_GBP__c = 1.0,
             Start_Date__c = Date.today().addDays(-1)));
         insert currencyList;
+    }
 
-        Product2 prod = TestDataFactory.getProduct();
-        insert prod;
-
-        PricebookEntry pbe = TestDataFactory.getPbEntry(Test.getStandardPricebookId(), prod.Id, 'EUR');
-        insert pbe;
-
+    @IsTest
+    static void testUpdateOpportunitySuccessful() {
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -37,11 +34,6 @@ private class PpcInvoiceConverterTest {
         Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
         opp.Pricebook2Id = Test.getStandardPricebookId();
         insert opp;
-    }
-
-    @IsTest
-    static void testUpdateOpportunitySuccessful() {
-        Opportunity opp = [SELECT Id FROM Opportunity];
 
         PortalCommerceApiInvoices.InvoiceInfo invoiceData = new PortalCommerceApiInvoices.InvoiceInfo();
         invoiceData.invoiceNumber = '123';
@@ -63,7 +55,13 @@ private class PpcInvoiceConverterTest {
 
     @IsTest
     static void testMapProductsSuccessful() {
-        Opportunity opp = [SELECT Id FROM Opportunity];
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.CV_Subsidiary__c = 'FI';
+        acc.BillingCountry = 'Finland';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        insert opp;
 
         PortalCommerceApiInvoices.InvoiceInfo invoiceData = new PortalCommerceApiInvoices.InvoiceInfo();
         invoiceData.invoiceNumber = '123';
@@ -95,11 +93,24 @@ private class PpcInvoiceConverterTest {
 
     @IsTest
     static void testConvertInvoiceSuccessful() {
-        Opportunity opp = [SELECT Id, Pricebook2Id FROM Opportunity];
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.CV_Subsidiary__c = 'FI';
+        acc.BillingCountry = 'Finland';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.Pricebook2Id = Test.getStandardPricebookId();
+        insert opp;
 
         OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
         log.productLog = new List<String>{'Test1'};
         log.pbeLog = new List<String>{'Test2'};
+
+        Product2 prod = TestDataFactory.getProduct();
+        insert prod;
+
+        PricebookEntry pbe = TestDataFactory.getPbEntry(Test.getStandardPricebookId(), prod.Id, 'EUR');
+        insert pbe;
 
         List<OpportunityLineItem> oppProductsResponse = new List<OpportunityLineItem>();
         OpportunityLineItem oli = new OpportunityLineItem();

@@ -22,13 +22,10 @@ private class PpcQuoteConverterTest {
             Exchange_Rate_from_USD_to_GBP__c = 1.0,
             Start_Date__c = Date.today().addDays(-1)));
         insert currencyList;
+    }
 
-        Product2 prod = TestDataFactory.getProduct();
-        insert prod;
-
-        PricebookEntry pbe = TestDataFactory.getPbEntry(Test.getStandardPricebookId(), prod.Id, 'EUR');
-        insert pbe;
-
+    @IsTest
+    static void testUpdateOpportunitySuccessful() {
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -37,11 +34,6 @@ private class PpcQuoteConverterTest {
         Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
         opp.Pricebook2Id = Test.getStandardPricebookId();
         insert opp;
-    }
-
-    @IsTest
-    static void testUpdateOpportunitySuccessful() {
-        Opportunity opp = [SELECT Id FROM Opportunity];
 
         PortalCommerceApiQuotes.QuoteInfo quoteData = new PortalCommerceApiQuotes.QuoteInfo();
         quoteData.quoteNumber = '123';
@@ -53,7 +45,6 @@ private class PpcQuoteConverterTest {
         OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
         log.productLog = new List<String>{'Test1'};
         log.pbeLog = new List<String>{'Test2'};
-
         PpcQuoteConverter.updateOpportunity(opp, quoteData, log);
 
         Opportunity updatedOpp = [SELECT Atlassian_AT_Quote_ref__c, Atlassian_AT_Quote_amount__c, AT_quote_expiry__c, PpcQuoteImportResult__c FROM Opportunity WHERE Id = :opp.Id];
@@ -66,7 +57,13 @@ private class PpcQuoteConverterTest {
 
     @IsTest
     static void testMapProductsSuccessful() {
-        Opportunity opp = [SELECT Id FROM Opportunity];
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.CV_Subsidiary__c = 'FI';
+        acc.BillingCountry = 'Finland';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        insert opp;
 
         PortalCommerceApiQuotes.QuoteInfo quoteData = new PortalCommerceApiQuotes.QuoteInfo();
         quoteData.quoteNumber = '123';
@@ -118,6 +115,12 @@ private class PpcQuoteConverterTest {
         log.productLog = new List<String>{'Test1'};
         log.pbeLog = new List<String>{'Test2'};
 
+        Product2 prod = TestDataFactory.getProduct();
+        insert prod;
+
+        PricebookEntry pbe = TestDataFactory.getPbEntry(Test.getStandardPricebookId(), prod.Id, 'EUR');
+        insert pbe;
+
         List<OpportunityLineItem> oppProductsResponse = new List<OpportunityLineItem>();
         OpportunityLineItem oli = new OpportunityLineItem();
         oli.OpportunityId = opp.Id;
@@ -154,4 +157,5 @@ private class PpcQuoteConverterTest {
         System.assert(logData.successLog[1].containsIgnoreCase('Opportunity updated successfully'), 'Should have success log for updating opportunity');
         System.debug(logData);
     }
+
 }

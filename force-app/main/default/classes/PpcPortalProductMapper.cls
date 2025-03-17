@@ -8,11 +8,8 @@ public with sharing class PpcPortalProductMapper {
     private final Set<String> partnerProducts = new Set<String>();    // Set of all unique partner products
     private final Set<String> salesforceProducts = new Set<String>(); // Set of all unique Salesforce products
     private final Map<String, Product2> productByNameMapping;         // Mapping from Salesforce Product Name to Product2 records
-    public final Product2 defaultCloudProduct;
+    private final Product2 defaultCloudProduct;
     private final List<ProductInfo> productInfos = new List<ProductInfo>();
-
-    private static Map<String, Product2> productByOfferingId = new Map<String, Product2>();
-    private static Map<String, String> atlassianProductByOfferingId = new Map<String, String>();
 
     public static PpcPortalProductMapper getInstance() {
         if (instance == null) {
@@ -57,93 +54,6 @@ public with sharing class PpcPortalProductMapper {
         return result;
     }
 
-    public static void mapProductByQuoteLineItems(List<PortalCommerceApiQuotes.BillLineItem> quoteLineItems) {
-        Set<String> offeringIds = new Set<String>();
-        for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteLineItems) {
-            offeringIds.add(quoteLine.offeringId);
-        }
-        System.debug('OFFERING IDS: ' + offeringIds);
-        mapProductByOfferingId(offeringIds);
-        System.debug('MAPPING: ' + productByOfferingId);
-    }
-
-    public static void mapProductByInvoiceLineItems(List<PortalCommerceApiInvoices.InvoiceItem> invoiceLineItems) {
-        Set<String> offeringIds = new Set<String>();
-        for (PortalCommerceApiInvoices.InvoiceItem lineItem : invoiceLineItems) {
-            offeringIds.add(lineItem.offeringKey);
-        }
-        System.debug('OFFERING IDS: ' + offeringIds);
-        mapProductByOfferingId(offeringIds);
-        System.debug('MAPPING: ' + productByOfferingId);
-    }
-
-    public static Map<String, AtlassianOffering__c> getOfferingsByOfferingKey(Set<String> offeringIds) {
-        Map<String, AtlassianOffering__c> result = new Map<String, AtlassianOffering__c>();
-        List<AtlassianOffering__c> offerings = new List<AtlassianOffering__c>([
-            SELECT
-                Id,
-                Name,
-                AtlassianId__c,
-                AtlassianProductId__c,
-                AtlassianProduct__r.Name,
-                Product__c,
-                Product__r.Name
-            FROM AtlassianOffering__c
-            WHERE AtlassianId__c IN :offeringIds
-        ]);
-
-        for (AtlassianOffering__c offering : offerings) {
-            result.put(offering.AtlassianId__c, offering);
-        }
-
-        return result;
-    }
-
-    private static void mapProductByOfferingId(Set<String> offeringIds) {
-        List<AtlassianOffering__c> offerings = getOfferingsByOfferingKey(offeringIds).values();
-
-        Set<Id> productIds = new Set<Id>();
-        for (AtlassianOffering__c offering : offerings) {
-            productIds.add(offering.Product__c);
-            productByOfferingId.put(offering.AtlassianId__c, offering.Product__r);
-            atlassianProductByOfferingId.put(offering.AtlassianId__c, offering.AtlassianProductId__c);
-        }
-    }
-
-    public PortalProductMapper.MappingResult mapProductByOfferingId(String offeringId) {
-        PortalProductMapper.MappingResult result = new PortalProductMapper.MappingResult();
-        return result;
-    }
-
-    public PortalProductMapper.MappingResult mapProduct(PortalCommerceApiQuotes.BillLineItem quoteLine) {
-        PortalProductMapper.MappingResult result = new PortalProductMapper.MappingResult();
-        result.product = productByOfferingId.get(quoteLine.offeringId);
-        if (result.product != null) {
-            result.found = true;
-            result.info = 'Success';
-        } else {
-            result.product = defaultCloudProduct;
-            result.found = false;
-            result.info = '[K] No product found for offering: ' + quoteLine.offeringId;
-            result.link = 'Offering: ' + quoteLine.offeringId + ' --> AtlassianProduct: ' + atlassianProductByOfferingId.get(quoteLine.offeringId) + '  :  ' + quoteLine.description;
-        }
-        return result;
-    }
-
-    public PortalProductMapper.MappingResult mapProduct(PortalCommerceApiInvoices.InvoiceItem lineItem) {
-        PortalProductMapper.MappingResult result = new PortalProductMapper.MappingResult();
-        result.product = productByOfferingId.get(lineItem.offeringKey);
-        if (result.product != null) {
-            result.found = true;
-            result.info = 'Success';
-        } else {
-            result.product = defaultCloudProduct;
-            result.found = false;
-            result.info = '[K] No product found for offering: ' + lineItem.offeringKey;
-            result.link = 'Offering: ' + lineItem.offeringKey + ' --> AtlassianProduct: ' + atlassianProductByOfferingId.get(lineItem.offeringKey) + '  :  ' + lineItem.description;
-        }
-        return result;
-    }
 
     public PortalProductMapper.MappingResult mapProduct(String fullProductName) {
         PortalProductMapper.MappingResult result = new PortalProductMapper.MappingResult();

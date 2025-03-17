@@ -68,8 +68,6 @@ private class PortalCommerceApiControllerTest {
         quoteToReturn.quoteNumber = '123';
         quoteToReturn.id = '123456';
         quoteToReturn.lineItems = new List<PortalCommerceApiQuotes.QuoteItem>();
-        quoteToReturn.upcomingBills = new PortalCommerceApiQuotes.BillItem();
-        quoteToReturn.upcomingBills.lines = new List<PortalCommerceApiQuotes.BillLineItem>();
 
         mockService
             .when('getQuote')
@@ -151,7 +149,6 @@ private class PortalCommerceApiControllerTest {
         PortalCommerceApiInvoices.InvoiceInfo invoice = new PortalCommerceApiInvoices.InvoiceInfo();
         invoice.invoiceNumber = '123';
         invoice.id = '123456';
-        invoice.items = new List<PortalCommerceApiInvoices.InvoiceItem>();
         invoicesToReturn.data.add(invoice);
 
         Account acc = TestDataFactory.getAccount('Sweden', 'USD');

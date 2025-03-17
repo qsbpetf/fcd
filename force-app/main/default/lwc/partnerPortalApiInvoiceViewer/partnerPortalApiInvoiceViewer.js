@@ -55,9 +55,6 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
         result.forEach(invoiceList => {
             invoiceList.data.forEach(invoice => {
                 invoice.length = invoice.items.length;
-                // invoice.paidAtDate = invoice.paidAt ? new Date(invoice.paidAt).toLocaleDateString(
-                //     'sv-SV', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '';
-                invoice.paidAtDate = invoice.paidAt ? new Date(invoice.paidAt).toISOString().split('T')[0] : '';
 
                 invoice.items.forEach(item => {
                     item.subTotalDecimal = item.subTotal;
@@ -91,17 +88,5 @@ export default class PartnerPortalApiInvoiceViewer extends LightningElement {
             totalList.missingAccountId = true;
         }
         return totalList;
-    }
-
-    handlePreview(event) {
-        console.log('handlePreview', JSON.stringify(event));
-        const office = this.invoiceResults.data[0].office;
-        console.log('Office: ', office);
-
-        const invoiceId = event.target.getAttribute('data-id');
-        console.log('invoice id:', invoiceId);
-
-        const visualforcePageURL = `/apex/PreviewInvoice?OFFICE=${office}&INVOICE_ID=${invoiceId}`;
-        window.open(visualforcePageURL, '_blank');
     }
 }

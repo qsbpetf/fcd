@@ -31,8 +31,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         errorLog: [],
         pbeLog: [],
         productLog: [],
-        successLog: [],
-        links: []
+        successLog: []
     };
 
     @track selectedItem = { id: '' }; // Used to store the clicked row data handleRowClick(event) {
@@ -132,13 +131,11 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             errorLog: [],
             pbeLog: [],
             productLog: [],
-            successLog: [],
-            links: []
+            successLog: []
         };
         apexGetQuote({ opportunityId: this.recordId, quoteId: quoteId })
             .then(result => {
                 console.log('result', result);
-                console.log('result : ' + JSON.stringify(result));
                 if (result.missingAccountId) {
                     this.quoteResults = {
                         error: result.error,
@@ -494,15 +491,11 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         let successLog = result.successLog.map((element, index) => {
             return { key: index, value: element };
         });
-        let links = result.links.map((element, index) => {
-            return { key: index, value: element };
-        });
         return {
             productLog: productLog,
             pbeLog: pbeLog,
             errorLog: errorLog,
-            successLog: successLog,
-            links: links
+            successLog: successLog
         };
     }
 

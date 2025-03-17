@@ -253,7 +253,6 @@ public with sharing class PortalProductMapper {
         @AuraEnabled public Boolean found;
         @AuraEnabled public Boolean globalSEN;
         @AuraEnabled public Boolean zeroSEN;
-        @AuraEnabled public String link;
 
         public MappingResult() {
             this.portalProduct = null;
@@ -262,7 +261,6 @@ public with sharing class PortalProductMapper {
             this.found = false;
             this.globalSEN = false;
             this.zeroSEN = false;
-            this.link = null;
         }
     }
 
