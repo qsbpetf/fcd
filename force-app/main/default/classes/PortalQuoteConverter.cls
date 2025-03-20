@@ -127,7 +127,7 @@ public with sharing class PortalQuoteConverter {
         // opp.Technical_Contact_email__c = orderInfo.technicalContactEmail; // cannot map to formula field, create new email adress field? (see slide 7 )
         opp.Atlassian_AT_Quote_amount__c = orderInfo.totalExTax;
         opp.AT_quote_expiry__c = orderInfo.dueDate;
-        opp.QuoteImportResult__c = String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n');
+        opp.QuoteImportResult__c = (String.join(log.productLog, '\n').left(16000) + '\n' + String.join(log.pbeLog, '\n').left(16000)).left(32766);
 
         if (opp.Atlassian_AT_Quote_Tech_Contact__c == null) {
             Contact con = findOrCreateContact(opp, orderInfo.technicalContact, log);

@@ -64,7 +64,7 @@ public without sharing class PpcQuoteConverter {
             Atlassian_AT_Quote_ref__c = quoteData.quoteNumber,
             Atlassian_AT_Quote_amount__c = quoteData.upcomingBills.subTotal / 100.0,
             AT_quote_expiry__c = quoteData.expiresAt != null ? Datetime.newInstance(quoteData.expiresAt).date() : null,
-            PpcQuoteImportResult__c = (String.join(log.productLog, '\n') + '\n' + String.join(log.pbeLog, '\n')).left(32766)
+            PpcQuoteImportResult__c = (String.join(log.productLog, '\n').left(16000) + '\n' + String.join(log.pbeLog, '\n').left(16000)).left(32766)
         );
         update updatedOpp;
     }
