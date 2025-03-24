@@ -113,7 +113,8 @@ public with sharing class PortalJsonParser {
             }
         }
 
-        System.debug('PARSED JSON DATA: ' + JSON.serializePretty(orderLine));
+        System.debug('PARSED JSON DATA: ' + orderLine.productName);
+//        System.debug('PARSED JSON DATA: ' + JSON.serializePretty(orderLine));
     }
 
     public class OrderLine {

@@ -1,29 +1,54 @@
 public with sharing class PortalQuoteConverter {
 
     @AuraEnabled
-    public static OpportunityProductMapper.LogData convertQuote(String jsonText, String oppId, Boolean createProducts) {
+    public static OpportunityProductMapper.LogData convertQuote(
+        String jsonText,
+        String oppId,
+        Boolean createProducts,
+        Integer startIndex,
+        Integer itemCount)
+    {
         PortalJsonParser.OrderInformation orderInfo = parseJson(jsonText);
         Opportunity opp = getOpportunity(oppId);
         OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
         Double conversionFactor = getLatestCurrencyConversionFactor(opp.CurrencyIsoCode);
         List<OpportunityLineItem> oppProducts = mapProducts(orderInfo, opp, conversionFactor, log);
         System.debug('INSERTING PRODUCTS: ' + createProducts);
-        for (OpportunityLineItem oppProduct : oppProducts) {
-            System.debug('   PRODUCT: ' + JSON.serializePretty(oppProduct));
+        List<OpportunityLineItem> oppProductsToInsert = new List<OpportunityLineItem>();
+        System.debug('startIndex: ' + startIndex + ' itemCount: ' + itemCount + ' oppProducts.size(): ' + oppProducts.size());
+        for (Integer idx = startIndex; idx < startIndex + itemCount; idx++) {
+            if (idx >= oppProducts.size()) {
+                break;
+            }
+            OpportunityLineItem oppProduct = oppProducts[idx];
+            oppProductsToInsert.add(oppProduct);
+            System.debug('   PRODUCT: ' + oppProduct.Additional_Info__c);
+//            System.debug('   PRODUCT: ' + JSON.serializePretty(oppProduct));
         }
         if (createProducts) {
-            insert oppProducts;
-            log.successLog.add(oppProducts.size() + ' Opportunity Products added successfully');
+            insert oppProductsToInsert;
+            log.successLog.add(oppProductsToInsert.size() + ' Opportunity Products added successfully');
+        }
+
+        return log;
+    }
+
+    @AuraEnabled
+    public static OpportunityProductMapper.LogData updateOpportunity(String jsonText, String oppId, Boolean createProducts) {
+        PortalJsonParser.OrderInformation orderInfo = parseJson(jsonText);
+        Opportunity opp = getOpportunity(oppId);
+        OpportunityProductMapper.LogData log = new OpportunityProductMapper.LogData();
+        if (createProducts) {
             try {
                 updateOpportunity(opp, orderInfo, log);
                 log.successLog.add('Opportunity updated successfully');
+                System.debug('Opportunity updated successfully');
             } catch (Exception ex) {
                 String error = 'ERROR: Failed updating Opportunity/Contact: ' + ex.getMessage() + ex.getStackTraceString();
                 log.errorLog.add(error);
                 System.debug(error);
             }
         }
-
         return log;
     }
 

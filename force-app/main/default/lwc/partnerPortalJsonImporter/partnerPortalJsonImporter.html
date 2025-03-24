@@ -13,6 +13,8 @@
             </lightning-file-upload>
         </div>
         <div class="slds-m-top_medium slds-m-bottom_medium">
+            <lightning-input type="number" max-length=2 label="Max Items to Process" value={maxItemsToProcess} onchange={handleMaxItemsChange} class="slds-m-around_x-small input-width"></lightning-input>
+            <lightning-input type="text" max-length=2 label="Items" value={processStatus} class="slds-m-around_x-small input-width" disabled="true"></lightning-input>
             <lightning-button disabled={buttonsDisabled} label="Validate Opportunity Products" variant="brand" onclick={handleProducts} class="slds-m-around_x-small"></lightning-button>
             <lightning-button disabled={buttonsDisabled} label="CREATE Opportunity Products!" variant="neutral" onclick={createProducts} class="slds-m-left_xx-large slds-m-top_x-small"></lightning-button>
         </div>

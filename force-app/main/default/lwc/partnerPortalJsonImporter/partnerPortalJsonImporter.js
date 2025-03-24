@@ -4,6 +4,7 @@
 
 import { api, track, LightningElement } from 'lwc';
 import apexConvertQuote from '@salesforce/apex/PortalQuoteConverter.convertQuote';
+import apexUpdateOpportunity from '@salesforce/apex/PortalQuoteConverter.updateOpportunity';
 import apexGetJsonFile from '@salesforce/apex/PortalQuoteConverter.getJsonFile';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
@@ -13,6 +14,9 @@ export default class PartnerPortalJsonImporter extends LightningElement {
 
     isLoading = true;
     buttonsDisabled = true;
+    maxItemsToProcess = 50;
+    productCount = 0;
+    processStatus = '';
 
     @track jsonText;
     @track data = {
@@ -42,6 +46,10 @@ export default class PartnerPortalJsonImporter extends LightningElement {
         return this.conversionResult && this.conversionResult.successLog && this.conversionResult.successLog.length > 0;
     }
 
+    handleMaxItemsChange(event) {
+        this.maxItemsToProcess = event.target.value;
+    }
+
     handleUploadFinished(event) {
         this.buttonsDisabled = true;
         // Get the list of uploaded files
@@ -56,6 +64,8 @@ export default class PartnerPortalJsonImporter extends LightningElement {
         }).then(result => {
             console.log('result', result);
             this.jsonText = result;
+            this.data = JSON.parse(this.jsonText);
+            this.productCount = this.data.orderItems.length;
             this.buttonsDisabled = false;
             // Show success message
             const toastEvent = new ShowToastEvent({
@@ -77,44 +87,40 @@ export default class PartnerPortalJsonImporter extends LightningElement {
     }
 
     handleProducts() {
+        debugger;
         this.isLoading = true;
-        console.log('handleProducts');
-        // Call apex method to parse JSON
-        apexConvertQuote({
-            jsonText: this.jsonText,
-            oppId: this.recordId,
-            createProducts: false
-        }).then(result => {
-                console.log('result', result);
-                this.conversionResult = result;
-                this.isLoading = false;
-        }).catch(error => {
-            console.error('error', error);
-            this.conversionResult = {
-                productLog: [],
-                pbeLog: [],
-                errorLog: [
-                    JSON.stringify(error.body)
-                ]
-            };
-            this.isLoading = false;
-        });
+        this.processBatch(false);
     }
 
     createProducts() {
         this.isLoading = true;
-        console.log('createProducts');
-        // Call apex method to parse JSON
+        this.processBatch(true);
+    }
+
+    processBatch(createProducts, startIndex = 0) {
+        const itemCount = Math.min(this.maxItemsToProcess, this.productCount - startIndex);
+        console.log('Processing batch. Startindex:', startIndex, 'ItemCount:', itemCount);
+        this.processStatus = startIndex + ' .. ' + (startIndex + itemCount);
         apexConvertQuote({
             jsonText: this.jsonText,
             oppId: this.recordId,
-            createProducts: true
+            createProducts: createProducts,
+            startIndex: startIndex,
+            itemCount: itemCount
         }).then(result => {
-            console.log('result', result);
             this.conversionResult = result;
+            this.productCount = this.conversionResult.productCount;
             this.isLoading = false;
-        }).catch(error =>  {
-            console.error('error', error);
+
+            if (startIndex + itemCount < this.productCount) {
+                setTimeout(() => {
+                    this.processBatch(createProducts, startIndex + itemCount);
+                }, 2000); // Delay of 2 seconds
+             } else {
+                 this.processStatus = 'Updating Oppty!';
+                 this.updateOpportunity(createProducts);
+             }
+        }).catch(error => {
             this.conversionResult = {
                 productLog: [],
                 pbeLog: [],
@@ -122,7 +128,25 @@ export default class PartnerPortalJsonImporter extends LightningElement {
                     JSON.stringify(error.body)
                 ]
             };
+            this.processStatus = 'Error!';
             this.isLoading = false;
         });
+    }
+
+    updateOpportunity(createProducts) {
+        console.log('Update oppty');
+        apexUpdateOpportunity({
+            jsonText: this.jsonText,
+            oppId: this.recordId,
+            createProducts: createProducts
+        }).then(() => {
+            this.processStatus = 'Done!';
+            this.isLoading = false;
+        }).catch(error => {
+            this.processStatus = 'Error!';
+            this.conversionResult.errorLog.push(JSON.stringify(error.body));
+            this.isLoading = false;
+        });
+        this.isLoading = false;
     }
 }

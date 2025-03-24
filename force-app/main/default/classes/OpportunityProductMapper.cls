@@ -106,9 +106,11 @@ public with sharing class OpportunityProductMapper {
 
         Integer i = 1;
         for (OpportunityLineItem oli : opptyProductsToInsert) {
-            log.successLog.add('Resulting product (' + i + ') = ' + JSON.serialize(oli).replaceAll(',', ', '));
+            log.successLog.add('Resulting product (' + i + ') = ' + oli.Additional_Info__c);
+//            log.successLog.add('Resulting product (' + i + ') = ' + JSON.serialize(oli).replaceAll(',', ', '));
             i++;
         }
+        log.productCount = opptyProductsToInsert.size();
 
         return opptyProductsToInsert;
     }
@@ -119,13 +121,6 @@ public with sharing class OpportunityProductMapper {
 
     private static Map<Id, PricebookEntry> getPriceBookEntriesMappedByProductId(Set<Id> productIds, Opportunity opp) {
         Map<Id, PricebookEntry> pbeByProductId = new Map<Id, PricebookEntry>();
-        System.debug([
-            SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
-            FROM PricebookEntry
-            WHERE Product2Id IN :productIds
-            AND Pricebook2Id = :opp.Pricebook2Id
-            AND CurrencyIsoCode = :opp.CurrencyIsoCode
-        ]);
         for (PricebookEntry pbe : [
             SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
             FROM PricebookEntry
@@ -142,7 +137,8 @@ public with sharing class OpportunityProductMapper {
     public OpportunityLineItem mapOpportunityLineItem(PricebookEntry pbEntry, Id oppId, PortalJsonParser.OrderLine orderLine, Double conversionFactor) {
         OpportunityLineItem oli = new OpportunityLineItem();
 
-        System.debug(JSON.serializePretty(orderLine));
+        System.debug('OLI: ' + orderLine.productName);
+//        System.debug(JSON.serializePretty(orderLine));
 
         if (orderLine.unitPrice == 0.00) {
             System.debug('Skipping zero unit price order line: ' + orderLine.productName);
@@ -200,12 +196,14 @@ public with sharing class OpportunityProductMapper {
         @AuraEnabled public List<String> pbeLog;
         @AuraEnabled public List<String> errorLog;
         @AuraEnabled public List<String> successLog;
+        @AuraEnabled public Integer productCount;
 
         public LogData() {
             this.productLog = new List<String>();
             this.pbeLog = new List<String>();
             this.errorLog = new List<String>();
             this.successLog = new List<String>();
+            this.productCount = 0;
         }
     }
 }

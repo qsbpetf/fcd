@@ -393,7 +393,8 @@ private class  PortalQuoteConverterTest {
         insert opp;
 
         Test.startTest();
-        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(FULL_JSON, opp.Id, true);
+        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(FULL_JSON, opp.Id, true, 0, 99);
+        PortalQuoteConverter.updateOpportunity(FULL_JSON, opp.Id, true);
         Test.stopTest();
 
         List<OpportunityLineItem> oliList = new List<OpportunityLineItem>([SELECT Id FROM OpportunityLineItem]);
@@ -417,7 +418,12 @@ private class  PortalQuoteConverterTest {
         String wrongJson = FULL_JSON;
         wrongJson = wrongJson.replace('"lastName" : "Päivinen"', '"lastName" : null');
         wrongJson = wrongJson.replace('"state" : "Uusimaa"', '"state" : null');
-        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(wrongJson, opp.Id, true);
+        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(wrongJson, opp.Id, true, 0, 99);
+        OpportunityProductMapper.LogData log2 = PortalQuoteConverter.updateOpportunity(wrongJson, opp.Id, true);
+        log.errorLog.addAll(log2.errorLog);
+        log.pbeLog.addAll(log2.pbeLog);
+        log.productLog.addAll(log2.productLog);
+        log.successLog.addAll(log2.successLog);
         Test.stopTest();
 
         System.debug(log.errorLog.size());
@@ -446,7 +452,12 @@ private class  PortalQuoteConverterTest {
         insert opp;
 
         Test.startTest();
-        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(FULL_JSON, opp.Id, true);
+        OpportunityProductMapper.LogData log = PortalQuoteConverter.convertQuote(FULL_JSON, opp.Id, true, 0, 99);
+        OpportunityProductMapper.LogData log2 = PortalQuoteConverter.updateOpportunity(FULL_JSON, opp.Id, true);
+        log.errorLog.addAll(log2.errorLog);
+        log.pbeLog.addAll(log2.pbeLog);
+        log.productLog.addAll(log2.productLog);
+        log.successLog.addAll(log2.successLog);
         Test.stopTest();
 
         List<OpportunityLineItem> oliList = new List<OpportunityLineItem>([SELECT Id FROM OpportunityLineItem]);
