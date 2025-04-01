@@ -17,6 +17,7 @@ public with sharing class PortalCommerceApiClient {
     @TestVisible static private final String QUOTE_ENDPOINT = '/v2/quotes';
     @TestVisible static private final String QUOTE_PDF_ENDPOINT = '/v3/quotes/{{QUOTE_ID}}/download';
     @TestVisible static private final String INVOICES_ENDPOINT = '/v2/invoices';
+    @TestVisible static private final String INVOICE_PDF_ENDPOINT = '/v1/invoices/{{INVOICE_ID}}/download';
     @TestVisible static private final String INVOICE_GROUPS_ENDPOINT = '/v2/invoice-groups';
     @TestVisible static private final String ORDER_ENDPOINT = '/v2/orders';
     @TestVisible static private final String ORDER_PREVIEW_ENDPOINT = '/v2/order-intent/preview';
@@ -89,6 +90,14 @@ public with sharing class PortalCommerceApiClient {
     public HttpResponse getInvoice(String office, String invoiceId) {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, INVOICES_ENDPOINT, null, null, null) + '/' + invoiceId);
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
+    public HttpResponse getInvoicePdf(String office, String invoiceId) {
+        HttpRequest req = createRequestHeader(true);
+        String transactionAccountId = PortalCommerceApiAccessMgmt.getOfficeTransactionAccountId(office);
+        req.setEndpoint(generateEndpoint(office, INVOICE_PDF_ENDPOINT.replace('{{INVOICE_ID}}', invoiceId), null, null, null) + '?transactionAccountId=' + transactionAccountId);
         req.setMethod('GET');
         return new Http().send(req);
     }

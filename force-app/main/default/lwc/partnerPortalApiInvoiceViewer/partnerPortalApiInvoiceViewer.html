@@ -20,11 +20,14 @@
                         <tr>
                             <th>Invoice Id</th>
                             <th>Invoice #</th>
+                            <th>Type</th>
                             <th>Status</th>
+                            <th>Paid At</th>
                             <th class="number"># Line Items</th>
                             <th class="currency">SubTotal</th>
                             <th class="currency">Total</th>
                             <th class="left-pad">Currency</th>
+                            <th class="left-pad">Preview</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -32,11 +35,21 @@
                                 <tr key={inv.id} class="tr-yellow">
                                     <td>{inv.id}</td>
                                     <td>{inv.invoiceNumber}</td>
+                                    <td>{inv.paymentMethodObj.type}</td>
                                     <td>{inv.status}</td>
+                                    <td>{inv.paidAtDate}</td>
                                     <td class="currency">{inv.length}</td>
                                     <td class="currency">{inv.subTotal}</td>
                                     <td class="currency">{inv.total}</td>
                                     <td class="left-pad">{inv.isoCurrency}</td>
+                                    <td class="button-around">
+                                        <lightning-button
+                                                label="Preview"
+                                                onclick={handlePreview}
+                                                variant="neutral"
+                                                data-id={inv.id}
+                                        ></lightning-button>
+                                    </td>
                                 </tr>
                                 <tr key={inv.invoiceNumber}>
                                     <td colspan=100>
@@ -46,6 +59,10 @@
                                                 <th class="td-indent">&nbsp;</th>
                                                 <th class="td-id">Id</th>
                                                 <th>Description</th>
+                                                <th>Atlassian Offering</th>
+                                                <th>Atlassian Product</th>
+                                                <th>Salesforce Product</th>
+                                                <th>Interval</th>
                                                 <th class="td-pad">Starts At</th>
                                                 <th class="td-pad">Ends At</th>
                                                 <th class="number">Quantity</th>
@@ -56,10 +73,18 @@
                                             </thead>
                                             <tbody>
                                             <template for:each={inv.items} for:item="li">
-                                                <tr key={li.id}>
+                                                <tr key={li.id} class="border">
                                                     <td class="td-indent">&nbsp;</td>
                                                     <td>{li.id}</td>
                                                     <td>{li.description}</td>
+                                                    <td>
+                                                        <a href={li.offeringId} target="_blank" rel="noopener noreferrer">
+                                                            {li.offeringName}
+                                                        </a>
+                                                    </td>
+                                                    <td>{li.productName}</td>
+                                                    <td>{li.sfProductName}</td>
+                                                    <td>{li.planObj.cycle.interval}</td>
                                                     <td class="td-pad">{li.startAtStr}</td>
                                                     <td class="td-pad">{li.endAtStr}</td>
                                                     <td class="number">{li.quantity}</td>

@@ -36,6 +36,9 @@ public with sharing class PortalCommerceApiController {
     static public PortalCommerceApiQuotes.QuoteInfo getQuote(String opportunityId, String quoteId) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiQuotes.QuoteInfo theQuote = apiQuotes.getQuote(opp.Account.CV_Subsidiary__c, quoteId);
+        if (theQuote == null) {
+            return null;
+        }
         theQuote.office = opp.Account.CV_Subsidiary__c;
         return theQuote;
     }
@@ -50,6 +53,8 @@ public with sharing class PortalCommerceApiController {
                 AtlassianInvoiceGroupId__c
             FROM InvoiceGroup__c
             WHERE Account__c = :accountId
+            AND Active__c = TRUE
+            ORDER BY CreatedAt__c DESC
         ]);
         List<PortalCommerceApiInvoices.InvoiceList> allInvoices = new List<PortalCommerceApiInvoices.InvoiceList>();
         Integer calloutsLeft = Limits.getLimitCallouts() - Limits.getCallouts();
@@ -71,13 +76,25 @@ public with sharing class PortalCommerceApiController {
             } while (nextId != null && calloutsLeft > 0);
         }
         System.debug('### OUT: Callouts left: ' + calloutsLeft);
+        prepareInvoicesForDisplay(allInvoices, acc.CV_Subsidiary__c);
         return allInvoices;
+    }
+
+    static private void prepareInvoicesForDisplay(List<PortalCommerceApiInvoices.InvoiceList> allInvoices, String office) {
+        for (PortalCommerceApiInvoices.InvoiceList invoices : allInvoices) {
+            for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices.data) {
+                invoice.office = office;
+            }
+        }
     }
 
     @AuraEnabled
     static public PortalCommerceApiInvoices.InvoiceInfo getInvoice(String opportunityId, String invoiceId) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiInvoices.InvoiceInfo theInvoice = apiInvoices.getInvoice(opp.Account.CV_Subsidiary__c, invoiceId);
+        if (theInvoice == null) {
+            return null;
+        }
         theInvoice.office = opp.Account.CV_Subsidiary__c;
         return theInvoice;
     }
@@ -86,6 +103,9 @@ public with sharing class PortalCommerceApiController {
     static public PortalCommerceApiOrders.OrderInfo getOrder(String opportunityId, String orderId) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiOrders.OrderInfo theOrder = apiOrders.getOrder(opp.Account.CV_Subsidiary__c, orderId);
+        if (theOrder == null) {
+            return null;
+        }
         theOrder.office = opp.Account.CV_Subsidiary__c;
         return theOrder;
     }
@@ -94,6 +114,9 @@ public with sharing class PortalCommerceApiController {
     static public PortalCommerceApiOrders.OrderInfo getOrderPreview(String opportunityId, String quoteId, Integer quoteVersion) {
         Opportunity opp = [SELECT Id, AccountId, Account.AtlassianAccountId__c, Account.CV_Subsidiary__c FROM Opportunity WHERE Id = :opportunityId];
         PortalCommerceApiOrders.OrderInfo theOrder = apiOrders.getOrderPreview(opp.Account.CV_Subsidiary__c, quoteId, quoteVersion);
+        if (theOrder == null) {
+            return null;
+        }
         theOrder.office = opp.Account.CV_Subsidiary__c;
         return theOrder;
     }
@@ -122,5 +145,10 @@ public with sharing class PortalCommerceApiController {
     @AuraEnabled
     static public String getQuotePdfStatic(String office, String quoteId) {
         return apiQuotes.getQuotePdf(office, quoteId);
+    }
+
+    @AuraEnabled
+    static public String getInvoicePdfStatic(String office, String invoiceId) {
+        return apiInvoices.getInvoicePdf(office, invoiceId);
     }
 }

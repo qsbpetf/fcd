@@ -67,3 +67,11 @@ h2 {
 .table-green {
     background-color: #d5fdd5; /* Green */
 }
+
+.border {
+    border: 1px solid #aaaaaa;
+}
+
+.button-around {
+    padding: 5px;
+}

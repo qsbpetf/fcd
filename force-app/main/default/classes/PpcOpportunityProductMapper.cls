@@ -101,7 +101,14 @@ public with sharing class PpcOpportunityProductMapper {
 
         Integer i = 1;
         for (OpportunityLineItem oli : opptyProductsToInsert) {
-            log.successLog.add('Resulting product (' + i + ') = ' + JSON.serialize(oli).replaceAll(',', ', '));
+            log.successLog.add(
+                'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
+                ', User Count: ' + oli.User_Count__c +
+                ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
+                ', Product: ' + oli.Product2Id +
+                ', PricebookEntry: ' + oli.PricebookEntryId +
+                ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
+                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : ''));
             i++;
         }
 
@@ -183,7 +190,14 @@ public with sharing class PpcOpportunityProductMapper {
 
         Integer i = 1;
         for (OpportunityLineItem oli : opptyProductsToInsert) {
-            log.successLog.add('Resulting product (' + i + ') = ' + JSON.serialize(oli).replaceAll(',', ', '));
+            log.successLog.add(
+                'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
+                ', User Count: ' + oli.User_Count__c +
+                ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
+                ', Product: ' + oli.Product2Id +
+                ', PricebookEntry: ' + oli.PricebookEntryId +
+                ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
+                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : ''));
             i++;
         }
 
@@ -201,8 +215,10 @@ public with sharing class PpcOpportunityProductMapper {
     private static List<OpportunityLineItem> mergeEqualProducts(List<OpportunityLineItem> items, OpportunityProductMapper.LogData log) {
         Map<String, OpportunityLineItem> itemsByProduct = new Map<String, OpportunityLineItem>();
         for (OpportunityLineItem item : items) {
-            if (itemsByProduct.containsKey(item.PpcLineItemId__c)) {
-                OpportunityLineItem existingItem = itemsByProduct.get(item.PpcLineItemId__c);
+            String key = item.PpcLineItemId__c + '-' + item.License_Start_date__c + '-' + item.License_end_date__c;
+            System.debug('*** USING KEY = ' + key);
+            if (itemsByProduct.containsKey(key)) {
+                OpportunityLineItem existingItem = itemsByProduct.get(key);
 
                 System.debug(existingItem.Editable_Unit_List_Price_in_USD__c + ' + ' + item.Editable_Unit_List_Price_in_USD__c);
                 System.debug(existingItem.Editable_Cost_Price_in_Dollars__c + ' + ' + item.Editable_Cost_Price_in_Dollars__c);
@@ -222,7 +238,7 @@ public with sharing class PpcOpportunityProductMapper {
 
                 existingItem.User_Count__c += item.User_Count__c;
             } else {
-                itemsByProduct.put(item.PpcLineItemId__c, item);
+                itemsByProduct.put(key, item);
             }
         }
 
