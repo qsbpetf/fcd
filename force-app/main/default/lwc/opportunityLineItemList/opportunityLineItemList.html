@@ -22,6 +22,14 @@
                     onclick={handleOpportunityLineItemsAdd}
             >
             </lightning-button>
+            <lightning-button
+                    icon-name="utility:refresh"
+                    aria-haspopup="dialog"
+                    label="Refresh"
+                    variant="neutral"
+                    onclick={handleOpportunityLineItemsGet}
+            >
+            </lightning-button>
             <div>
                 <span class="slds-text-body_small slds-var-m-right_small">
                     {selectedRowsCount} Opportunity Product(s) selected

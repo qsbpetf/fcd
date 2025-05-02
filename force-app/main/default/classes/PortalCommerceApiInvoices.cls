@@ -36,6 +36,29 @@ public with sharing class PortalCommerceApiInvoices
         return products;
     }
 
+    public InvoiceList getPaidInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+        HttpResponse response = client.getPaidInvoices(office, invoiceGroupId, pageSize, nextId);
+        if (response.getStatusCode() != 200) {
+            InvoiceList invoices = new InvoiceList();
+            invoices.error = response.getBody();
+            invoices.missingAccountId = true;
+            return invoices;
+        }
+        InvoiceList products = (InvoiceList) JSON.deserialize(
+            response.getBody()
+                .replaceAll('"number"', '"invoiceNumber"')
+                .replaceAll('"currency"', '"isoCurrency"')
+                .replaceAll('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
+            InvoiceList.class);
+        return products;
+    }
+
+    @AuraEnabled
+    public static InvoiceList getPaidInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+        PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
+        return instance.getPaidInvoices(office, invoiceGroupId, pageSize, nextId);
+    }
+
     @AuraEnabled
     public static InvoiceList getInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId) {
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();

@@ -24,7 +24,7 @@ public with sharing class PpcOpportunityProductMapper {
     }
 
     /**
-     * Maps products from a quote to OpportunityLineItems
+     * Maps products from a QUOTE to OpportunityLineItems
      *
      * @param quoteInfo - QuoteInfo object from the API
      * @param opp - Opportunity to map the products to
@@ -105,10 +105,13 @@ public with sharing class PpcOpportunityProductMapper {
                 'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
                 ', User Count: ' + oli.User_Count__c +
                 ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
+                ', Cost Price (USD): ' + (oli.Editable_Cost_Price_in_Dollars__c != null ? oli.Editable_Cost_Price_in_Dollars__c.format() : '') +
                 ', Product: ' + oli.Product2Id +
                 ', PricebookEntry: ' + oli.PricebookEntryId +
                 ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
-                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : ''));
+                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : '') +
+                ', Partner Disc:' + (oli.Atlassian_Partner_Discount__c != null ? oli.Atlassian_Partner_Discount__c.format() : '') +
+                ', Entitlement Number: ' + oli.Entitlement_Number__c);
             i++;
         }
 
@@ -116,6 +119,8 @@ public with sharing class PpcOpportunityProductMapper {
     }
 
     /**
+     * Maps products from an INVOICE to OpportunityLineItems
+     *
      * @param invoiceInfo InvoiceInfo object
      * @param opp Opportunity object
      * @param conversionFactor Currency conversion factor
@@ -194,10 +199,13 @@ public with sharing class PpcOpportunityProductMapper {
                 'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
                 ', User Count: ' + oli.User_Count__c +
                 ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
+                ', Cost Price (USD): ' + (oli.Editable_Cost_Price_in_Dollars__c != null ? oli.Editable_Cost_Price_in_Dollars__c.format() : '') +
                 ', Product: ' + oli.Product2Id +
                 ', PricebookEntry: ' + oli.PricebookEntryId +
                 ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
-                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : ''));
+                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : '') +
+                ', Partner Disc:' + (oli.Atlassian_Partner_Discount__c != null ? oli.Atlassian_Partner_Discount__c.format() : '') +
+                ', Entitlement Number: ' + oli.Entitlement_Number__c);
             i++;
         }
 
@@ -236,8 +244,15 @@ public with sharing class PpcOpportunityProductMapper {
                 existingPriceAdjustment += itemPriceAdjustment;
                 existingItem.Atlassian_Price_Adjustment__c = existingPriceAdjustment;
 
-                existingItem.User_Count__c += item.User_Count__c;
+                if (!(item.Editable_Unit_List_Price_in_USD__c < 0 || item.Editable_Cost_Price_in_Dollars__c < 0)) {
+                    existingItem.User_Count__c += item.User_Count__c;
+                }
             } else {
+                // Make sure credits user count does not add up to the total.
+                if ((item.Editable_Unit_List_Price_in_USD__c < 0 || item.Editable_Cost_Price_in_Dollars__c < 0)) {
+                    item.User_Count__c = 0;
+                }
+
                 itemsByProduct.put(key, item);
             }
         }
@@ -332,6 +347,34 @@ public with sharing class PpcOpportunityProductMapper {
 
         System.debug(JSON.serializePretty(invoiceLine));
 
+        /*
+            item.discountAmount = (item.margins && item.margins.length > 0)
+                ? item.margins.reduce((sum, margin) => sum + margin.amount, 0)
+                : 0;
+            item.adjustmentAmount = (item.adjustments && item.adjustments.length > 0)
+                ? item.adjustments.reduce((sum, ajdjustment) => sum + ajdjustment.amount, 0)
+                : 0;
+
+         */
+
+        if (invoiceLine.adjustments != null && invoiceLine.adjustments.size() > 0) {
+            System.debug('++ Adjustments: ' + invoiceLine.adjustments);
+            invoiceLine.adjustmentAmount = 0;
+            for (PortalCommerceApiInvoices.AdjustmentType adjustment : invoiceLine.adjustments) {
+                invoiceLine.adjustmentAmount += adjustment.amount;
+                System.debug('  -- Adjustment: ' + adjustment.amount);
+            }
+        }
+
+        if (invoiceLine.margins != null && invoiceLine.margins.size() > 0) {
+            System.debug('++ Margins: ' + invoiceLine.margins);
+            invoiceLine.discountAmount = 0;
+            for (PortalCommerceApiInvoices.MarginType margin : invoiceLine.margins) {
+                invoiceLine.discountAmount += margin.amount;
+                System.debug('  -- Margin: ' + margin.amount);
+            }
+        }
+
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
         oli.OpportunityId = oppId;
@@ -352,7 +395,8 @@ public with sharing class PpcOpportunityProductMapper {
         oli.Atlassian_Partner_Discount__c = invoiceLine.discountAmount;
         oli.QuoteOriginalProduct__c = invoiceLine.description;
         oli.Quantity = 1;
-        oli.Editable_Unit_List_Price_in_USD__c = invoiceLine.subTotal;
+        oli.Editable_Unit_List_Price_in_USD__c = (invoiceLine.subTotal == null) ? 0 : invoiceLine.subTotal;
+        oli.Editable_Cost_Price_in_Dollars__c = (invoiceLine.total == null) ? 0 : invoiceLine.total;
         oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.salesType) == null
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(invoiceLine.salesType);

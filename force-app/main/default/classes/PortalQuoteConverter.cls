@@ -128,6 +128,7 @@ public with sharing class PortalQuoteConverter {
             SELECT
                 Id,
                 AccountId,
+                StageName,
                 Account.Name,
                 Pricebook2Id,
                 Pricebook2.Name,

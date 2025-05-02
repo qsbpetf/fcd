@@ -196,6 +196,7 @@ public with sharing class OpportunityProductMapper {
         @AuraEnabled public List<String> pbeLog;
         @AuraEnabled public List<String> errorLog;
         @AuraEnabled public List<String> successLog;
+        @AuraEnabled public List<String> links;
         @AuraEnabled public Integer productCount;
 
         public LogData() {
@@ -203,6 +204,7 @@ public with sharing class OpportunityProductMapper {
             this.pbeLog = new List<String>();
             this.errorLog = new List<String>();
             this.successLog = new List<String>();
+            this.links = new List<String>();
             this.productCount = 0;
         }
     }

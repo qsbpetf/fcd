@@ -120,6 +120,7 @@ public with sharing class PortalCommerceApiQuotes
         @AuraEnabled public String orderItemId;
         @AuraEnabled public TimeInfo startsAt;
         @AuraEnabled public TimeInfo endsAt;
+
     }
 
     public class TimeInfo {

@@ -87,6 +87,13 @@ public with sharing class PortalCommerceApiClient {
         return new Http().send(req);
     }
 
+    public HttpResponse getPaidInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+        HttpRequest req = createRequestHeader(true);
+        req.setEndpoint(generateEndpoint(office, INVOICES_ENDPOINT, pageSize, nextId, invoiceGroupId) + '&status=PAID');
+        req.setMethod('GET');
+        return new Http().send(req);
+    }
+
     public HttpResponse getInvoice(String office, String invoiceId) {
         HttpRequest req = createRequestHeader(true);
         req.setEndpoint(generateEndpoint(office, INVOICES_ENDPOINT, null, null, null) + '/' + invoiceId);
@@ -208,6 +215,7 @@ public with sharing class PortalCommerceApiClient {
         if (useTransactionAccount) {
             req.setHeader('X-transaction-account', '{!$Credential.Username}');
         }
+        req.setTimeout(120000);
         return req;
     }
 }

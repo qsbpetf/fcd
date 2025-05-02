@@ -1,0 +1,46 @@
+<!--
+ - Created by peterfriberg on 2025-03-06.
+ -->
+
+<!-- Batch Job Monitor -->
+<template>
+    <lightning-card title="Job Control">
+        <div class="slds-grid">
+            <div class="slds-col">
+                <lightning-button disabled={calcButtonDisabled} label="Start PPC Invoice Import Batch Job" onclick={startCalculation} class="pad-left"></lightning-button>
+                <lightning-input type="number" label="Number of day(s) back to import invoices from" value="5" min="1" class="slds-m-left_medium slds-m-top_medium field-width" onchange={handleInputChange}></lightning-input>
+            </div>
+        </div>
+    </lightning-card>
+
+    <lightning-card title="Apex Jobs">
+        <div class="slds-grid">
+            <div class="slds-col">
+                <lightning-button disabled={startButtonDisabled} label="Start Monitoring" onclick={startMonitoring} class="pad-left"></lightning-button>
+                <lightning-button disabled={stopButtonDisabled} label="Stop Monitoring" onclick={stopMonitoring} class="slds-m-left_small slds-col_bump-left"></lightning-button>
+            </div>
+
+            <div class="slds-col">
+                <template if:true={startButtonDisabled}>
+                    <div class="slds-m-top_medium">
+                        <lightning-dynamic-icon
+                                type="strength"
+                                option={strength}
+                                alternative-text="Strength">
+                        </lightning-dynamic-icon>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <template if:true={jobs}>
+            <div class="slds-m-top_medium">
+                <lightning-datatable
+                        key-field="id"
+                        data={jobs}
+                        columns={columns}>
+                </lightning-datatable>
+            </div>
+        </template>
+    </lightning-card>
+</template>

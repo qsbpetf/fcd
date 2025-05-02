@@ -253,7 +253,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                 this.conversionResult = this.mapResults(result);
                 const toastEvent = new ShowToastEvent({
                     title: 'Success',
-                    message: 'Invoice imported successfully' + (createProducts ? ' and products created' : ''),
+                    message: 'Invoice imported successfully' + (createProducts ? ' and products are now QUEUED for creation' : ''),
                     variant: 'success',
                 });
                 this.dispatchEvent(toastEvent);
