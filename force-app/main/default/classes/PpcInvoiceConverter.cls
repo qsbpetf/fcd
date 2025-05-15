@@ -27,6 +27,8 @@ public without sharing class PpcInvoiceConverter {
             pendingInvoice.Error__c = null;
             pendingInvoice.RetryCount__c = 0;
             pendingInvoice.Account__c = opp.AccountId;
+            pendingInvoice.TotalLineItems__c = oppProducts.size();
+            pendingInvoice.LineItemsInserted__c = 0;
             pendingInvoice.Opportunity__c = oppId;
             insert pendingInvoice;
 
