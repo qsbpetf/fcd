@@ -512,6 +512,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>PendingInvoice__c.CV_Subsidiary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>PendingInvoice__c.Error__c</field>
         <readable>true</readable>
     </fieldPermissions>

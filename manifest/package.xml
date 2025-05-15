@@ -141,6 +141,14 @@
         <name>CustomTab</name>
     </types>
     <types>
+        <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
+        <name>FlowDefinition</name>
+    </types>
+    <types>
         <members>InvoiceGroup__c-Invoice Group Layout</members>
         <name>Layout</name>
     </types>
