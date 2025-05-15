@@ -20,10 +20,18 @@ public without sharing class PpcInvoiceConverter {
         }
         if (createProducts) {
 
-            // Replaced:
-            //   insert oppProducts;
-            // with a queueable to avoid hitting the DML row limit and flow limits
-            enqueueProductInsertion(opp, oppProducts);
+            PendingInvoice__c pendingInvoice = new PendingInvoice__c();
+            pendingInvoice.Name = invoiceData.invoiceNumber;
+            pendingInvoice.Invoice_JSON__c = JSON.serialize(invoiceData);
+            pendingInvoice.Status__c = 'Waiting';
+            pendingInvoice.Error__c = null;
+            pendingInvoice.RetryCount__c = 0;
+            pendingInvoice.Account__c = opp.AccountId;
+            pendingInvoice.Opportunity__c = oppId;
+            insert pendingInvoice;
+
+            OpportunityData oppData = new OpportunityData(oppId, 'Closing', oppProducts, pendingInvoice.Id);
+            enqueueProductInsertion(oppData);
 
             log.successLog.add(oppProducts.size() + ' Opportunity Products added successfully');
             try {
@@ -49,10 +57,9 @@ public without sharing class PpcInvoiceConverter {
     }
 
     @TestVisible
-    private static void enqueueProductInsertion(Opportunity opp, List<OpportunityLineItem> oppProducts) {
-        System.enqueueJob(
-            new ProcessOpportunityLinesQueueable(
-                new OpportunityData(opp.Id, opp.StageName, oppProducts)));
+    private static void enqueueProductInsertion(OpportunityData oppData) {
+        String jobId = System.enqueueJob(new ProcessOpportunityLinesQueueable(oppData));
+        System.debug('### Next batch of opportunity line items enqueued. Job ID: ' + jobId);
     }
 
     @TestVisible

@@ -59,6 +59,7 @@
                             <th class="td-pad">Invoice Number</th>
                             <th class="td-pad">Status</th>
                             <th class="td-pad number"># Items</th>
+                            <th class="td-pad number">VAT</th>
                             <th class="td-pad number">Subtotal</th>
                             <th class="td-pad number">Total</th>
                             <th class="td-pad">Preview</th>
@@ -71,6 +72,7 @@
                                 <td class="td-pad">{inv.invoiceNumber}</td>
                                 <td class="td-pad"><strong>{inv.status}</strong></td>
                                 <td class="number td-pad">{inv.length}</td>
+                                <td class="currency td-pad">{inv.tax}</td>
                                 <td class="currency td-pad">{inv.subTotal}</td>
                                 <td class="currency td-pad">{inv.total}</td>
 <!--                                <td class="button-around">-->
@@ -101,6 +103,7 @@
                                             <th class="td-pad currency">Total</th>
                                             <th class="td-pad currency">Margin</th>
                                             <th class="td-pad currency">Adjustments</th>
+                                            <th class="td-pad currency">VAT</th>
                                             <th class="td-pad currency">Total excl. VAT</th>
                                             <th class="td-pad left-pad">Currency</th>
                                         </tr>
@@ -122,6 +125,7 @@
                                                 <td class="td-pad currency">{li.totalDecimal}</td>
                                                 <td class="td-pad currency">{li.discountAmount}</td>
                                                 <td class="td-pad currency">{li.adjustmentAmount}</td>
+                                                <td class="td-pad currency">{li.tax}</td>
                                                 <td class="td-pad currency">{li.amountExcludingTaxDecimal}</td>
                                                 <td class="td-pad left-pad">{li.isoCurrency}</td>
                                             </tr>

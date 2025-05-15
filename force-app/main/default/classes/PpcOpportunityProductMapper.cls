@@ -380,23 +380,19 @@ public with sharing class PpcOpportunityProductMapper {
         oli.OpportunityId = oppId;
         Long startsAt = invoiceLine?.period?.startAt;
         Long endsAt = invoiceLine?.period?.endAt;
-        // oli.License_Start_date__c = (orderLine.startDate == null) ? Date.today() : orderLine.startDate; // slide 8 in documentation "Where dates = null"
         oli.License_Start_date__c = (startsAt != null) ? Datetime.newInstance(startsAt).date() : Date.today();
-        // Date endDate = (orderLine.endDate == null) ? Date.today().addMonths(orderLine.maintenanceMonths) : orderLine.endDate;
-        // oli.License_end_date__c = endDate;
         oli.License_end_date__c = (endsAt != null) ? Datetime.newInstance(endsAt).date() : null;
         oli.Additional_Info__c = invoiceLine.description;
-        // oli.Cloud_Site_Name__c = invoiceLine.entName;
+        oli.Cloud_Site_Name__c = invoiceLine.entName;
         oli.SEN__c = invoiceLine.entitlementNumber;
         oli.Entitlement_Number__c = invoiceLine.entitlementNumber;
-        oli.Editable_Cost_Price_in_Dollars__c = (invoiceLine.amountExcludingTaxDecimal == null) ? 0 : invoiceLine.amountExcludingTaxDecimal;
+        oli.Editable_Cost_Price_in_Dollars__c = ((invoiceLine.total == null) ? 0 : invoiceLine.total) - ((invoiceLine.tax == null) ? 0 : invoiceLine.tax);
         oli.User_Count__c = invoiceLine.quantity;
         oli.Atlassian_Price_Adjustment__c = invoiceLine.adjustmentAmount;
         oli.Atlassian_Partner_Discount__c = invoiceLine.discountAmount;
         oli.QuoteOriginalProduct__c = invoiceLine.description;
         oli.Quantity = 1;
         oli.Editable_Unit_List_Price_in_USD__c = (invoiceLine.subTotal == null) ? 0 : invoiceLine.subTotal;
-        oli.Editable_Cost_Price_in_Dollars__c = (invoiceLine.total == null) ? 0 : invoiceLine.total;
         oli.Renewal__c = SALE_TYPE_MAPPING.get(invoiceLine.salesType) == null
             ? SALE_TYPE_MAPPING.get('RENEWAL')
             : SALE_TYPE_MAPPING.get(invoiceLine.salesType);

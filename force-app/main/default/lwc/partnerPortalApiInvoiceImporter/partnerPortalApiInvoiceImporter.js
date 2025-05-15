@@ -213,7 +213,7 @@ export default class PartnerPortalApiInvoiceImporter extends LightningElement {
                 ? item.margins.reduce((sum, margin) => sum + margin.amount, 0)
                 : 0;
             item.adjustmentAmount = (item.adjustments && item.adjustments.length > 0)
-                ? item.adjustments.reduce((sum, ajdjustment) => sum + ajdjustment.amount, 0)
+                ? item.adjustments.reduce((sum, adjustment) => sum + adjustment.amount, 0)
                 : 0;
             item.amountExcludingTaxDecimal = parseFloat((item.subTotalDecimal - item.discountAmount - item.adjustmentAmount).toFixed(2));
         });

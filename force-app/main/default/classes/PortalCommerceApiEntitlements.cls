@@ -77,6 +77,7 @@ public with sharing class PortalCommerceApiEntitlements {
         return entitlementPartnerInfo;
     }
 
+    @AuraEnabled
     public static EntitlementPartnerInfo getEntitlementPartnerInfoStatic(String office, String entitlementId) {
         PortalCommerceApiEntitlements instance = PortalCommerceApiEntitlements.getInstance();
         return instance.getEntitlementPartnerInfo(office, entitlementId);

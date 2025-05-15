@@ -11,14 +11,16 @@ private class OpportunityDataTest {
         System.assertEquals(null, opportunityData.opptyId);
         System.assertEquals(null, opportunityData.stageName);
         System.assertNotEquals(null, opportunityData.lines);
+        System.assertEquals(0, opportunityData.lines.size());
     }
 
     @IsTest
     static void testBehaviorWithParams() {
         List<OpportunityLineItem> lines = new List<OpportunityLineItem>();
-        OpportunityData opportunityData = new OpportunityData('opptyId', 'stageName', lines);
+        OpportunityData opportunityData = new OpportunityData('opptyId', 'stageName', lines, 'pendingInvoiceId');
         System.assertEquals('opptyId', opportunityData.opptyId);
         System.assertEquals('stageName', opportunityData.stageName);
+        System.assertEquals('pendingInvoiceId', opportunityData.pendingInvoiceId);
         System.assertEquals(lines, opportunityData.lines);
     }
 }

@@ -13,6 +13,32 @@ private class PortalCommerceApiClientTest {
     }
 
     @IsTest
+    static void testGetOfferings() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+
+        String endPoint = PortalCommerceApiClient.OFFERINGS_ENDPOINT.replace('{{PRODUCT_ID}}', 'IG_ID1');
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(endPoint, '{"values": []}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        HttpResponse resp = instance.getOfferings('SE', 'IG_ID1', 5, 'NEXT_ID1');
+        Test.stopTest();
+
+        System.assertEquals(200, resp.getStatusCode(), 'Wrong status code');
+        System.assertEquals('OK', resp.getStatus(), 'Wrong status');
+        System.assertEquals('{"values": []}', resp.getBody(), 'Wrong body');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(endPoint), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('page-size=5'), 'Wrong pageSize');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('start-id=NEXT_ID1'), 'Wrong nextId');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_SE'), 'Wrong office');
+    }
+
+    @IsTest
     static void testGetProducts() {
         // Override the office access check based on custom permissions to always allow access
         PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
@@ -89,8 +115,9 @@ private class PortalCommerceApiClientTest {
 
         PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
 
+        String endPoint = PortalCommerceApiClient.QUOTE_PDF_ENDPOINT.replace('{{QUOTE_ID}}', 'Q_ID');
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
-        mock.addOkResponse(PortalCommerceApiClient.QUOTE_PDF_ENDPOINT.replace('{{QUOTE_ID}}', 'Q_ID'), '');
+        mock.addOkResponse(endPoint, '');
         Test.setMock(HttpCalloutMock.class, mock);
 
         Test.startTest();
@@ -101,7 +128,7 @@ private class PortalCommerceApiClientTest {
         System.assertEquals('OK', resp.getStatus(), 'Wrong status');
         System.assertEquals('', resp.getBody(), 'Wrong body');
         System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
-        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(PortalCommerceApiClient.QUOTE_PDF_ENDPOINT.replace('{{QUOTE_ID}}', 'Q_ID')), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(endPoint), 'Wrong endpoint');
     }
 
     @IsTest
@@ -124,6 +151,127 @@ private class PortalCommerceApiClientTest {
         System.assertEquals('{"data": []}', resp.getBody(), 'Wrong body');
         System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
         System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(PortalCommerceApiClient.INVOICES_ENDPOINT), 'Wrong endpoint');
+    }
+
+    @IsTest
+    static void getPaidInvoices() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(PortalCommerceApiClient.INVOICES_ENDPOINT, '{"data": []}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        HttpResponse resp = instance.getPaidInvoices('FI', 'IG_ID', 10, null);
+        Test.stopTest();
+
+        System.assertEquals(200, resp.getStatusCode(), 'Wrong status code');
+        System.assertEquals('OK', resp.getStatus(), 'Wrong status');
+        System.assertEquals('{"data": []}', resp.getBody(), 'Wrong body');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(PortalCommerceApiClient.INVOICES_ENDPOINT), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_FI'), 'Wrong office');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('page-size=10'), 'Wrong pageSize');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('invoice-group=IG_ID'), 'Wrong invoiceGroupId');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('status=PAID'), 'Wrong nextId');
+    }
+
+    @IsTest
+    static void testGetInvoice() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(PortalCommerceApiClient.INVOICES_ENDPOINT, '{"id": "INV_ID"}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        HttpResponse resp = instance.getInvoice('FI', 'INV_ID');
+        Test.stopTest();
+
+        System.assertEquals(200, resp.getStatusCode(), 'Wrong status code');
+        System.assertEquals('OK', resp.getStatus(), 'Wrong status');
+        System.assertEquals('{"id": "INV_ID"}', resp.getBody(), 'Wrong body');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(PortalCommerceApiClient.INVOICES_ENDPOINT), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_FI'), 'Wrong office');
+    }
+
+    @IsTest
+    static void testgetInvoicePdf() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+
+        String endPoint = PortalCommerceApiClient.INVOICE_PDF_ENDPOINT.replace('{{INVOICE_ID}}', 'INV_ID');
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(endPoint, '');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        HttpResponse resp = instance.getInvoicePdf('UK', 'INV_ID');
+        Test.stopTest();
+
+        System.assertEquals(200, resp.getStatusCode(), 'Wrong status code');
+        System.assertEquals('OK', resp.getStatus(), 'Wrong status');
+        System.assertEquals('', resp.getBody(), 'Wrong body');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(endPoint), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_UK'), 'Wrong office');
+    }
+
+    @IsTest
+    static void getOrder() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(PortalCommerceApiClient.ORDER_ENDPOINT, '{"id": "ORDER_ID"}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        HttpResponse resp = instance.getOrder('FI', 'ORDER_ID');
+        Test.stopTest();
+
+        System.assertEquals(200, resp.getStatusCode(), 'Wrong status code');
+        System.assertEquals('OK', resp.getStatus(), 'Wrong status');
+        System.assertEquals('{"id": "ORDER_ID"}', resp.getBody(), 'Wrong body');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(PortalCommerceApiClient.ORDER_ENDPOINT), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_FI'), 'Wrong office');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('/ORDER_ID'), 'Wrong orderId');
+    }
+
+    @IsTest
+    static void testGetOrderPreview() {
+        // Override the office access check based on custom permissions to always allow access
+        PortalCommerceApiAccessMgmt.allowOfficeAccessOverride = true;
+
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(PortalCommerceApiClient.ORDER_PREVIEW_ENDPOINT, '{"id": "ORDER_ID"}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        HttpResponse resp = instance.getOrderPreview('FI', '{"id": "ORDER_ID"}');
+        Test.stopTest();
+
+        System.assertEquals(200, resp.getStatusCode(), 'Wrong status code');
+        System.assertEquals('OK', resp.getStatus(), 'Wrong status');
+        System.assertEquals('{"id": "ORDER_ID"}', resp.getBody(), 'Wrong body');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase(PortalCommerceApiClient.ORDER_PREVIEW_ENDPOINT), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_FI'), 'Wrong office');
+        System.assert(mock.getRequests()[0].getMethod().containsIgnoreCase('POST'), 'Wrong opration');
     }
 
     @IsTest

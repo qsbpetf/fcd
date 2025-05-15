@@ -5,8 +5,6 @@
 @IsTest
 private class PpcOpportunityProductMapperTest {
 
-
-    @TestSetup
     static void setup() {
         // create default product
         String defaultProductName;
@@ -37,6 +35,8 @@ private class PpcOpportunityProductMapperTest {
 
     @IsTest
     static void testMapProductsFromQuoteSuccessful() {
+        setup();
+
         PpcOpportunityProductMapper instance = PpcOpportunityProductMapper.getInstance();
         PortalCommerceApiQuotes.QuoteInfo quoteInfo = new PortalCommerceApiQuotes.QuoteInfo();
         quoteInfo.quoteNumber = '123';
@@ -74,6 +74,8 @@ private class PpcOpportunityProductMapperTest {
 
     @IsTest
     static void testMapProductsFromInvoiceSuccessful() {
+        setup();
+
         PpcOpportunityProductMapper instance = PpcOpportunityProductMapper.getInstance();
         PortalCommerceApiInvoices.InvoiceInfo invoiceInfo = new PortalCommerceApiInvoices.InvoiceInfo();
         invoiceInfo.invoiceNumber = '123';

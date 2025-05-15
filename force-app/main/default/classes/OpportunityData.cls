@@ -11,17 +11,20 @@
 public class OpportunityData {
     public String opptyId;
     public String stageName;
+    public String pendingInvoiceId;
     public List<OpportunityLineItem> lines;
 
     public OpportunityData() {
         this.opptyId = null;
         this.stageName = null;
+        this.pendingInvoiceId = null;
         this.lines = new List<OpportunityLineItem>();
     }
 
-    public OpportunityData(String opptyId, String stageName, List<OpportunityLineItem> lines) {
+    public OpportunityData(String opptyId, String stageName, List<OpportunityLineItem> lines, String pendingInvoiceId) {
         this.opptyId = opptyId;
         this.stageName = stageName;
+        this.pendingInvoiceId = pendingInvoiceId;
         this.lines = lines;
     }
 }

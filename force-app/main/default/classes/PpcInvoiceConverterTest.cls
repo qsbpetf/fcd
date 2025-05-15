@@ -14,7 +14,6 @@ private class PpcInvoiceConverterTest {
         PpcOpportunityProductMapper.instance = mockServiceStub;
     }
 
-    @TestSetup
     static void testSetup() {
         List<Buying_Exchange_Rate__c> currencyList = new List<Buying_Exchange_Rate__c>();
         currencyList.add(new Buying_Exchange_Rate__c(
@@ -26,6 +25,8 @@ private class PpcInvoiceConverterTest {
 
     @IsTest
     static void testUpdateOpportunitySuccessful() {
+        testSetup();
+
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -55,6 +56,8 @@ private class PpcInvoiceConverterTest {
 
     @IsTest
     static void testMapProductsSuccessful() {
+        testSetup();
+
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -93,6 +96,8 @@ private class PpcInvoiceConverterTest {
 
     @IsTest
     static void testConvertInvoiceSuccessful() {
+        testSetup();
+
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';

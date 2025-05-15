@@ -5,7 +5,6 @@
 @IsTest
 private class ProcessOpptyLineQueueableTest {
 
-    @TestSetup
     static void setup() {
         // create default product
         String defaultProductName;
@@ -36,6 +35,8 @@ private class ProcessOpptyLineQueueableTest {
 
     @IsTest
     static void testBehaviorWithNoLines() {
+        setup();
+
         Account acc = TestDataFactory.getAccount('Finland', 'EUR');
         insert acc;
 
@@ -47,7 +48,8 @@ private class ProcessOpptyLineQueueableTest {
 
         Test.startTest();
         opp.StageName = 'Closing';
-        OpportunityData oppData = new OpportunityData(opp.Id, opp.StageName, new List<OpportunityLineItem>());
+
+        OpportunityData oppData = new OpportunityData(opp.Id, opp.StageName, new List<OpportunityLineItem>(), null);
         ProcessOpportunityLinesQueueable queueable = new ProcessOpportunityLinesQueueable(oppData);
         System.enqueueJob(queueable);
         Test.stopTest();
@@ -58,6 +60,8 @@ private class ProcessOpptyLineQueueableTest {
 
     @IsTest
     static void testBehaviorWithTwoLines() {
+        setup();
+
         Account acc = TestDataFactory.getAccount('Finland', 'EUR');
         insert acc;
 
@@ -75,7 +79,18 @@ private class ProcessOpptyLineQueueableTest {
 
         Test.startTest();
         opp.StageName = 'Closing';
-        OpportunityData oppData = new OpportunityData(opp.Id, opp.StageName, items);
+
+        PendingInvoice__c pendingInvoice = new PendingInvoice__c();
+        pendingInvoice.Name = 'Test Invoice';
+        pendingInvoice.Invoice_JSON__c = '{}';
+        pendingInvoice.Status__c = 'Waiting';
+        pendingInvoice.Error__c = null;
+        pendingInvoice.RetryCount__c = 0;
+        pendingInvoice.Account__c = acc.Id;
+        pendingInvoice.Opportunity__c = opp.Id;
+        insert pendingInvoice;
+
+        OpportunityData oppData = new OpportunityData(opp.Id, opp.StageName, items, pendingInvoice.Id);
         ProcessOpportunityLinesQueueable queueable = new ProcessOpportunityLinesQueueable(oppData);
         System.enqueueJob(queueable);
         Test.stopTest();

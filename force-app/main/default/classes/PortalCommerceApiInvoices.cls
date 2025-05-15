@@ -44,13 +44,16 @@ public with sharing class PortalCommerceApiInvoices
             invoices.missingAccountId = true;
             return invoices;
         }
-        InvoiceList products = (InvoiceList) JSON.deserialize(
+        InvoiceList invoices = (InvoiceList) JSON.deserialize(
             response.getBody()
                 .replaceAll('"number"', '"invoiceNumber"')
                 .replaceAll('"currency"', '"isoCurrency"')
                 .replaceAll('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
             InvoiceList.class);
-        return products;
+        for (InvoiceInfo invoice : invoices.data) {
+            invoice.office = office;
+        }
+        return invoices;
     }
 
     @AuraEnabled
@@ -116,6 +119,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public String isoCurrency;
         @AuraEnabled public Double total;
         @AuraEnabled public Double subTotal;
+        @AuraEnabled public Double tax;
         @AuraEnabled public Long createdAt;
         @AuraEnabled public Long dueAt;
         @AuraEnabled public Long paidAt;
@@ -133,7 +137,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public Double subTotal;
         @AuraEnabled public Long amountExcludingTax;
         @AuraEnabled public Double amountExcludingTaxDecimal;
-        @AuraEnabled public Decimal tax;
+        @AuraEnabled public Double tax;
         @AuraEnabled public PeriodInfo period;
         @AuraEnabled public String entitlementId;
         @AuraEnabled public String entitlementNumber;
@@ -151,6 +155,7 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public String offeringName;
         @AuraEnabled public String offeringId;
         @AuraEnabled public String sfProductName;
+        @AuraEnabled public String entName;
     }
 
     public class PaymentMethodObjType {

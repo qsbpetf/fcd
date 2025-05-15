@@ -14,7 +14,6 @@ private class PpcQuoteConverterTest {
         PpcOpportunityProductMapper.instance = mockServiceStub;
     }
 
-    @TestSetup
     static void testSetup() {
         List<Buying_Exchange_Rate__c> currencyList = new List<Buying_Exchange_Rate__c>();
         currencyList.add(new Buying_Exchange_Rate__c(
@@ -26,6 +25,8 @@ private class PpcQuoteConverterTest {
 
     @IsTest
     static void testUpdateOpportunitySuccessful() {
+        testSetup();
+
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -57,6 +58,8 @@ private class PpcQuoteConverterTest {
 
     @IsTest
     static void testMapProductsSuccessful() {
+        testSetup();
+
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -102,6 +105,8 @@ private class PpcQuoteConverterTest {
 
     @IsTest
     static void testConvertInvoiceSuccessful() {
+        testSetup();
+
         Account acc = TestDataFactory.getAccount('FI', 'EUR');
         acc.CV_Subsidiary__c = 'FI';
         acc.BillingCountry = 'Finland';
@@ -157,5 +162,4 @@ private class PpcQuoteConverterTest {
         System.assert(logData.successLog[1].containsIgnoreCase('Opportunity updated successfully'), 'Should have success log for updating opportunity');
         System.debug(logData);
     }
-
 }

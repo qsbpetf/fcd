@@ -39,6 +39,7 @@
         <members>PPC_TransactionAccount.NO</members>
         <members>PPC_TransactionAccount.SE</members>
         <members>PPC_TransactionAccount.UK</members>
+        <members>PPC_TransactionAccount.US</members>
         <members>PortalProductToSalesforceMapping.Default_001</members>
         <members>PortalProductToSalesforceMapping.Default_002</members>
         <members>PortalProductToSalesforceMapping.Entitlement_001</members>
@@ -67,6 +68,8 @@
         <members>PortalProductToSalesforceMapping.Product_023</members>
         <members>PortalProductToSalesforceMapping.Product_024</members>
         <members>PortalProductToSalesforceMapping.Product_025</members>
+        <members>PortalProductToSalesforceMapping.Product_026</members>
+        <members>PortalProductToSalesforceMapping.Product_027</members>
         <members>PpcProductToSalesforceMapping.Default_001</members>
         <members>PpcProductToSalesforceMapping.Product_001</members>
         <members>PpcProductToSalesforceMapping.Product_002</members>
@@ -76,12 +79,32 @@
         <members>PpcProductToSalesforceMapping.Product_006</members>
         <members>PpcProductToSalesforceMapping.Product_007</members>
         <members>PpcProductToSalesforceMapping.Product_008</members>
+        <members>PpcProductToSalesforceMapping.Product_009</members>
         <members>PpcProductToSalesforceMapping.Product_010</members>
         <members>PpcProductToSalesforceMapping.Product_011</members>
         <members>PpcProductToSalesforceMapping.Product_012</members>
         <members>PpcProductToSalesforceMapping.Product_013</members>
         <members>PpcProductToSalesforceMapping.Product_014</members>
         <members>PpcProductToSalesforceMapping.Product_015</members>
+        <members>PpcProductToSalesforceMapping.Product_016</members>
+        <members>PpcProductToSalesforceMapping.Product_017</members>
+        <members>PpcProductToSalesforceMapping.Product_018</members>
+        <members>PpcProductToSalesforceMapping.Product_019</members>
+        <members>PpcProductToSalesforceMapping.Product_020</members>
+        <members>PpcProductToSalesforceMapping.Product_021</members>
+        <members>PpcProductToSalesforceMapping.Product_022</members>
+        <members>PpcProductToSalesforceMapping.Product_023</members>
+        <members>PpcProductToSalesforceMapping.Product_024</members>
+        <members>PpcProductToSalesforceMapping.Product_025</members>
+        <members>PpcProductToSalesforceMapping.Product_026</members>
+        <members>PpcProductToSalesforceMapping.Product_027</members>
+        <members>PpcProductToSalesforceMapping.Product_028</members>
+        <members>PpcProductToSalesforceMapping.Product_029</members>
+        <members>PpcProductToSalesforceMapping.Product_030</members>
+        <members>PpcProductToSalesforceMapping.Product_031</members>
+        <members>PpcProductToSalesforceMapping.Product_032</members>
+        <members>PpcProductToSalesforceMapping.Product_033</members>
+        <members>PpcProductToSalesforceMapping.Product_034</members>
         <name>CustomMetadata</name>
     </types>
     <types>
@@ -90,6 +113,7 @@
         <members>InvoiceGroup__c</members>
         <members>OpportunityLineItem</members>
         <members>PPC_TransactionAccount__mdt</members>
+        <members>PendingInvoice__c</members>
         <members>PortalProductToSalesforceMapping__mdt</members>
         <members>PpcProductToSalesforceMapping__mdt</members>
         <name>CustomObject</name>
@@ -113,6 +137,7 @@
         <members>AtlassianProduct__c</members>
         <members>Batch_Job_Monitor</members>
         <members>InvoiceGroup__c</members>
+        <members>PendingInvoice__c</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -135,6 +160,7 @@
         <members>Eficode_Office_SE</members>
         <members>Eficode_Office_UK</members>
         <members>Eficode_com_JIRA_DC</members>
+        <members>ExchangeRatesAPI</members>
         <name>NamedCredential</name>
     </types>
     <types>
@@ -147,6 +173,7 @@
     </types>
     <types>
         <members>AtlassianAPI</members>
+        <members>ExchangeRatesAPI</members>
         <name>RemoteSiteSetting</name>
     </types>
     <types>

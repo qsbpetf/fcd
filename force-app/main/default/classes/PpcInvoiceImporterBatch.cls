@@ -4,18 +4,28 @@
 
 public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<SObject>, Database.AllowsCallouts, Database.Stateful, Schedulable {
 
-    static public Integer DEFAULT_N_DAYS = 5;
+    static public final Integer DEFAULT_N_DAYS = 5;
     static public final Integer PAGE_SIZE = 1;
     static public final String DEFAULT_QUERY = 'SELECT Id, Name, Special_Instructions_to_Accounts__c FROM Account WHERE AutoInvoiceImport__c = TRUE';
+    static public final PPC_InvoiceAutoImportSettings__c SETTING = PPC_InvoiceAutoImportSettings__c.getInstance();
 
     private Map<Id, Account> accountMap;
-    private Integer lastNDays;
-
+    @TestVisible private Integer lastNDays;
     @TestVisible private String query;
 
     public PpcInvoiceImporterBatch() {
         this.query = DEFAULT_QUERY;
-        this.lastNDays = DEFAULT_N_DAYS;
+        if (SETTING != null) {
+            this.lastNDays = Integer.valueOf(SETTING.LastDays__c);
+            System.debug('### Using lastNDays from SETTING = ' + this.lastNDays);
+            if (!SETTING.AutomationEnabled__c) {
+                this.query += ' LIMIT 0';
+            }
+        }
+        if (this.lastNDays == null) {
+            this.lastNDays = DEFAULT_N_DAYS;
+        }
+        System.debug('### Using lastNDays = ' + this.lastNDays);
     }
 
     public static String run() {
@@ -71,6 +81,10 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
 
     public void finish(Database.BatchableContext BC) {
         System.debug('### FINISH');
+        // start nex adjacent batch job.
+        if (!Test.isRunningTest()) {
+            Database.executeBatch(new InvoiceToOpportunityBatch(), InvoiceToOpportunityBatch.PAGE_SIZE);
+        }
     }
 
     @TestVisible
@@ -89,7 +103,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         Boolean isMonthly = false;
 
         for (PortalCommerceApiInvoices.InvoiceItem lineItem : invoice.items) {
-            if (lineItem.planObj.cycle.interval == 'MONTHLY') {
+            if (lineItem?.planObj?.cycle?.interval == 'MONTHLY') {
                 isMonthly = true;
                 break;
             }
@@ -201,7 +215,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         System.debug('Created opportunities: ' + newOpptys);
 
         Map<Id, Opportunity> opptyMap = new Map<Id, Opportunity>([
-            SELECT Id, AccountId, Name, ImportedInvoiceNumber__c, Pricebook2Id, StageName, CloseDate, LeadSource, CurrencyIsoCode
+            SELECT Id, AccountId, Name, ImportedInvoiceNumber__c, Pricebook2Id, StageName, CloseDate, LeadSource, CurrencyIsoCode, Pricebook2.Name
             FROM Opportunity
             WHERE Id IN :newOpptys
         ]);
@@ -209,7 +223,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         System.debug('InvoiceDataList: ' + invoiceDataList);
 
         List<OpportunityLineItem> allItems = new List<OpportunityLineItem>();
-        List<Opportunity> updatedOpptys = new List<Opportunity>();
+        List<PendingInvoice__c> pendingInvoices = new List<PendingInvoice__c>();
 
         for (InvoiceData invoiceData : invoiceDataList) {
             System.debug('  ### Importing invoice: ' + invoiceData.invoice.invoiceNumber);
@@ -220,23 +234,24 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
             List<OpportunityLineItem> items = mapper.mapProducts(invoice, oppty, (Double) 1.0, new OpportunityProductMapper.LogData(), true);
             allItems.addAll(items);
 
-            oppty.StageName = 'Closing';
-            updatedOpptys.add(oppty);
-
             System.debug('### Mapped ' + items.size() + ' products for invoice: ' + invoice.invoiceNumber);
             for (OpportunityLineItem item : items) {
                 System.debug('  ### Product: ' + item);
             }
 
-            OpportunityData data = new OpportunityData(oppty.Id, oppty.StageName, items);
-            System.enqueueJob(new ProcessOpportunityLinesQueueable(data));
+            PendingInvoice__c pendingInvoice = new PendingInvoice__c();
+            pendingInvoice.Name = invoice.invoiceNumber;
+            pendingInvoice.Invoice_JSON__c = JSON.serialize(invoice);
+            pendingInvoice.Status__c = 'Waiting';
+            pendingInvoice.Error__c = null;
+            pendingInvoice.RetryCount__c = 0;
+            pendingInvoice.Account__c = invoiceData.acc.Id;
+            pendingInvoice.Opportunity__c = oppty.Id;
+            pendingInvoices.add(pendingInvoice);
         }
 
-        System.debug('### Inserting ' + allItems.size() + ' OpportunityLineItems');
-        // insert allItems;
-
-        System.debug('### Updating ' + updatedOpptys.size() + ' Opportunities');
-        // update updatedOpptys;
+        System.debug('### Inserting ' + pendingInvoices.size() + ' Pending Invoice records');
+        insert pendingInvoices;
     }
 
     public class InvoiceData {

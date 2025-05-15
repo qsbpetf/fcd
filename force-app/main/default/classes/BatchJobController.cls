@@ -48,7 +48,7 @@ public with sharing class BatchJobController {
             FROM AsyncApexJob
             WHERE JobType IN ('BatchApex','BatchApexWorker')
             AND CreatedDate = LAST_N_DAYS:2
-            AND ApexClass.Name = 'PpcInvoiceImporterBatch'
+            AND ApexClass.Name IN ('PpcInvoiceImporterBatch', 'InvoiceToOpportunityBatch')
             ORDER BY CreatedDate DESC
         ]);
     }
