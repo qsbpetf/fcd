@@ -29,10 +29,20 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
     }
 
     public static String run() {
+        if (jobIsExecuting(PpcInvoiceImporterBatch.class.toString()) ||
+            jobIsExecuting(InvoiceToOpportunityBatch.class.toString())) {
+            System.debug('### Job is already executing, skipping this run');
+            return null;
+        }
         return Database.executeBatch(new PpcInvoiceImporterBatch(), PAGE_SIZE);
     }
 
     public static String run(Integer daysBack) {
+        if (jobIsExecuting(PpcInvoiceImporterBatch.class.toString()) ||
+            jobIsExecuting(InvoiceToOpportunityBatch.class.toString())) {
+            System.debug('### Job is already executing, skipping this run');
+            return null;
+        }
         PpcInvoiceImporterBatch batch = new PpcInvoiceImporterBatch();
         batch.lastNDays = daysBack;
         System.debug('### Starting job with days back = ' + daysBack);
@@ -252,6 +262,19 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
 
         System.debug('### Inserting ' + pendingInvoices.size() + ' Pending Invoice records');
         insert pendingInvoices;
+    }
+
+    private static Boolean jobIsExecuting(String apexClassName) {
+        List<AsyncApexJob> apexJobs = new List<AsyncApexJob>([
+            SELECT
+                ApexClass.Name,
+                Status
+            FROM AsyncApexJob
+            WHERE ApexClass.Name = :ApexClassName
+            AND JobType = 'BatchApex'
+            AND Status IN ('Queued', 'Preparing', 'Processing', 'Holding')
+        ]);
+        return (apexJobs.size() > 0);
     }
 
     public class InvoiceData {
