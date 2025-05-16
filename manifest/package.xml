@@ -112,6 +112,7 @@
         <members>AtlassianProduct__c</members>
         <members>InvoiceGroup__c</members>
         <members>OpportunityLineItem</members>
+        <members>PPC_InvoiceAutoImportSettings__c</members>
         <members>PPC_TransactionAccount__mdt</members>
         <members>PendingInvoice__c</members>
         <members>PortalProductToSalesforceMapping__mdt</members>

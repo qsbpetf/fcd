@@ -4,6 +4,8 @@
 
 public with sharing class PpcOpportunityProductMapper {
 
+    private static final PPC_InvoiceAutoImportSettings__c SETTING = PPC_InvoiceAutoImportSettings__c.getInstance();
+
     private static final Map<String, String> SALE_TYPE_MAPPING = new Map<String, String> {
         'NA' => 'Renewal (CV Owned)',
         'NEW' => 'New',
@@ -97,6 +99,9 @@ public with sharing class PpcOpportunityProductMapper {
 
         if (mergeLineItems) {
             opptyProductsToInsert = mergeEqualProducts(opptyProductsToInsert, log);
+            if (SETTING != null && SETTING.MergeDateRanges__c) {
+                opptyProductsToInsert = mergeDateRanges(opptyProductsToInsert, log);
+            }
         }
 
         Integer i = 1;
@@ -191,6 +196,9 @@ public with sharing class PpcOpportunityProductMapper {
 
         if (mergeLineItems) {
             opptyProductsToInsert = mergeEqualProducts(opptyProductsToInsert, log);
+            if (SETTING != null && SETTING.MergeDateRanges__c) {
+                opptyProductsToInsert = mergeDateRanges(opptyProductsToInsert, log);
+            }
         }
 
         Integer i = 1;
@@ -262,6 +270,54 @@ public with sharing class PpcOpportunityProductMapper {
         }
 
         return itemsByProduct.values();
+    }
+
+    /**
+     * Merge date ranges for the same entitlement number
+     *
+     * @param items - List of OpportunityLineItems
+     * @param log - LogData object to store logs
+     *
+     * @return List of OpportunityLineItems with merged date ranges
+     */
+    private static List<OpportunityLineItem> mergeDateRanges(List<OpportunityLineItem> items, OpportunityProductMapper.LogData log) {
+        Map<String, OpportunityLineItem> itemsByEntitlement = new Map<String, OpportunityLineItem>();
+        for (OpportunityLineItem item : items) {
+            String key = item.Entitlement_Number__c;
+            System.debug('*** USING KEY = ' + key);
+            if (itemsByEntitlement.containsKey(key)) {
+                OpportunityLineItem existingItem = itemsByEntitlement.get(key);
+
+                System.debug(existingItem.Editable_Unit_List_Price_in_USD__c + ' + ' + item.Editable_Unit_List_Price_in_USD__c);
+                System.debug(existingItem.Editable_Cost_Price_in_Dollars__c + ' + ' + item.Editable_Cost_Price_in_Dollars__c);
+
+                existingItem.Editable_Unit_List_Price_in_USD__c += item.Editable_Unit_List_Price_in_USD__c;
+                existingItem.Editable_Cost_Price_in_Dollars__c += item.Editable_Cost_Price_in_Dollars__c;
+
+                Double existingPartnerDiscount = (existingItem.Atlassian_Partner_Discount__c == null) ? 0.0 : existingItem.Atlassian_Partner_Discount__c;
+                Double itemPartnerDiscount = (item.Atlassian_Partner_Discount__c == null) ? 0.0 : item.Atlassian_Partner_Discount__c;
+                existingPartnerDiscount += itemPartnerDiscount;
+                existingItem.Atlassian_Partner_Discount__c = existingPartnerDiscount;
+
+                Double existingPriceAdjustment = (existingItem.Atlassian_Price_Adjustment__c == null) ? 0.0 : existingItem.Atlassian_Price_Adjustment__c;
+                Double itemPriceAdjustment = (item.Atlassian_Price_Adjustment__c == null) ? 0.0 : item.Atlassian_Price_Adjustment__c;
+                existingPriceAdjustment += itemPriceAdjustment;
+                existingItem.Atlassian_Price_Adjustment__c = existingPriceAdjustment;
+
+                Date firstDate = (item.License_Start_date__c < existingItem.License_Start_date__c) ? item.License_Start_date__c : existingItem.License_Start_date__c;
+                Date lastDate = (item.License_end_date__c > existingItem.License_end_date__c) ? item.License_end_date__c : existingItem.License_end_date__c;
+                existingItem.License_Start_date__c = firstDate;
+                existingItem.License_end_date__c = lastDate;
+            } else {
+                itemsByEntitlement.put(key, item);
+            }
+        }
+
+        if (itemsByEntitlement.size() != items.size()) {
+            log.successLog.add('Merged ' + (items.size() - itemsByEntitlement.size()) + ' duplicate line items from originally ' + items.size() + ' items to ' + itemsByEntitlement.size() + ' items');
+        }
+
+        return itemsByEntitlement.values();
     }
 
     /**

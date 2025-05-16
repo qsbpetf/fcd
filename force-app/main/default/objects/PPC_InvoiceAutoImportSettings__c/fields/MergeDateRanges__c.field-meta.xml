@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MergeDateRanges__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Check this to merge oppty line items having the same entitlement number.
+Use start and end date ranges to combine first start date with last end date.
+Do NOT aggregate (SUM) user counts.
+Important that user count also must be the same.</description>
+    <inlineHelpText>Check this to merge oppty line items having the same entitlement number.
+Use start and end date ranges to combine first start date with last end date.
+Do NOT aggregate (SUM) user counts.
+Important that user count also must be the same.</inlineHelpText>
+    <label>Merge Date Ranges</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

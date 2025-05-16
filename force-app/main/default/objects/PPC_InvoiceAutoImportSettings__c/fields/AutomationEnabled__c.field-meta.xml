@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AutomationEnabled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Check this box to execute the automatic invoice import logic. Schedulable apex class still needs to be active and scheduled.
+Uncheck this box to STOP executing the automatic invoice import logic, even though the schedulable apex class is active and scheduled.</description>
+    <inlineHelpText>Check this box to execute the automatic invoice import logic. Schedulable apex class still needs to be active and scheduled.
+Uncheck this box to STOP executing the automatic invoice import logic, even though the schedulable apex class is active and scheduled.</inlineHelpText>
+    <label>Automation Enabled</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
