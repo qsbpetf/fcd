@@ -29,9 +29,9 @@ public with sharing class PortalCommerceApiInvoices
         }
         InvoiceList products = (InvoiceList) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"invoiceNumber"')
-                .replaceAll('"currency"', '"isoCurrency"')
-                .replaceAll('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
+                .replace('"number"', '"invoiceNumber"')
+                .replace('"currency"', '"isoCurrency"')
+                .replace('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
             InvoiceList.class);
         return products;
     }
@@ -46,9 +46,9 @@ public with sharing class PortalCommerceApiInvoices
         }
         InvoiceList invoices = (InvoiceList) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"invoiceNumber"')
-                .replaceAll('"currency"', '"isoCurrency"')
-                .replaceAll('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
+                .replace('"number"', '"invoiceNumber"')
+                .replace('"currency"', '"isoCurrency"')
+                .replace('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
             InvoiceList.class);
         for (InvoiceInfo invoice : invoices.data) {
             invoice.office = office;
@@ -76,8 +76,8 @@ public with sharing class PortalCommerceApiInvoices
         System.debug('JSON = ' + response.getBody());
         InvoiceInfo invoice = (InvoiceInfo) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"invoiceNumber"')
-                .replaceAll('"currency"', '"isoCurrency"'),
+                .replace('"number"', '"invoiceNumber"')
+                .replace('"currency"', '"isoCurrency"'),
             InvoiceInfo.class);
         return invoice;
     }
