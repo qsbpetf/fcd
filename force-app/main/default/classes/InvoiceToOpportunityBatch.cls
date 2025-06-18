@@ -5,7 +5,7 @@
 public with sharing class InvoiceToOpportunityBatch implements Database.Batchable<SObject>, Database.AllowsCallouts, Database.Stateful {
 
     static public final Integer PAGE_SIZE = 1;
-    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Account__c, Opportunity__c, Error__c, Invoice_JSON__c, RetryCount__c, Status__c, Subsidiary__c FROM PendingInvoice__c WHERE Status__c = \'Waiting\' ';
+    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Account__c, Opportunity__c, Error__c, Invoice_JSON__c, Invoice_JSON_2__c, Invoice_JSON_3__c, RetryCount__c, Status__c, Subsidiary__c FROM PendingInvoice__c WHERE Status__c = \'Waiting\' ';
     static public final PPC_InvoiceAutoImportSettings__c SETTING = PPC_InvoiceAutoImportSettings__c.getInstance();
 
     @TestVisible private String query;
@@ -74,10 +74,28 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
     @TestVisible
     private static PortalCommerceApiInvoices.InvoiceInfo processInvoice(PendingInvoice__c pendingInvoice) {
         System.debug('Reading invoice from JSON');
+
+        String completeJsonString = '';
+
+        // Add the first part (always present if any data was stored)
+        if (pendingInvoice.Invoice_JSON__c != null) {
+            completeJsonString += pendingInvoice.Invoice_JSON__c;
+        }
+
+        // Add the second part if it exists
+        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_2__c)) {
+            completeJsonString += pendingInvoice.Invoice_JSON_2__c;
+        }
+
+        // Add the third part if it exists
+        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_3__c)) {
+            completeJsonString += pendingInvoice.Invoice_JSON_3__c;
+        }
+
         PortalCommerceApiInvoices.InvoiceInfo invoice;
         try {
             invoice = (PortalCommerceApiInvoices.InvoiceInfo) JSON.deserialize(
-                pendingInvoice.Invoice_JSON__c,
+                completeJsonString,
                 PortalCommerceApiInvoices.InvoiceInfo.class);
             System.debug('Invoice deserialized successfully: ' + invoice.invoiceNumber);
             // Perform actions with the invoice object

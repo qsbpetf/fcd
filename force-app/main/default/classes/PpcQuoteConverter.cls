@@ -22,7 +22,6 @@ public without sharing class PpcQuoteConverter {
 
             PendingInvoice__c pendingInvoice = new PendingInvoice__c();
             pendingInvoice.Name = quoteData.quoteNumber;
-            pendingInvoice.Invoice_JSON__c = JSON.serialize(quoteData);
             pendingInvoice.Status__c = 'Waiting';
             pendingInvoice.Error__c = null;
             pendingInvoice.RetryCount__c = 0;
@@ -30,7 +29,34 @@ public without sharing class PpcQuoteConverter {
             pendingInvoice.Opportunity__c = oppId;
             pendingInvoice.TotalLineItems__c = oppProducts.size();
             pendingInvoice.LineItemsInserted__c = 0;
+            pendingInvoice.Invoice_JSON__c = '';
+            pendingInvoice.Invoice_JSON_2__c = '';
+            pendingInvoice.Invoice_JSON_3__c = '';
+
+            // Split the JSON string if it exceeds the field size limit
+            Integer maxFieldSize = 131070; // Using 131070 (slightly below the 131072 limit) to be safe
+            String quoteJson = jsonText; // Use the existing jsonText parameter
+
+            // Store in multiple fields if needed
+            if (quoteJson.length() > maxFieldSize) {
+                pendingInvoice.Invoice_JSON__c = quoteJson.substring(0, maxFieldSize);
+
+                if (quoteJson.length() > maxFieldSize * 2) {
+                    pendingInvoice.Invoice_JSON_2__c = quoteJson.substring(maxFieldSize, maxFieldSize * 2);
+                    pendingInvoice.Invoice_JSON_3__c = quoteJson.substring(maxFieldSize * 2);
+                } else {
+                    pendingInvoice.Invoice_JSON_2__c = quoteJson.substring(maxFieldSize);
+                }
+            } else {
+                pendingInvoice.Invoice_JSON__c = quoteJson;
+            }
             insert pendingInvoice;
+
+            Opportunity oppToUpdate = new Opportunity(
+                Id = oppId,
+                ImportedInvoiceNumber__c = quoteData.quoteNumber
+            );
+            update oppToUpdate;
 
             OpportunityData oppData = new OpportunityData(opp.Id, opp.StageName, oppProducts, pendingInvoice.Id);
             enqueueProductInsertion(oppData);

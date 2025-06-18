@@ -32,6 +32,12 @@ public without sharing class PpcInvoiceConverter {
             pendingInvoice.Opportunity__c = oppId;
             insert pendingInvoice;
 
+            Opportunity oppToUpdate = new Opportunity(
+                Id = oppId,
+                ImportedInvoiceNumber__c = invoiceData.invoiceNumber
+            );
+            update oppToUpdate;
+
             OpportunityData oppData = new OpportunityData(oppId, 'Closing', oppProducts, pendingInvoice.Id);
             enqueueProductInsertion(oppData);
 

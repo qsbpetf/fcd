@@ -42,6 +42,8 @@ public class InvoiceToOpportunityBatchTest {
                 Name = 'Pending Invoice ' + i,
                 Status__c = 'Waiting',
                 Invoice_JSON__c = '{"total": 262.68, "tax": 19.68, "subTotal": 324.0, "status": "PAID", "paymentMethodObj": {"type": "CARD"}, "paidAt": 1746506137000, "office": "CH", "items": [{"unitAmount": 0.01, "total": 24.32, "tax": 1.82, "subTotal": 30.0, "sfProductName": null, "salesType": null, "quantity": 1, "productName": null, "planObj": {"type": "COMMERCIAL", "hostingType": "CLOUD", "cycle": {"interval": "MONTHLY"}}, "period": {"startAt": 1746489600000, "endAt": 1749168000000}, "orderItemId": "948ecea4-3811-40d6-b936-44e0193986d2-1", "orderId": "948ecea4-3811-40d6-b936-44e0193986d2", "offeringName": null, "offeringKey": "1ac3b7dd-7141-414e-bc00-c890acc458b0", "offeringId": null, "margins": [], "id": "97811f13-a415-416c-aa12-9105f6d7baa3", "entName": null, "entitlementNumber": "E-426-PDR-SAT-HNY", "entitlementId": "4cefbc0f-d24f-42e3-9e4b-c2e05e7591b4", "discountAmount": null, "description": "Guard, Monthly, Standard (USD, Default, 16-10-2024)", "amountExcludingTaxDecimal": null, "amountExcludingTax": null, "adjustments": [{"type": "PARTNER_DISCOUNT", "reasonCode": "partner.discount", "percent": 25.0, "amount": 7.5}], "adjustmentAmount": 7.5, "adjustment": null}], "isoCurrency": "USD", "invoiceNumber": "IN-003-387-115-' + i + '", "id": "ef203785-ce66-4400-bc25-5aef792a56ae", "dueAt": 1746506134014, "createdAt": 1746506129000, "additionalNotes": "Atlassian Pty Limited is a registered taxable person in Switzerland. For Swiss tax purposes, this is a supply of electronically provided services. The VAT exclusive total on this invoice is 200.37 (CHF). The amount of VAT on this invoice is 16.23 (CHF) at 8.1%"}',
+                Invoice_JSON_2__c = '',
+                Invoice_JSON_3__c = '',
                 RetryCount__c = 0,
                 Account__c = testAccount.Id,
                 Opportunity__c = testOpportunity.Id
@@ -92,7 +94,13 @@ public class InvoiceToOpportunityBatchTest {
     static void testExecuteMethod() {
         // Query records for the batch scope
         List<PendingInvoice__c> scopedInvoices = [
-            SELECT Id, Name, Invoice_JSON__c, Status__c, RetryCount__c
+            SELECT
+                Id, Name,
+                Invoice_JSON__c,
+                Invoice_JSON_2__c,
+                Invoice_JSON_3__c,
+                Status__c,
+                RetryCount__c
             FROM PendingInvoice__c
             WHERE Status__c = 'Waiting'
         ];
@@ -157,7 +165,14 @@ public class InvoiceToOpportunityBatchTest {
             .thenReturn(response);
 
         List<PendingInvoice__c> scopedInvoices = [
-            SELECT Id, Name, Invoice_JSON__c, Opportunity__c, Status__c, RetryCount__c, LineItemsInserted__c, TotalLineItems__c, Error__c
+            SELECT Id, Name,
+                Invoice_JSON__c,
+                Invoice_JSON_2__c,
+                Invoice_JSON_3__c,
+                Opportunity__c,
+                Status__c, RetryCount__c,
+                LineItemsInserted__c, TotalLineItems__c,
+                Error__c
             FROM PendingInvoice__c
             WHERE Status__c = 'Waiting'
             LIMIT 1
@@ -199,11 +214,22 @@ public class InvoiceToOpportunityBatchTest {
             Name = 'Invalid Invoice',
             Status__c = 'Waiting',
             Invoice_JSON__c = '{"invalidJsonPayload}',
+            Invoice_JSON_2__c = '',
+            Invoice_JSON_3__c = '',
             RetryCount__c = 0
         );
         insert invalidInvoice;
 
-        List<PendingInvoice__c> scopedInvoices = [SELECT Id, Invoice_JSON__c, Status__c, Name, Error__c, TotalLineItems__c, LineItemsInserted__c, RetryCount__c, Account__c, Opportunity__c FROM PendingInvoice__c WHERE Id = :invalidInvoice.Id];
+        List<PendingInvoice__c> scopedInvoices = [
+            SELECT
+                Id,
+                Invoice_JSON__c,
+                Invoice_JSON_2__c,
+                Invoice_JSON_3__c,
+                Status__c, Name, Error__c,
+                TotalLineItems__c, LineItemsInserted__c,
+                RetryCount__c, Account__c, Opportunity__c
+            FROM PendingInvoice__c WHERE Id = :invalidInvoice.Id];
 
         Test.startTest();
         InvoiceToOpportunityBatch batch = new InvoiceToOpportunityBatch();
