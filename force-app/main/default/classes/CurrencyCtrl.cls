@@ -179,6 +179,167 @@ public with sharing class CurrencyCtrl {
         'ZWL' => 'Zimbabwean dollar'
     };
 
+
+    /**
+     * @description Updates DatedConversionRate records for all managed currencies
+     * using the latest exchange rates from the API with applied markups.
+     */
+    public static void updateCurrencyConversionRates() {
+        // Step 1: Get managed currencies
+        Map<String, CurrencyType> managedCurrencies = getManagedCurrencies();
+
+        // Step 2: Get the latest exchange rates
+        CurrencyWrapper currencyWrap = getRates();
+        if (currencyWrap == null) {
+            System.debug('Failed to retrieve currency rates from the API');
+            return;
+        }
+
+        // Step 3: Flatten currencies
+        flattenCurrencies(currencyWrap, managedCurrencies.keySet());
+
+        // Step 4: Apply markups to the rates
+        Map<String, Double> markedUpRates = getMarkedUpRatesBasedOnCorporateCurrency(currencyWrap.flatRates);
+
+        // Step 5: Get corporate currency (this will be our base)
+        CurrencyType corporateCurrency = getCorporateCurrency();
+        if (corporateCurrency == null) {
+            System.debug('Corporate currency not found');
+            return;
+        }
+
+        // Step 6: Create DatedConversionRate records
+        List<Map<String, Object>> records = new List<Map<String, Object>>();
+        Date effectiveDate = Date.today(); // Use today's date for the conversion rates
+
+        for (String currencyCode : markedUpRates.keySet()) {
+            // Skip the corporate currency as it doesn't need a conversion rate to itself
+            if (currencyCode != corporateCurrency.IsoCode && managedCurrencies.containsKey(currencyCode)) {
+                records.add(new Map<String, Object>{
+                    'attributes' => new Map<String, String>{ 'type' => 'DatedConversionRate', 'referenceId' => currencyCode + 'Rate' },
+                    'IsoCode' => currencyCode,
+                    'StartDate' => effectiveDate.format(),
+                    'ConversionRate' => markedUpRates.get(currencyCode)
+                });
+            }
+        }
+
+        // Step 7: Insert the records
+        if (!records.isEmpty()) {
+
+            Map<String, Object> requestBody = new Map<String, Object>{
+                'allOrNone' => true,
+                'records' => records
+            };
+
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint(Url.getOrgDomainUrl().toExternalForm() + '/services/data/v63.0/composite/sobjects');
+            req.setMethod('POST');
+            req.setHeader('Authorization', 'OAuth ' + UserInfo.getSessionId());
+            req.setHeader('Content-Type', 'application/json');
+            req.setBody(JSON.serialize(requestBody));
+
+            Http http = new Http();
+            HttpResponse res = http.send(req);
+
+            System.debug('Status: ' + res.getStatusCode());
+            System.debug('Response: ' + res.getBody());
+
+        } else {
+            System.debug('No DatedConversionRate records to insert');
+        }
+
+        // Step 8: Apply markups to the rates for Atlassian PPC with USD as base currency
+        markedUpRates = getMarkedUpRatesBasedOnIsoCurrencyCode(currencyWrap.flatRates, 'USD');
+
+        // Step 9: Create custom object Exchange Rate records
+        List<Buying_Exchange_Rate__c> exchangeRates = new List<Buying_Exchange_Rate__c>();
+
+        for (String currencyCode : markedUpRates.keySet()) {
+            // Skip the corporate currency as it doesn't need a conversion rate to itself
+            if (currencyCode != 'USD' && managedCurrencies.containsKey(currencyCode)) {
+                Buying_Exchange_Rate__c exchangeRate = new Buying_Exchange_Rate__c(
+                    CurrencyIsoCode = currencyCode,
+                    Exchange_Rate_from_USD_to_X__c = Double.valueOf(Math.round(markedUpRates.get(currencyCode) * 10000)) / 10000,
+                    Start_Date__c = effectiveDate,
+                    Start_Date_Unique__c = effectiveDate.format() + currencyCode);
+                exchangeRates.add(exchangeRate);
+                System.debug('ADDING: ' + exchangeRate);
+                // insert exchangeRate;
+            }
+        }
+
+        // Step 10: Insert the custom object records
+        System.debug('EXCHANGE RATES TO INSERT: ' + exchangeRates);
+        insert exchangeRates;
+    }
+
+    /**
+     * @description Get the marked-up rates for the given flat rates.
+     *
+     * @param flatRates List of FlatRate objects containing the rates and currency codes.
+     * @return Map of ISO currency codes to their marked-up rates.
+     */
+    public static Map<String, Double> getMarkedUpRatesBasedOnCorporateCurrency(List<FlatRate> flatRates) {
+        Map<String, CurrencyRateMarkup__mdt> markupsByCurrency = CurrencyRateMarkup__mdt.getAll();
+        Decimal defaultMarkupPercent = markupsByCurrency.get('Default').MarkupPercent__c;
+
+        Map<String, Double> markedUpRates = new Map<String, Double>();
+        for (FlatRate rate : flatRates) {
+            if (!rate.isBase) {
+                // Get the markup percent for the currency, defaulting to the global default if not found
+                Decimal markupPercent = defaultMarkupPercent;
+                if (markupsByCurrency.containsKey(rate.isoCurrencyCode)) {
+                    markupPercent = markupsByCurrency.get(rate.isoCurrencyCode).MarkupPercent__c;
+                }
+                markedUpRates.put(rate.isoCurrencyCode, rate.rate * (1 + markupPercent / 100));
+                System.debug('*** USING: ' + rate.isoCurrencyCode + ' with markup: ' + markupPercent + '%');
+            } else {
+                // Base currency is not marked up
+                markedUpRates.put(rate.isoCurrencyCode, rate.rate);
+            }
+        }
+        return markedUpRates;
+    }
+
+    public static Map<String, Double> getMarkedUpRatesBasedOnIsoCurrencyCode(List<FlatRate> flatRates, String isoCurrencyCode) {
+        Map<String, CurrencyRateMarkup__mdt> markupsByCurrency = CurrencyRateMarkup__mdt.getAll();
+        Decimal defaultMarkupPercent = markupsByCurrency.get('Default').MarkupPercent__c;
+
+        Double baseRate = 1;
+        for (FlatRate rate : flatRates) {
+            if (rate.isoCurrencyCode.equals(isoCurrencyCode)) {
+                baseRate = rate.rate;
+                System.debug('*** Base currency found: ' + rate.isoCurrencyCode + ' with rate: ' + baseRate);
+                break;
+            }
+        }
+
+        Map<String, Double> markedUpRates = new Map<String, Double>();
+        for (FlatRate rate : flatRates) {
+            if (!rate.isoCurrencyCode.equals(isoCurrencyCode)) {
+                // Get the markup percent for the currency, defaulting to the global default if not found
+                Decimal markupPercent = defaultMarkupPercent;
+                if (markupsByCurrency.containsKey(rate.isoCurrencyCode)) {
+                    markupPercent = markupsByCurrency.get(rate.isoCurrencyCode).MarkupPercent__c;
+                }
+                markedUpRates.put(rate.isoCurrencyCode, rate.rate * (1 + markupPercent / 100) / baseRate);
+                System.debug('*** USING: ' + rate.isoCurrencyCode + ' clean rate: ' + rate.rate / baseRate);
+                System.debug('           ' + rate.isoCurrencyCode + ' with markup: ' + markupPercent + '%');
+            } else {
+                // Base currency is not marked up
+                markedUpRates.put(rate.isoCurrencyCode, rate.rate / baseRate);
+                System.debug('*** USING: ' + rate.isoCurrencyCode + ' STD. without markup');
+            }
+        }
+        return markedUpRates;
+    }
+
+    /**
+     * @description Fetch the latest exchange rates from the external API.
+     *
+     * @return CurrencyWrapper object containing the exchange rates and metadata.
+     */
     public static CurrencyWrapper getRates() {
         HttpRequest req = new HttpRequest();
         req.setEndpoint('callout:ExchangeRatesAPI/v1/latest?access_key=' + ACCESS_KEY + '&format=1');
@@ -196,6 +357,12 @@ public with sharing class CurrencyCtrl {
         return null;
     }
 
+    /**
+     * @description Flatten the currency rates into a list of FlatRate objects.
+     *
+     * @param wrapper CurrencyWrapper object containing the rates and base currency.
+     * @param managedCurrencies Set of ISO currency codes that are managed.
+     */
     public static void flattenCurrencies(CurrencyWrapper wrapper, Set<String> managedCurrencies) {
         wrapper.currencyNames = CURRENCY_ISO_CODES_TO_NAME;
         wrapper.flatRates = new List<FlatRate>();
@@ -205,13 +372,19 @@ public with sharing class CurrencyCtrl {
                     new FlatRate(
                         curr,
                         wrapper.rates.get(curr),
-                        managedCurrencies.contains(curr)
+                        managedCurrencies.contains(curr),
+                        curr.equals(wrapper.base)
                     )
                 );
             }
         }
     }
 
+    /**
+     * @description Get a map of all managed currencies in Salesforce with their ISO codes as keys.
+     *
+     * @return Map of ISO currency codes to CurrencyType objects.
+     */
     public static Map<String, CurrencyType> getManagedCurrencies() {
         Map<String, CurrencyType> managedCurrencies = new Map<String, CurrencyType>();
         List<CurrencyType> currencies = new List<CurrencyType>([
@@ -228,6 +401,11 @@ public with sharing class CurrencyCtrl {
         return managedCurrencies;
     }
 
+    /**
+     * @description Get the corporate currency from the managed currencies.
+     *
+     * @return CurrencyType object representing the corporate currency, or null if not found.
+     */
     public static CurrencyType getCorporateCurrency() {
         Map<String, CurrencyType> currencies = getManagedCurrencies();
         for (CurrencyType curr : currencies.values()) {
@@ -238,6 +416,10 @@ public with sharing class CurrencyCtrl {
         return null;
     }
 
+    // =========================================================
+    // Inner classes for the CurrencyWrapper and FlatRate objects
+    // =========================================================
+
     public class CurrencyWrapper {
         @AuraEnabled public Boolean success;
         @AuraEnabled public Long timestamp;
@@ -246,6 +428,7 @@ public with sharing class CurrencyCtrl {
         @AuraEnabled public String theDate;
         @AuraEnabled public Map<String, Double> rates;
         @AuraEnabled public List<FlatRate> flatRates;
+        @AuraEnabled public List<FlatRate> adjustedFlatRates;
         @AuraEnabled public Map<String, String> currencyNames;
     }
 
@@ -254,12 +437,14 @@ public with sharing class CurrencyCtrl {
         @AuraEnabled public String currencyName;
         @AuraEnabled public Double rate;
         @AuraEnabled public Boolean managed;
+        @AuraEnabled public Boolean isBase;
 
-        public FlatRate(String isoCurrencyCode, Double rate, Boolean managed) {
+        public FlatRate(String isoCurrencyCode, Double rate, Boolean managed, Boolean isBase) {
             this.isoCurrencyCode = isoCurrencyCode;
             this.currencyName = isoCurrencyCode + '  -  ' + CURRENCY_ISO_CODES_TO_NAME.get(isoCurrencyCode);
             this.rate = rate;
             this.managed = managed;
+            this.isBase = isBase;
         }
     }
 }

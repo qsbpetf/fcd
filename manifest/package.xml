@@ -30,6 +30,7 @@
         <name>CustomField</name>
     </types>
     <types>
+        <members>CurrencyRateMarkup.Default</members>
         <members>PPC_TransactionAccount.CH</members>
         <members>PPC_TransactionAccount.DE</members>
         <members>PPC_TransactionAccount.DK</members>
@@ -110,6 +111,7 @@
     <types>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
+        <members>CurrencyRateMarkup__mdt</members>
         <members>InvoiceGroup__c</members>
         <members>OpportunityLineItem</members>
         <members>PPC_InvoiceAutoImportSettings__c</members>

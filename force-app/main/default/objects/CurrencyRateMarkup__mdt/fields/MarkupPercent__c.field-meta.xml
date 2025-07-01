@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MarkupPercent__c</fullName>
+    <description>The markup percentage to apply to currency conversion rates.</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>The markup percentage to apply to currency conversion rates.</inlineHelpText>
+    <label>Markup Percent (in %)</label>
+    <precision>7</precision>
+    <required>true</required>
+    <scale>2</scale>
+    <type>Percent</type>
+</CustomField>
