@@ -1,0 +1,7 @@
+SELECT  Id, Main_Invoice_Contact__c,  Main_Invoice_Contact__r.Id,
+    Second_Invoice_Contact__c, Second_Invoice_Contact__r.Id,
+    Third_Invoice_Contact__c, Third_Invoice_Contact__r.Id
+FROM Account
+WHERE  (Main_Invoice_Contact__c != NULL AND Main_Invoice_Contact__r.Id = NULL)
+OR     (Second_Invoice_Contact__c != NULL AND Second_Invoice_Contact__r.Id = NULL)
+OR     (Third_Invoice_Contact__c != NULL AND Third_Invoice_Contact__r.Id = NULL)
