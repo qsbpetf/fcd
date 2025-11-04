@@ -5,7 +5,7 @@
 public with sharing class InvoiceToOpportunityBatch implements Database.Batchable<SObject>, Database.AllowsCallouts, Database.Stateful {
 
     static public final Integer PAGE_SIZE = 1;
-    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Account__c, Opportunity__c, Error__c, Invoice_JSON__c, Invoice_JSON_2__c, Invoice_JSON_3__c, RetryCount__c, Status__c, Subsidiary__c FROM PendingInvoice__c WHERE Status__c = \'Waiting\' ';
+    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Account__c, Opportunity__c, Error__c, Invoice_JSON__c, Invoice_JSON_2__c, Invoice_JSON_3__c, Invoice_JSON_4__c, Invoice_JSON_5__c, RetryCount__c, Status__c, Subsidiary__c FROM PendingInvoice__c WHERE Status__c = \'Waiting\' ';
     static public final PPC_InvoiceAutoImportSettings__c SETTING = PPC_InvoiceAutoImportSettings__c.getInstance();
 
     @TestVisible private String query;
@@ -90,6 +90,16 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
         // Add the third part if it exists
         if (String.isNotEmpty(pendingInvoice.Invoice_JSON_3__c)) {
             completeJsonString += pendingInvoice.Invoice_JSON_3__c;
+        }
+
+        // Add the third part if it exists
+        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_4__c)) {
+            completeJsonString += pendingInvoice.Invoice_JSON_4__c;
+        }
+
+        // Add the third part if it exists
+        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_5__c)) {
+            completeJsonString += pendingInvoice.Invoice_JSON_5__c;
         }
 
         PortalCommerceApiInvoices.InvoiceInfo invoice;

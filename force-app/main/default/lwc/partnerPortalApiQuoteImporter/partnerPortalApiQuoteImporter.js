@@ -351,9 +351,9 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 .then(result => {
                     console.log('result', result);
                     if (result.missingAccountId === false) {
-                        item['name'] = result.provisionedResource.name;
-                        item['ari'] = result.provisionedResource.ari;
-                        item['slug'] = result.slug;
+                        item['name'] = result?.provisionedResource?.name;
+                        item['ari'] = result?.provisionedResource?.ari;
+                        item['slug'] = result?.slug;
                         console.log('item', item);
                     }
                     calls++;

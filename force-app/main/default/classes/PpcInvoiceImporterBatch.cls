@@ -6,7 +6,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
 
     static public final Integer DEFAULT_N_DAYS = 5;
     static public final Integer PAGE_SIZE = 1;
-    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Special_Instructions_to_Accounts__c FROM Account WHERE AutoInvoiceImport__c = TRUE';
+    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Special_Instructions_to_Accounts__c, Payment_Terms_Licenses__c, Payment_terms__c FROM Account WHERE AutoInvoiceImport__c = TRUE';
     static public final PPC_InvoiceAutoImportSettings__c SETTING = PPC_InvoiceAutoImportSettings__c.getInstance();
 
     private Map<Id, Account> accountMap;
@@ -190,6 +190,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         );
 
         Account acc = this.accountMap.get(accountId);
+        String paymentTerms = String.isNotBlank(acc.Payment_Terms_Licenses__c) ? acc.Payment_Terms_Licenses__c : acc.Payment_terms__c;
 
         Opportunity oppty = new Opportunity();
         oppty.AccountId = accountId;
@@ -200,6 +201,8 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         oppty.ImportedInvoiceNumber__c = invoice.invoiceNumber;
         oppty.Special_Instructions_to_Accounts__c = acc.Special_Instructions_to_Accounts__c;
         oppty.Atlassian_AT_Quote_ref__c = invoice.invoiceNumber;
+        oppty.Type = 'Customer_Opp';
+        oppty.Payment_Terms__c = paymentTerms;
         return oppty;
     }
 
@@ -251,13 +254,47 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
 
             PendingInvoice__c pendingInvoice = new PendingInvoice__c();
             pendingInvoice.Name = invoice.invoiceNumber;
-            pendingInvoice.Invoice_JSON__c = JSON.serialize(invoice);
+            pendingInvoice.Invoice_JSON__c = '';
+            pendingInvoice.Invoice_JSON_2__c = '';
+            pendingInvoice.Invoice_JSON_3__c = '';
+            pendingInvoice.Invoice_JSON_4__c = '';
+            pendingInvoice.Invoice_JSON_5__c = '';
             pendingInvoice.Status__c = 'Waiting';
             pendingInvoice.Error__c = null;
             pendingInvoice.RetryCount__c = 0;
             pendingInvoice.Account__c = invoiceData.acc.Id;
             pendingInvoice.Opportunity__c = oppty.Id;
             pendingInvoices.add(pendingInvoice);
+
+            // Split the JSON string if it exceeds the field size limit
+            Integer maxFieldSize = 131070; // Using 131070 (slightly below the 131072 limit) to be safe
+            String invoiceJson = JSON.serialize(invoice); // Use the existing jsonText parameter
+
+            // Store in multiple fields if needed (up to 5 fields, each up to maxFieldSize)
+            Integer startIdx = 0;
+            Integer fieldIndex = 1;
+            while (startIdx < invoiceJson.length() && fieldIndex <= 5) {
+                Integer endIdx = Math.min(startIdx + maxFieldSize, invoiceJson.length());
+                String part = invoiceJson.substring(startIdx, endIdx);
+                String fieldName = (fieldIndex == 1) ? 'Invoice_JSON__c' : 'Invoice_JSON_' + String.valueOf(fieldIndex) + '__c';
+                pendingInvoice.put(fieldName, part);
+                startIdx = endIdx;
+                fieldIndex++;
+            }
+
+            // Store in multiple fields if needed
+//            if (invoiceJson.length() > maxFieldSize) {
+//                pendingInvoice.Invoice_JSON__c = invoiceJson.substring(0, maxFieldSize);
+//
+//                if (invoiceJson.length() > maxFieldSize * 2) {
+//                    pendingInvoice.Invoice_JSON_2__c = invoiceJson.substring(maxFieldSize, maxFieldSize * 2);
+//                    pendingInvoice.Invoice_JSON_3__c = invoiceJson.substring(maxFieldSize * 2);
+//                } else {
+//                    pendingInvoice.Invoice_JSON_2__c = invoiceJson.substring(maxFieldSize);
+//                }
+//            } else {
+//                pendingInvoice.Invoice_JSON__c = invoiceJson;
+//            }
         }
 
         System.debug('### Inserting ' + pendingInvoices.size() + ' Pending Invoice records');

@@ -32,24 +32,39 @@ public without sharing class PpcQuoteConverter {
             pendingInvoice.Invoice_JSON__c = '';
             pendingInvoice.Invoice_JSON_2__c = '';
             pendingInvoice.Invoice_JSON_3__c = '';
+            pendingInvoice.Invoice_JSON_4__c = '';
+            pendingInvoice.Invoice_JSON_5__c = '';
 
             // Split the JSON string if it exceeds the field size limit
             Integer maxFieldSize = 131070; // Using 131070 (slightly below the 131072 limit) to be safe
-            String quoteJson = jsonText; // Use the existing jsonText parameter
+            String invoiceJson = jsonText; // Use the existing jsonText parameter
+
+            // Store in multiple fields if needed (up to 5 fields, each up to maxFieldSize)
+            Integer startIdx = 0;
+            Integer fieldIndex = 1;
+            while (startIdx < invoiceJson.length() && fieldIndex <= 5) {
+                Integer endIdx = Math.min(startIdx + maxFieldSize, invoiceJson.length());
+                String part = invoiceJson.substring(startIdx, endIdx);
+                String fieldName = (fieldIndex == 1) ? 'Invoice_JSON__c' : 'Invoice_JSON_' + String.valueOf(fieldIndex) + '__c';
+                pendingInvoice.put(fieldName, part);
+                startIdx = endIdx;
+                fieldIndex++;
+            }
 
             // Store in multiple fields if needed
-            if (quoteJson.length() > maxFieldSize) {
-                pendingInvoice.Invoice_JSON__c = quoteJson.substring(0, maxFieldSize);
+//            if (quoteJson.length() > maxFieldSize) {
+//                pendingInvoice.Invoice_JSON__c = quoteJson.substring(0, maxFieldSize);
+//
+//                if (quoteJson.length() > maxFieldSize * 2) {
+//                    pendingInvoice.Invoice_JSON_2__c = quoteJson.substring(maxFieldSize, maxFieldSize * 2);
+//                    pendingInvoice.Invoice_JSON_3__c = quoteJson.substring(maxFieldSize * 2);
+//                } else {
+//                    pendingInvoice.Invoice_JSON_2__c = quoteJson.substring(maxFieldSize);
+//                }
+//            } else {
+//                pendingInvoice.Invoice_JSON__c = quoteJson;
+//            }
 
-                if (quoteJson.length() > maxFieldSize * 2) {
-                    pendingInvoice.Invoice_JSON_2__c = quoteJson.substring(maxFieldSize, maxFieldSize * 2);
-                    pendingInvoice.Invoice_JSON_3__c = quoteJson.substring(maxFieldSize * 2);
-                } else {
-                    pendingInvoice.Invoice_JSON_2__c = quoteJson.substring(maxFieldSize);
-                }
-            } else {
-                pendingInvoice.Invoice_JSON__c = quoteJson;
-            }
             insert pendingInvoice;
 
             Opportunity oppToUpdate = new Opportunity(
