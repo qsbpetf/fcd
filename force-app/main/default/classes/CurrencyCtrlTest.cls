@@ -184,6 +184,9 @@ private class CurrencyCtrlTest {
         Decimal usdMarkupPercent = markupsByCurrency.containsKey('USD')
             ? markupsByCurrency.get('USD').MarkupPercent__c
             : defaultMarkupPercent;
+        Decimal gbpMarkupPercent = markupsByCurrency.containsKey('GBP')
+            ? markupsByCurrency.get('GBP').MarkupPercent__c
+            : defaultMarkupPercent;
 
         // Create test data
         List<CurrencyCtrl.FlatRate> flatRates = new List<CurrencyCtrl.FlatRate>{
@@ -213,9 +216,9 @@ private class CurrencyCtrlTest {
             'USD should use its specific markup of ' + usdMarkupPercent + '%');
 
         // GBP and JPY should use the default markup rate
-        Double expectedGbpRate = 0.75 * (1 + defaultMarkupPercent/100);
+        Double expectedGbpRate = 0.75 * (1 + gbpMarkupPercent/100);
         System.assertEquals(expectedGbpRate, markedUpRates.get('GBP'),
-            'GBP should use the default markup of ' + defaultMarkupPercent + '%');
+            'GBP should use the default markup of ' + gbpMarkupPercent + '%');
 
         // JPY should use the default markup rate
         Double expectedJpyRate = 110.0 * (1 + defaultMarkupPercent/100);
