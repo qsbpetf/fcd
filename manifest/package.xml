@@ -27,6 +27,7 @@
     <types>
         <members>Account.AutoInvoiceImport__c</members>
         <members>Opportunity.ImportedInvoiceNumber__c</members>
+        <members>Opportunity.Monthly_Cloud_Opp__c</members>
         <name>CustomField</name>
     </types>
     <types>
