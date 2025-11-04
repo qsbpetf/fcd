@@ -7,11 +7,11 @@ global class OpportunityContactRoleTests {
         automationSettings.Validation_Rule_Enabled__c = false;
         insert automationSettings;
 
-        Account a = New Account(Name = 'test account');
+        Account a = New Account(Name = 'test account', Payment_terms__c = '10 Days');
         insert a;
         Contact c = New Contact(LastName = 'last name');
         insert c;
-        Opportunity o = New Opportunity(Name = 'opportunity', Account = a, StageName = 'Explore', CloseDate = system.today());
+        Opportunity o = New Opportunity(Name = 'opportunity', Account = a, StageName = 'Explore', CloseDate = system.today(), Payment_Terms__c = '10 Days');
         insert o;
         OpportunityContactRole ocr = New OpportunityContactRole(ContactId = c.Id, OpportunityId = o.Id);
         insert ocr;

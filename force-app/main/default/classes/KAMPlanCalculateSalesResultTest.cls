@@ -108,6 +108,7 @@ private class KAMPlanCalculateSalesResultTest {
     acc1.Name = 'Test Account 1';
     acc1.Industry = 'Technology';
     acc1.Type = 'Customer - Direct';
+    acc1.Payment_terms__c = '10 Days';
     insert acc1;
 
     KAMplan__c plan1 = new KAMplan__c();
@@ -123,6 +124,7 @@ private class KAMPlanCalculateSalesResultTest {
     opp1.CloseDate = Date.newInstance((Date.today().addYears(1).year()), 1, 1);
     opp1.Pricebook2Id = Test.getStandardPricebookId();
     opp1.AccountId = acc1.Id;
+    opp1.Payment_Terms__c = acc1.Payment_terms__c;
     insert opp1;
 
     createTestProduct(opp1.Id, 'Consulting', 100);
@@ -135,6 +137,7 @@ private class KAMPlanCalculateSalesResultTest {
     opp2.CloseDate = Date.newInstance((Date.today().addYears(1).year()), 1, 1);
     opp2.Pricebook2Id = Test.getStandardPricebookId();
     opp2.AccountId = acc1.Id;
+    opp2.Payment_Terms__c = acc1.Payment_terms__c;
     insert opp2;
 
     // createTestProduct(opp2.Id, 'Consulting', 200);
@@ -147,6 +150,7 @@ private class KAMPlanCalculateSalesResultTest {
     opp3.CloseDate = Date.newInstance((Date.today().addYears(1).year()), 1, 1);
     opp3.Pricebook2Id = Test.getStandardPricebookId();
     opp3.AccountId = acc1.Id;
+    opp3.Payment_Terms__c = acc1.Payment_terms__c;
     insert opp3;
 
     // createTestProduct(opp3.Id, 'Consulting', 300);
