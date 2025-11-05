@@ -203,6 +203,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         oppty.Atlassian_AT_Quote_ref__c = invoice.invoiceNumber;
         oppty.Type = 'Customer_Opp';
         oppty.Payment_Terms__c = paymentTerms;
+        oppty.Monthly_Cloud_Opp__c = true;
         return oppty;
     }
 
