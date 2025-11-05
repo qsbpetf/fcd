@@ -113,6 +113,7 @@
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>CurrencyRateMarkup__mdt</members>
+        <members>DefaultOpportunityOwner__c</members>
         <members>InvoiceGroup__c</members>
         <members>OpportunityLineItem</members>
         <members>PPC_InvoiceAutoImportSettings__c</members>
@@ -146,6 +147,7 @@
     </types>
     <types>
         <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
+        <members>Set_default_owner_on_imported_renewal_oppty</members>
         <name>Flow</name>
     </types>
     <types>
@@ -153,6 +155,7 @@
         <name>FlowDefinition</name>
     </types>
     <types>
+        <members>DefaultOpportunityOwner__c-Default Opportunity Owner Layout</members>
         <members>InvoiceGroup__c-Invoice Group Layout</members>
         <name>Layout</name>
     </types>
