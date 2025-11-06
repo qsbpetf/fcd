@@ -3,7 +3,7 @@
  */
 
 public class ProcessOpportunityLinesQueueable implements Queueable {
-    private static final Integer MAX_ITEMS_TO_PROCESS = 2;
+    private static final Integer MAX_ITEMS_TO_PROCESS = 90;
     private final OpportunityData data;
 
     public ProcessOpportunityLinesQueueable(OpportunityData data) {
@@ -36,25 +36,22 @@ public class ProcessOpportunityLinesQueueable implements Queueable {
             List<OpportunityLineItem> linesToInsert = new List<OpportunityLineItem>();
             // Process first two items
             for (Integer i = 0; i < itemsToProcess; i++) {
-                linesToInsert.add(data.lines[i]);
-                System.debug('Processing Line Item: ' + data.lines[i]);
+                OpportunityLineItem line = data.lines.remove(0);
+                System.debug('Processing Line Item: ' + line);
+                linesToInsert.add(line);
             }
             insert linesToInsert;
-
-            for (Integer i = 0; i < itemsToProcess; i++) {
-                data.lines.remove(0); // Remove the processed line item
-            }
 
             // Update the pending invoice with the number of line items inserted
             pendingInvoice.LineItemsInserted__c += itemsToProcess;
             update pendingInvoice;
         } catch (Exception e) {
-            pendingInvoice.Error__c = (pendingInvoice.Error__c != null ? pendingInvoice.Error__c : '') + e.getMessage() + '\n';
+            pendingInvoice.Error__c = (pendingInvoice.Error__c != null ? pendingInvoice.Error__c : '') + e.getMessage() + '\n' + e.getStackTraceString();
             pendingInvoice.RetryCount__c = (pendingInvoice.RetryCount__c != null ? pendingInvoice.RetryCount__c : 0) + 1;
             pendingInvoice.Status__c = 'Error';
             update pendingInvoice;
 
-            System.debug('Error processing opportunity line items: ' + e.getMessage());
+            System.debug('Error processing opportunity line items: ' + e.getMessage() + e.getStackTraceString());
 
             if (pendingInvoice.RetryCount__c >= 4) {
                 pendingInvoice.Status__c = 'Failed';
@@ -75,12 +72,14 @@ public class ProcessOpportunityLinesQueueable implements Queueable {
             System.debug('### Next batch of opportunity line items enqueued. Job ID: ' + jobId);
         } else {
             System.debug('All opportunity line items processed.');
-            System.debug('Updating opportunity stage to: ' + data.stageName);
-            Opportunity opportunity = new Opportunity(Id = data.opptyId, StageName = data.stageName);
-            update opportunity;
+            if (pendingInvoice.Status__c != 'Error') {
+                System.debug('Updating opportunity stage to: ' + data.stageName);
+                Opportunity opportunity = new Opportunity(Id = data.opptyId, StageName = data.stageName);
+                update opportunity;
 
-            pendingInvoice.Status__c = 'Done';
-            update pendingInvoice;
+                pendingInvoice.Status__c = 'Done';
+                update pendingInvoice;
+            }
 
             System.debug('Pending Invoice updated to Processed.');
         }

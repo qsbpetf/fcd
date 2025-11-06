@@ -148,6 +148,13 @@ private class PpcInvoiceImporterBatchTest {
         PricebookEntry pbe3 = TestDataFactory.getPbEntry(Test.getStandardPricebookId(), prod.Id, 'EUR');
         insert new List<PricebookEntry>{ pbe1, pbe2, pbe3 };
 
+        DefaultOpportunityOwner__c defOwner = new DefaultOpportunityOwner__c(
+            Name = 'Default',
+            DefaultOwner__c = UserInfo.getUserId(),
+            EficodeDefaultOwner__c = true
+        );
+        insert defOwner;
+
         Test.startTest();
         PpcInvoiceImporterBatch.run(30);
         Test.stopTest();

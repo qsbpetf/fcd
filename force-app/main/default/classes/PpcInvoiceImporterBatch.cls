@@ -255,6 +255,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
 
             PendingInvoice__c pendingInvoice = new PendingInvoice__c();
             pendingInvoice.Name = invoice.invoiceNumber;
+            pendingInvoice.InvoiceId__c = invoice.id;
             pendingInvoice.Invoice_JSON__c = '';
             pendingInvoice.Invoice_JSON_2__c = '';
             pendingInvoice.Invoice_JSON_3__c = '';
@@ -266,36 +267,6 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
             pendingInvoice.Account__c = invoiceData.acc.Id;
             pendingInvoice.Opportunity__c = oppty.Id;
             pendingInvoices.add(pendingInvoice);
-
-            // Split the JSON string if it exceeds the field size limit
-            Integer maxFieldSize = 131070; // Using 131070 (slightly below the 131072 limit) to be safe
-            String invoiceJson = JSON.serialize(invoice); // Use the existing jsonText parameter
-
-            // Store in multiple fields if needed (up to 5 fields, each up to maxFieldSize)
-            Integer startIdx = 0;
-            Integer fieldIndex = 1;
-            while (startIdx < invoiceJson.length() && fieldIndex <= 5) {
-                Integer endIdx = Math.min(startIdx + maxFieldSize, invoiceJson.length());
-                String part = invoiceJson.substring(startIdx, endIdx);
-                String fieldName = (fieldIndex == 1) ? 'Invoice_JSON__c' : 'Invoice_JSON_' + String.valueOf(fieldIndex) + '__c';
-                pendingInvoice.put(fieldName, part);
-                startIdx = endIdx;
-                fieldIndex++;
-            }
-
-            // Store in multiple fields if needed
-//            if (invoiceJson.length() > maxFieldSize) {
-//                pendingInvoice.Invoice_JSON__c = invoiceJson.substring(0, maxFieldSize);
-//
-//                if (invoiceJson.length() > maxFieldSize * 2) {
-//                    pendingInvoice.Invoice_JSON_2__c = invoiceJson.substring(maxFieldSize, maxFieldSize * 2);
-//                    pendingInvoice.Invoice_JSON_3__c = invoiceJson.substring(maxFieldSize * 2);
-//                } else {
-//                    pendingInvoice.Invoice_JSON_2__c = invoiceJson.substring(maxFieldSize);
-//                }
-//            } else {
-//                pendingInvoice.Invoice_JSON__c = invoiceJson;
-//            }
         }
 
         System.debug('### Inserting ' + pendingInvoices.size() + ' Pending Invoice records');

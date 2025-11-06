@@ -5,7 +5,7 @@
 public with sharing class InvoiceToOpportunityBatch implements Database.Batchable<SObject>, Database.AllowsCallouts, Database.Stateful {
 
     static public final Integer PAGE_SIZE = 1;
-    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Account__c, Opportunity__c, Error__c, Invoice_JSON__c, Invoice_JSON_2__c, Invoice_JSON_3__c, Invoice_JSON_4__c, Invoice_JSON_5__c, RetryCount__c, Status__c, Subsidiary__c FROM PendingInvoice__c WHERE Status__c = \'Waiting\' ';
+    static public final String DEFAULT_QUERY = 'SELECT Id, Name, Account__c, Opportunity__c, Error__c, InvoiceId__c, Invoice_JSON__c, Invoice_JSON_2__c, Invoice_JSON_3__c, Invoice_JSON_4__c, Invoice_JSON_5__c, RetryCount__c, Status__c, Subsidiary__c FROM PendingInvoice__c WHERE Status__c = \'Waiting\' ';
     static public final PPC_InvoiceAutoImportSettings__c SETTING = PPC_InvoiceAutoImportSettings__c.getInstance();
 
     @TestVisible private String query;
@@ -46,6 +46,10 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
     @TestVisible
     private static void convertInvoiceToOpportunity(PortalCommerceApiInvoices.InvoiceInfo invoice, PendingInvoice__c pendingInvoice) {
         System.debug('Converting invoice to opportunity');
+        if (invoice == null) {
+            System.debug('Invoice is null, cannot convert to opportunity.');
+            return;
+        }
         try {
             // Logic to convert invoice to opportunity
             Opportunity oppty = PortalQuoteConverter.getOpportunity(pendingInvoice.Opportunity__c);
@@ -64,7 +68,7 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
             System.debug('Invoice converted to opportunity successfully: ' + invoice.invoiceNumber);
         } catch (Exception ex) {
             System.debug('Error converting invoice to opportunity: ' + ex.getMessage());
-            pendingInvoice.Error__c = 'Error converting invoice to opportunity: ' + ex.getMessage();
+            pendingInvoice.Error__c = 'Error converting invoice to opportunity: ' + ex.getMessage() + ' Stacktrace: ' + ex.getStackTraceString();
             pendingInvoice.Status__c = 'Error';
             pendingInvoice.RetryCount__c += 1;
             update pendingInvoice;
@@ -73,41 +77,10 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
 
     @TestVisible
     private static PortalCommerceApiInvoices.InvoiceInfo processInvoice(PendingInvoice__c pendingInvoice) {
-        System.debug('Reading invoice from JSON');
-
-        String completeJsonString = '';
-
-        // Add the first part (always present if any data was stored)
-        if (pendingInvoice.Invoice_JSON__c != null) {
-            completeJsonString += pendingInvoice.Invoice_JSON__c;
-        }
-
-        // Add the second part if it exists
-        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_2__c)) {
-            completeJsonString += pendingInvoice.Invoice_JSON_2__c;
-        }
-
-        // Add the third part if it exists
-        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_3__c)) {
-            completeJsonString += pendingInvoice.Invoice_JSON_3__c;
-        }
-
-        // Add the third part if it exists
-        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_4__c)) {
-            completeJsonString += pendingInvoice.Invoice_JSON_4__c;
-        }
-
-        // Add the third part if it exists
-        if (String.isNotEmpty(pendingInvoice.Invoice_JSON_5__c)) {
-            completeJsonString += pendingInvoice.Invoice_JSON_5__c;
-        }
-
         PortalCommerceApiInvoices.InvoiceInfo invoice;
         try {
-            invoice = (PortalCommerceApiInvoices.InvoiceInfo) JSON.deserialize(
-                completeJsonString,
-                PortalCommerceApiInvoices.InvoiceInfo.class);
-            System.debug('Invoice deserialized successfully: ' + invoice.invoiceNumber);
+            invoice = PortalCommerceApiController.getInvoice(pendingInvoice.Opportunity__c, pendingInvoice.InvoiceId__c);
+            System.debug('Invoice retrieved successfully: ' + invoice);
             // Perform actions with the invoice object
 
             Map<String, PortalCommerceApiEntitlements.EntitlementPartnerInfo> partnerInfosMap = getEntitlementPartnerInfo(invoice);
@@ -126,10 +99,12 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
             }
         }
         catch (Exception ex) {
-            System.debug('Error processing invoice: ' + ex.getMessage());
-            pendingInvoice.Error__c = 'Error processing invoice: ' + ex.getMessage();
+            System.debug('Error fetching invoice: ' + ex.getMessage());
+            pendingInvoice.Error__c = 'Error fetching invoice: ' + ex.getMessage();
             pendingInvoice.Status__c = 'Error';
             pendingInvoice.RetryCount__c += 1;
+            update pendingInvoice;
+            return null;
         }
 
         return invoice;
