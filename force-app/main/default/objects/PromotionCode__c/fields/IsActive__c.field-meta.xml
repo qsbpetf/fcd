@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsActive__c</fullName>
+    <description>True if Start Date &lt;= TODAY and
+   either End Date &gt;= TODAY or End Date = NULL</description>
+    <formula>/*
+   Check if Promo Code is valid today:
+   True if Start Date &lt;= TODAY and
+   either End Date &gt;= TODAY or End Date = NULL
+*/
+AND(
+   StartDate__c &lt;= TODAY(),
+   OR(
+      EndDate__c &gt;= TODAY(),
+      ISNULL(EndDate__c) 
+   )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>True if Start Date &lt;= TODAY and
+   either End Date &gt;= TODAY or End Date = NULL</inlineHelpText>
+    <label>Is Active</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
