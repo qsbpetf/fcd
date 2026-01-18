@@ -6,6 +6,25 @@
 @IsTest
 public class TestDataFactory {
 
+    public static User createTestUser(String email) {
+        String uniqueSuffix = String.valueOf(System.currentTimeMillis()).right(5);
+        String uniqueUsername = email.substringBefore('@') + uniqueSuffix + '@testorg.com';
+        String alias = (email.substringBefore('@').left(3) + uniqueSuffix).left(8);
+        User u = new User(
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1].Id,
+            LastName = 'TestUser',
+            Email = email,
+            Username = uniqueUsername,
+            Alias = alias,
+            CommunityNickname = email.substringBefore('@') + uniqueSuffix,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US'
+        );
+        return u;
+    }
+
     public static Account getAccount(String billingCountry, String curr){
         Account acc = new Account(Name='Test Acc', BillingCountry=billingCountry, CurrencyIsoCode=curr);
         return acc;

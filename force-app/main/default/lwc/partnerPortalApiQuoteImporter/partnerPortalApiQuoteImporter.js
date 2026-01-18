@@ -246,17 +246,19 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
         let orderItems = order.items.map(item => {
             return {
-                quoteLineItemId: item.quoteLineItemDetailsReference.quoteLineItemId,
-                salesType: item.processingInfo.saleTransitionType
+                quoteLineItemId: item?.quoteLineItemDetailsReference?.quoteLineItemId,
+                salesType: item?.processingInfo?.saleTransitionType
             }
         });
 
         console.log('orderItems', (orderItems));
 
         let orderItemsMap = order.items.reduce((acc, item) => {
-            acc[item.quoteLineItemDetailsReference.quoteLineItemId] = {
-                salesType: item.processingInfo.saleTransitionType
-            };
+            if (item.quoteLineItemDetailsReference && item.processingInfo) {
+                acc[item.quoteLineItemDetailsReference.quoteLineItemId] = {
+                    salesType: item.processingInfo.saleTransitionType
+                };
+            }
             return acc;
         }, {});
 

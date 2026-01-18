@@ -1,4 +1,3 @@
-
 import { LightningElement, api, wire } from 'lwc';
 import getActivePromoCodes from '@salesforce/apex/PromoCodeController.getActivePromoCodes';
 
