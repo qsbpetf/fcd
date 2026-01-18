@@ -1,0 +1,70 @@
+{
+  "dealName": "Savi Atlassian Restructure/Optimization",
+  "accountName": "Savi",
+  "opportunityStage": "Initial Discovery/Qualification",
+  "MEDDPICC_Analysis": {
+    "M_Metrics": {
+      "confidence": "Yellow",
+      "summary": "Anchor on $70,000 annual Atlassian investment that is hard to justify [cite: 7, 12] and a recent 2-month project delivery delay[cite: 8, 18].",
+      "gaps": [
+        "Missing the quantifiable economic cost of the 2-month delay (e.g., lost revenue, increased OpEx).",
+        "Missing a target ROI (e.g., 'reduce delivery time by X%')."
+      ]
+    },
+    "E_EconomicBuyer": {
+      "confidence": "Yellow",
+      "summary": "Chris, the CTO, is driving the project need and making initial budget/service line decisions[cite: 9, 25].",
+      "gaps": [
+        "Unconfirmed if the CTO is the ultimate P&L owner or if final veto power rests with a CEO/CFO.",
+        "Missing confirmation that Chris controls the discretionary budget."
+      ]
+    },
+    "D_DecisionCriteria": {
+      "confidence": "Yellow",
+      "summary": "Criteria are soft: 'building a journey,' 'understanding needs,' and 'embedding the solution into business processes effectively'[cite: 26]. Goal is optimizing usage and ensuring value for money[cite: 32].",
+      "gaps": [
+        "Missing formal, measurable technical and financial criteria (the 'must-haves').",
+        "Missing a clear scoring mechanism or vendor scorecard."
+      ]
+    },
+    "D_DecisionProcess": {
+      "confidence": "Yellow",
+      "summary": "Known steps: Initial Chat -> Next Call (Technical) -> Proposal Generated -> Proposal Review -> Secure PO/Invoicing[cite: 27, 33]. Next technical call is scheduled for the following Thursday[cite: 29].",
+      "gaps": [
+        "Missing the internal buyer steps and stakeholders involved in validation and final approval (the 'who and when' after proposal review).",
+        "Missing a defined, hard-stop implementation date."
+      ]
+    },
+    "P_PaperProcess": {
+      "confidence": "Red",
+      "summary": "Only mentioned is the step 'securing a purchase order, invoicing, and then handing over'[cite: 33].",
+      "gaps": [
+        "Missing information on MSA/Contracting process (the buyer's vs. seller's paper).",
+        "Missing legal/procurement contact and typical redlining timeline."
+      ]
+    },
+    "I_ImplicatePain": {
+      "confidence": "Green",
+      "summary": "Clear business pain: Project delivery is difficult [cite: 18]; lack of visibility to leadership [cite: 19]; disorganization with six roadmaps and varying standards leads to consolidation difficulties[cite: 17].",
+      "gaps": [
+        "Need to uncover the specific personal pain for the Champion (Ria) and the Economic Buyer (Chris)."
+      ]
+    },
+    "C_Champion": {
+      "confidence": "Yellow",
+      "summary": "Ria, who heads up projects, will lead the execution [cite: 25] and feels the daily pain of consolidation difficulties[cite: 17].",
+      "gaps": [
+        "Champion status is unproven; Ria has not been 'tested' (e.g., asked to introduce the seller to Legal/EB).",
+        "Need to confirm her level of influence and access to the EB (Chris)."
+      ]
+    },
+    "C_Competition": {
+      "confidence": "Yellow",
+      "summary": "Customer confirmed they are focused on optimizing Atlassian, not replacing it[cite: 32]. They are moving away from siloed teams[cite: 14].",
+      "gaps": [
+        "Missing direct competitor names being evaluated.",
+        "Need to directly address the threat of 'Status Quo' (doing nothing) and 'Internal Build/DIY'."
+      ]
+    }
+  }
+}

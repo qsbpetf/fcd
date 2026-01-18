@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>Visualize MEDDPICC on the Opportunity</description>
+    <isExposed>true</isExposed>
+    <masterLabel>MEDDPICC Visualizer</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="recordId" type="String" label="Record ID" description="The value should be {!recordId}."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

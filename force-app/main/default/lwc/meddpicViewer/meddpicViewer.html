@@ -1,0 +1,64 @@
+<template>
+    <lightning-card title="MEDDPICC Overview" icon-name="custom:custom14">
+        <template if:true={isLoading}>
+            <div class="slds-is-relative slds-m-around_medium">
+                <lightning-spinner alternative-text="Loading MEDDPICC data" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-m-around_medium">
+                {error}
+            </div>
+        </template>
+
+        <template if:true={hasSections}>
+            <div class="slds-grid slds-wrap meddpic-grid">
+                <template for:each={sections} for:item="section">
+                    <div key={section.key} class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-p-around_small">
+                        <article class="slds-card meddpic-card">
+                            <div class="slds-card__header">
+                                <div class="slds-media slds-media_center">
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">{section.label}</h2>
+                                    </div>
+                                    <div class={section.confidenceClass}>
+                                        {section.confidence}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-card__body meddpic-card__body">
+                                <template if:true={section.hasContent}>
+                                    <template if:true={section.summary}>
+                                        <p class="meddpic-section__label">Summary</p>
+                                        <p class="meddpic-section__text">{section.summary}</p>
+                                    </template>
+                                    <template if:true={section.gaps.length}>
+                                        <p class="meddpic-section__label">Gaps</p>
+                                        <ul class="meddpic-gaps">
+                                            <template for:each={section.gaps} for:item="gap">
+                                                <li key={gap}>{gap}</li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template if:false={section.gaps.length}>
+                                        <p class="meddpic-empty-message">No gaps captured.</p>
+                                    </template>
+                                </template>
+                                <template if:false={section.hasContent}>
+                                    <p class="meddpic-empty-message">No MEDDPICC notes available yet.</p>
+                                </template>
+                            </div>
+                        </article>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template if:false={hasSections}>
+            <div class="slds-m-around_medium">
+                No MEDDPICC data available for this opportunity.
+            </div>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,18 @@
+.meddpic-input-row {
+    flex-wrap: nowrap;
+}
+
+.meddpic-input-row .slds-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.meddpic-input-row lightning-textarea {
+    flex: 1;
+}
+
+.meddpic-input-row .slds-text-align_right {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
