@@ -8,9 +8,8 @@ import apexGetQuote from '@salesforce/apex/PortalCommerceApiController.getQuote'
 import apexImportQuote from '@salesforce/apex/PpcQuoteConverter.convertQuote';
 import apexGetOrderPreview from '@salesforce/apex/PortalCommerceApiController.getOrderPreview';
 import apexGetOrder from '@salesforce/apex/PortalCommerceApiController.getOrder';
-import apexGetEntitlementDisplayInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementDisplayInfo';
-import apexGetEntitlementDetails from '@salesforce/apex/PortalCommerceApiController.getEntitlementDetails';
 import apexGetEntitlementPartnerInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementPartnerInfo';
+import apexGetMatchingPromoCodes from '@salesforce/apex/PromoCodeMatcher.getMatchingPromoCodes';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class PartnerPortalApiQuoteImporter extends LightningElement {
@@ -38,6 +37,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     @track content;
 
     @track quoteUrl;  // Typical URL =
+    @track matchingPromoCodes = [];
 
     isLoading = false;
     importDisabled = true;
@@ -147,7 +147,6 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     return;
                 }
                 this.quote = this.prepare(result);
-                let self = this;
 
                 this.getEntitlementInformation(() => {
                     this.populateEntitlements(this.quote.data[0]);
@@ -155,6 +154,9 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     this.isLoading = false;
                     this.importDisabled = false;
                     this.quoteId = this.quote.data[0].id;
+                    
+                    // Check for matching promo codes after quote is prepared
+                    this.checkMatchingPromoCodes();
                 });
 
                 // -------------
@@ -331,8 +333,8 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             item.amountExcludingTaxDecimal = item.amountExcludingTax / 100.0;
             item.uniqueKey = item.id + item.description + item.quantity + item.subTotal + item.total + item.isoCurrency + item.startsAt + item.endsAt;
         });
-        theQuote["total"] = theQuote.upcomingBills.total / 100.0;
-        theQuote["subTotal"] = theQuote.upcomingBills.subTotal / 100.0;
+        theQuote.total = theQuote.upcomingBills.total / 100.0;
+        theQuote.subTotal = theQuote.upcomingBills.subTotal / 100.0;
 
         if (result.missingAccountId && (result.error === undefined || result.error === null || result.error === '')) {
             result.error = this.errorMessage;
@@ -353,9 +355,9 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                 .then(result => {
                     console.log('result', result);
                     if (result.missingAccountId === false) {
-                        item['name'] = result?.provisionedResource?.name;
-                        item['ari'] = result?.provisionedResource?.ari;
-                        item['slug'] = result?.slug;
+                        item.name = result?.provisionedResource?.name;
+                        item.ari = result?.provisionedResource?.ari;
+                        item.slug = result?.slug;
                         console.log('item', item);
                     }
                     calls++;
@@ -383,16 +385,16 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     populateEntitlements(theQuote) {
         theQuote._children.forEach(item => {
             let lineId = this.lineItems[item.quoteLineId];
-            item['entName'] = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null ;
-            item['entAri'] = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null ;
-            item['entSlug'] = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null ;
+            item.entName = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null ;
+            item.entAri = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null ;
+            item.entSlug = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null ;
             // console.log('POPULATED item', JSON.stringify(item));
         });
         theQuote.upcomingBills.lines.forEach(item => {
             let lineId = this.lineItems[item.quoteLineId];
-            item['entName'] = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null;
-            item['entAri'] = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null;
-            item['entSlug'] = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null;
+            item.entName = this.entitlementIds[lineId].name ? this.entitlementIds[lineId].name : null;
+            item.entAri = this.entitlementIds[lineId].ari ? this.entitlementIds[lineId].ari : null;
+            item.entSlug = this.entitlementIds[lineId].slug ? this.entitlementIds[lineId].slug : null;
             // console.log('POPULATED item', JSON.stringify(item));
         });
     }
@@ -573,5 +575,34 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
         const visualforcePageURL = `/apex/PreviewQuote?OFFICE=${office}&QUOTE_ID=${invoiceId}`;
         window.open(visualforcePageURL, '_blank');
+    }
+
+    checkMatchingPromoCodes() {
+        if (!this.quote || !this.quote.data || !this.quote.data[0]) {
+            return;
+        }
+        
+        apexGetMatchingPromoCodes({ quoteInfoJson: JSON.stringify(this.quote.data[0]) })
+            .then(result => {
+                this.matchingPromoCodes = result || [];
+                console.log('Matching promo codes:', this.matchingPromoCodes);
+            })
+            .catch(error => {
+                console.error('Error checking promo codes:', error);
+                // Don't block UI if promo check fails
+                this.matchingPromoCodes = [];
+            });
+    }
+
+    handleOpenPromoUrl(event) {
+        const url = event.currentTarget.dataset.url;
+        if (url) {
+            window.open(url, '_blank');
+        }
+    }
+
+    get promoCodeCountText() {
+        const count = this.matchingPromoCodes ? this.matchingPromoCodes.length : 0;
+        return count === 1 ? '1 promo code' : `${count} promo codes`;
     }
 }

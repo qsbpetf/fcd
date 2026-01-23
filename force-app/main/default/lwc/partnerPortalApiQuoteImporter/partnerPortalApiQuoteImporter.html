@@ -55,6 +55,64 @@
             ></lightning-input>
         </div>
 
+        <!-- Promo Codes Section -->
+        <template if:true={matchingPromoCodes}>
+            <!-- Matching promo codes found -->
+            <template if:true={matchingPromoCodes.length}>
+                <div class="slds-m-around_medium">
+                    <lightning-card title="Available Promo Codes" icon-name="utility:promotions" variant="narrow">
+                        <div class="slds-text-heading_small slds-m-bottom_small">
+                            {promoCodeCountText} available for products in this quote
+                        </div>
+                        <div class="promo-grid slds-grid slds-wrap slds-gutters">
+                            <template for:each={matchingPromoCodes} for:item="match">
+                                <div key={match.promoCode.Id} class="slds-col promo-col">
+                                    <div class="promo-card">
+                                        <div class="slds-text-body_regular slds-m-bottom_xx-small">
+                                            <strong>Product:</strong> {match.matchedProductName}
+                                        </div>
+                                        <div class="slds-text-body_regular slds-m-bottom_xx-small">
+                                            <strong>Promo Code: </strong> 
+                                            <template if:true={match.promoCode.CodeUrl__c}>
+                                                <a href={match.promoCode.CodeUrl__c} target="_blank" rel="noopener noreferrer" class="promo-code-link">
+                                                    {match.promoCode.PromoCode__c}
+                                                </a>
+                                            </template>
+                                            <template if:false={match.promoCode.CodeUrl__c}>
+                                                {match.promoCode.PromoCode__c}
+                                            </template>
+                                        </div>
+                                        <template if:true={match.promoCode.Partner__c}>
+                                            <div class="slds-text-body_regular slds-m-bottom_xx-small">
+                                                <strong>Partner:</strong> {match.promoCode.Partner__c}
+                                            </div>
+                                        </template>
+                                        <div class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">
+                                            <strong>Valid: </strong>{match.promoCode.StartDate__c}&nbsp;
+                                            <template if:true={match.promoCode.EndDate__c}>
+                                                to {match.promoCode.EndDate__c}
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </div>
+            </template>
+
+            <!-- No matching promo codes -->
+            <template if:false={matchingPromoCodes.length}>
+                <div class="slds-m-around_medium">
+                    <lightning-card title="Available Promo Codes" icon-name="utility:promotions" variant="narrow">
+                        <div class="slds-text-body_regular slds-m-vertical_small">
+                            No promo codes found for the products in this quote.
+                        </div>
+                    </lightning-card>
+                </div>
+            </template>
+        </template>
+
         <template if:false={quoteResults.missingAccountId}>
 
             <div class="slds-m-around_medium">

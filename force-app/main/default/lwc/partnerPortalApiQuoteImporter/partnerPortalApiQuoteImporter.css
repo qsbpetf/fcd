@@ -95,3 +95,38 @@ h2 {
 .button-around {
     padding: 5px;
 }
+
+.promo-code-link {
+    color: #006dcc;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.promo-code-link:hover {
+    color: #005fb2;
+    text-decoration: none;
+}
+
+/* Promo code cards layout */
+.promo-grid {
+    margin-top: 0.5rem;
+}
+
+.promo-col {
+    /* Flexible columns that wrap, with a minimum width; vertical/horizontal gutters controlled here */
+    flex: 1 1 300px;
+    padding: 0.5rem; /* matches slds-gutters vertical/horizontal spacing */
+}
+
+.promo-card {
+    background-color: #fff7e6; /* Soft warm background to stand out */
+    border-radius: 0.5rem;
+    border: 1px solid #f3d8a6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 0.75rem 1rem;
+}
+
+.promo-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border-color: #f0b949;
+}
