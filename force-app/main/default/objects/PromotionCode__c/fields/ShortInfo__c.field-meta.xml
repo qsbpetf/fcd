@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ShortInfo__c</fullName>
+    <description>Short information, will be showin in the promo code in the LWC reminder.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Short information, will be showin in the promo code in the LWC reminder.</inlineHelpText>
+    <label>Short Info</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

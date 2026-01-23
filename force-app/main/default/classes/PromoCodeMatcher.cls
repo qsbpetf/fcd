@@ -6,8 +6,8 @@ public with sharing class PromoCodeMatcher {
 
     /**
      * Get matching promo codes for a quote.
-     * Uses the same product mapping logic as PpcOpportunityProductMapper to ensure
-     * we match against the Product2 records that will be used for OpportunityLineItems.
+     * Matches promo codes against quote line item product names (productName or description)
+     * based on SearchString__c, Platform__c, and Edition__c filters.
      * 
      * @param quoteInfoJson JSON string representation of PortalCommerceApiQuotes.QuoteInfo
      * @return List of PromoCodeMatch objects containing matching promo codes and product information
@@ -15,117 +15,20 @@ public with sharing class PromoCodeMatcher {
     @AuraEnabled(cacheable=false)
     public static List<PromoCodeMatch> getMatchingPromoCodes(String quoteInfoJson) {
         try {
-            // Deserialize the quote info
-            PortalCommerceApiQuotes.QuoteInfo quoteInfo = (PortalCommerceApiQuotes.QuoteInfo) JSON.deserialize(
-                quoteInfoJson, 
-                PortalCommerceApiQuotes.QuoteInfo.class
-            );
-
-            if (quoteInfo == null || quoteInfo.upcomingBills == null || 
-                quoteInfo.upcomingBills.lines == null || quoteInfo.upcomingBills.lines.isEmpty()) {
+            PortalCommerceApiQuotes.QuoteInfo quoteInfo = parseQuoteInfo(quoteInfoJson);
+            if (quoteInfo == null) {
                 return new List<PromoCodeMatch>();
             }
 
-            // Step 1: Use same mapping as import process
-            PpcPortalProductMapper portalProductMapper = PpcPortalProductMapper.getInstance();
-            Map<String, Product2> mappedProducts = new Map<String, Product2>();
-            Set<Id> productIds = new Set<Id>();
-
-            for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteInfo.upcomingBills.lines) {
-                PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(quoteLine.description);
-                if (mapResult.found && mapResult.product != null) {
-                    mappedProducts.put(quoteLine.description, mapResult.product);
-                    productIds.add(mapResult.product.Id);
-                }
-            }
-
-            if (productIds.isEmpty()) {
-                // No products mapped, no matches possible
-                return new List<PromoCodeMatch>();
-            }
-
-            // Step 2: Query Product2 records that will become OpportunityLineItems
-            Map<Id, Product2> productsById = new Map<Id, Product2>([
-                SELECT Id, Name, Family
-                FROM Product2
-                WHERE Id IN :productIds
-            ]);
-
-            // Step 3: Query all active PromotionCode__c records
-            List<PromotionCode__c> activePromoCodes = [
-                SELECT Id, PromoCode__c, Partner__c, SearchString__c,
-                       Platform__c, Edition__c,
-                       CodeUrl__c, StartDate__c, EndDate__c, IsActive__c
-                FROM PromotionCode__c
-                WHERE IsActive__c = true
-                AND SearchString__c != null
-                AND SearchString__c != ''
-            ];
+            List<PromotionCode__c> activePromoCodes = loadActivePromoCodes();
 
             if (activePromoCodes.isEmpty()) {
                 return new List<PromoCodeMatch>();
             }
 
-            // Step 4: Build a map of SearchString to List of PromotionCode__c for efficient lookup
-            Map<String, List<PromotionCode__c>> promoCodeMap = new Map<String, List<PromotionCode__c>>();
-            for (PromotionCode__c promoCode : activePromoCodes) {
-                String searchString = promoCode.SearchString__c;
-                if (String.isBlank(searchString)) {
-                    continue;
-                }
-                if (!promoCodeMap.containsKey(searchString)) {
-                    promoCodeMap.put(searchString, new List<PromotionCode__c>());
-                }
-                promoCodeMap.get(searchString).add(promoCode);
-            }
+            Map<String, List<PromotionCode__c>> promoCodeMap = buildPromoCodeMap(activePromoCodes);
 
-            // Step 5: Match SearchString__c against quote line item product name using the map.
-            // Ensure each promo code is returned only once even if it matches multiple lines.
-            List<PromoCodeMatch> matches = new List<PromoCodeMatch>();
-            Set<Id> addedPromoCodeIds = new Set<Id>();
-            
-            for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteInfo.upcomingBills.lines) {
-                // Prefer the explicit productName from the quote line; fall back to description if needed
-                String lineProductName = String.isNotBlank(quoteLine.productName)
-                    ? quoteLine.productName
-                    : quoteLine.description;
-                if (String.isBlank(lineProductName)) {
-                    continue;
-                }
-
-                // Check each search string against the product name
-                for (String searchString : promoCodeMap.keySet()) {
-                    // Case-insensitive contains matching
-                    if (lineProductName.containsIgnoreCase(searchString)) {
-                        // Match found! Add all promo codes with this search string
-                        for (PromotionCode__c promoCode : promoCodeMap.get(searchString)) {
-                            // Skip if we've already added this promo code from another line or match
-                            if (addedPromoCodeIds.contains(promoCode.Id)) {
-                                continue;
-                            }
-
-                            // Respect optional Platform__c and Edition__c filters.
-                            // If they are set on the promo code, they MUST match the quote line.
-                            if (!matchesPlatformFilter(promoCode.Platform__c, lineProductName)) {
-                                continue;
-                            }
-                            if (!matchesEditionFilter(promoCode.Edition__c, lineProductName)) {
-                                continue;
-                            }
-
-                            PromoCodeMatch match = new PromoCodeMatch();
-                            match.promoCode = promoCode;
-                            match.matchedProductName = lineProductName;
-                            match.quoteLineDescription = quoteLine.description;
-                            match.searchString = searchString;
-                            matches.add(match);
-                            addedPromoCodeIds.add(promoCode.Id);
-                        }
-                    }
-                }
-            }
-
-            return matches;
+            return buildMatches(quoteInfo, promoCodeMap);
 
         } catch (Exception e) {
             System.debug('Error in PromoCodeMatcher.getMatchingPromoCodes: ' + e.getMessage());
@@ -133,6 +36,112 @@ public with sharing class PromoCodeMatcher {
             // Return empty list on error - don't break the UI
             return new List<PromoCodeMatch>();
         }
+    }
+
+    /** Parse JSON into QuoteInfo and validate basic structure. */
+    private static PortalCommerceApiQuotes.QuoteInfo parseQuoteInfo(String quoteInfoJson) {
+        PortalCommerceApiQuotes.QuoteInfo quoteInfo =
+            (PortalCommerceApiQuotes.QuoteInfo) JSON.deserialize(
+                quoteInfoJson,
+                PortalCommerceApiQuotes.QuoteInfo.class
+            );
+
+        if (quoteInfo == null ||
+            quoteInfo.upcomingBills == null ||
+            quoteInfo.upcomingBills.lines == null ||
+            quoteInfo.upcomingBills.lines.isEmpty()) {
+            return null;
+        }
+        return quoteInfo;
+    }
+
+    /** Load all active PromotionCode__c rows that are eligible for matching. */
+    private static List<PromotionCode__c> loadActivePromoCodes() {
+        return [
+            SELECT Id, PromoCode__c, Partner__c, SearchString__c,
+                   Platform__c, Edition__c, ShortInfo__c,
+                   CodeUrl__c, StartDate__c, EndDate__c, IsActive__c
+            FROM PromotionCode__c
+            WHERE IsActive__c = true
+            AND SearchString__c != null
+            AND SearchString__c != ''
+        ];
+    }
+
+    /** Build a map from SearchString__c to the list of promo codes using that string. */
+    private static Map<String, List<PromotionCode__c>> buildPromoCodeMap(
+        List<PromotionCode__c> activePromoCodes
+    ) {
+        Map<String, List<PromotionCode__c>> promoCodeMap = new Map<String, List<PromotionCode__c>>();
+        for (PromotionCode__c promoCode : activePromoCodes) {
+            String searchString = promoCode.SearchString__c;
+            if (String.isBlank(searchString)) {
+                continue;
+            }
+            if (!promoCodeMap.containsKey(searchString)) {
+                promoCodeMap.put(searchString, new List<PromotionCode__c>());
+            }
+            promoCodeMap.get(searchString).add(promoCode);
+        }
+        return promoCodeMap;
+    }
+
+    /**
+     * Build matches between quote lines and promotion codes based on product name,
+     * SearchString__c, Platform__c and Edition__c. Ensures each promo code is
+     * returned at most once.
+     */
+    private static List<PromoCodeMatch> buildMatches(
+        PortalCommerceApiQuotes.QuoteInfo quoteInfo,
+        Map<String, List<PromotionCode__c>> promoCodeMap
+    ) {
+        List<PromoCodeMatch> matches = new List<PromoCodeMatch>();
+        Set<Id> addedPromoCodeIds = new Set<Id>();
+
+        for (PortalCommerceApiQuotes.BillLineItem quoteLine : quoteInfo.upcomingBills.lines) {
+            // Prefer the explicit productName from the quote line; fall back to description if needed
+            String lineProductName = String.isNotBlank(quoteLine.productName)
+                ? quoteLine.productName
+                : quoteLine.description;
+            if (String.isBlank(lineProductName)) {
+                continue;
+            }
+
+            // Check each search string against the product name
+            for (String searchString : promoCodeMap.keySet()) {
+                // Case-insensitive contains matching
+                if (!lineProductName.containsIgnoreCase(searchString)) {
+                    continue;
+                }
+
+                // Match found! Add all promo codes with this search string
+                for (PromotionCode__c promoCode : promoCodeMap.get(searchString)) {
+                    // Skip if we've already added this promo code from another line or match
+                    if (addedPromoCodeIds.contains(promoCode.Id)) {
+                        continue;
+                    }
+
+                    // Respect optional Platform__c and Edition__c filters.
+                    // If they are set on the promo code, they MUST match the quote line.
+                    if (!matchesPlatformFilter(promoCode.Platform__c, lineProductName)) {
+                        continue;
+                    }
+                    if (!matchesEditionFilter(promoCode.Edition__c, lineProductName)) {
+                        continue;
+                    }
+
+                    PromoCodeMatch match = new PromoCodeMatch();
+                    match.promoCode = promoCode;
+                    match.matchedProductName = lineProductName;
+                    match.quoteLineDescription = quoteLine.description;
+                    match.searchString = searchString;
+                    matches.add(match);
+                    addedPromoCodeIds.add(promoCode.Id);
+                }
+            }
+        }
+
+        return matches;
     }
 
     /**

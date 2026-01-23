@@ -17,7 +17,8 @@ private class PromoCodeMatcherTest {
 
     /**
      * Helper to build a minimal QuoteInfo with one or more bill lines using
-     * realistic product names. Creates Product2 records for mapping.
+     * realistic product names. No Product2 mapping needed since we match directly
+     * against quote line productName/description.
      */
     private static PortalCommerceApiQuotes.QuoteInfo buildQuoteInfo(List<String> productNames) {
         PortalCommerceApiQuotes.QuoteInfo quoteInfo = new PortalCommerceApiQuotes.QuoteInfo();
@@ -26,24 +27,6 @@ private class PromoCodeMatcherTest {
 
         quoteInfo.upcomingBills = new PortalCommerceApiQuotes.BillItem();
         quoteInfo.upcomingBills.lines = new List<PortalCommerceApiQuotes.BillLineItem>();
-
-        // Create Product2 records for each product name so PpcPortalProductMapper can resolve them
-        List<Product2> products = new List<Product2>();
-        for (String productName : productNames) {
-            // Extract base product name (before first parenthesis) for Product2.Name
-            String baseName = productName.substringBefore('(').trim();
-            if (String.isBlank(baseName)) {
-                baseName = productName;
-            }
-            
-            Product2 p = new Product2(
-                Name = baseName,
-                Family = 'Test',
-                isActive = true
-            );
-            products.add(p);
-        }
-        insert products;
 
         // Create quote lines with realistic product names
         for (Integer i = 0; i < productNames.size(); i++) {
@@ -58,31 +41,8 @@ private class PromoCodeMatcherTest {
         return quoteInfo;
     }
 
-    /**
-     * Ensure that there is at least one Product2 that PpcPortalProductMapper can
-     * resolve from PpcProductToSalesforceMapping__mdt metadata. This is needed so
-     * that defaultCloudProduct in the mapper is non-null and mapProduct() returns
-     * a non-null Product2 even when the product name is unknown.
-     */
-    private static void ensureMapperProductData() {
-        PpcProductToSalesforceMapping__mdt mapping =
-            [SELECT SalesforceProductName__c
-             FROM PpcProductToSalesforceMapping__mdt
-             LIMIT 1];
-
-        Product2 p = new Product2(
-            Name   = mapping.SalesforceProductName__c,
-            Family = 'Test',
-            isActive = true
-        );
-        insert p;
-    }
-
     @IsTest
     static void testBasicMatchWithoutPlatformOrEdition() {
-        // Make sure mapper has at least one Product2 to use as defaultCloudProduct
-        ensureMapperProductData();
-
         // Build quote with realistic product names - use ScriptRunner twice to test deduplication
         List<String> productNames = new List<String>{
             REALISTIC_PRODUCT_NAMES[0], // ScriptRunner for Jira Cloud Standard...
@@ -114,9 +74,6 @@ private class PromoCodeMatcherTest {
 
     @IsTest
     static void testPlatformAndEditionFiltersApplied() {
-        // Make sure mapper has at least one Product2 to use as defaultCloudProduct
-        ensureMapperProductData();
-
         // Build quote with realistic product name containing "Cloud" and "Standard"
         List<String> productNames = new List<String>{
             REALISTIC_PRODUCT_NAMES[0] // ScriptRunner for Jira Cloud Standard ANNUAL USD COMMERCIAL CLOUD
@@ -160,9 +117,6 @@ private class PromoCodeMatcherTest {
 
     @IsTest
     static void testSinglePlatformOrEditionFilter() {
-        // Make sure mapper has at least one Product2 to use as defaultCloudProduct
-        ensureMapperProductData();
-
         // Build quote with:
         //  - Index 1: Datacenter + Standard
         //  - Index 2: Cloud + Premium
@@ -212,6 +166,59 @@ private class PromoCodeMatcherTest {
             'Result should include DC_ONLY promo (platform filter only)');
         System.assert(matchIds.contains(premiumOnlyPromo.Id),
             'Result should include PREMIUM_ONLY promo (edition filter only)');
+    }
+
+    @IsTest
+    static void testNoActivePromoCodes() {
+        // Build quote with realistic product names
+        List<String> productNames = new List<String>{
+            REALISTIC_PRODUCT_NAMES[0] // ScriptRunner for Jira Cloud Standard...
+        };
+        PortalCommerceApiQuotes.QuoteInfo quoteInfo = buildQuoteInfo(productNames);
+
+        // Don't create any promo codes - should return empty list
+
+        Test.startTest();
+        List<PromoCodeMatcher.PromoCodeMatch> matches =
+            PromoCodeMatcher.getMatchingPromoCodes(JSON.serialize(quoteInfo));
+        Test.stopTest();
+
+        System.assertEquals(0, matches.size(),
+            'Should return empty list when no active promo codes exist');
+    }
+
+    @IsTest
+    static void testEmptyQuoteString() {
+        // Create an active promo code
+        PromotionCode__c promo = new PromotionCode__c(
+            PromoCode__c    = 'TEST_PROMO',
+            StartDate__c    = Date.today().addDays(-5),
+            EndDate__c      = Date.today().addDays(5),
+            Partner__c      = 'Test Partner',
+            SearchString__c = 'ScriptRunner'
+        );
+        insert promo;
+
+        Test.startTest();
+        // Test with null
+        List<PromoCodeMatcher.PromoCodeMatch> matchesNull =
+            PromoCodeMatcher.getMatchingPromoCodes(null);
+        
+        // Test with empty string
+        List<PromoCodeMatcher.PromoCodeMatch> matchesEmpty =
+            PromoCodeMatcher.getMatchingPromoCodes('');
+        
+        // Test with invalid JSON
+        List<PromoCodeMatcher.PromoCodeMatch> matchesInvalid =
+            PromoCodeMatcher.getMatchingPromoCodes('invalid json');
+        Test.stopTest();
+
+        System.assertEquals(0, matchesNull.size(),
+            'Should return empty list when quote string is null');
+        System.assertEquals(0, matchesEmpty.size(),
+            'Should return empty list when quote string is empty');
+        System.assertEquals(0, matchesInvalid.size(),
+            'Should return empty list when quote string is invalid JSON');
     }
 }
 
