@@ -3,6 +3,7 @@
     <fullName>EndDate__c</fullName>
     <description>Ending date for the promo code.
 If not set (null), then promo code is eternal</description>
+    <externalId>false</externalId>
     <inlineHelpText>Ending date for the promo code.
 If not set (null), then promo code is eternal</inlineHelpText>
     <label>End Date</label>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Platform__c</fullName>
+    <description>If you select a platform, the quote line must contain the selected platform.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If you select a platform, the quote line must contain the selected platform.</inlineHelpText>
+    <label>Platform</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cloud</fullName>
+                <default>false</default>
+                <label>Cloud</label>
+            </value>
+            <value>
+                <fullName>Datacenter</fullName>
+                <default>false</default>
+                <label>Datacenter</label>
+            </value>
+            <value>
+                <fullName>Services</fullName>
+                <default>false</default>
+                <label>Services</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

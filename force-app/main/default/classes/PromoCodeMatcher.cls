@@ -53,7 +53,8 @@ public with sharing class PromoCodeMatcher {
 
             // Step 3: Query all active PromotionCode__c records
             List<PromotionCode__c> activePromoCodes = [
-                SELECT Id, PromoCode__c, Partner__c, SearchString__c, 
+                SELECT Id, PromoCode__c, Partner__c, SearchString__c,
+                       Platform__c, Edition__c,
                        CodeUrl__c, StartDate__c, EndDate__c, IsActive__c
                 FROM PromotionCode__c
                 WHERE IsActive__c = true
@@ -103,6 +104,15 @@ public with sharing class PromoCodeMatcher {
                                 continue;
                             }
 
+                            // Respect optional Platform__c and Edition__c filters.
+                            // If they are set on the promo code, they MUST match the quote line.
+                            if (!matchesPlatformFilter(promoCode.Platform__c, lineProductName)) {
+                                continue;
+                            }
+                            if (!matchesEditionFilter(promoCode.Edition__c, lineProductName)) {
+                                continue;
+                            }
+
                             PromoCodeMatch match = new PromoCodeMatch();
                             match.promoCode = promoCode;
                             match.matchedProductName = lineProductName;
@@ -123,6 +133,44 @@ public with sharing class PromoCodeMatcher {
             // Return empty list on error - don't break the UI
             return new List<PromoCodeMatch>();
         }
+    }
+
+    /**
+     * Check if the quote line product name matches the optional Platform__c filter.
+     * If platformFilter is blank, it always matches.
+     */
+    private static Boolean matchesPlatformFilter(String platformFilter, String lineProductName) {
+        if (String.isBlank(platformFilter)) {
+            return true;
+        }
+        String nameLower = lineProductName.toLowerCase();
+        String platformLower = platformFilter.toLowerCase();
+
+        if (platformLower == 'cloud') {
+            return nameLower.contains('cloud');
+        }
+        if (platformLower == 'datacenter') {
+            // Allow both \"datacenter\" and \"data center\"
+            return nameLower.contains('datacenter') || nameLower.contains('data center');
+        }
+        if (platformLower == 'services') {
+            return nameLower.contains('service');
+        }
+        // Fallback: generic contains
+        return nameLower.contains(platformLower);
+    }
+
+    /**
+     * Check if the quote line product name matches the optional Edition__c filter.
+     * If editionFilter is blank, it always matches.
+     */
+    private static Boolean matchesEditionFilter(String editionFilter, String lineProductName) {
+        if (String.isBlank(editionFilter)) {
+            return true;
+        }
+        String nameLower = lineProductName.toLowerCase();
+        String editionLower = editionFilter.toLowerCase();
+        return nameLower.contains(editionLower);
     }
 
     /**

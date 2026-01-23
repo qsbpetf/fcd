@@ -3,6 +3,7 @@
     <fullName>IsActive__c</fullName>
     <description>True if Start Date &lt;= TODAY and
    either End Date &gt;= TODAY or End Date = NULL</description>
+    <externalId>false</externalId>
     <formula>/*
    Check if Promo Code is valid today:
    True if Start Date &lt;= TODAY and
