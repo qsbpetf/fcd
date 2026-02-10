@@ -11,6 +11,7 @@ import apexGetOrder from '@salesforce/apex/PortalCommerceApiController.getOrder'
 import apexGetEntitlementPartnerInfo from '@salesforce/apex/PortalCommerceApiController.getEntitlementPartnerInfo';
 import apexGetMatchingPromoCodes from '@salesforce/apex/PromoCodeMatcher.getMatchingPromoCodes';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import LightningConfirm from 'lightning/confirm';
 
 export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
@@ -93,7 +94,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
     connectedCallback() {
         console.log('connectedCallback', this.recordId);
-        debugger;
+        // debugger;
         // this.getQuotes();
     }
 
@@ -410,7 +411,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
     }
 
     // Method to handle the row action
-    handleRowAction(event) {
+    async handleRowAction(event) {
         this.selectedItem = event.detail.row;
         const action = event.detail.action;
         console.log('Action: ', action.label);
@@ -418,8 +419,13 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         this.content = JSON.stringify(this.selectedItem, null, 2);
 
         if (this.selectedItem.level === 1) {
-            let choice = confirm('Are you sure you want to import this quote ' + this.selectedItem.quoteNumber + ' ?');
-            if (choice) {
+            const result = await LightningConfirm.open({
+                message: 'Are you sure you want to import this quote ' + this.selectedItem.quoteNumber + '?',
+                variant: 'header',
+                label: 'Confirm Import',
+                theme: 'warning'
+            });
+            if (result) {
                 this.importQuote(this.selectedItem, false);
             }
         }

@@ -176,6 +176,7 @@
         <members>Eficode_Office_NO</members>
         <members>Eficode_Office_SE</members>
         <members>Eficode_Office_UK</members>
+        <members>Eficode_Office_US</members>
         <members>Eficode_com_JIRA_DC</members>
         <members>ExchangeRatesAPI</members>
         <name>NamedCredential</name>

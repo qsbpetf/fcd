@@ -4,6 +4,7 @@
     <columns>MasterLabel</columns>
     <columns>DeveloperName</columns>
     <columns>MarkupPercent__c</columns>
+    <columns>IsProtected</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
     <language>en_US</language>

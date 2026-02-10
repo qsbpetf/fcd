@@ -235,7 +235,7 @@ public with sharing class CurrencyCtrl {
             HttpRequest req = new HttpRequest();
             req.setEndpoint(Url.getOrgDomainUrl().toExternalForm() + '/services/data/v63.0/composite/sobjects');
             req.setMethod('POST');
-            req.setHeader('Authorization', 'OAuth ' + UserInfo.getSessionId());
+            req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
             req.setHeader('Content-Type', 'application/json');
             req.setBody(JSON.serialize(requestBody));
 

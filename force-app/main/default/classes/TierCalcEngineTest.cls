@@ -28,12 +28,11 @@ private class TierCalcEngineTest {
         Opportunity opp = getOpportunityWithAllFields(null);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{
             opp.OwnerId => 100
         };
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertNotEquals(null, result, 'Result should not be null');
         System.assertEquals(0, result.t1calc, 'T1 calculation should be 0 for empty opportunity');
         System.assertEquals(0, result.t2calc, 'T2 calculation should be 0 for empty opportunity');
@@ -48,7 +47,6 @@ private class TierCalcEngineTest {
         Opportunity opp = getOpportunityWithAllFields(null);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
 
         // Create multiple splits
         Map<Id, Decimal> splits = new Map<Id, Decimal>();
@@ -61,7 +59,7 @@ private class TierCalcEngineTest {
         splits.put(testUser2.Id, 40);
 
         // Act
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
 
         // Assert
         System.assertEquals(2, result.lines.size(), 'Should have 2 tier lines for 2 splits');
@@ -82,10 +80,9 @@ private class TierCalcEngineTest {
         Opportunity opp = getOpportunityWithAllFields(null);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
 
         // Act - pass null splits to test default behavior
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, null, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, null, Date.today());
         System.assertEquals(1, result.lines.size(), 'Should have 1 tier line with default split');
         System.assertEquals(opp.OwnerId, result.lines[0].User__c, 'Should use opportunity owner as default');
     }
@@ -205,12 +202,11 @@ private class TierCalcEngineTest {
         Opportunity opp = getOpportunityWithAllFields(null);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
         Date testDate = Date.today();
 
         // Act
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, testDate);
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, testDate);
 
         // Assert
         System.assertEquals(1, result.lines.size(), 'Should have 1 tier line');
@@ -235,10 +231,9 @@ private class TierCalcEngineTest {
         opp = getOpportunityWithAllFields(opp.Id);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertEquals(1000, result.t2calc, 'T2 should fall back to consulting estimate when no line items');
         System.assertEquals(1, result.lines.size(), 'Should create 1 tier line');
     }
@@ -250,11 +245,10 @@ private class TierCalcEngineTest {
         Opportunity opp = getOpportunityWithAllFields(null);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
         Date testDate = Date.newInstance(2024, 12, 15);
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, testDate);
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, testDate);
         Tier__c line = result.lines[0];
         System.assert(line.Line_Key__c.contains(opp.Id), 'Line key should contain opportunity ID');
         System.assert(line.Line_Key__c.contains(opp.OwnerId), 'Line key should contain user ID');
@@ -269,10 +263,9 @@ private class TierCalcEngineTest {
         Opportunity opp = getOpportunityWithAllFields(null);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         Tier__c line = result.lines[0];
         System.assertNotEquals(null, line.Input_Hash__c, 'Hash should be generated');
         System.assert(line.Input_Hash__c.length() > 0, 'Hash should not be empty');
@@ -292,10 +285,9 @@ private class TierCalcEngineTest {
         opp = getOpportunityWithAllFields(opp.Id);
 
         List<OpportunityLineItem> olis = new List<OpportunityLineItem>();
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertEquals(10000, result.t1calc, 'T1 should be 10000 (5000 + 3000 + 2000)');
         System.assertEquals(8000, result.t2calc, 'T2 should be 8000 (5000 + 3000)');
         System.assertEquals(2000, result.t3calc, 'T3 should be 2000');
@@ -317,10 +309,9 @@ private class TierCalcEngineTest {
         insert oli;
 
         List<OpportunityLineItem> olis = getOpportunityLineItemsWithAllFields(opp.Id);
-        List<Project__c> projects = new List<Project__c>();
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertNotEquals(0, result.t2calc, 'T2 should have a value for Upgrade renewal with line items');
     }
 
@@ -337,10 +328,9 @@ private class TierCalcEngineTest {
         insert oli;
 
         List<OpportunityLineItem> olis = getOpportunityLineItemsWithAllFields(opp.Id);
-        List<Project__c> projects = new List<Project__c>(); // Empty projects list
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertEquals(0, result.t2calc, 'T2 should be 0 when no project exists');
     }
 
@@ -361,6 +351,11 @@ private class TierCalcEngineTest {
         );
         insert project;
 
+        // Update opportunity to link to project
+        opp.Related_Project__c = project.Id;
+        update opp;
+        opp = getOpportunityWithAllFields(opp.Id);
+
         PricebookEntry pbe = createPricebookEntry();
 
         OpportunityLineItem oli = createOpportunityLineItem(
@@ -369,10 +364,9 @@ private class TierCalcEngineTest {
         insert oli;
 
         List<OpportunityLineItem> olis = getOpportunityLineItemsWithAllFields(opp.Id);
-        List<Project__c> projects = new List<Project__c>{project};
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertEquals(0, result.t2calc, 'T2 should be 0 when license starts after project+365');
     }
 
@@ -394,6 +388,7 @@ private class TierCalcEngineTest {
 
         opp.Related_Project__c = project.Id;
         update opp;
+        opp = getOpportunityWithAllFields(opp.Id);
 
         PricebookEntry pbe = createPricebookEntry();
 
@@ -403,10 +398,9 @@ private class TierCalcEngineTest {
         insert oli;
 
         List<OpportunityLineItem> olis = getOpportunityLineItemsWithAllFields(opp.Id);
-        List<Project__c> projects = new List<Project__c>{project};
         Map<Id, Decimal> splits = new Map<Id, Decimal>{opp.OwnerId => 100};
 
-        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, projects, splits, Date.today());
+        TierCalcEngine.Result result = TierCalcEngine.compute(opp, account, olis, splits, Date.today());
         System.assertNotEquals(0, result.t2calc, 'T2 should be calculated when license ends before project+365');
     }
 
@@ -415,9 +409,10 @@ private class TierCalcEngineTest {
             'Payment_Terms__c, Deal_Reg_Rebate_Value_Currency__c, ' +
             'Deal_Reg_Rebate_Value__c, Exchange_Rate_from_Products__c, ' +
             'Related_Project__c, Project_Type__c, Total_Amount__c, ' +
-            'Project_Start_Date__c, Project_End_Date__c, T2_Override__c, T3_Override__c, ' +
+            'T2_Override__c, T3_Override__c, ' +
             'Estimate_Consulting_Revenue__c, Estimate_Managed_Service_Revenue__c, Estimate_Licensing_GP__c, ' +
-            'Total_Amount_T2_V2__c, Total_Amount_T3_V2__c, T3_From_Products__c ' +
+            'Total_Amount_T2_V2__c, Total_Amount_T3_V2__c, T3_From_Products__c, ' +
+            'Project_Start_Date_From_Project__c ' +
             'FROM Opportunity ' +
             (oppId != null ? 'WHERE Id = :oppId ' : '') +
             'LIMIT 1';

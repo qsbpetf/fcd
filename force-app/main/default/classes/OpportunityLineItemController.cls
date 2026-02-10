@@ -181,18 +181,23 @@ public with sharing class OpportunityLineItemController {
     ) {
         Map<String, Object> result = new Map<String, Object>();
         Savepoint sp = Database.setSavepoint();
+        System.debug('SAVE POINT CREATED!');
         try {
             Database.SaveResult[] srs = Database.insert(olis.values(), false);
             result = formatSaveResults(srs, olis);
             Map<String, Object> errors = (Map<String, Object>) result.get('errors');
             if (errors.keySet().size() > 0) {
+                System.debug('ERROR: ROLLING BACK SAVEPOINT!');
                 Database.rollback(sp);
             }
         }
         catch (Exception e) {
+            System.debug('EXCEPTION: ROLLING BACK SAVEPOINT!');
             Database.rollback(sp);
             throw new AuraHandledException(e.getMessage());
         }
+        System.debug('RESULT=' + result);
+        System.debug('\n' + JSON.serializePretty(result));
         return result;
     }
 
@@ -276,7 +281,9 @@ public with sharing class OpportunityLineItemController {
         Integer index = 0;
 
         for (Database.SaveResult sr : srs) {
+            System.debug('CHECKING SAVE RESULT: ' + sr);
             if (!sr.isSuccess()) {
+                System.debug('  Save result Failed');
                 String kid = keys[index];
                 List<String> msgs = new List<String>();
                 List<String> fns = new List<String>();
@@ -303,6 +310,7 @@ public with sharing class OpportunityLineItemController {
 
                 res.put(kid, re);
             } else {
+                System.debug('  Save result successful');
                 ids.add(sr.getId());
             }
             index++;

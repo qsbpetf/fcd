@@ -7,14 +7,13 @@ public with sharing class TierCalcService {
         // Load all required data
         Map<Id, Opportunity> oppMap = loadOpportunities(oppIds);
         Map<Id, Account> accMap = loadAccounts(oppMap);
-        Map<Id, List<Project__c>> projectsByOpp = loadProjects(oppIds);
         Map<Id, List<OpportunityLineItem>> oliByOpp = loadOpportunityLineItems(oppIds);
         Map<Id, Map<Id, Decimal>> oppSplitsByOpp = loadOpportunitySplits(oppIds);
         Map<Id, Map<Id, Tier__c>> existingLinesByOpp = loadExistingTierLines(oppIds);
 
         // Compute and save tier lines
         List<Tier__c> upserted = computeTierLines(
-            oppMap, accMap, projectsByOpp, oliByOpp, oppSplitsByOpp, existingLinesByOpp, asOfDate
+            oppMap, accMap, oliByOpp, oppSplitsByOpp, existingLinesByOpp, asOfDate
         );
 
         System.debug('Tier lines calculated and saved: ' + upserted);
@@ -29,9 +28,10 @@ public with sharing class TierCalcService {
                 Payment_Terms__c, Deal_Reg_Rebate_Value_Currency__c,
                 Deal_Reg_Rebate_Value__c, Exchange_Rate_from_Products__c,
                 Related_Project__c, Project_Type__c, Total_Amount__c,
-                Project_Start_Date__c, Project_End_Date__c, T2_Override__c, T3_Override__c,
+                T2_Override__c, T3_Override__c,
                 Estimate_Consulting_Revenue__c, Estimate_Managed_Service_Revenue__c, Estimate_Licensing_GP__c,
-                Total_Amount_T2_V2__c, Total_Amount_T3_V2__c
+                Total_Amount_T2_V2__c, Total_Amount_T3_V2__c,
+                Project_Start_Date_From_Project__c
             FROM Opportunity WHERE Id IN :oppIds
         ]);
     }
@@ -45,7 +45,7 @@ public with sharing class TierCalcService {
         }
 
         return accIds.isEmpty() ? new Map<Id,Account>() : new Map<Id,Account>([
-            SELECT Id, Name, CurrencyIsoCode, First_Order_Date_Final_Formula_Field__c
+            SELECT Id, Name, CurrencyIsoCode
             FROM Account WHERE Id IN :accIds
         ]);
     }
@@ -71,23 +71,6 @@ public with sharing class TierCalcService {
         return oliByOpp;
     }
 
-    // Loads project records related to opportunities and groups them by opportunity ID
-    // Returns: Map<Opportunity ID, List<Project__c>>
-    private static Map<Id, List<Project__c>> loadProjects(Set<Id> oppIds) {
-        Map<Id, List<Project__c>> projectsByOpp = new Map<Id, List<Project__c>>();
-        for (Project__c proj : [
-            SELECT Id, Opportunity_Name__c, Project_Start_Date_new__c, Project_End_Date_new__c
-            FROM Project__c
-            WHERE Opportunity_Name__c IN :oppIds
-        ]) {
-            Id oppId = proj.Opportunity_Name__c;
-            if (!projectsByOpp.containsKey(oppId)) {
-                projectsByOpp.put(oppId, new List<Project__c>());
-            }
-            projectsByOpp.get(oppId).add(proj);
-        }
-        return projectsByOpp;
-    }
 
     // Loads existing tier lines and organizes them by opportunity ID and user ID for comparison.
     // Returns: Map<Opportunity ID, Map<User ID, Tier Line>>
@@ -155,7 +138,6 @@ public with sharing class TierCalcService {
     private static List<Tier__c> computeTierLines(
         Map<Id, Opportunity> oppMap,
         Map<Id, Account> accMap,
-        Map<Id, List<Project__c>> projectsByOpp,
         Map<Id, List<OpportunityLineItem>> oliByOpp,
         Map<Id, Map<Id, Decimal>> splitsByOpp,
         Map<Id, Map<Id, Tier__c>> existingLinesByOpp,
@@ -169,12 +151,10 @@ public with sharing class TierCalcService {
             Opportunity opp = oppMap.get(oppId);
             Account acc = (opp.AccountId != null) ? accMap.get(opp.AccountId) : null;
             List<OpportunityLineItem> lines = oliByOpp.containsKey(oppId) ? oliByOpp.get(oppId) : new List<OpportunityLineItem>();
-            List<Project__c> projects = projectsByOpp.containsKey(oppId) ? projectsByOpp.get(oppId) : new List<Project__c>();
             Map<Id, Decimal> splits = splitsByOpp.get(oppId);
 
-            TierCalcEngine.Result res = TierCalcEngine.compute(opp, acc, lines, projects, splits, asOfDate);
-//            System.debug('res' + JSON.serializePretty(res));
-            
+            TierCalcEngine.Result res = TierCalcEngine.compute(opp, acc, lines, splits, asOfDate);
+
             // Store result for later Opportunity update
             resultsByOppId.put(oppId, res);
 
@@ -214,7 +194,6 @@ public with sharing class TierCalcService {
         // Upsert changed tier lines
         if (!tierLinesToUpsert.isEmpty()) {
             System.debug('Upserting tier lines (size): ' + tierLinesToUpsert.size());
-//            System.debug('Upserting tier lines: ' + tierLinesToUpsert);
             upsert tierLinesToUpsert Line_Key__c; // External ID + Unique
         }
 

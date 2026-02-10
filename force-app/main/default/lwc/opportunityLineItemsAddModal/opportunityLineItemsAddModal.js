@@ -62,10 +62,14 @@ export default class OpportunityLineItemsAddModal extends LightningModal {
 
         this.isSubmitting = true;
         try {
+            debugger;
+            console.log('DATA = ', opportunityLineItems);
+            console.log('DATA = ' + JSON.stringify(opportunityLineItems));
             const { ids, errors } = await insertOpportunityLineItems({
                 olis: opportunityLineItems,
             });
-
+            console.log('IDS = ', ids);
+            console.log('ERRORS = ', errors);
             await notifyRecordUpdateAvailable(ids.map((recordId) => ({ recordId })));
             await notifyRecordUpdateAvailable([{ recordId: this.opportunityId }]);
 

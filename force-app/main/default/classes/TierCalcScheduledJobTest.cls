@@ -7,7 +7,7 @@ private class TierCalcScheduledJobTest {
     @TestSetup
     static void setup() {
         // Create test data using TestDataFactory
-        Account testAccount = TestDataFactory.getAccount('US', 'USD');
+        Account testAccount = TestDataFactory.getAccount('United States', 'USD');
         insert testAccount;
 
         // Create opportunities modified within last 24 hours

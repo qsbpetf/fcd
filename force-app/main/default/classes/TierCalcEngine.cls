@@ -21,7 +21,6 @@ public with sharing class TierCalcEngine {
         Opportunity opp,
         Account acc,
         List<OpportunityLineItem> olis,
-        List<Project__c> projects,
         Map<Id,Decimal> splits, // UserId → %
         Date asOfDate
     ){
@@ -30,9 +29,7 @@ public with sharing class TierCalcEngine {
 
         for (OpportunityLineItem oli : olis) {
             // flow: Calculate_T2_Amount_Roll_Up_from_Opportunity
-//            System.debug('oli.T2_Attainment_Amount__c (before):' + oli.T2_Attainment_Amount__c);
-            oli.T2_Attainment_Amount__c = calculateT2AttainmentAmount(oli, projects);
-//            System.debug('oli.T2_Attainment_Amount__c (after):' + oli.T2_Attainment_Amount__c);
+            oli.T2_Attainment_Amount__c = calculateT2AttainmentAmount(oli, opp.Project_Start_Date_From_Project__c);
         }
 
         r.t2calc = calculateT2(opp, olis);
@@ -121,8 +118,6 @@ public with sharing class TierCalcEngine {
         if (opp == null) {
             return 0;
         }
-//        System.debug('olis: ' + olis);
-
         // we can add condition 'if opp.Total_Amount__c = 0'
         // flow: T2_T3_Estimate
         // flow: T2_T3_Amounts_from_opportunity_when_Launch_Estimate_Flow_is_checked
@@ -134,7 +129,6 @@ public with sharing class TierCalcEngine {
 
         // Loop through OpportunityLineItems for T3
         for (OpportunityLineItem oli : olis) {
-//            System.debug('oli: ' + oli);
             if (oli.T3_Product__c == true && opp.T3_Override__c == false) {
                 Decimal marginValue = oli.Margin_Value__c ?? 0;
                 totalMargin += marginValue;
@@ -143,16 +137,9 @@ public with sharing class TierCalcEngine {
 
         // Update Opportunity fields
         opp.T3_From_Products__c = totalMargin;
-//        System.debug('totalMargin: ' + totalMargin);
-
-//        not needed if it's not run in trigger context as formula is already calculated
-//        List<FormulaRecalcResult> results = Formula.recalculateFormulas(new List<Opportunity>{opp});
-//        System.assert(results[0].isSuccess());
-//        System.debug('New Deal_Reg_Rebate_Value_Currency__c value: ' + opp.get('Deal_Reg_Rebate_Value_Currency__c'));
 
         // Calculate Final T3 Amount
         Decimal dealRegRebate = opp.Deal_Reg_Rebate_Value_Currency__c ?? 0;
-//        System.debug('dealRegRebate: ' + dealRegRebate);
         return opp.T3_From_Products__c + dealRegRebate;
     }
 
@@ -182,9 +169,7 @@ public with sharing class TierCalcEngine {
      *    - Otherwise (In between) → T2 = Prorated Amount
      *      Formula: ((Project_Start_Date + 365 - License_Start_date) / days) * Total_List_Price_Incl_Discount
      */
-    private static Decimal calculateT2AttainmentAmount(OpportunityLineItem oli, List<Project__c> projects) {
-//        System.debug('oli: ' + oli);
-//        System.debug('projects: ' + projects);
+    private static Decimal calculateT2AttainmentAmount(OpportunityLineItem oli, Date projectStartDate) {
         if (oli == null) return 0;
 
         // Step 1: Check Revenue Type (matches flow "Revenue_Type" decision)
@@ -200,10 +185,6 @@ public with sharing class TierCalcEngine {
         }
 
         // Step 3: Check if project exists (matches flow "Has_project" decision)
-        Date projectStartDate = null;
-        if (projects != null && !projects.isEmpty()) {
-            projectStartDate = projects[0].Project_Start_Date_new__c;
-        }
 
         // If no project → T2 = 0
         if (projectStartDate == null) {
