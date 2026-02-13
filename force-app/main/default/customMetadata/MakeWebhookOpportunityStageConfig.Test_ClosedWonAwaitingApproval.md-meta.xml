@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Test - Closed won - awaiting approval</label>
+    <protected>false</protected>
+    <values>
+        <field>StageName__c</field>
+        <value xsi:type="xsd:string">Closed won - awaiting approval</value>
+    </values>
+    <values>
+        <field>IsActive__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Used only in Apex tests. Isolates test data from production config.</value>
+    </values>
+    <values>
+        <field>IsTestRecord__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>

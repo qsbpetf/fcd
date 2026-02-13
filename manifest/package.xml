@@ -33,6 +33,8 @@
     </types>
     <types>
         <members>CurrencyRateMarkup.Default</members>
+        <members>MakeWebhookOpportunityStageConfig.ClosedWonAwaitingApproval</members>
+        <members>MakeWebhookOpportunityStageConfig.Test_ClosedWonAwaitingApproval</members>
         <members>PPC_TransactionAccount.CH</members>
         <members>PPC_TransactionAccount.DE</members>
         <members>PPC_TransactionAccount.DK</members>
@@ -116,6 +118,7 @@
         <members>CurrencyRateMarkup__mdt</members>
         <members>DefaultOpportunityOwner__c</members>
         <members>InvoiceGroup__c</members>
+        <members>MakeWebhookOpportunityStageConfig__mdt</members>
         <members>OpportunityLineItem</members>
         <members>PPC_InvoiceAutoImportSettings__c</members>
         <members>PPC_TransactionAccount__mdt</members>
@@ -179,6 +182,7 @@
         <members>Eficode_Office_US</members>
         <members>Eficode_com_JIRA_DC</members>
         <members>ExchangeRatesAPI</members>
+        <members>MakeDotCom</members>
         <name>NamedCredential</name>
     </types>
     <types>
@@ -192,6 +196,7 @@
     <types>
         <members>AtlassianAPI</members>
         <members>ExchangeRatesAPI</members>
+        <members>Make_com_webhook</members>
         <name>RemoteSiteSetting</name>
     </types>
     <types>

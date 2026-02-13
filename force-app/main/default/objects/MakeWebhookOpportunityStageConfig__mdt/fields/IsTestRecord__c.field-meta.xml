@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsTestRecord__c</fullName>
+    <description>When true, this record is only used when running Apex tests (Test.isRunningTest()). Use separate records for test vs production to isolate test data.</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Check to use this record only in test context. Leave unchecked for production use.</inlineHelpText>
+    <defaultValue>false</defaultValue>
+    <label>Is Test Record</label>
+    <type>Checkbox</type>
+</CustomField>
