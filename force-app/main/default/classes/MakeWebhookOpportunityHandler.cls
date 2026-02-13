@@ -36,6 +36,10 @@ public without sharing class MakeWebhookOpportunityHandler {
             return;
         }
 
+        if (!isWebhookEnabled()) {
+            return;
+        }
+
         try {
             System.enqueueJob(new MakeOpportunityWebhookQueueable(new List<Id>(oppIdsToNotify)));
         } catch (Exception e) {
@@ -74,6 +78,15 @@ public without sharing class MakeWebhookOpportunityHandler {
         }
 
         return stages;
+    }
+
+    /**
+     * Returns true when webhook calls are enabled via MakeWebhookSettings__c.
+     * When no setting exists (null), returns true (enabled by default).
+     */
+    public static Boolean isWebhookEnabled() {
+        MakeWebhookSettings__c s = MakeWebhookSettings__c.getInstance();
+        return (s == null || s.EnableOpportunityWebhook__c != false);
     }
 }
 

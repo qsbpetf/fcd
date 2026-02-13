@@ -3,6 +3,8 @@ private class MakeOLIWebhookQueueableTest {
 
     @IsTest
     static void testSingleLineItemDeleteTriggersWebhook() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
         // Use configured stage from custom metadata
         MakeWebhookOpportunityStageConfig__mdt config =
             [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
@@ -69,6 +71,8 @@ private class MakeOLIWebhookQueueableTest {
 
     @IsTest
     static void testMultipleLineItemDeleteTriggersMultipleWebhooks() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
         MakeWebhookOpportunityStageConfig__mdt config =
             [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
 
@@ -125,6 +129,51 @@ private class MakeOLIWebhookQueueableTest {
             oliIdsFromRequests.contains((String) oli2.Id),
             'Both deleted OpportunityLineItem Ids should be present in webhook calls'
         );
+    }
+
+    @IsTest
+    static void testNoWebhookWhenDisabled() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = false);
+
+        MakeWebhookOpportunityStageConfig__mdt config =
+            [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Id standardPbId = Test.getStandardPricebookId();
+        Product2 product = TestDataFactory.getProduct();
+        insert product;
+
+        PricebookEntry pbe = TestDataFactory.getPbEntry(standardPbId, product.Id, 'EUR');
+        insert pbe;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = config.StageName__c;
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        insert opp;
+
+        OpportunityLineItem oli = TestDataFactory.getOppProd(pbe.Id, opp.Id);
+        insert oli;
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        delete oli;
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOLIWebhookQueueable.OLI_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(0, requests.size(), 'No webhook call should be made when EnableOpportunityWebhook__c is false');
     }
 
     /**

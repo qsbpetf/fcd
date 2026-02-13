@@ -31,7 +31,7 @@ trigger MakeWebhookOpportunityLineItemTrigger on OpportunityLineItem (after dele
             }
         }
 
-        if (!oliIdsToNotify.isEmpty()) {
+        if (!oliIdsToNotify.isEmpty() && MakeWebhookOpportunityHandler.isWebhookEnabled()) {
             System.enqueueJob(new MakeOLIWebhookQueueable(oliIdsToNotify));
         }
     }

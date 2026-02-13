@@ -3,6 +3,8 @@ private class MakeOpportunityWebhookQueueableTest {
 
     @IsTest
     static void testStageChangeTriggersWebhook() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
         // Use existing custom metadata configuration for stage name
         MakeWebhookOpportunityStageConfig__mdt config =
             [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
@@ -61,6 +63,8 @@ private class MakeOpportunityWebhookQueueableTest {
 
     @IsTest
     static void testWebhookWhenOtherFieldsChangeInConfiguredStage() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
         // Use existing custom metadata configuration for stage name
         MakeWebhookOpportunityStageConfig__mdt config =
             [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
@@ -104,6 +108,42 @@ private class MakeOpportunityWebhookQueueableTest {
             requests.size(),
             'Exactly one webhook call should be made when other fields change in a configured stage'
         );
+    }
+
+    @IsTest
+    static void testNoWebhookWhenDisabled() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = false);
+
+        MakeWebhookOpportunityStageConfig__mdt config =
+            [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = 'Order';
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        insert opp;
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        opp.StageName = config.StageName__c;
+        update opp;
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOpportunityWebhookQueueable.OPPORTUNITY_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(0, requests.size(), 'No webhook call should be made when EnableOpportunityWebhook__c is false');
     }
 }
 

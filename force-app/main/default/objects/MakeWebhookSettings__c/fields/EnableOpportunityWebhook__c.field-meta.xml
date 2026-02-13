@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EnableOpportunityWebhook__c</fullName>
+    <description>When checked, Opportunity and OpportunityLineItem webhooks are sent to Agile Day. Uncheck to disable without deployment.</description>
+    <inlineHelpText>Uncheck to temporarily disable all Make.com webhooks.</inlineHelpText>
+    <defaultValue>true</defaultValue>
+    <label>Enable Opportunity Webhook</label>
+    <type>Checkbox</type>
+</CustomField>
