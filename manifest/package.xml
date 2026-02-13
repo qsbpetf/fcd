@@ -29,12 +29,21 @@
         <members>Opportunity.ImportedInvoiceNumber__c</members>
         <members>Opportunity.Monthly_Cloud_Opp__c</members>
         <members>Opportunity.PpcQuoteImportResult__c</members>
-        <members>MakeWebhookSettings__c.EnableOpportunityWebhook__c</members>
         <name>CustomField</name>
     </types>
     <types>
         <members>CurrencyRateMarkup.Default</members>
+        <members>MakeWebhookOpportunityStageConfig.Cancelled_After_Invoice</members>
+        <members>MakeWebhookOpportunityStageConfig.Closed_Lost</members>
         <members>MakeWebhookOpportunityStageConfig.ClosedWonAwaitingApproval</members>
+        <members>MakeWebhookOpportunityStageConfig.Closing</members>
+        <members>MakeWebhookOpportunityStageConfig.Develop_Solution</members>
+        <members>MakeWebhookOpportunityStageConfig.Duplicate_Dead_Quote</members>
+        <members>MakeWebhookOpportunityStageConfig.Duplicate_Error_in_Opp</members>
+        <members>MakeWebhookOpportunityStageConfig.Duplicate_Multiple_Options</members>
+        <members>MakeWebhookOpportunityStageConfig.Evaluate</members>
+        <members>MakeWebhookOpportunityStageConfig.Justify</members>
+        <members>MakeWebhookOpportunityStageConfig.Order</members>
         <members>MakeWebhookOpportunityStageConfig.Test_ClosedWonAwaitingApproval</members>
         <members>PPC_TransactionAccount.CH</members>
         <members>PPC_TransactionAccount.DE</members>
