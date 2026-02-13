@@ -50,4 +50,3 @@ public without sharing class MakeOpportunityWebhookQueueable implements Queueabl
         http.send(req);
     }
 }
-
