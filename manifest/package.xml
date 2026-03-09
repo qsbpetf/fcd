@@ -34,8 +34,8 @@
     <types>
         <members>CurrencyRateMarkup.Default</members>
         <members>MakeWebhookOpportunityStageConfig.Cancelled_After_Invoice</members>
-        <members>MakeWebhookOpportunityStageConfig.Closed_Lost</members>
         <members>MakeWebhookOpportunityStageConfig.ClosedWonAwaitingApproval</members>
+        <members>MakeWebhookOpportunityStageConfig.Closed_Lost</members>
         <members>MakeWebhookOpportunityStageConfig.Closing</members>
         <members>MakeWebhookOpportunityStageConfig.Develop_Solution</members>
         <members>MakeWebhookOpportunityStageConfig.Duplicate_Dead_Quote</members>
