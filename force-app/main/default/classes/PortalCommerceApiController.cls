@@ -8,6 +8,7 @@ public with sharing class PortalCommerceApiController {
     @TestVisible static private PortalCommerceApiEntitlements apiEntitlements = PortalCommerceApiEntitlements.getInstance();
     @TestVisible static private PortalCommerceApiInvoices apiInvoices = PortalCommerceApiInvoices.getInstance();
     @TestVisible static private PortalCommerceApiOrders apiOrders = PortalCommerceApiOrders.getInstance();
+    @TestVisible static private Integer INVOICE_PAGE_SIZE = 4;
 
     public static void setApiQuotes(PortalCommerceApiQuotes api) {
         apiQuotes = api;
@@ -81,7 +82,7 @@ public with sharing class PortalCommerceApiController {
     }
 
     @AuraEnabled
-    static public List<PortalCommerceApiInvoices.InvoiceList> getPaidInvoices(String accountId) {
+    static public List<PortalCommerceApiInvoices.InvoiceList> getPaidInvoices(String accountId, Integer lastNdays) {
         Account acc = [SELECT Id, CV_Subsidiary__c FROM Account WHERE Id = :accountId];
         List<InvoiceGroup__c> invoiceGroups = new List<InvoiceGroup__c>([
             SELECT
@@ -105,7 +106,7 @@ public with sharing class PortalCommerceApiController {
             }
             do {
                 System.debug('### Fetching invoices for invoice group: ' + invoiceGroup.Name + ' (' + invoiceGroup.AtlassianInvoiceGroupId__c + ')');
-                PortalCommerceApiInvoices.InvoiceList invoices = apiInvoices.getPaidInvoices(acc.CV_Subsidiary__c, invoiceGroup.AtlassianInvoiceGroupId__c, 50, nextId);
+                PortalCommerceApiInvoices.InvoiceList invoices = apiInvoices.getPaidInvoices(acc.CV_Subsidiary__c, invoiceGroup.AtlassianInvoiceGroupId__c, INVOICE_PAGE_SIZE, nextId, lastNdays);
                 System.debug('### Fetched ' + invoices.data.size() + ' invoices of max 50. nextId = ' + invoices.nextId);
                 allInvoices.add(invoices);
                 nextId = invoices.nextId;

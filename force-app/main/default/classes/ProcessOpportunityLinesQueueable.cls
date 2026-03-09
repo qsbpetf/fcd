@@ -8,7 +8,7 @@ public class ProcessOpportunityLinesQueueable implements Queueable {
 
     public ProcessOpportunityLinesQueueable(OpportunityData data) {
         this.data = data;
-        System.debug('### ProcessOpportunityLinesQueueable constructor called with data: ' + data);
+        System.debug('### ProcessOpportunityLinesQueueable constructor called');
     }
 
     public void execute(QueueableContext context) {
@@ -24,7 +24,7 @@ public class ProcessOpportunityLinesQueueable implements Queueable {
             WHERE Id = :data.pendingInvoiceId]);
 
         if (pendingInvoices.isEmpty()) {
-            System.debug('Pending invoice not found: ' + data.pendingInvoiceId);
+            System.debug('Pending invoice not found: ' + data.pendingInvoiceId + ' for opportunity: ' + data.opptyId);
             return;
         }
         PendingInvoice__c pendingInvoice = pendingInvoices[0];
@@ -37,7 +37,7 @@ public class ProcessOpportunityLinesQueueable implements Queueable {
             // Process first two items
             for (Integer i = 0; i < itemsToProcess; i++) {
                 OpportunityLineItem line = data.lines.remove(0);
-                System.debug('Processing Line Item: ' + line);
+                System.debug('Processing Line Item: ' + i);
                 linesToInsert.add(line);
             }
             insert linesToInsert;

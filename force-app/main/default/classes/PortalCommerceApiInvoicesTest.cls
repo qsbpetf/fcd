@@ -93,10 +93,14 @@ private class PortalCommerceApiInvoicesTest {
 
     @IsTest
     static void testGetPaidInvoicesSuccessful() {
+        Long paidAt = Datetime.now().getTime();
+        Long createdAt = Datetime.now().addDays(-5).getTime();
+        String body = '{"data":[{"id":"123456","number":"123","status":"PAID","paidAt":' + paidAt + ',"createdAt":' + createdAt + ',"items":[]}]}';
+
         HttpResponse response = new HttpResponse();
         response.setStatusCode(200);
         response.setStatus('OK');
-        response.setBody('{"data":[{"id":"123456","number":"123","status":"PAID","items":[]}]}');
+        response.setBody(body);
 
         mockService
             .when('getPaidInvoices')
@@ -104,14 +108,63 @@ private class PortalCommerceApiInvoicesTest {
 
         Test.startTest();
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
-        PortalCommerceApiInvoices.InvoiceList invoices = instance.getPaidInvoices('FI', 'INV_GRP', 10, null);
+        PortalCommerceApiInvoices.InvoiceList invoices = instance.getPaidInvoices('FI', 'INV_GRP', 10, null, 100);
         Test.stopTest();
 
         System.assertNotEquals(null, invoices, 'Invoices should not be null');
-        System.assertEquals(1, invoices.data.size(), 'Should have one invoice');
+        System.assertEquals(1, invoices.data.size(), 'Should have one invoice (paidAt must be within lastNdays)');
         System.assertEquals('123', invoices.data[0].invoiceNumber, 'Wrong invoice number');
         System.assertEquals('123456', invoices.data[0].id, 'Wrong invoice id');
         System.assertEquals('PAID', invoices.data[0].status, 'Wrong invoice status');
+        System.assertEquals(paidAt, invoices.data[0].paidAt, 'Wrong paidAt');
+    }
+
+    @IsTest
+    static void testGetPaidInvoicesWithLastNdaysNull() {
+        Long paidAt = Datetime.now().addDays(-200).getTime();
+        String body = '{"data":[{"id":"123456","number":"123","status":"PAID","paidAt":' + paidAt + ',"items":[]}]}';
+
+        HttpResponse response = new HttpResponse();
+        response.setStatusCode(200);
+        response.setStatus('OK');
+        response.setBody(body);
+
+        mockService
+            .when('getPaidInvoices')
+            .thenReturn(response);
+
+        Test.startTest();
+        PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
+        PortalCommerceApiInvoices.InvoiceList invoices = instance.getPaidInvoices('FI', 'INV_GRP', 10, null, null);
+        Test.stopTest();
+
+        System.assertNotEquals(null, invoices, 'Invoices should not be null');
+        System.assertEquals(1, invoices.data.size(), 'When lastNdays is null, all invoices should be returned');
+        System.assertEquals('123456', invoices.data[0].id, 'Wrong invoice id');
+    }
+
+    @IsTest
+    static void testGetPaidInvoicesExcludesOldInvoice() {
+        Long paidAtOld = Datetime.now().addDays(-150).getTime();
+        String body = '{"data":[{"id":"123456","number":"123","status":"PAID","paidAt":' + paidAtOld + ',"items":[]}],"nextId":"page2"}';
+
+        HttpResponse response = new HttpResponse();
+        response.setStatusCode(200);
+        response.setStatus('OK');
+        response.setBody(body);
+
+        mockService
+            .when('getPaidInvoices')
+            .thenReturn(response);
+
+        Test.startTest();
+        PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
+        PortalCommerceApiInvoices.InvoiceList invoices = instance.getPaidInvoices('FI', 'INV_GRP', 10, null, 100);
+        Test.stopTest();
+
+        System.assertNotEquals(null, invoices, 'Invoices should not be null');
+        System.assertEquals(0, invoices.data.size(), 'Invoice paid outside lastNdays should be excluded');
+        System.assertEquals(null, invoices.nextId, 'nextId should be nullified when filtering out old invoices');
     }
 
     @IsTest
@@ -127,7 +180,7 @@ private class PortalCommerceApiInvoicesTest {
 
         Test.startTest();
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
-        PortalCommerceApiInvoices.InvoiceList invoices = instance.getPaidInvoices('FI', 'INV_GRP', 10, null);
+        PortalCommerceApiInvoices.InvoiceList invoices = instance.getPaidInvoices('FI', 'INV_GRP', 10, null, 100);
         Test.stopTest();
 
         System.assertNotEquals(null, invoices, 'Invoices should not be null');
@@ -137,17 +190,21 @@ private class PortalCommerceApiInvoicesTest {
 
     @IsTest
     static void testGetPaidInvoicesStaticSuccessful() {
+        Long paidAt = Datetime.now().getTime();
+        Long createdAt = Datetime.now().addDays(-5).getTime();
+        String body = '{"data":[{"id":"123456","number":"123","status":"PAID","paidAt":' + paidAt + ',"createdAt":' + createdAt + ',"items":[]}]}';
+
         HttpResponse response = new HttpResponse();
         response.setStatusCode(200);
         response.setStatus('OK');
-        response.setBody('{"data":[{"id":"123456","number":"123","status":"PAID","items":[]}]}');
+        response.setBody(body);
 
         mockService
             .when('getPaidInvoices')
             .thenReturn(response);
 
         Test.startTest();
-        PortalCommerceApiInvoices.InvoiceList invoices = PortalCommerceApiInvoices.getPaidInvoicesStatic('FI', 'INV_GRP', 10, null);
+        PortalCommerceApiInvoices.InvoiceList invoices = PortalCommerceApiInvoices.getPaidInvoicesStatic('FI', 'INV_GRP', 10, null, 100);
         Test.stopTest();
 
         System.assertNotEquals(null, invoices, 'Invoices should not be null');
@@ -155,6 +212,7 @@ private class PortalCommerceApiInvoicesTest {
         System.assertEquals('123', invoices.data[0].invoiceNumber, 'Wrong invoice number');
         System.assertEquals('123456', invoices.data[0].id, 'Wrong invoice id');
         System.assertEquals('PAID', invoices.data[0].status, 'Wrong invoice status');
+        System.assertEquals(paidAt, invoices.data[0].paidAt, 'Wrong paidAt');
     }
 
     @IsTest

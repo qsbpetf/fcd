@@ -36,13 +36,13 @@ public with sharing class PortalCommerceApiInvoices
         return products;
     }
 
-    public InvoiceList getPaidInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+    public InvoiceList getPaidInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId, Integer lastNdays) {
         HttpResponse response = client.getPaidInvoices(office, invoiceGroupId, pageSize, nextId);
+        InvoiceList invoicesToKeep = new InvoiceList();
         if (response.getStatusCode() != 200) {
-            InvoiceList invoices = new InvoiceList();
-            invoices.error = response.getBody();
-            invoices.missingAccountId = true;
-            return invoices;
+            invoicesToKeep.error = response.getBody();
+            invoicesToKeep.missingAccountId = true;
+            return invoicesToKeep;
         }
         InvoiceList invoices = (InvoiceList) JSON.deserialize(
             response.getBody()
@@ -50,16 +50,33 @@ public with sharing class PortalCommerceApiInvoices
                 .replace('"currency"', '"isoCurrency"')
                 .replace('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
             InvoiceList.class);
+        invoicesToKeep.nextId = invoices.nextId;
         for (InvoiceInfo invoice : invoices.data) {
+            if (lastNdays != null) {
+                Long now = Datetime.now().getTime();
+                Long nDaysAgo = now - (lastNdays * 24 * 60 * 60 * 1000);
+                if (invoice.paidAt == null || invoice.paidAt < nDaysAgo) {
+                    // If we encounter an invoice outside of the last N days, we stop pagination by nullifying nextId
+                    invoicesToKeep.nextId = null;
+                    continue;
+                }
+                else {
+                    // Invoice paid within the last N days, keep it
+                    invoicesToKeep.data.add(invoice);
+                }
+            }
+            else {
+                invoicesToKeep.data.add(invoice);
+            }
             invoice.office = office;
         }
-        return invoices;
+        return invoicesToKeep;
     }
 
     @AuraEnabled
-    public static InvoiceList getPaidInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId) {
+    public static InvoiceList getPaidInvoicesStatic(String office, String invoiceGroupId, Integer pageSize, String nextId, Integer lastNdays) {
         PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
-        return instance.getPaidInvoices(office, invoiceGroupId, pageSize, nextId);
+        return instance.getPaidInvoices(office, invoiceGroupId, pageSize, nextId, lastNdays);
     }
 
     @AuraEnabled
@@ -73,7 +90,7 @@ public with sharing class PortalCommerceApiInvoices
         if (response.getStatusCode() != 200) {
             return null;
         }
-        System.debug('JSON = ' + response.getBody());
+        // System.debug('JSON = ' + response.getBody());
         InvoiceInfo invoice = (InvoiceInfo) JSON.deserialize(
             response.getBody()
                 .replace('"number"', '"invoiceNumber"')

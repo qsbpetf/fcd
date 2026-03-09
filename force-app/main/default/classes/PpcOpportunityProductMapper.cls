@@ -55,7 +55,9 @@ public with sharing class PpcOpportunityProductMapper {
             PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(quoteLine.description);
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
-                log.productLog.add(String.valueOf(mapResult));
+                if (log != null) {
+                    log.productLog.add(String.valueOf(mapResult));
+                }
 
                 if (mapResult.globalSEN) {
                     // globalSEN = orderLine.supportEntitlementNumber;
@@ -71,8 +73,10 @@ public with sharing class PpcOpportunityProductMapper {
                 }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
-                log.productLog.add(String.valueOf(mapResult));
-                log.errorLog.add('MISSING Product: ' + quoteLine.description);
+                if (log != null) {
+                    log.productLog.add(String.valueOf(mapResult));
+                    log.errorLog.add('MISSING Product: ' + quoteLine.description);
+                }
             }
         }
 
@@ -85,15 +89,21 @@ public with sharing class PpcOpportunityProductMapper {
                 OpportunityLineItem oppProduct = oppProductMapper.mapQuoteLineToOpportunityLineItem(pbe, opp.Id, quoteLine, conversionFactor);
                 if (oppProduct != null) {
                     opptyProductsToInsert.add(oppProduct);
-                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + '  _____FROM: ' + quoteLine.description);
+                    if (log != null) {
+                        log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + '  _____FROM: ' + quoteLine.description);
+                    }
                 } else {
                     System.debug('Skipping zero unit price order line: ' + quoteLine.description);
-                    log.pbeLog.add('Skipping zero unit price order line for product: ' + quoteLine.description);
+                    if (log != null) {
+                        log.pbeLog.add('Skipping zero unit price order line for product: ' + quoteLine.description);
+                    }
                 }
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
-                log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
-                log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                if (log != null) {
+                    log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                    log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                }
             }
         }
 
@@ -104,20 +114,22 @@ public with sharing class PpcOpportunityProductMapper {
             }
         }
 
-        Integer i = 1;
-        for (OpportunityLineItem oli : opptyProductsToInsert) {
-            log.successLog.add(
-                'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
-                ', User Count: ' + oli.User_Count__c +
-                ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
-                ', Cost Price (USD): ' + (oli.Editable_Cost_Price_in_Dollars__c != null ? oli.Editable_Cost_Price_in_Dollars__c.format() : '') +
-                ', Product: ' + oli.Product2Id +
-                ', PricebookEntry: ' + oli.PricebookEntryId +
-                ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
-                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : '') +
-                ', Partner Disc:' + (oli.Atlassian_Partner_Discount__c != null ? oli.Atlassian_Partner_Discount__c.format() : '') +
-                ', Entitlement Number: ' + oli.Entitlement_Number__c);
-            i++;
+        if (log != null) {
+            Integer i = 1;
+            for (OpportunityLineItem oli : opptyProductsToInsert) {
+                log.successLog.add(
+                    'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
+                    ', User Count: ' + oli.User_Count__c +
+                    ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
+                    ', Cost Price (USD): ' + (oli.Editable_Cost_Price_in_Dollars__c != null ? oli.Editable_Cost_Price_in_Dollars__c.format() : '') +
+                    ', Product: ' + oli.Product2Id +
+                    ', PricebookEntry: ' + oli.PricebookEntryId +
+                    ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
+                    ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : '') +
+                    ', Partner Disc:' + (oli.Atlassian_Partner_Discount__c != null ? oli.Atlassian_Partner_Discount__c.format() : '') +
+                    ', Entitlement Number: ' + oli.Entitlement_Number__c);
+                i++;
+            }
         }
 
         return opptyProductsToInsert;
@@ -152,7 +164,9 @@ public with sharing class PpcOpportunityProductMapper {
             PortalProductMapper.MappingResult mapResult = portalProductMapper.mapProduct(invoiceLine.description);
             if (mapResult.found) {
                 System.debug('  -- Product found: ' + mapResult);
-                log.productLog.add(String.valueOf(mapResult));
+                if (log != null) {
+                    log.productLog.add(String.valueOf(mapResult));
+                }
 
                 if (mapResult.globalSEN) {
                     // globalSEN = orderLine.supportEntitlementNumber;
@@ -168,8 +182,10 @@ public with sharing class PpcOpportunityProductMapper {
                 }
             } else {
                 System.debug('  -- Product NOT found: ' + mapResult);
-                log.productLog.add(String.valueOf(mapResult));
-                log.errorLog.add('MISSING Product: ' + invoiceLine.description);
+                if (log != null) {
+                    log.productLog.add(String.valueOf(mapResult));
+                    log.errorLog.add('MISSING Product: ' + invoiceLine.description);
+                }
             }
         }
 
@@ -182,15 +198,21 @@ public with sharing class PpcOpportunityProductMapper {
                 OpportunityLineItem oppProduct = oppProductMapper.mapInvoiceLineToOpportunityLineItem(pbe, opp.Id, invoiceLine, conversionFactor);
                 if (oppProduct != null) {
                     opptyProductsToInsert.add(oppProduct);
-                    log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + '  _____FROM: ' + invoiceLine.description);
+                    if (log != null) {
+                        log.pbeLog.add('PricebookEntry FOUND for product: ' + mappedProduct.Name + '  _____FROM: ' + invoiceLine.description);
+                    }
                 } else {
                     System.debug('Skipping zero unit price order line: ' + invoiceLine.description);
-                    log.pbeLog.add('Skipping zero unit price order line for product: ' + invoiceLine.description);
+                    if (log != null) {
+                        log.pbeLog.add('Skipping zero unit price order line for product: ' + invoiceLine.description);
+                    }
                 }
             } else {
                 System.debug('No matching PricebookEntry found for Product: ' + mappedProduct);
-                log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
-                log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                if (log != null) {
+                    log.pbeLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                    log.errorLog.add('MISSING PricebookEntry for product: ' + mappedProduct.Name + ' PB=' + opp.Pricebook2.Name + ' CURR=' + opp.CurrencyIsoCode);
+                }
             }
         }
 
@@ -201,20 +223,22 @@ public with sharing class PpcOpportunityProductMapper {
             }
         }
 
-        Integer i = 1;
-        for (OpportunityLineItem oli : opptyProductsToInsert) {
-            log.successLog.add(
-                'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
-                ', User Count: ' + oli.User_Count__c +
-                ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
-                ', Cost Price (USD): ' + (oli.Editable_Cost_Price_in_Dollars__c != null ? oli.Editable_Cost_Price_in_Dollars__c.format() : '') +
-                ', Product: ' + oli.Product2Id +
-                ', PricebookEntry: ' + oli.PricebookEntryId +
-                ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
-                ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : '') +
-                ', Partner Disc:' + (oli.Atlassian_Partner_Discount__c != null ? oli.Atlassian_Partner_Discount__c.format() : '') +
-                ', Entitlement Number: ' + oli.Entitlement_Number__c);
-            i++;
+        if (log != null) {
+            Integer i = 1;
+            for (OpportunityLineItem oli : opptyProductsToInsert) {
+                log.successLog.add(
+                    'Resulting product (' + i + ') = ' + oli.Additional_Info__c +
+                    ', User Count: ' + oli.User_Count__c +
+                    ', Price (USD): ' + (oli.Editable_Unit_List_Price_in_USD__c != null ? oli.Editable_Unit_List_Price_in_USD__c.format() : '') +
+                    ', Cost Price (USD): ' + (oli.Editable_Cost_Price_in_Dollars__c != null ? oli.Editable_Cost_Price_in_Dollars__c.format() : '') +
+                    ', Product: ' + oli.Product2Id +
+                    ', PricebookEntry: ' + oli.PricebookEntryId +
+                    ', Start Date: ' + (oli.License_Start_date__c != null ? oli.License_Start_date__c.format() : '') +
+                    ', End Date: ' + (oli.License_end_date__c != null ? oli.License_end_date__c.format() : '') +
+                    ', Partner Disc:' + (oli.Atlassian_Partner_Discount__c != null ? oli.Atlassian_Partner_Discount__c.format() : '') +
+                    ', Entitlement Number: ' + oli.Entitlement_Number__c);
+                i++;
+            }
         }
 
         return opptyProductsToInsert;
@@ -266,7 +290,9 @@ public with sharing class PpcOpportunityProductMapper {
         }
 
         if (itemsByProduct.size() != items.size()) {
-            log.successLog.add('Merged ' + (items.size() - itemsByProduct.size()) + ' duplicate line items from originally ' + items.size() + ' items to ' + itemsByProduct.size() + ' items');
+            if (log != null) {
+                log.successLog.add('Merged ' + (items.size() - itemsByProduct.size()) + ' duplicate line items from originally ' + items.size() + ' items to ' + itemsByProduct.size() + ' items');
+            }
         }
 
         return itemsByProduct.values();
@@ -314,7 +340,9 @@ public with sharing class PpcOpportunityProductMapper {
         }
 
         if (itemsByEntitlement.size() != items.size()) {
-            log.successLog.add('Merged ' + (items.size() - itemsByEntitlement.size()) + ' duplicate line items from originally ' + items.size() + ' items to ' + itemsByEntitlement.size() + ' items');
+            if (log != null) {
+                log.successLog.add('Merged ' + (items.size() - itemsByEntitlement.size()) + ' duplicate line items from originally ' + items.size() + ' items to ' + itemsByEntitlement.size() + ' items');
+            }
         }
 
         return itemsByEntitlement.values();
@@ -330,13 +358,13 @@ public with sharing class PpcOpportunityProductMapper {
      */
     private static Map<Id, PricebookEntry> getPriceBookEntriesMappedByProductId(Set<Id> productIds, Opportunity opp) {
         Map<Id, PricebookEntry> pbeByProductId = new Map<Id, PricebookEntry>();
-        System.debug([
-            SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
-            FROM PricebookEntry
-            WHERE Product2Id IN :productIds
-            AND Pricebook2Id = :opp.Pricebook2Id
-            AND CurrencyIsoCode = :opp.CurrencyIsoCode
-        ]);
+        // System.debug([
+        //     SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
+        //     FROM PricebookEntry
+        //     WHERE Product2Id IN :productIds
+        //     AND Pricebook2Id = :opp.Pricebook2Id
+        //     AND CurrencyIsoCode = :opp.CurrencyIsoCode
+        // ]);
         for (PricebookEntry pbe : [
             SELECT Id, Product2Id, Pricebook2Id, CurrencyIsoCode
             FROM PricebookEntry
@@ -363,7 +391,7 @@ public with sharing class PpcOpportunityProductMapper {
     public OpportunityLineItem mapQuoteLineToOpportunityLineItem(PricebookEntry pbEntry, Id oppId, PortalCommerceApiQuotes.BillLineItem quoteLine, Double conversionFactor) {
         OpportunityLineItem oli = new OpportunityLineItem();
 
-        System.debug(JSON.serializePretty(quoteLine));
+        // System.debug(JSON.serializePretty(quoteLine));
 
         oli.PricebookEntryId = pbEntry.Id;
         oli.Product2Id = pbEntry.Product2Id;
@@ -401,7 +429,7 @@ public with sharing class PpcOpportunityProductMapper {
     public OpportunityLineItem mapInvoiceLineToOpportunityLineItem(PricebookEntry pbEntry, Id oppId, PortalCommerceApiInvoices.InvoiceItem invoiceLine, Double conversionFactor) {
         OpportunityLineItem oli = new OpportunityLineItem();
 
-        System.debug(JSON.serializePretty(invoiceLine));
+        // System.debug(JSON.serializePretty(invoiceLine));
 
         /*
             item.discountAmount = (item.margins && item.margins.length > 0)

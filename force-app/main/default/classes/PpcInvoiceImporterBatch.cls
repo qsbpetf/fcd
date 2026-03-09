@@ -68,7 +68,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
             this.accountMap.put(account.Id, account);
             invoicesToImportByAccount.put(account.Id, new List<PortalCommerceApiInvoices.InvoiceInfo>());
             System.debug('### Importing invoices for account: ' + account.Name);
-            List<PortalCommerceApiInvoices.InvoiceList> invoices = PortalCommerceApiController.getPaidInvoices(account.Id);
+            List<PortalCommerceApiInvoices.InvoiceList> invoices = PortalCommerceApiController.getPaidInvoices(account.Id, this.lastNDays);
             System.debug('### Retrieved ' + invoices.size() + ' batch(es) of invoices');
 
             for (PortalCommerceApiInvoices.InvoiceList invoiceBatch : invoices) {
@@ -143,7 +143,7 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
             opportunitiesByAccount.get(opportunity.AccountId).put(opportunity.ImportedInvoiceNumber__c, opportunity);
         }
 
-        System.debug('OPPTYS-BY-ACCOUNT: ' + opportunitiesByAccount);
+        // System.debug('OPPTYS-BY-ACCOUNT: ' + opportunitiesByAccount);
 
         return opportunitiesByAccount;
     }
@@ -166,11 +166,15 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
         for (Id accountId : invoicesByAccount.keySet()) {
             invoicesToImport.put(accountId, new List<PortalCommerceApiInvoices.InvoiceInfo>());
             List<PortalCommerceApiInvoices.InvoiceInfo> invoices = invoicesByAccount.get(accountId);
-            System.debug('### Identified ' + invoices.size() + ' invoice(s) for account: ' + this.accountMap.get(accountId).Name);
+            System.debug('### Identified ' + invoices.size() + ' invoice(s) for account: ' + this.accountMap.get(accountId)?.Name);
 
             for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices) {
                 if (invoiceIsCardMonthly(invoice) && !invoiceAlreadyImported(accountId, invoice, opportunitiesByInvoiceNumber)) {
+                    System.debug('  ### Adding invoice: ' + invoice.invoiceNumber + ' to import for account: ' + this.accountMap.get(accountId)?.Name);
                     invoicesToImport.get(accountId).add(invoice);
+                }
+                else {
+                    System.debug('  ### Skipping invoice: ' + invoice.invoiceNumber + ' for account: ' + this.accountMap.get(accountId)?.Name);
                 }
             }
 
@@ -224,9 +228,9 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
             }
         }
 
-        System.debug('Opptys to create (' + newOpptys.size() + ') : ' + newOpptys);
+        System.debug('Opptys to create: ' + newOpptys.size());
         insert newOpptys;
-        System.debug('Created opportunities: ' + newOpptys);
+        System.debug('Created opportunities: ' + newOpptys.size());
 
         Map<Id, Opportunity> opptyMap = new Map<Id, Opportunity>([
             SELECT Id, AccountId, Name, ImportedInvoiceNumber__c, Pricebook2Id, StageName, CloseDate, LeadSource, CurrencyIsoCode, Pricebook2.Name
@@ -234,24 +238,14 @@ public with sharing class PpcInvoiceImporterBatch implements Database.Batchable<
             WHERE Id IN :newOpptys
         ]);
 
-        System.debug('InvoiceDataList: ' + invoiceDataList);
+        System.debug('InvoiceDataList: ' + invoiceDataList.size());
 
-        List<OpportunityLineItem> allItems = new List<OpportunityLineItem>();
         List<PendingInvoice__c> pendingInvoices = new List<PendingInvoice__c>();
 
         for (InvoiceData invoiceData : invoiceDataList) {
             System.debug('  ### Importing invoice: ' + invoiceData.invoice.invoiceNumber);
             Opportunity oppty = opptyMap.get(invoiceData.oppty.Id);
             PortalCommerceApiInvoices.InvoiceInfo invoice = invoiceData.invoice;
-            PpcOpportunityProductMapper mapper = PpcOpportunityProductMapper.getInstance();
-
-            List<OpportunityLineItem> items = mapper.mapProducts(invoice, oppty, (Double) 1.0, new OpportunityProductMapper.LogData(), true);
-            allItems.addAll(items);
-
-            System.debug('### Mapped ' + items.size() + ' products for invoice: ' + invoice.invoiceNumber);
-            for (OpportunityLineItem item : items) {
-                System.debug('  ### Product: ' + item);
-            }
 
             PendingInvoice__c pendingInvoice = new PendingInvoice__c();
             pendingInvoice.Name = invoice.invoiceNumber;

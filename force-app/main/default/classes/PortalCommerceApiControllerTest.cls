@@ -14,6 +14,9 @@ private class PortalCommerceApiControllerTest {
     private static final UniversalMocker mockServiceInv;
     private static final PortalCommerceApiInvoices mockServiceInvStub;
 
+    private static final UniversalMocker mockServiceOrd;
+    private static final PortalCommerceApiOrders mockServiceOrdStub;
+
     static {
         mockService = UniversalMocker.mock(PortalCommerceApiQuotes.class);
         mockServiceStub = (PortalCommerceApiQuotes) mockService.createStub();
@@ -29,6 +32,11 @@ private class PortalCommerceApiControllerTest {
         mockServiceInvStub = (PortalCommerceApiInvoices) mockServiceInv.createStub();
         PortalCommerceApiInvoices.instance = new PortalCommerceApiInvoices();
         PortalCommerceApiController.setApiInvoices(mockServiceInvStub);
+
+        mockServiceOrd = UniversalMocker.mock(PortalCommerceApiOrders.class);
+        mockServiceOrdStub = (PortalCommerceApiOrders) mockServiceOrd.createStub();
+        PortalCommerceApiOrders.instance = new PortalCommerceApiOrders();
+        PortalCommerceApiController.setApiOrders(mockServiceOrdStub);
     }
 
     @IsTest
@@ -170,5 +178,244 @@ private class PortalCommerceApiControllerTest {
 
         System.assertEquals(1, invoices.size(), 'Should have one invoice');
         System.assertEquals(1, invoices[0].data.size(), 'Should have one invoice');
+    }
+
+    @IsTest
+    static void testGetPaidInvoicesSuccessful() {
+        PortalCommerceApiInvoices.InvoiceList invoicesToReturn = new PortalCommerceApiInvoices.InvoiceList();
+        PortalCommerceApiInvoices.InvoiceInfo invoice = new PortalCommerceApiInvoices.InvoiceInfo();
+        invoice.invoiceNumber = '123';
+        invoice.id = '123456';
+        invoice.paidAt = Datetime.now().getTime();
+        invoice.items = new List<PortalCommerceApiInvoices.InvoiceItem>();
+        invoicesToReturn.data.add(invoice);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        InvoiceGroup__c invoiceGroup = TestDataFactory.getInvoiceGroup(acc.Id);
+        insert invoiceGroup;
+
+        mockServiceInv
+            .when('getPaidInvoices')
+            .thenReturn(invoicesToReturn);
+
+        Test.startTest();
+        List<PortalCommerceApiInvoices.InvoiceList> invoices = PortalCommerceApiController.getPaidInvoices(acc.Id, 100);
+        Test.stopTest();
+
+        System.assertEquals(1, invoices.size(), 'Should have one invoice batch');
+        System.assertEquals(1, invoices[0].data.size(), 'Should have one paid invoice');
+        System.assertEquals('FI', invoices[0].data[0].office, 'Office should be set for display');
+    }
+
+    @IsTest
+    static void testGetQuoteReturnsNull() {
+        mockService
+            .when('getQuote')
+            .thenReturn(null);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiQuotes.QuoteInfo quote = PortalCommerceApiController.getQuote(opp.Id, '123456');
+        Test.stopTest();
+
+        System.assertEquals(null, quote, 'Should return null when API returns null');
+    }
+
+    @IsTest
+    static void testGetInvoiceSuccessful() {
+        PortalCommerceApiInvoices.InvoiceInfo invoiceToReturn = new PortalCommerceApiInvoices.InvoiceInfo();
+        invoiceToReturn.invoiceNumber = '123';
+        invoiceToReturn.id = '123456';
+        invoiceToReturn.status = 'PAID';
+        invoiceToReturn.items = new List<PortalCommerceApiInvoices.InvoiceItem>();
+
+        mockServiceInv
+            .when('getInvoice')
+            .thenReturn(invoiceToReturn);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.AccountId = acc.Id;
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiInvoices.InvoiceInfo invoice = PortalCommerceApiController.getInvoice(opp.Id, '123456');
+        Test.stopTest();
+
+        System.assertNotEquals(null, invoice, 'Invoice should not be null');
+        System.assertEquals('123456', invoice.id, 'Wrong invoice id');
+        System.assertEquals('FI', invoice.office, 'Office should be set');
+    }
+
+    @IsTest
+    static void testGetInvoiceReturnsNull() {
+        mockServiceInv
+            .when('getInvoice')
+            .thenReturn(null);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.AccountId = acc.Id;
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiInvoices.InvoiceInfo invoice = PortalCommerceApiController.getInvoice(opp.Id, '123456');
+        Test.stopTest();
+
+        System.assertEquals(null, invoice, 'Should return null when API returns null');
+    }
+
+    @IsTest
+    static void testGetOrderSuccessful() {
+        PortalCommerceApiOrders.OrderInfo orderToReturn = new PortalCommerceApiOrders.OrderInfo();
+        orderToReturn.orderId = 'ord-123';
+        orderToReturn.slug = 'test-slug';
+        orderToReturn.items = new List<PortalCommerceApiOrders.OrderItem>();
+
+        mockServiceOrd
+            .when('getOrder')
+            .thenReturn(orderToReturn);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.AccountId = acc.Id;
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiOrders.OrderInfo order = PortalCommerceApiController.getOrder(opp.Id, 'ord-123');
+        Test.stopTest();
+
+        System.assertNotEquals(null, order, 'Order should not be null');
+        System.assertEquals('ord-123', order.orderId, 'Wrong order id');
+        System.assertEquals('FI', order.office, 'Office should be set');
+    }
+
+    @IsTest
+    static void testGetOrderReturnsNull() {
+        mockServiceOrd
+            .when('getOrder')
+            .thenReturn(null);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.AccountId = acc.Id;
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiOrders.OrderInfo order = PortalCommerceApiController.getOrder(opp.Id, 'ord-123');
+        Test.stopTest();
+
+        System.assertEquals(null, order, 'Should return null when API returns null');
+    }
+
+    @IsTest
+    static void testGetOrderPreviewSuccessful() {
+        PortalCommerceApiOrders.OrderInfo orderToReturn = new PortalCommerceApiOrders.OrderInfo();
+        orderToReturn.orderId = 'ord-preview-456';
+        orderToReturn.items = new List<PortalCommerceApiOrders.OrderItem>();
+
+        mockServiceOrd
+            .when('getOrderPreview')
+            .thenReturn(orderToReturn);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.AccountId = acc.Id;
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiOrders.OrderInfo order = PortalCommerceApiController.getOrderPreview(opp.Id, 'quote-789', 5);
+        Test.stopTest();
+
+        System.assertNotEquals(null, order, 'Order preview should not be null');
+        System.assertEquals('ord-preview-456', order.orderId, 'Wrong order id');
+        System.assertEquals('FI', order.office, 'Office should be set');
+    }
+
+    @IsTest
+    static void testGetOrderPreviewReturnsNull() {
+        mockServiceOrd
+            .when('getOrderPreview')
+            .thenReturn(null);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        opp.AccountId = acc.Id;
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiOrders.OrderInfo order = PortalCommerceApiController.getOrderPreview(opp.Id, 'quote-789', 5);
+        Test.stopTest();
+
+        System.assertEquals(null, order, 'Should return null when API returns null');
+    }
+
+    @IsTest
+    static void testGetEntitlementPartnerInfoSuccessful() {
+        PortalCommerceApiEntitlements.EntitlementPartnerInfo partnerInfoToReturn = new PortalCommerceApiEntitlements.EntitlementPartnerInfo();
+        partnerInfoToReturn.entitlementId = 'ent-123';
+        partnerInfoToReturn.status = 'ACTIVE';
+        partnerInfoToReturn.slug = 'partner-slug';
+
+        mockServiceEnt
+            .when('getEntitlementPartnerInfo')
+            .thenReturn(partnerInfoToReturn);
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        insert acc;
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'USD');
+        insert opp;
+
+        Test.startTest();
+        PortalCommerceApiEntitlements.EntitlementPartnerInfo partnerInfo = PortalCommerceApiController.getEntitlementPartnerInfo(opp.Id, 'ent-123');
+        Test.stopTest();
+
+        System.assertNotEquals(null, partnerInfo, 'Partner info should not be null');
+        System.assertEquals('ent-123', partnerInfo.entitlementId, 'Wrong entitlement id');
+        System.assertEquals('ACTIVE', partnerInfo.status, 'Wrong status');
+    }
+
+    @IsTest
+    static void testGetQuotePdfStatic() {
+        mockService
+            .when('getQuotePdf')
+            .thenReturn('base64EncodedPdfContent');
+
+        Test.startTest();
+        String pdfResult = PortalCommerceApiController.getQuotePdfStatic('FI', 'quote-123');
+        Test.stopTest();
+
+        System.assertEquals('base64EncodedPdfContent', pdfResult, 'Should return PDF content');
+    }
+
+    @IsTest
+    static void testGetInvoicePdfStatic() {
+        mockServiceInv
+            .when('getInvoicePdf')
+            .thenReturn('base64EncodedInvoicePdf');
+
+        Test.startTest();
+        String pdfResult = PortalCommerceApiController.getInvoicePdfStatic('FI', 'inv-456');
+        Test.stopTest();
+
+        System.assertEquals('base64EncodedInvoicePdf', pdfResult, 'Should return invoice PDF content');
     }
 }

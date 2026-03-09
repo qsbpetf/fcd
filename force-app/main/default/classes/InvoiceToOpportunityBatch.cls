@@ -55,7 +55,7 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
             Opportunity oppty = PortalQuoteConverter.getOpportunity(pendingInvoice.Opportunity__c);
             PpcOpportunityProductMapper mapper = PpcOpportunityProductMapper.getInstance();
             System.debug('### Mapping opportunity line items');
-            List<OpportunityLineItem> items = mapper.mapProducts(invoice, oppty, (Double) 1.0, new OpportunityProductMapper.LogData(), true);
+            List<OpportunityLineItem> items = mapper.mapProducts(invoice, oppty, (Double) 1.0, null, true);
             pendingInvoice.TotalLineItems__c = items.size();
             pendingInvoice.LineItemsInserted__c = 0;
             pendingInvoice.Status__c = 'Processing';
@@ -80,7 +80,7 @@ public with sharing class InvoiceToOpportunityBatch implements Database.Batchabl
         PortalCommerceApiInvoices.InvoiceInfo invoice;
         try {
             invoice = PortalCommerceApiController.getInvoice(pendingInvoice.Opportunity__c, pendingInvoice.InvoiceId__c);
-            System.debug('Invoice retrieved successfully: ' + invoice);
+            System.debug('Invoice retrieved successfully: ' + invoice.invoiceNumber);
             // Perform actions with the invoice object
 
             Map<String, PortalCommerceApiEntitlements.EntitlementPartnerInfo> partnerInfosMap = getEntitlementPartnerInfo(invoice);
