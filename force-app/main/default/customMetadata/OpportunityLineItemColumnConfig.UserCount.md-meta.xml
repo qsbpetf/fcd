@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>User Count</label>
+    <protected>false</protected>
+    <values>
+        <field>CellAttributesJson__c</field>
+        <value xsi:type="xsd:string">{&quot;alignment&quot;:&quot;right&quot;}</value>
+    </values>
+    <values>
+        <field>ColumnKey__c</field>
+        <value xsi:type="xsd:string">userCount</value>
+    </values>
+    <values>
+        <field>CurrencyCode__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>FieldApiName__c</field>
+        <value xsi:type="xsd:string">User_Count__c</value>
+    </values>
+    <values>
+        <field>InitialWidth__c</field>
+        <value xsi:type="xsd:double">120.0</value>
+    </values>
+    <values>
+        <field>IsVisible__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Label__c</field>
+        <value xsi:type="xsd:string">User Count</value>
+    </values>
+    <values>
+        <field>PicklistFieldApiName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>QueryFieldApiNames__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SortOrder__c</field>
+        <value xsi:type="xsd:double">140.0</value>
+    </values>
+    <values>
+        <field>Sortable__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>TypeAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">integer</value>
+    </values>
+</CustomMetadata>

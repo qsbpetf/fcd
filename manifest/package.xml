@@ -45,6 +45,22 @@
         <members>MakeWebhookOpportunityStageConfig.Justify</members>
         <members>MakeWebhookOpportunityStageConfig.Order</members>
         <members>MakeWebhookOpportunityStageConfig.Test_ClosedWonAwaitingApproval</members>
+        <members>OpportunityLineItemColumnConfig.AdditionalInfo</members>
+        <members>OpportunityLineItemColumnConfig.Discount</members>
+        <members>OpportunityLineItemColumnConfig.EditableCostPriceUSD</members>
+        <members>OpportunityLineItemColumnConfig.EditableUnitListPriceUSD</members>
+        <members>OpportunityLineItemColumnConfig.EndDate</members>
+        <members>OpportunityLineItemColumnConfig.LossReviewed</members>
+        <members>OpportunityLineItemColumnConfig.Product</members>
+        <members>OpportunityLineItemColumnConfig.Quantity</members>
+        <members>OpportunityLineItemColumnConfig.SEN</members>
+        <members>OpportunityLineItemColumnConfig.StartDate</members>
+        <members>OpportunityLineItemColumnConfig.TotalSalesPrice</members>
+        <members>OpportunityLineItemColumnConfig.Type</members>
+        <members>OpportunityLineItemColumnConfig.UnitOfMeasure</members>
+        <members>OpportunityLineItemColumnConfig.UnitPrice</members>
+        <members>OpportunityLineItemColumnConfig.UnusualDiscountReviewed</members>
+        <members>OpportunityLineItemColumnConfig.UserCount</members>
         <members>PPC_TransactionAccount.CH</members>
         <members>PPC_TransactionAccount.DE</members>
         <members>PPC_TransactionAccount.DK</members>
@@ -131,6 +147,7 @@
         <members>MakeWebhookOpportunityStageConfig__mdt</members>
         <members>MakeWebhookSettings__c</members>
         <members>OpportunityLineItem</members>
+        <members>OpportunityLineItemColumnConfig__mdt</members>
         <members>PPC_InvoiceAutoImportSettings__c</members>
         <members>PPC_TransactionAccount__mdt</members>
         <members>PendingInvoice__c</members>

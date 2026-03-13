@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_details</fullName>
+    <columns>MasterLabel</columns>
+    <columns>DeveloperName</columns>
+    <columns>SortOrder__c</columns>
+    <columns>ColumnKey__c</columns>
+    <columns>FieldApiName__c</columns>
+    <columns>InitialWidth__c</columns>
+    <columns>IsVisible__c</columns>
+    <columns>PicklistFieldApiName__c</columns>
+    <columns>Type__c</columns>
+    <columns>TypeAttributesJson__c</columns>
+    <columns>CellAttributesJson__c</columns>
+    <columns>QueryFieldApiNames__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All details</label>
+    <language>en_US</language>
+</ListView>

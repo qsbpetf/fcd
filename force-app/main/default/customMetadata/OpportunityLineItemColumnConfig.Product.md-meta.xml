@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Product</label>
+    <protected>false</protected>
+    <values>
+        <field>CellAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ColumnKey__c</field>
+        <value xsi:type="xsd:string">product</value>
+    </values>
+    <values>
+        <field>CurrencyCode__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>FieldApiName__c</field>
+        <value xsi:type="xsd:string">Url</value>
+    </values>
+    <values>
+        <field>InitialWidth__c</field>
+        <value xsi:type="xsd:double">260.0</value>
+    </values>
+    <values>
+        <field>IsVisible__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Label__c</field>
+        <value xsi:type="xsd:string">Product</value>
+    </values>
+    <values>
+        <field>PicklistFieldApiName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>QueryFieldApiNames__c</field>
+        <value xsi:type="xsd:string">PricebookEntry.Product2.Name,PricebookEntry.Product2.Id,PricebookEntry.Product2.Revenue_Type__c,PricebookEntry.Product2Id,PricebookEntry.Id</value>
+    </values>
+    <values>
+        <field>SortOrder__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>Sortable__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>TypeAttributesJson__c</field>
+        <value xsi:type="xsd:string">{&quot;label&quot;:{&quot;fieldName&quot;:&quot;PricebookEntry.Product2.Name&quot;},&quot;tooltip&quot;:{&quot;fieldName&quot;:&quot;PricebookEntry.Product2.Name&quot;}}</value>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">url</value>
+    </values>
+</CustomMetadata>

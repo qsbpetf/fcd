@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>LIC: Editable Unit List Price in USD</label>
+    <protected>false</protected>
+    <values>
+        <field>CellAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ColumnKey__c</field>
+        <value xsi:type="xsd:string">editableUnitListPriceUSD</value>
+    </values>
+    <values>
+        <field>CurrencyCode__c</field>
+        <value xsi:type="xsd:string">USD</value>
+    </values>
+    <values>
+        <field>FieldApiName__c</field>
+        <value xsi:type="xsd:string">Editable_Unit_List_Price_in_USD__c</value>
+    </values>
+    <values>
+        <field>InitialWidth__c</field>
+        <value xsi:type="xsd:double">160.0</value>
+    </values>
+    <values>
+        <field>IsVisible__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Label__c</field>
+        <value xsi:type="xsd:string">LIC: Editable Unit List Price in USD</value>
+    </values>
+    <values>
+        <field>PicklistFieldApiName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>QueryFieldApiNames__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SortOrder__c</field>
+        <value xsi:type="xsd:double">110.0</value>
+    </values>
+    <values>
+        <field>Sortable__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>TypeAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">currency</value>
+    </values>
+</CustomMetadata>

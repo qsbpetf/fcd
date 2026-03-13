@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Configuration for which Opportunity Line Item columns to display and in what order.</description>
+    <label>Opportunity Line Item Column Config</label>
+    <pluralLabel>Opportunity Line Item Column Configs</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

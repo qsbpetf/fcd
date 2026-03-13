@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Unit of Measure</label>
+    <protected>false</protected>
+    <values>
+        <field>CellAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ColumnKey__c</field>
+        <value xsi:type="xsd:string">unitOfMeasure</value>
+    </values>
+    <values>
+        <field>CurrencyCode__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>FieldApiName__c</field>
+        <value xsi:type="xsd:string">PricebookEntry.Product2.Unit_of_Measure__c</value>
+    </values>
+    <values>
+        <field>InitialWidth__c</field>
+        <value xsi:type="xsd:double">96.0</value>
+    </values>
+    <values>
+        <field>IsVisible__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Label__c</field>
+        <value xsi:type="xsd:string">Unit of Measure</value>
+    </values>
+    <values>
+        <field>PicklistFieldApiName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>QueryFieldApiNames__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SortOrder__c</field>
+        <value xsi:type="xsd:double">20.0</value>
+    </values>
+    <values>
+        <field>Sortable__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>TypeAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">text</value>
+    </values>
+</CustomMetadata>

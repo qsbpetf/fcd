@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ColumnKey__c</fullName>
+    <description>Stable identifier for the column (e.g. product, quantity, unitPrice).</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Enter the column key. Valid values: product, unitOfMeasure, quantity, unitPrice, discount, totalSalesPrice, type, startDate, endDate, additionalInfo, editableUnitListPriceUSD, editableCostPriceUSD, sen, userCount, unusualDiscountReviewed, lossReviewed</inlineHelpText>
+    <label>Column Key</label>
+    <length>50</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

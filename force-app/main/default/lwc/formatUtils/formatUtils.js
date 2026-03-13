@@ -1,21 +1,28 @@
+function getNestedValue(obj, path) {
+  return path.split(".").reduce((acc, part) => acc?.[part], obj);
+}
+
 export function formatOpportunityLineItems(opportunityLineItems) {
-  return opportunityLineItems?.map((opportunityLineItem) => ({
-    ...opportunityLineItem,
-    "SEN_Technical_Contact__r.Name":
-      opportunityLineItem?.SEN_Technical_Contact__r?.Name,
-    "PricebookEntry.Id": opportunityLineItem?.PricebookEntry?.Id,
-    "PricebookEntry.Product2Id":
-      opportunityLineItem?.PricebookEntry?.Product2Id,
-    "PricebookEntry.Product2.Id":
-      opportunityLineItem?.PricebookEntry?.Product2?.Id,
-    "PricebookEntry.Product2.Revenue_Type__c":
-      opportunityLineItem?.PricebookEntry?.Product2?.Revenue_Type__c,
-    "PricebookEntry.Product2.Name":
-      opportunityLineItem?.PricebookEntry?.Product2?.Name,
-    "PricebookEntry.Product2.Unit_of_Measure__c":
-      opportunityLineItem?.PricebookEntry?.Product2?.Unit_of_Measure__c,
-    Url: `/${opportunityLineItem?.Id}`
-  }));
+  return opportunityLineItems?.map((opportunityLineItem) => {
+    const flat = { ...opportunityLineItem };
+    const dotPaths = [
+      "PricebookEntry.Id",
+      "PricebookEntry.Product2Id",
+      "PricebookEntry.Product2.Id",
+      "PricebookEntry.Product2.Revenue_Type__c",
+      "PricebookEntry.Product2.Name",
+      "PricebookEntry.Product2.Unit_of_Measure__c",
+      "SEN_Technical_Contact__r.Name"
+    ];
+    for (const path of dotPaths) {
+      const val = getNestedValue(opportunityLineItem, path);
+      if (val !== undefined) {
+        flat[path] = val;
+      }
+    }
+    flat.Url = `/${opportunityLineItem?.Id}`;
+    return flat;
+  });
 }
 
 export function formatPricebookEntries(pricebookEntries) {

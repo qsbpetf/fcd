@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Total Sales Price Inc. Discount</label>
+    <protected>false</protected>
+    <values>
+        <field>CellAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ColumnKey__c</field>
+        <value xsi:type="xsd:string">totalSalesPrice</value>
+    </values>
+    <values>
+        <field>CurrencyCode__c</field>
+        <value xsi:type="xsd:string">OPPORTUNITY</value>
+    </values>
+    <values>
+        <field>FieldApiName__c</field>
+        <value xsi:type="xsd:string">Total_List_Price_Incl_Discount__c</value>
+    </values>
+    <values>
+        <field>InitialWidth__c</field>
+        <value xsi:type="xsd:double">150.0</value>
+    </values>
+    <values>
+        <field>IsVisible__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Label__c</field>
+        <value xsi:type="xsd:string">Total Sales Price Inc. Discount</value>
+    </values>
+    <values>
+        <field>PicklistFieldApiName__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>QueryFieldApiNames__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SortOrder__c</field>
+        <value xsi:type="xsd:double">60.0</value>
+    </values>
+    <values>
+        <field>Sortable__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>TypeAttributesJson__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">currency</value>
+    </values>
+</CustomMetadata>
