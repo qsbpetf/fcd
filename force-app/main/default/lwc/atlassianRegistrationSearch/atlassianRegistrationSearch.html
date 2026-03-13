@@ -1,0 +1,184 @@
+<template>
+    <lightning-card title="Atlassian Registration Search" icon-name="standard:search">
+        <div class="slds-p-around_medium">
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <h3 class="slds-text-heading_small slds-m-bottom_small">Filters</h3>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-combobox
+                            name="partnerAccount"
+                            label="Partner Account"
+                            value={selectedPartnerId}
+                            options={partnerOptions}
+                            onchange={handlePartnerChange}
+                            required
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-combobox
+                            name="status"
+                            label="Status"
+                            value={selectedStatus}
+                            options={statusOptions}
+                            multi
+                            onchange={handleStatusChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-combobox
+                            name="programType"
+                            label="Program Type"
+                            value={selectedProgramType}
+                            options={programTypeOptions}
+                            onchange={handleProgramTypeChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-input
+                            name="registrationId"
+                            label="Registration ID"
+                            value={registrationId}
+                            onchange={handleRegistrationIdChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-input
+                            name="parentRegistrationId"
+                            label="Parent Registration ID"
+                            value={parentRegistrationId}
+                            onchange={handleParentRegistrationIdChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-combobox
+                            name="registrationType"
+                            label="Registration Type"
+                            value={selectedRegistrationType}
+                            options={registrationTypeOptions}
+                            onchange={handleRegistrationTypeChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-input
+                            name="createdAfter"
+                            type="date"
+                            label="Created After"
+                            value={createdAfter}
+                            onchange={handleCreatedAfterChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-input
+                            name="createdBefore"
+                            type="date"
+                            label="Created Before"
+                            value={createdBefore}
+                            onchange={handleCreatedBeforeChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-input
+                            name="limit"
+                            type="number"
+                            label="Limit"
+                            value={limit}
+                            min="1"
+                            max="100"
+                            onchange={handleLimitChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-combobox
+                            name="sortBy"
+                            label="Sort By"
+                            value={selectedSortBy}
+                            options={sortByOptions}
+                            onchange={handleSortByChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <lightning-combobox
+                            name="sortOrder"
+                            label="Sort Order"
+                            value={selectedSortOrder}
+                            options={sortOrderOptions}
+                            onchange={handleSortOrderChange}
+                        ></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-m-top_medium">
+                    <lightning-button
+                        label="Search"
+                        variant="brand"
+                        icon-name="utility:search"
+                        onclick={handleSearch}
+                        disabled={isSearching}
+                    ></lightning-button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="slds-m-top_large">
+                <template if:true={hasSearched}>
+                    <template if:true={isSearching}>
+                        <div class="slds-p-around_large slds-align_absolute-center">
+                            <lightning-spinner alternative-text="Searching" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <template if:false={isSearching}>
+                        <template if:true={hasError}>
+                            <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                                <span class="slds-assistive-text">Error</span>
+                                <h2>{errorMessage}</h2>
+                            </div>
+                        </template>
+                        <template if:false={hasError}>
+                            <div class="results-header slds-m-bottom_small">
+                                <h3 class="slds-text-heading_small">
+                                    Results
+                                    <template if:true={hasResults}>
+                                        ({tableData.length} registrations)
+                                    </template>
+                                </h3>
+                                <div class="slds-m-top_x-small pagination-buttons">
+                                    <template if:true={hasPreviousPage}>
+                                        <lightning-button
+                                            label="Previous Page"
+                                            variant="neutral"
+                                            icon-name="utility:back"
+                                            icon-position="left"
+                                            onclick={handlePreviousPage}
+                                            class="slds-m-right_x-small"
+                                        ></lightning-button>
+                                    </template>
+                                    <template if:true={hasNextPage}>
+                                        <lightning-button
+                                            label="Next Page"
+                                            variant="neutral"
+                                            icon-name="utility:forward"
+                                            onclick={handleNextPage}
+                                        ></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={hasResults}>
+                                <lightning-datatable
+                                    key-field="id"
+                                    data={tableData}
+                                    columns={columns}
+                                    hide-checkbox-column
+                                ></lightning-datatable>
+                            </template>
+                            <template if:false={hasResults}>
+                                <div class="slds-p-around_large slds-text-align_center">
+                                    <p class="slds-text-color_weak">No registrations found.</p>
+                                </div>
+                            </template>
+                        </template>
+                    </template>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>
