@@ -1,0 +1,75 @@
+<template>
+    <lightning-card title="Atlassian Partner Accounts" icon-name="standard:account">
+        <div slot="actions">
+            <lightning-button
+                label="Refresh"
+                icon-name="utility:refresh"
+                onclick={handleRefresh}
+                disabled={isLoading}
+            ></lightning-button>
+        </div>
+
+        <template if:true={isLoading}>
+            <div class="slds-p-around_large slds-align_absolute-center">
+                <lightning-spinner alternative-text="Loading partner accounts" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:false={isLoading}>
+            <template if:true={hasError}>
+                <div class="slds-p-around_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <span class="slds-assistive-text">Error</span>
+                        <h2>{errorMessage}</h2>
+                    </div>
+                </div>
+            </template>
+
+            <template if:false={hasError}>
+                <template if:true={hasAccounts}>
+                    <div class="accounts-container">
+                        <template for:each={displayAccounts} for:item="account">
+                            <div key={account.partnerId} class="account-card">
+                                <div class="account-card-header">
+                                    <h3 class="account-name">{account.accountName}</h3>
+                                    <template if:true={account.isPrimary}>
+                                        <span class="primary-badge">Primary</span>
+                                    </template>
+                                </div>
+                                <div class="account-card-body">
+                                    <div class="account-field">
+                                        <span class="field-label">Partner ID</span>
+                                        <span class="field-value partner-id">{account.partnerId}</span>
+                                        <lightning-button-icon
+                                            icon-name="utility:copy"
+                                            alternative-text="Copy Partner ID"
+                                            variant="border-filled"
+                                            size="x-small"
+                                            class="copy-btn"
+                                            data-partner-id={account.partnerId}
+                                            onclick={handleCopyPartnerId}
+                                        ></lightning-button-icon>
+                                    </div>
+                                    <div class="account-field roles-field">
+                                        <span class="field-label">Roles</span>
+                                        <div class="roles-container">
+                                            <template for:each={account.roleItems} for:item="role">
+                                                <span key={role} class="role-badge">{role}</span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template if:false={hasAccounts}>
+                    <div class="slds-p-around_large slds-text-align_center">
+                        <p class="slds-text-color_weak">No partner accounts found.</p>
+                    </div>
+                </template>
+            </template>
+        </template>
+    </lightning-card>
+</template>
