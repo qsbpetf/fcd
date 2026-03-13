@@ -179,6 +179,10 @@
         <name>CustomTab</name>
     </types>
     <types>
+        <members>Atlassian_Deal_Reg_EC</members>
+        <name>ExternalCredential</name>
+    </types>
+    <types>
         <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
         <members>Set_default_owner_on_imported_renewal_oppty</members>
         <name>Flow</name>
@@ -198,6 +202,7 @@
     </types>
     <types>
         <members>AtlassianCommerceApi</members>
+        <members>Atlassian_deal_Reg_API</members>
         <members>Eficode_Office_CH</members>
         <members>Eficode_Office_DE</members>
         <members>Eficode_Office_DK</members>
