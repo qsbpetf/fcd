@@ -13,6 +13,18 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AtlassianDealRegApiClient</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AtlassianDealRegApiPartnerAccounts</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AtlassianDealRegApiPartnerAccountsTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GeneralHttpCalloutMock</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -245,6 +257,11 @@
         <name>PPC_InvoiceAutoImportSettings__c</name>
     </customSettingAccesses>
     <description>This permission set gives access to needed apex classes and such to be able to use the lightning web components for importing quotes and invoices as opportunities.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApiResponseCache__c.ResponseJson__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.AutoInvoiceImport__c</field>
@@ -557,6 +574,15 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Atlassian PPC Access</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ApiResponseCache__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>

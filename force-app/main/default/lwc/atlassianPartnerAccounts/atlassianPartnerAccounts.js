@@ -16,12 +16,12 @@ export default class AtlassianPartnerAccounts extends LightningElement {
         return this.displayAccounts && this.displayAccounts.length > 0;
     }
 
-    loadPartnerAccounts() {
+    loadPartnerAccounts(forceRefresh = false) {
         this.isLoading = true;
         this.hasError = false;
         this.errorMessage = '';
 
-        getPartnerAccounts()
+        getPartnerAccounts({ forceRefresh })
             .then((result) => {
                 this.displayAccounts = this.prepareAccounts(result);
                 this.isLoading = false;
@@ -52,7 +52,7 @@ export default class AtlassianPartnerAccounts extends LightningElement {
     }
 
     handleRefresh() {
-        this.loadPartnerAccounts();
+        this.loadPartnerAccounts(true);
     }
 
     handleCopyPartnerId(event) {

@@ -73,9 +73,10 @@ export default class AtlassianRegistrationSearch extends LightningElement {
     currentPageToken = null;
     previousPageTokenStack = [];
     hasPreviousPage = false;
+    showDetailModal = false;
 
     columns = [
-        { label: 'ID', fieldName: 'id', type: 'text', wrapText: true },
+        { label: 'ID', type: 'action', typeAttributes: { rowActions: { fieldName: 'rowActions' } } },
         { label: 'Deal Name', fieldName: 'dealName', type: 'text', wrapText: true },
         { label: 'Program Type', fieldName: 'programType', type: 'text' },
         { label: 'Status', fieldName: 'status', type: 'text' },
@@ -90,8 +91,8 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         this.loadPartnerAccounts();
     }
 
-    loadPartnerAccounts() {
-        getPartnerAccounts()
+    loadPartnerAccounts(forceRefresh = false) {
+        getPartnerAccounts({ forceRefresh })
             .then((result) => {
                 if (result && result.partnerAccounts && result.partnerAccounts.length > 0) {
                     this.partnerOptions = [
@@ -113,6 +114,10 @@ export default class AtlassianRegistrationSearch extends LightningElement {
 
     handlePartnerChange(event) {
         this.selectedPartnerId = event.detail.value;
+    }
+
+    handleRefreshPartnerAccounts() {
+        this.loadPartnerAccounts(true);
     }
     handleStatusChange(event) {
         this.selectedStatus = event.detail.value || [];
@@ -148,6 +153,24 @@ export default class AtlassianRegistrationSearch extends LightningElement {
 
     get hasResults() {
         return this.tableData && this.tableData.length > 0;
+    }
+
+    handleRowAction(event) {
+        const action = event.detail?.action?.name;
+        const row = event.detail?.row;
+        if (action === 'view' && row && this.selectedPartnerId) {
+            this.showDetailModal = true;
+            this._detailRegistrationId = row.id;
+            this._detailPartnerId = this.selectedPartnerId;
+            this._detailProgramType = this.normalizeProgramType(row.programType) || 'DEAL_REGISTRATION';
+        }
+    }
+
+    handleCloseDetailModal() {
+        this.showDetailModal = false;
+        this._detailRegistrationId = null;
+        this._detailPartnerId = null;
+        this._detailProgramType = null;
     }
 
     handleSearch() {
@@ -192,6 +215,19 @@ export default class AtlassianRegistrationSearch extends LightningElement {
 
         const limitVal = this.limit && this.limit >= 1 && this.limit <= 100 ? this.limit : 10;
 
+        console.log('performSearch partnerAccountId:', this.selectedPartnerId);
+        console.log('performSearch status:', statusStr);
+        console.log('performSearch registrationId:', this.registrationId);
+        console.log('performSearch parentRegistrationId:', this.parentRegistrationId);
+        console.log('performSearch programType:', programTypeStr);
+        console.log('performSearch registrationType:', this.selectedRegistrationType);
+        console.log('performSearch createdAfter:', this.createdAfter);
+        console.log('performSearch createdBefore:', this.createdBefore);
+        console.log('performSearch limit:', limitVal);
+        console.log('performSearch pageToken:', pageToken !== undefined ? pageToken : (this.nextPageToken || null));
+        console.log('performSearch sortBy:', this.selectedSortBy);
+        console.log('performSearch sortOrder:', this.selectedSortOrder);
+
         searchRegistrations({
             partnerAccountId: this.selectedPartnerId,
             status: statusStr,
@@ -235,6 +271,7 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         const allowed = new Set(selectedArr.map((v) => this.normalizeProgramType(v)));
         return registrations.filter((r) => {
             const pt = this.normalizeProgramType(r.programType);
+            console.log('  applyClientSideProgramTypeFilter pt:', pt, 'allowed:', allowed, 'filtered:', pt && allowed.has(pt));
             return pt && allowed.has(pt);
         });
     }
@@ -248,6 +285,7 @@ export default class AtlassianRegistrationSearch extends LightningElement {
             const estimatedRevenueNum = rev == null || rev === '' ? null : (typeof rev === 'number' ? rev : parseFloat(String(rev)));
             return {
                 ...r,
+                rowActions: [{ label: r.id || '', name: 'view' }],
                 estimatedRevenue: isNaN(estimatedRevenueNum) ? null : estimatedRevenueNum,
                 createdAtFormatted: r.createdAt ? this.formatDateTime(r.createdAt) : ''
             };

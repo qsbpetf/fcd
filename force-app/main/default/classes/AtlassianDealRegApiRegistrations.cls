@@ -130,15 +130,74 @@ public with sharing class AtlassianDealRegApiRegistrations {
                 'Search failed: ' + response.getStatus() + ' (' + response.getStatusCode() + ')'
             );
         }
+        System.debug('searchRegistrations response:\n' + response.getBody());
         SearchRegistrationsResponse result = (SearchRegistrationsResponse) JSON.deserialize(
             response.getBody(),
             SearchRegistrationsResponse.class
         );
-        System.debug('*** result = ' + JSON.serializePretty(result));
         if (result.registrations == null) {
             result.registrations = new List<RegistrationSearchResult>();
         }
         return result;
+    }
+
+    /**
+     * Get a single registration (deal or service) by ID.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param registrationId Registration ID (e.g. D-xxxx or CD-xxxx)
+     * @param programType DEAL_REGISTRATION, SERVICE_REGISTRATION, or human-readable equivalent
+     * @return Map of registration fields (from API response)
+     */
+    @AuraEnabled(cacheable=false)
+    public static Map<String, Object> getRegistrationStatic(
+        String partnerAccountId,
+        String registrationId,
+        String programType
+    ) {
+        AtlassianDealRegApiRegistrations instance = AtlassianDealRegApiRegistrations.getInstance();
+        return instance.getRegistration(partnerAccountId, registrationId, programType);
+    }
+
+    /**
+     * Instance method for get registration - calls deals or services endpoint based on programType.
+     */
+    public Map<String, Object> getRegistration(
+        String partnerAccountId,
+        String registrationId,
+        String programType
+    ) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(registrationId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
+        }
+
+        String normalized = normalizeProgramType(programType);
+        HttpResponse response;
+        if (normalized == 'SERVICE_REGISTRATION') {
+            response = client.getServiceRegistration(partnerAccountId, registrationId);
+        } else {
+            response = client.getDealRegistration(partnerAccountId, registrationId);
+        }
+
+        if (response.getStatusCode() != 200) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException(
+                'Get registration failed: ' + response.getStatus() + ' (' + response.getStatusCode() + ')'
+            );
+        }
+
+        Object parsed = JSON.deserializeUntyped(response.getBody());
+        if (parsed instanceof Map<String, Object>) {
+            return (Map<String, Object>) parsed;
+        }
+        return new Map<String, Object>();
+    }
+
+    private static String normalizeProgramType(String value) {
+        if (String.isBlank(value)) return '';
+        return value.replaceAll('\\s+', '_').toUpperCase();
     }
 
     // ==================

@@ -231,6 +231,7 @@ public with sharing class AtlassianDealRegApiClient {
             }
             endpoint = endpoint.removeEnd('&');
         }
+        System.debug('generateEndpoint endpoint:\n' + endpoint);
         return endpoint;
     }
 

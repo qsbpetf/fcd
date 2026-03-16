@@ -6,14 +6,26 @@
                 <h3 class="slds-text-heading_small slds-m-bottom_small">Filters</h3>
                 <div class="slds-grid slds-wrap slds-gutters">
                     <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
-                        <lightning-combobox
-                            name="partnerAccount"
-                            label="Partner Account"
-                            value={selectedPartnerId}
-                            options={partnerOptions}
-                            onchange={handlePartnerChange}
-                            required
-                        ></lightning-combobox>
+                        <div class="slds-grid slds-grid_vertical-align-end">
+                            <div class="slds-grow">
+                                <lightning-combobox
+                                    name="partnerAccount"
+                                    label="Partner Account"
+                                    value={selectedPartnerId}
+                                    options={partnerOptions}
+                                    onchange={handlePartnerChange}
+                                    required
+                                ></lightning-combobox>
+                            </div>
+                            <lightning-button-icon
+                                icon-name="utility:refresh"
+                                alternative-text="Refresh partner accounts"
+                                variant="border-filled"
+                                size="small"
+                                onclick={handleRefreshPartnerAccounts}
+                                class="slds-m-left_x-small"
+                            ></lightning-button-icon>
+                        </div>
                     </div>
                     <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
                         <lightning-combobox
@@ -168,6 +180,7 @@
                                     data={tableData}
                                     columns={columns}
                                     hide-checkbox-column
+                                    onrowaction={handleRowAction}
                                 ></lightning-datatable>
                             </template>
                             <template if:false={hasResults}>
@@ -180,5 +193,28 @@
                 </template>
             </div>
         </div>
+
+        <!-- Detail Modal -->
+        <template if:true={showDetailModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-labelledby="detail-modal-heading" aria-modal="true">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseDetailModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="detail-modal-heading" class="slds-modal__title slds-hyphenate">Registration Details - {_detailRegistrationId}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium detail-modal-content" id="detail-modal-content">
+                        <c-atlassian-registration-detail
+                            registration-id={_detailRegistrationId}
+                            partner-account-id={_detailPartnerId}
+                            program-type={_detailProgramType}
+                        ></c-atlassian-registration-detail>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" onclick={handleCloseDetailModal}></div>
+        </template>
     </lightning-card>
 </template>

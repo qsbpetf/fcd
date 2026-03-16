@@ -1,0 +1,83 @@
+<template>
+    <div class="content-wrapper">
+        <template if:true={isLoading}>
+            <div class="slds-p-around_x-large slds-align_absolute-center">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={hasError}>
+            <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                <span class="slds-assistive-text">Error</span>
+                <h2>{errorMessage}</h2>
+            </div>
+        </template>
+
+        <template if:true={showPlaceholder}>
+            <div class="slds-p-around_x-large slds-text-align_center">
+                <p class="slds-text-color_weak">Select a registration from the search results to view details.</p>
+            </div>
+        </template>
+
+        <template if:true={hasRegistration}>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3 class="section-title">Core</h3>
+                    <template for:each={coreFields} for:item="field">
+                        <div key={field.key} class="field-row">
+                            <span class="field-label">{field.key}</span>
+                            <span class={field.valueClass}>
+                                <template if:true={field.isDateTime}>
+                                    <lightning-formatted-date-time value={field.value}></lightning-formatted-date-time>
+                                </template>
+                                <template if:false={field.isDateTime}>
+                                    {field.value}
+                                </template>
+                            </span>
+                        </div>
+                    </template>
+                </div>
+                <div>
+                    <div class="detail-section">
+                        <h3 class="section-title">Customer</h3>
+                        <template for:each={customerFields} for:item="field">
+                            <div key={field.key} class="field-row">
+                                <span class="field-label">{field.key}</span>
+                                <span class={field.valueClass}>{field.value}</span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="detail-section">
+                        <h3 class="section-title">Partner</h3>
+                        <template for:each={partnerFields} for:item="field">
+                            <div key={field.key} class="field-row">
+                                <span class="field-label">{field.key}</span>
+                                <span class={field.valueClass}>{field.value}</span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="detail-section">
+                        <h3 class="section-title">Revenue</h3>
+                        <template for:each={revenueFields} for:item="field">
+                            <div key={field.key} class="field-row">
+                                <span class="field-label">{field.key}</span>
+                                <span class={field.valueClass}>{field.value}</span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <template if:true={hasAdditionalFields}>
+                <div class="detail-section slds-m-top_medium">
+                    <h3 class="section-title">Additional</h3>
+                    <template for:each={additionalFields} for:item="field">
+                        <div key={field.key} class="field-row">
+                            <span class="field-label">{field.key}</span>
+                            <span class={field.valueClass}>{field.value}</span>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </template>
+    </div>
+</template>

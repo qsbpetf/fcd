@@ -139,6 +139,7 @@
         <name>CustomMetadata</name>
     </types>
     <types>
+        <members>ApiResponseCache__c</members>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>CurrencyRateMarkup__mdt</members>
@@ -171,6 +172,7 @@
         <name>CustomPermission</name>
     </types>
     <types>
+        <members>ApiResponseCache__c</members>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>Batch_Job_Monitor</members>
