@@ -155,6 +155,10 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         return this.tableData && this.tableData.length > 0;
     }
 
+    get searchButtonDisabled() {
+        return this.isSearching || !this.selectedPartnerId;
+    }
+
     handleRowAction(event) {
         const action = event.detail?.action?.name;
         const row = event.detail?.row;

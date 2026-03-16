@@ -1,0 +1,3298 @@
+openapi: 3.0.1
+info:
+  title: Partner Registration APIs
+  description: >
+    APIs for creating, updating, submitting, searching, and tracking partner
+    deal and service registrations, as well as listing partner accounts and
+    requesting extensions.
+  version: '1.0'
+security:
+  - ASAP: []
+tags:
+  - name: Service Registrations
+    description: >
+      Manage **service registrations** for partner-led service engagements,
+      including draft creation, updates, retrieval, and submission.
+  - name: Deal Registrations
+    description: >
+      Manage **deal registrations** for partner-led sales opportunities,
+      including draft creation, updates, retrieval, and submission.
+  - name: Async Submission Requests
+    description: >
+      Perform **asynchronous registration submissions** and track submission
+      jobs until completion, failure, or validation error.
+  - name: Registration Search
+    description: >
+      **Search and list registrations** (deal and service) with rich filtering,
+      sorting, and pagination for a given partner account.
+  - name: Registration Extensions
+    description: >
+      **Request extensions** for eligible deal registrations by proposing a new
+      closure date and providing justification.
+  - name: Partner Accounts
+    description: >
+      **Discover partner accounts** that the current caller can act on,
+      including roles and primary account designation.
+paths:
+  /partner/registrations/v1/services:
+    post:
+      tags:
+        - Service Registrations
+      summary: Create a new draft service registration
+      description: >
+        **Create Service Registration Draft**. Creates a new **draft** service
+        registration for an existing partner account. The draft can later be
+        updated and submitted asynchronously for processing. This API supports
+        only existing customers and existing customer contacts; it does **not**
+        create new customer or contact records.
+      operationId: createDraftRegistration
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account on whose behalf the
+            registration is being created. The caller must have permission to
+            act on this partner.
+          schema:
+            type: string
+      requestBody:
+        description: >-
+          Payload containing details of the service registration to create as a
+          draft.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRegistrationPayload'
+        required: true
+      responses:
+        '201':
+          description: Draft service registration created successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftCreationSuccess'
+        '400':
+          description: Invalid request parameters or payload; see ApiResponse for details.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: Caller does not have permission for the specified partner account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: >-
+            Conflict while creating the registration (for example, a conflicting
+            existing registration).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '422':
+          description: Validation failed; one or more fields are invalid or missing.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while creating the draft registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/deals:
+    post:
+      tags:
+        - Deal Registrations
+      summary: Create a new draft deal registration
+      description: >
+        **Create Deal Registration Draft**. Creates a new **draft** deal
+        registration for an existing partner account. The draft can later be
+        updated and submitted asynchronously for processing. This API supports
+        only existing customers and existing customer contacts; it does **not**
+        create new customer or contact records.
+      operationId: createDraftRegistration_1
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account on whose behalf the
+            registration is being created. The caller must have permission to
+            act on this partner.
+          schema:
+            type: string
+      requestBody:
+        description: >-
+          Payload containing details of the deal registration to create as a
+          draft.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DealRegistrationPayload'
+        required: true
+      responses:
+        '201':
+          description: Draft deal registration created successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftCreationSuccess'
+        '400':
+          description: Invalid request parameters or payload; see ApiResponse for details.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: Caller does not have permission for the specified partner account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: >-
+            Conflict while creating the registration (for example, a conflicting
+            existing registration).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '422':
+          description: Validation failed; one or more fields are invalid or missing.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while creating the draft registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/services/{registrationId}:
+    get:
+      tags:
+        - Service Registrations
+      summary: Get a service registration by registration ID
+      description: >
+        **Retrieve Service Registration**. Retrieves a single service
+        registration (draft or submitted) that is visible to the specified
+        partner account, using its registration identifier.
+      operationId: getRegistrationById
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the requested registration.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: >
+            Unique registration identifier of the service registration to
+            retrieve (for example, `D-xxxx` or `CD-xxxx`).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Service registration retrieved successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRegistrationView'
+        '400':
+          description: >-
+            Invalid request parameters (for example, malformed registrationId or
+            missing header).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            No service registration found for the given registrationId and
+            partner account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while retrieving the registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    patch:
+      tags:
+        - Service Registrations
+      summary: Update an existing service registration
+      description: >
+        Business capability: **Update Service Registration**. Partially updates
+        fields on an existing service registration (draft or submitted,
+        depending on business rules). Only fields included in the request body
+        are updated.
+
+        Business rules: * Draft registrations: all fields are editable. *
+        Submitted registrations: only certain fields are editable (depends on
+        approval status). * Approved / expired registrations: immutable and
+        cannot be updated.
+      operationId: updateServiceRegistration
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the registration being updated.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: >-
+            Unique registration identifier of the service registration to
+            update.
+          schema:
+            type: string
+      requestBody:
+        description: >
+          Partial payload containing only the service registration fields to
+          update. Fields omitted from the request remain unchanged.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRegistrationPayload'
+        required: true
+      responses:
+        '204':
+          description: >-
+            Service registration updated successfully; no response body is
+            returned.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+        '400':
+          description: Invalid request parameters or payload; see ApiResponse for details.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            No service registration found for the given registrationId and
+            partner account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: >-
+            Conflict while updating the registration (for example, immutable
+            status or concurrent modification).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '422':
+          description: >-
+            Validation failed; one or more fields are invalid or cannot be
+            changed in the current state.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while updating the registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/deals/{registrationId}:
+    get:
+      tags:
+        - Deal Registrations
+      summary: Get a deal registration by registration ID
+      description: >
+        **Retrieve Deal Registration**. Retrieves a single deal registration
+        (draft or submitted) that is visible to the specified partner account,
+        using its registration identifier.
+      operationId: getRegistrationById_1
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the requested registration.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: >
+            Unique registration identifier of the deal registration to retrieve
+            (for example, `D-xxxx` or `CD-xxxx`).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deal registration retrieved successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealRegistrationView'
+        '400':
+          description: >-
+            Invalid request parameters (for example, malformed registrationId or
+            missing header).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            No deal registration found for the given registrationId and partner
+            account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while retrieving the registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    patch:
+      tags:
+        - Deal Registrations
+      summary: Update an existing deal registration
+      description: >
+        Business capability: **Update Deal Registration**. Partially updates
+        fields on an existing deal registration (draft or submitted, depending
+        on business rules). Only fields included in the request body are
+        updated.
+
+        Business rules: * Draft registrations: all fields are editable. *
+        Submitted registrations: only certain fields are editable (depends on
+        approval status). * Approved / expired registrations: immutable and
+        cannot be updated.
+      operationId: updateDealRegistration
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the registration being updated.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: Unique registration identifier of the deal registration to update.
+          schema:
+            type: string
+      requestBody:
+        description: >
+          Partial payload containing only the deal registration fields to
+          update. Fields omitted from the request remain unchanged.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DealRegistrationPayload'
+        required: true
+      responses:
+        '204':
+          description: >-
+            Deal registration updated successfully; no response body is
+            returned.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+        '400':
+          description: Invalid request parameters or payload; see ApiResponse for details.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            No deal registration found for the given registrationId and partner
+            account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: >-
+            Conflict while updating the registration (for example, immutable
+            status or concurrent modification).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '422':
+          description: >-
+            Validation failed; one or more fields are invalid or cannot be
+            changed in the current state.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while updating the registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/deals/{registrationId}/submit:
+    post:
+      tags:
+        - Async Submission Requests
+        - Deal Registrations
+      summary: Submit a deal registration asynchronously
+      description: >
+        **Submit Deal Registration (Async)**.
+
+        Queues a deal registration for asynchronous submission. This operation:
+
+        * Performs basic synchronous validations (auth, existence, partner
+        visibility). * Persists an `async_submission_request` job with status
+        `IN_PROGRESS`. * Enqueues the job for background processing. * Returns
+        immediately with a `jobId` and `IN_PROGRESS` status.
+
+        The client must poll the job status endpoint to track progress until the
+        job reaches a terminal state (`COMPLETED`, `FAILED`,
+        `VALIDATION_ERROR`).
+      operationId: submitDealRegistrationAsync
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the registration being submitted.
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: >
+            Optional idempotency key used to avoid creating duplicate async jobs
+            when the client retries the same submission request.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: The registration ID of the deal registration to submit.
+          schema:
+            type: string
+      requestBody:
+        description: This endpoint does not accept a request body.
+        required: false
+        content: {}
+      responses:
+        '202':
+          description: Submission queued for asynchronous processing.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusSuccess'
+        '400':
+          description: >-
+            Invalid request (for example, malformed registrationId or failed
+            pre-submission validation).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            Registration does not exist or is not visible to the partner
+            account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: >-
+            Registration is already submitted or in a state that cannot be
+            resubmitted.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '422':
+          description: >-
+            Validation failed; the registration cannot be submitted in its
+            current state.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while queuing the submission.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/services/{registrationId}/submit:
+    post:
+      tags:
+        - Async Submission Requests
+        - Service Registrations
+      summary: Submit a service registration asynchronously
+      description: >
+        Business capability: **Submit Service Registration (Async)**.
+
+        Queues a service registration for asynchronous submission. This
+        operation:
+
+        * Performs basic synchronous validations (auth, existence, partner
+        visibility). * Persists an `async_submission_request` job with status
+        `IN_PROGRESS`. * Enqueues the job for background processing. * Returns
+        immediately with a `jobId` and `IN_PROGRESS` status.
+
+        The client must poll the job status endpoint to track progress until the
+        job reaches a terminal state (`COMPLETED`, `FAILED`,
+        `VALIDATION_ERROR`).
+      operationId: submitServiceRegistrationAsync
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the registration being submitted.
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: >
+            Optional idempotency key used to avoid creating duplicate async jobs
+            when the client retries the same submission request.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: The registration ID of the service registration to submit.
+          schema:
+            type: string
+      requestBody:
+        description: This endpoint does not accept a request body.
+        required: false
+        content: {}
+      responses:
+        '202':
+          description: Submission queued for asynchronous processing.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusSuccess'
+        '400':
+          description: >-
+            Invalid request (for example, malformed registrationId or failed
+            pre-submission validation).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            Registration does not exist or is not visible to the partner
+            account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '409':
+          description: >-
+            Registration is already submitted or in a state that cannot be
+            resubmitted.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '422':
+          description: >-
+            Validation failed; the registration cannot be submitted in its
+            current state.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while queuing the submission.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/jobs/v1/{jobId}/status:
+    get:
+      tags:
+        - Async Submission Requests
+      summary: Get the status of an async submission job
+      description: >
+        **Track Registration Submission Job**.
+
+        Returns the current status and timestamps for an asynchronous
+        registration submission job created by a submit endpoint. Clients can
+        poll this endpoint until the job reaches a terminal state (`COMPLETED`,
+        `FAILED`, `VALIDATION_ERROR`).
+      operationId: getJobStatus
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the async job and associated registration.
+          schema:
+            type: string
+        - name: jobId
+          in: path
+          required: true
+          description: Unique identifier of the async submission job to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job status retrieved successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusSuccess'
+        '400':
+          description: >-
+            Invalid request parameters (for example, malformed jobId or missing
+            header).
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            job.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: No async job found for the given jobId and partner account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while retrieving the job status.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/search:
+    get:
+      tags:
+        - Registration Search
+      summary: Search registrations for a partner account
+      description: |
+        **Search Registrations**.
+
+         Searches deal and service registrations for a given partner account, with
+         support for filtering by status, program type, registration identifiers,
+         date ranges, and sorting with cursor-based pagination. Returns both draft
+         and submitted registrations unless further filtered by status.
+      operationId: searchRegistrations
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account whose registrations are
+            being searched. The caller must have permission to act on this
+            partner.
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          style: form
+          explode: false
+          description: >
+            Optional comma-separated list of registration statuses to filter by.
+            If omitted, results include registrations of all statuses visible to
+            the partner.
+
+            Possible values include: `DRAFT`, `USE_CHILD_REGISTRATIONS`,
+            `SUBMITTED`, `APPROVED`, `REJECTED`, `CLOSED_WON`, `CLOSED_LOST`,
+            `CLOSED`, `RETURNED`, `FIELD_APPROVED`, `ON_HOLD`, `EXPIRED`,
+            `PENDING`, `UNDER_REVIEW`.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: registrationId
+          in: query
+          required: false
+          description: >
+            Filter by specific registration ID (for example, `D-xxxx` or
+            `CD-xxxx`).
+          schema:
+            type: string
+        - name: parentRegistrationId
+          in: query
+          required: false
+          description: >
+            Filter by parent registration ID to retrieve child registrations
+            (for example, `D-xxxx`).
+          schema:
+            type: string
+        - name: programType
+          in: query
+          required: false
+          style: form
+          explode: false
+          description: |
+            Optional comma-separated list of program types to filter by.
+            Supported values: * `DEAL_REGISTRATION` * `SERVICE_REGISTRATION`
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - DEAL_REGISTRATION
+                - SERVICE_REGISTRATION
+        - name: registrationType
+          in: query
+          required: false
+          description: >
+            Filter by registration hierarchy type.
+
+            * `PARENT` – top-level registrations. * `CHILD` – registrations that
+            have a parentRegistrationId.
+          schema:
+            type: string
+            enum:
+              - PARENT
+              - CHILD
+        - name: createdAfter
+          in: query
+          required: false
+          description: >
+            Start of creation time window (inclusive), in ISO 8601 date-time
+            format (for example, `2024-01-01T00:00:00Z`).
+          schema:
+            type: string
+            format: date-time
+        - name: createdBefore
+          in: query
+          required: false
+          description: >
+            End of creation time window (inclusive), in ISO 8601 date-time
+            format (for example, `2024-12-31T23:59:59Z`).
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          required: false
+          description: >
+            Maximum number of registrations to return in a single page (page
+            size). Default is 10; maximum is 100.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: pageToken
+          in: query
+          required: false
+          description: >
+            Opaque pagination token returned by a previous search response. Use
+            this to fetch the next page of results.
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          description: >
+            Field to sort results by. Defaults to `CREATED_AT` when omitted.
+
+            Supported values: * `CREATED_AT` * `LAST_MODIFIED_AT` *
+            `REGISTRATION_ID` * `STATUS` * `PROGRAM_TYPE`
+          schema:
+            type: string
+            enum:
+              - CREATED_AT
+              - LAST_MODIFIED_AT
+              - REGISTRATION_ID
+              - STATUS
+              - PROGRAM_TYPE
+        - name: sortOrder
+          in: query
+          required: false
+          description: >
+            Sort direction for the specified sort field. Defaults to `DESC`
+            (newest first).
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+            default: DESC
+      responses:
+        '200':
+          description: Search results returned successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchRegistrationsResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: Caller does not have permission for the specified partner account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while performing the search.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/registrations/v1/deals/{registrationId}/extensions:
+    post:
+      tags:
+        - Registration Extensions
+        - Deal Registrations
+      summary: Request an extension for a deal registration
+      description: >
+        **Request Registration Extension**.
+
+        Submits an extension request for an eligible deal registration by
+        proposing a new closure date and providing extension notes. Extension
+        requests are processed according to program-specific approval rules.
+      operationId: requestDealRegistrationExtension
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: true
+          description: >
+            Unique identifier of the partner account used to enforce visibility
+            and access control for the registration being extended.
+          schema:
+            type: string
+        - name: registrationId
+          in: path
+          required: true
+          description: The registration ID of the deal registration to extend.
+          schema:
+            type: string
+      requestBody:
+        description: >
+          Payload specifying the proposed new closure date and supporting notes
+          for the extension request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtensionRequestPayload'
+      responses:
+        '200':
+          description: Extension request submitted and accepted for processing.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtensionRequestResponse'
+        '400':
+          description: Invalid request payload or registration not eligible for extension.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: >-
+            Caller does not have permission for the specified partner account or
+            registration.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: >-
+            Registration does not exist or is not visible to the partner
+            account.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while creating the extension request.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /partner/partner-accounts/v1/list:
+    get:
+      tags:
+        - Partner Accounts
+      summary: List partner accounts accessible to the caller
+      description: >
+        **List Partner Accounts**.
+
+        Returns the list of partner accounts that the authenticated caller can
+        act on, including the account name, roles, and primary account
+        indicator. This is typically used by clients to populate a partner
+        account selector before calling registration APIs with
+        `X-Partner-Account-Id`.
+      operationId: listMyPartnerAccounts
+      parameters:
+        - name: X-Partner-Account-Id
+          in: header
+          required: false
+          description: >
+            Optional partner account identifier. Included for consistency with
+            other endpoints but not required to list the caller's accessible
+            accounts.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Partner accounts retrieved successfully.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerAccountsResponse'
+        '401':
+          description: Missing or invalid authentication token.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '403':
+          description: Caller lacks permission to list partner accounts.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal server error while listing partner accounts.
+          headers:
+            X-Trace-Id:
+              description: >-
+                A unique identifier assigned to each request that can be used to
+                trace a specific request.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+components:
+  schemas:
+    Address:
+      type: object
+      description: Postal address details associated with a company or contact.
+      properties:
+        city:
+          type: string
+          description: City name for the address.
+        country:
+          type: string
+          description: Country or region for the address, typically in full name form.
+        postalCode:
+          type: string
+          description: Postal or ZIP code for the address.
+        state:
+          type: string
+          description: State, province, or region for the address.
+        street:
+          type: string
+          description: Street address, including house or building number.
+    Company:
+      type: object
+      description: >
+        Customer or partner company entity, including identity, domain, and
+        billing details.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the company in the underlying system.
+        name:
+          type: string
+          description: Display name of the company.
+        domain:
+          type: string
+          description: >-
+            Primary email or web domain associated with the company (for
+            example, `example.com`).
+        industry:
+          type: string
+          description: >-
+            Industry classification of the company (for example, Software,
+            Financial Services).
+        website:
+          type: string
+          description: Public website URL of the company.
+        region:
+          type: string
+          description: >-
+            High-level geographic region associated with the company (for
+            example, APAC, AMER, EMEA).
+        billingAddress:
+          $ref: '#/components/schemas/Address'
+          description: Billing address information for the company.
+    Contact:
+      type: object
+      description: >
+        Person record associated with one or more accounts, including roles,
+        product access, and engagement metrics.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the contact in the underlying system.
+        aaid:
+          type: string
+          description: Atlassian account identifier (AAID) for this contact.
+        firstName:
+          type: string
+          description: Given name of the contact.
+        lastName:
+          type: string
+          description: Family name or surname of the contact.
+        phone:
+          type: string
+          description: Primary phone number for the contact.
+        accountId:
+          type: string
+          description: Primary account identifier associated with the contact.
+        email:
+          type: string
+          description: Primary email address for the contact.
+        roles:
+          uniqueItems: true
+          type: array
+          description: Distinct roles assigned to the contact across accounts or products.
+          items:
+            type: string
+            description: Role name assigned to the contact.
+        avatarUrl:
+          type: string
+          description: URL for the contact's profile or avatar image.
+        title:
+          type: string
+          description: Job title of the contact.
+        department:
+          type: string
+          description: Department or functional group the contact belongs to.
+        location:
+          type: string
+          description: City or office location where the contact is based.
+        country:
+          type: string
+          description: Country where the contact is located.
+        timezone:
+          type: string
+          description: >-
+            Time zone string for the contact (for example, `UTC`,
+            `America/Los_Angeles`).
+        startDate:
+          type: string
+          description: >
+            Date when the contact first engaged with Atlassian or the partner,
+            in ISO 8601 date format.
+        contactStartDate:
+          type: string
+          description: >
+            Date when the contact record was first created or activated, in ISO
+            8601 date format.
+        accountStartDate:
+          type: string
+          description: >
+            Date when the contact's associated account was first created or
+            activated, in ISO 8601 date format.
+        assignedApps:
+          uniqueItems: true
+          type: array
+          description: >-
+            Distinct applications that have been successfully provisioned for
+            the contact.
+          items:
+            type: string
+            description: Application key or identifier assigned to the contact.
+        failedApps:
+          uniqueItems: true
+          type: array
+          description: Applications that failed during provisioning for the contact.
+          items:
+            type: string
+            description: Application key or identifier that failed to be provisioned.
+        pendingApps:
+          uniqueItems: true
+          type: array
+          description: Applications that are pending provisioning for the contact.
+          items:
+            type: string
+            description: Application key or identifier pending provisioning.
+        accreditations:
+          type: array
+          description: >-
+            List of partner or program accreditations associated with the
+            contact.
+          items:
+            type: string
+            description: Accreditation code or label.
+        certifications:
+          type: array
+          description: List of product or role-based certifications held by the contact.
+          items:
+            type: string
+            description: Certification code or label.
+        kudos:
+          type: integer
+          format: int32
+          description: Count of kudos or recognition points awarded to the contact.
+        tickets:
+          type: integer
+          format: int32
+          description: Number of support tickets associated with the contact.
+        isActive:
+          type: boolean
+          description: Indicates whether the contact is currently active.
+        userStats:
+          type: object
+          description: >
+            Key–value map of user-specific statistics (for example, usage
+            counts, engagement metrics), where values are integer counters.
+          additionalProperties:
+            type: integer
+            format: int32
+        primaryAccountId:
+          type: string
+          description: Identifier of the primary account associated with the contact.
+        secondaryAccountIds:
+          uniqueItems: true
+          type: array
+          description: Distinct secondary account identifiers linked to the contact.
+          items:
+            type: string
+            description: Secondary account identifier.
+        accountToRolesMap:
+          type: object
+          description: >
+            Mapping from account identifiers to the distinct roles the contact
+            holds for each account.
+          additionalProperties:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              description: Role name assigned to the contact for the given account.
+        provisioningStatus:
+          type: string
+          description: Overall provisioning status for the contact across systems.
+        lastModified:
+          type: string
+          description: >-
+            Timestamp when the contact record was last updated, in ISO 8601
+            format.
+        requestId:
+          type: string
+          description: >
+            Correlation identifier of the request that last modified this
+            contact, useful for audit and debugging.
+        oldRegistrationAppEnabled:
+          type: boolean
+          description: >
+            Indicates whether the legacy registration application is enabled for
+            this contact.
+        isOldRegistrationAppEnabled:
+          type: boolean
+          description: >
+            Convenience flag indicating whether the old registration app is
+            currently enabled.
+    CustomerContactDto:
+      type: object
+      description: Lightweight representation of a customer contact for registration flows.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the customer contact.
+        aaid:
+          type: string
+          description: Atlassian account identifier (AAID) for the contact, if available.
+        firstName:
+          type: string
+          description: Given name of the customer contact.
+        lastName:
+          type: string
+          description: Family name or surname of the customer contact.
+        email:
+          type: string
+          description: Email address of the customer contact.
+        country:
+          type: string
+          description: Country where the customer contact is located.
+        jobTitle:
+          type: string
+          description: Job title or role of the customer contact.
+        mobile:
+          type: string
+          description: Mobile phone number of the customer contact.
+        phone:
+          type: string
+          description: Landline or alternate phone number of the customer contact.
+    DraftRegistrationError:
+      type: object
+      description: >
+        Error entry describing a specific issue encountered while creating or
+        updating a draft registration.
+      properties:
+        statusCode:
+          type: string
+          description: >-
+            Error status code associated with this draft error (typically an
+            internal or HTTP-like code).
+        message:
+          type: string
+          description: Human-readable description of the error.
+        fields:
+          type: array
+          description: List of field names associated with this error.
+          items:
+            type: string
+            description: Field path or name that failed validation.
+    DraftRegistrationResponse:
+      type: object
+      description: >
+        Response model summarizing the outcome of a draft registration
+        operation, including success flag and any field-level errors.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the draft registration.
+        registrationNumber:
+          type: string
+          description: >
+            Human-readable registration number associated with the draft (for
+            example, `D-xxxx`).
+        success:
+          type: boolean
+          description: Indicates whether the draft registration operation was successful.
+        created:
+          type: boolean
+          description: >-
+            Indicates whether a new draft was created (true) versus updated
+            (false).
+        errors:
+          type: array
+          description: >-
+            List of validation or processing errors, if the operation was not
+            fully successful.
+          items:
+            $ref: '#/components/schemas/DraftRegistrationError'
+    ServiceRegistrationPayload:
+      type: object
+      description: Payload for creating or updating a service registration.
+      properties:
+        parentRegistrationId:
+          type: string
+          description: >
+            Identifier of the parent registration if this registration is a
+            child registration (for example, a child deal or service linked to a
+            parent).
+        dealName:
+          type: string
+          description: Name of the deal or service engagement being registered.
+        programType:
+          type: string
+          description: >-
+            Type of program registration; must be `SERVICE_REGISTRATION` for
+            service registrations.
+          enum:
+            - SERVICE_REGISTRATION
+        partnerSubmittedOpportunityNumber:
+          type: string
+          description: >
+            Opportunity identifier provided by the partner for tracking and
+            reconciliation.
+        products:
+          uniqueItems: true
+          type: array
+          description: Distinct Atlassian products associated with this registration.
+          items:
+            type: string
+            description: Atlassian product associated with this registration.
+            enum:
+              - ATLAS
+              - ATLASSIAN_ACCESS
+              - ATLASSIAN_GUARD
+              - BAMBOO
+              - BEACON
+              - BITBUCKET
+              - COMPASS
+              - CONFLUENCE
+              - CROWD
+              - CRUCIBLE
+              - FISHEYE
+              - JIRA
+              - JIRA_ALIGN
+              - JIRA_PRODUCT_DISCOVERY
+              - JIRA_SERVICE_MANAGEMENT
+              - JIRA_SERVICE_MANAGEMENT_200_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_201_OR_MORE_USERS
+              - JIRA_SERVICE_MANAGEMENT_500_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_501_OR_MORE_USERS
+              - JIRA_SOFTWARE
+              - JIRA_SOFTWARE_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT_EXPANSION_ONLY
+              - LOOM
+              - LOOM_NEW_ONLY
+              - OPSGENIE
+              - ROVO
+              - SOURCETREE
+              - STATUSPAGE
+              - STRATEGY_COLLECTION
+              - TEAMWORK_COLLECTION
+              - TRELLO
+              - CUSTOMER_MANAGED_KEYS_CMK
+              - ROVO_DEV
+              - SERVICE_COLLECTION
+              - SERVICE_COLLECTION_200_OR_LESS_USERS
+              - SERVICE_COLLECTION_201_OR_MORE_USERS
+        customerHasCloudSite:
+          type: string
+          description: >
+            Indicates whether the customer already has an existing Atlassian
+            cloud site associated with this registration.
+        cloudSite:
+          type: string
+          description: URL or unique identifier of the customer's Atlassian cloud site.
+        notes:
+          type: string
+          description: >-
+            Free-form notes about the registration, visible to Atlassian and
+            partner users.
+        termsAccepted:
+          type: boolean
+          description: >
+            Indicates whether the partner has accepted the program terms and
+            conditions for this registration.
+        sowConfirmed:
+          type: boolean
+          description: >
+            Indicates whether the Statement of Work (SOW) has been confirmed
+            between the partner and the customer.
+        termsConfirmed:
+          type: boolean
+          description: >
+            Indicates whether all additional terms or agreements for this
+            registration have been confirmed.
+        detailedDescription:
+          type: string
+          description: >
+            Detailed narrative describing the service opportunity or engagement
+            scope.
+        platform:
+          type: string
+          description: >
+            Target deployment platform for the opportunity (for example, Cloud,
+            Data Center, or both).
+          enum:
+            - CLOUD
+            - DATA_CENTER
+            - BOTH
+        estimatedRevenue:
+          type: number
+          format: double
+          description: Estimated total revenue amount for the service opportunity.
+        customerContactEmailId:
+          type: string
+          description: >
+            Email address of the primary customer contact for this registration.
+            Must reference an existing, linked customer contact.
+        customerDomain:
+          type: string
+          description: >
+            Domain name of the customer organization (for example,
+            `customer.com`). Must reference an existing, linked customer.
+        partnerSalesRepresentativeEmailId:
+          type: string
+          description: >
+            Email address of the partner sales representative owning this
+            registration. Must reference an existing, linked partner contact.
+        estimatedOpportunityCloseDate:
+          type: string
+          format: date
+          description: >
+            Estimated date when the opportunity is expected to close, in
+            `yyyy-MM-dd` format.
+        comments:
+          type: string
+          description: >-
+            Additional internal or external comments related to the
+            registration.
+        dealRegDcExceptionReason:
+          type: string
+          description: >
+            Reason for requesting an exception related to Data Center in the
+            context of this service registration.
+        solution:
+          type: string
+          description: >
+            Primary solution area being implemented as part of the service
+            engagement.
+          enum:
+            - ENTERPRISE_STRATEGY_AND_PLANNING
+            - CLOUD_MIGRATION
+            - SERVICE_MANAGEMENT
+            - SOFTWARE_DEVELOPMENT
+            - TEAMWORK_FOUNDATIONS
+            - OTHER
+        regions:
+          uniqueItems: true
+          type: array
+          description: Geographic regions covered by the service engagement.
+          items:
+            type: string
+            description: Geographic region covered by the engagement.
+            enum:
+              - APAC
+              - AMER
+              - EMEA
+        departments:
+          type: array
+          description: >
+            List of customer departments or teams participating in or impacted
+            by the engagement.
+          items:
+            type: string
+            description: Name of a customer department.
+        otherDepartment:
+          type: string
+          description: >
+            Custom department name when the relevant department is not covered
+            by the standard list.
+        serviceType:
+          type: array
+          description: Types of professional services provided under this engagement.
+          items:
+            type: string
+            description: Type of service offered in the engagement.
+            enum:
+              - CLOUD_MIGRATION_AND_EXPANSION
+              - CONFIGURATION_AND_ADMINISTRATION
+              - PARTNER_SOLUTION_CONSULTING_ARCHITECTURE
+              - PRODUCT_IMPLEMENTATION
+              - PROJECT_SUPPORT_AND_MAINTENANCE_SUPPORT_SERVICES
+              - TRAINING
+              - OTHER
+        serviceEngagementStage:
+          type: string
+          description: Current delivery stage of the service engagement.
+          enum:
+            - DELIVERY_NOT_STARTED
+            - DELIVERY_IN_PROGRESS
+            - DELIVERY_COMPLETED
+        serviceStartDate:
+          type: string
+          format: date
+          description: >-
+            Planned start date for the service engagement, in `yyyy-MM-dd`
+            format.
+        serviceEndDate:
+          type: string
+          format: date
+          description: Planned end date for the service engagement, in `yyyy-MM-dd` format.
+        deliveryConsultant:
+          type: string
+          description: >-
+            Name of the primary consultant responsible for delivering the
+            service.
+        deliveryConsultantEmail:
+          type: string
+          description: Email address of the primary delivery consultant.
+        userCount:
+          type: number
+          format: double
+          description: Approximate number of end users covered by this service engagement.
+        entityType:
+          type: string
+          description: >
+            Type of external entity associated with this registration (for
+            example, opportunity, support entitlement, or invoice).
+          enum:
+            - OPPORTUNITY_NUMBER
+            - SEN
+            - ORDER_NUMBER
+            - INVOICE_ID
+            - ENTITLEMENT_NUMBER
+            - DEAL_REGISTRATION_ID
+        entityIds:
+          type: array
+          description: >
+            One or more identifiers of external entities associated with this
+            registration (for example, multiple entitlement or order numbers).
+          items:
+            type: string
+            description: Identifier of an associated external entity.
+    ApiResponse:
+      type: object
+      description: Standard envelope for API error and informational responses.
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          description: HTTP status code associated with the response.
+        data:
+          type: object
+          description: >-
+            Optional response payload or additional data for non-error
+            responses.
+        message:
+          type: string
+          description: Human-readable message summarizing the result or error.
+        errors:
+          type: object
+          description: >
+            Structured error details, which may include field-level validation
+            information or custom error codes.
+    DraftCreationSuccess:
+      type: object
+      description: Response returned when a draft registration is successfully created.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier of the created draft registration (for example,
+            `D-xxxx`).
+        status:
+          type: string
+          description: Current lifecycle status of the created draft (typically `DRAFT`).
+    DealRegistrationPayload:
+      type: object
+      description: Payload for creating or updating a deal registration.
+      properties:
+        parentRegistrationId:
+          type: string
+          description: >
+            Identifier of the parent registration if this registration is a
+            child registration (for example, a child deal linked to a parent).
+        dealName:
+          type: string
+          description: Name of the deal being registered.
+        programType:
+          type: string
+          description: >-
+            Type of program registration; must be `DEAL_REGISTRATION` for deal
+            registrations.
+          enum:
+            - DEAL_REGISTRATION
+        partnerSubmittedOpportunityNumber:
+          type: string
+          description: >
+            Opportunity identifier provided by the partner for tracking and
+            reconciliation.
+        products:
+          uniqueItems: true
+          type: array
+          description: Distinct Atlassian products associated with this registration.
+          items:
+            type: string
+            description: Atlassian product associated with this registration.
+            enum:
+              - ATLAS
+              - ATLASSIAN_ACCESS
+              - ATLASSIAN_GUARD
+              - BAMBOO
+              - BEACON
+              - BITBUCKET
+              - COMPASS
+              - CONFLUENCE
+              - CROWD
+              - CRUCIBLE
+              - FISHEYE
+              - JIRA
+              - JIRA_ALIGN
+              - JIRA_PRODUCT_DISCOVERY
+              - JIRA_SERVICE_MANAGEMENT
+              - JIRA_SERVICE_MANAGEMENT_200_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_201_OR_MORE_USERS
+              - JIRA_SERVICE_MANAGEMENT_500_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_501_OR_MORE_USERS
+              - JIRA_SOFTWARE
+              - JIRA_SOFTWARE_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT_EXPANSION_ONLY
+              - LOOM
+              - LOOM_NEW_ONLY
+              - OPSGENIE
+              - ROVO
+              - SOURCETREE
+              - STATUSPAGE
+              - STRATEGY_COLLECTION
+              - TEAMWORK_COLLECTION
+              - TRELLO
+              - CUSTOMER_MANAGED_KEYS_CMK
+              - ROVO_DEV
+              - SERVICE_COLLECTION
+              - SERVICE_COLLECTION_200_OR_LESS_USERS
+              - SERVICE_COLLECTION_201_OR_MORE_USERS
+        customerHasCloudSite:
+          type: string
+          description: >
+            Indicates whether the customer already has an existing Atlassian
+            cloud site associated with this registration.
+        cloudSite:
+          type: string
+          description: URL or unique identifier of the customer's Atlassian cloud site.
+        notes:
+          type: string
+          description: >-
+            Free-form notes about the registration, visible to Atlassian and
+            partner users.
+        termsAccepted:
+          type: boolean
+          description: >
+            Indicates whether the partner has accepted the program terms and
+            conditions for this registration.
+        sowConfirmed:
+          type: boolean
+          description: >
+            Indicates whether the Statement of Work (SOW) has been confirmed
+            between the partner and the customer.
+        termsConfirmed:
+          type: boolean
+          description: >
+            Indicates whether all additional terms or agreements for this
+            registration have been confirmed.
+        detailedDescription:
+          type: string
+          description: >
+            Detailed narrative describing the deal opportunity, scope, and
+            context.
+        platform:
+          type: string
+          description: >
+            Target deployment platform for the opportunity (for example, Cloud,
+            Data Center, or both).
+          enum:
+            - CLOUD
+            - DATA_CENTER
+            - BOTH
+        estimatedRevenue:
+          type: number
+          format: double
+          description: Estimated total revenue amount for the deal opportunity.
+        customerContactEmailId:
+          type: string
+          description: >
+            Email address of the primary customer contact for this registration.
+            Must reference an existing, linked customer contact.
+        customerDomain:
+          type: string
+          description: >
+            Domain name of the customer organization (for example,
+            `customer.com`). Must reference an existing, linked customer.
+        partnerSalesRepresentativeEmailId:
+          type: string
+          description: >
+            Email address of the partner sales representative owning this
+            registration. Must reference an existing, linked partner contact.
+        estimatedOpportunityCloseDate:
+          type: string
+          format: date
+          description: >
+            Estimated date when the opportunity is expected to close, in
+            `yyyy-MM-dd` format.
+        comments:
+          type: string
+          description: >-
+            Additional internal or external comments related to the
+            registration.
+        dealRegDcExceptionReason:
+          type: string
+          description: >
+            Reason for requesting an exception related to Data Center in the
+            context of this deal registration.
+        budgetAllocated:
+          type: string
+          description: >
+            Indicates whether budget has been approved and allocated for this
+            deal.
+          enum:
+            - 'YES'
+            - 'NO'
+            - UNKNOWN
+        customerKeyDecisionMakersEngagedInProcess:
+          type: boolean
+          description: >
+            Indicates whether key decision makers on the customer side are
+            actively engaged in the sales process.
+        crucialEvent:
+          type: string
+          description: >
+            Critical milestone, event, or deadline (for example, contract
+            renewal, go-live date) that drives the deal timeline.
+        rfpRelated:
+          type: boolean
+          description: >-
+            Indicates whether this deal is associated with a formal RFP or
+            tender.
+        rfpRelatedTo:
+          type: string
+          description: >
+            Specifies the kind of RFP or tender associated with this deal, when
+            `rfpRelated` is true.
+          enum:
+            - ATLASSIAN_SPECIFIED_PRODUCT_PROPOSAL
+            - GENERAL_SOLUTION_PROPOSAL
+            - GOVERNMENT_TENDER
+        salesType:
+          type: string
+          description: >
+            Sales motion classification for this deal (for example, new,
+            renewal, or platform change).
+          enum:
+            - NEW
+            - UPGRADE
+            - RENEWAL
+            - NEW_PRODUCT
+            - EXPANSION_UPGRADE
+            - PLATFORM_CHANGE_WITH_EXPANSION_UPGRADE
+            - PLATFORM_CHANGE_WITHOUT_EXPANSION_UPGRADE
+        senOrEntitlementNumber:
+          type: string
+          description: >
+            Support Entitlement Number (SEN) or other entitlement identifier
+            associated with this opportunity.
+        additionalInfo:
+          type: string
+          description: Additional free-form information or context about the deal.
+        eccListedAboveIsKeyDecisionMaker:
+          type: boolean
+          description: >
+            Indicates whether the primary end-customer contact (ECC) already
+            referenced above is also the key decision maker.
+        eccKeyDecisionMaker:
+          $ref: '#/components/schemas/EccKeyDecisionMaker'
+          description: >
+            Details of the end-customer key decision maker when different from
+            the primary customer contact.
+    EccKeyDecisionMaker:
+      type: object
+      description: End Customer Contact (ECC) key decision maker details.
+      properties:
+        endCustomerFirstName:
+          type: string
+          description: First name of the end-customer key decision maker.
+        endCustomerLastName:
+          type: string
+          description: Last name of the end-customer key decision maker.
+        endCustomerEmail:
+          type: string
+          description: Email address of the end-customer key decision maker.
+        endCustomerJobTitle:
+          type: string
+          description: Job title or role of the end-customer key decision maker.
+    Opportunity:
+      type: object
+      description: >
+        Sales opportunity summary associated with a deal or service
+        registration.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the opportunity in the underlying system.
+        name:
+          type: string
+          nullable: true
+          description: >
+            Name of the opportunity. This field is omitted when `sourcedBy` is
+            "Partner (Confidential)".
+        description:
+          type: string
+          description: Free-form description of the opportunity.
+        number:
+          type: string
+          description: Human-readable opportunity number or external reference.
+        amount:
+          type: number
+          format: double
+          nullable: true
+          description: >
+            Total opportunity amount. This field is omitted when `sourcedBy` is
+            "Partner (Confidential)".
+        netNewAmount:
+          type: number
+          format: double
+          nullable: true
+          description: >
+            Net new portion of the opportunity amount. This field is omitted
+            when `sourcedBy` is "Partner (Confidential)".
+        netNewAcv:
+          type: number
+          format: double
+          nullable: true
+          description: >
+            Net new annual contract value (ACV) for the opportunity. This field
+            is omitted when `sourcedBy` is "Partner (Confidential)".
+        status:
+          type: string
+          description: >-
+            Current lifecycle status of the opportunity (for example, Open,
+            Closed Won).
+    ServiceRegistrationView:
+      type: object
+      description: View model for service registration responses.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier of the service registration (for example, `D-xxxx`
+            or `CD-xxxx`).
+        parentRegistrationId:
+          type: string
+          description: >
+            Identifier of the parent registration if this is a child service
+            registration.
+        dealName:
+          type: string
+          description: >-
+            Name of the deal or service engagement associated with this
+            registration.
+        programType:
+          type: string
+          description: >-
+            Type of program registration; always `SERVICE_REGISTRATION` for this
+            model.
+          enum:
+            - SERVICE_REGISTRATION
+        partnerSubmittedOpportunityNumber:
+          type: string
+          description: >
+            Opportunity identifier provided by the partner for tracking and
+            reconciliation.
+        products:
+          uniqueItems: true
+          type: array
+          description: >-
+            Distinct Atlassian products associated with this service
+            registration.
+          items:
+            type: string
+            description: Atlassian product associated with this registration.
+            enum:
+              - ATLAS
+              - ATLASSIAN_ACCESS
+              - ATLASSIAN_GUARD
+              - BAMBOO
+              - BEACON
+              - BITBUCKET
+              - COMPASS
+              - CONFLUENCE
+              - CROWD
+              - CRUCIBLE
+              - FISHEYE
+              - JIRA
+              - JIRA_ALIGN
+              - JIRA_PRODUCT_DISCOVERY
+              - JIRA_SERVICE_MANAGEMENT
+              - JIRA_SERVICE_MANAGEMENT_200_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_201_OR_MORE_USERS
+              - JIRA_SERVICE_MANAGEMENT_500_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_501_OR_MORE_USERS
+              - JIRA_SOFTWARE
+              - JIRA_SOFTWARE_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT_EXPANSION_ONLY
+              - LOOM
+              - LOOM_NEW_ONLY
+              - OPSGENIE
+              - ROVO
+              - SOURCETREE
+              - STATUSPAGE
+              - STRATEGY_COLLECTION
+              - TEAMWORK_COLLECTION
+              - TRELLO
+              - CUSTOMER_MANAGED_KEYS_CMK
+              - ROVO_DEV
+              - SERVICE_COLLECTION
+              - SERVICE_COLLECTION_200_OR_LESS_USERS
+              - SERVICE_COLLECTION_201_OR_MORE_USERS
+        customerHasCloudSite:
+          type: string
+          description: >
+            Indicates whether the customer already has an existing Atlassian
+            cloud site associated with this registration.
+        cloudSite:
+          type: string
+          description: URL or unique identifier of the customer's Atlassian cloud site.
+        notes:
+          type: string
+          description: >-
+            Free-form notes about the registration, visible to Atlassian and
+            partner users.
+        termsAccepted:
+          type: boolean
+          description: >
+            Indicates whether the partner has accepted the program terms and
+            conditions for this registration.
+        sowConfirmed:
+          type: boolean
+          description: >
+            Indicates whether the Statement of Work (SOW) has been confirmed
+            between the partner and the customer.
+        termsConfirmed:
+          type: boolean
+          description: >
+            Indicates whether all additional terms or agreements for this
+            registration have been confirmed.
+        detailedDescription:
+          type: string
+          description: >
+            Detailed narrative describing the service opportunity or engagement
+            scope.
+        platform:
+          type: string
+          description: >
+            Target deployment platform for the opportunity (for example, Cloud,
+            Data Center, or both).
+          enum:
+            - CLOUD
+            - DATA_CENTER
+            - BOTH
+        estimatedRevenue:
+          type: number
+          format: double
+          description: Estimated total revenue amount for the service opportunity.
+        customerContactEmailId:
+          type: string
+          description: >
+            Email address of the primary customer contact for this registration.
+            Must reference an existing, linked customer contact.
+        customerDomain:
+          type: string
+          description: >
+            Domain name of the customer organization (for example,
+            `customer.com`). Must reference an existing, linked customer.
+        partnerSalesRepresentativeEmailId:
+          type: string
+          description: >
+            Email address of the partner sales representative owning this
+            registration. Must reference an existing, linked partner contact.
+        status:
+          type: string
+          description: >-
+            Current lifecycle status of the service registration (for example,
+            DRAFT, SUBMITTED, APPROVED).
+        estimatedOpportunityCloseDate:
+          type: string
+          format: date
+          description: >
+            Estimated date when the opportunity is expected to close, in
+            `yyyy-MM-dd` format.
+        expirationDate:
+          type: string
+          format: date
+          description: >
+            Date when the registration expires or is no longer eligible, in
+            `yyyy-MM-dd` format.
+        submissionDate:
+          type: string
+          format: date
+          description: >
+            Date when the registration was originally submitted, in `yyyy-MM-dd`
+            format.
+        approvalDate:
+          type: string
+          format: date
+          description: |
+            Date when the registration was approved, in `yyyy-MM-dd` format.
+        createdAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the registration was created, in ISO 8601 date-time
+            format.
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the registration was last updated, in ISO 8601
+            date-time format.
+        denialReason:
+          type: string
+          description: Reason for denial when the registration has been rejected.
+        comments:
+          type: string
+          description: >-
+            Additional internal or external comments related to the
+            registration.
+        dealRegDcExceptionReason:
+          type: string
+          description: >
+            Reason for requesting an exception related to Data Center in the
+            context of this service registration.
+        solution:
+          type: string
+          description: >
+            Primary solution area being implemented as part of the service
+            engagement.
+          enum:
+            - ENTERPRISE_STRATEGY_AND_PLANNING
+            - CLOUD_MIGRATION
+            - SERVICE_MANAGEMENT
+            - SOFTWARE_DEVELOPMENT
+            - TEAMWORK_FOUNDATIONS
+            - OTHER
+        regions:
+          uniqueItems: true
+          type: array
+          description: Geographic regions covered by the service engagement.
+          items:
+            type: string
+            description: Geographic region covered by the engagement.
+            enum:
+              - APAC
+              - AMER
+              - EMEA
+        departments:
+          type: array
+          description: >
+            List of customer departments or teams participating in or impacted
+            by the engagement.
+          items:
+            type: string
+            description: Name of a customer department.
+        otherDepartment:
+          type: string
+          description: >
+            Custom department name when the relevant department is not covered
+            by the standard list.
+        serviceType:
+          type: array
+          description: Types of professional services provided under this engagement.
+          items:
+            type: string
+            description: Type of service offered in the engagement.
+            enum:
+              - CLOUD_MIGRATION_AND_EXPANSION
+              - CONFIGURATION_AND_ADMINISTRATION
+              - PARTNER_SOLUTION_CONSULTING_ARCHITECTURE
+              - PRODUCT_IMPLEMENTATION
+              - PROJECT_SUPPORT_AND_MAINTENANCE_SUPPORT_SERVICES
+              - TRAINING
+              - OTHER
+        serviceEngagementStage:
+          type: string
+          description: Current delivery stage of the service engagement.
+          enum:
+            - DELIVERY_NOT_STARTED
+            - DELIVERY_IN_PROGRESS
+            - DELIVERY_COMPLETED
+        serviceStartDate:
+          type: string
+          format: date
+          description: >-
+            Planned start date for the service engagement, in `yyyy-MM-dd`
+            format.
+        serviceEndDate:
+          type: string
+          format: date
+          description: Planned end date for the service engagement, in `yyyy-MM-dd` format.
+        deliveryConsultant:
+          type: string
+          description: >-
+            Name of the primary consultant responsible for delivering the
+            service.
+        deliveryConsultantEmail:
+          type: string
+          description: Email address of the primary delivery consultant.
+        userCount:
+          type: number
+          format: double
+          description: Approximate number of end users covered by this service engagement.
+        entityType:
+          type: string
+          description: >
+            Type of external entity associated with this registration (for
+            example, opportunity, support entitlement, or invoice).
+          enum:
+            - OPPORTUNITY_NUMBER
+            - SEN
+            - ORDER_NUMBER
+            - INVOICE_ID
+            - ENTITLEMENT_NUMBER
+            - DEAL_REGISTRATION_ID
+        entityIds:
+          type: array
+          description: >
+            One or more identifiers of external entities associated with this
+            registration (for example, multiple entitlement or order numbers).
+          items:
+            type: string
+            description: Identifier of an associated external entity.
+    DealRegistrationView:
+      type: object
+      description: View model for deal registration responses.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier of the deal registration (for example, `D-xxxx` or
+            `CD-xxxx`).
+        parentRegistrationId:
+          type: string
+          description: >
+            Identifier of the parent registration if this is a child deal
+            registration.
+        dealName:
+          type: string
+          description: Name of the deal associated with this registration.
+        programType:
+          type: string
+          description: >-
+            Type of program registration; always `DEAL_REGISTRATION` for this
+            model.
+          enum:
+            - DEAL_REGISTRATION
+        partnerSubmittedOpportunityNumber:
+          type: string
+          description: >
+            Opportunity identifier provided by the partner for tracking and
+            reconciliation.
+        products:
+          uniqueItems: true
+          type: array
+          description: Distinct Atlassian products associated with this deal registration.
+          items:
+            type: string
+            description: Atlassian product associated with this registration.
+            enum:
+              - ATLAS
+              - ATLASSIAN_ACCESS
+              - ATLASSIAN_GUARD
+              - BAMBOO
+              - BEACON
+              - BITBUCKET
+              - COMPASS
+              - CONFLUENCE
+              - CROWD
+              - CRUCIBLE
+              - FISHEYE
+              - JIRA
+              - JIRA_ALIGN
+              - JIRA_PRODUCT_DISCOVERY
+              - JIRA_SERVICE_MANAGEMENT
+              - JIRA_SERVICE_MANAGEMENT_200_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_201_OR_MORE_USERS
+              - JIRA_SERVICE_MANAGEMENT_500_OR_LESS_USERS
+              - JIRA_SERVICE_MANAGEMENT_501_OR_MORE_USERS
+              - JIRA_SOFTWARE
+              - JIRA_SOFTWARE_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT
+              - JIRA_WORK_MANAGEMENT_EXPANSION_ONLY
+              - LOOM
+              - LOOM_NEW_ONLY
+              - OPSGENIE
+              - ROVO
+              - SOURCETREE
+              - STATUSPAGE
+              - STRATEGY_COLLECTION
+              - TEAMWORK_COLLECTION
+              - TRELLO
+              - CUSTOMER_MANAGED_KEYS_CMK
+              - ROVO_DEV
+              - SERVICE_COLLECTION
+              - SERVICE_COLLECTION_200_OR_LESS_USERS
+              - SERVICE_COLLECTION_201_OR_MORE_USERS
+        customerHasCloudSite:
+          type: string
+          description: >
+            Indicates whether the customer already has an existing Atlassian
+            cloud site associated with this registration.
+        cloudSite:
+          type: string
+          description: URL or unique identifier of the customer's Atlassian cloud site.
+        notes:
+          type: string
+          description: >-
+            Free-form notes about the registration, visible to Atlassian and
+            partner users.
+        termsAccepted:
+          type: boolean
+          description: >
+            Indicates whether the partner has accepted the program terms and
+            conditions for this registration.
+        sowConfirmed:
+          type: boolean
+          description: >
+            Indicates whether the Statement of Work (SOW) has been confirmed
+            between the partner and the customer.
+        termsConfirmed:
+          type: boolean
+          description: >
+            Indicates whether all additional terms or agreements for this
+            registration have been confirmed.
+        detailedDescription:
+          type: string
+          description: >
+            Detailed narrative describing the deal opportunity, scope, and
+            context.
+        platform:
+          type: string
+          description: >
+            Target deployment platform for the opportunity (for example, Cloud,
+            Data Center, or both).
+          enum:
+            - CLOUD
+            - DATA_CENTER
+            - BOTH
+        estimatedRevenue:
+          type: number
+          format: double
+          description: Estimated total revenue amount for the deal opportunity.
+        customerContactEmailId:
+          type: string
+          description: >
+            Email address of the primary customer contact for this registration.
+            Must reference an existing, linked customer contact.
+        customerDomain:
+          type: string
+          description: >
+            Domain name of the customer organization (for example,
+            `customer.com`). Must reference an existing, linked customer.
+        partnerSalesRepresentativeEmailId:
+          type: string
+          description: >
+            Email address of the partner sales representative owning this
+            registration. Must reference an existing, linked partner contact.
+        status:
+          type: string
+          description: >-
+            Current lifecycle status of the deal registration (for example,
+            DRAFT, SUBMITTED, APPROVED).
+        estimatedOpportunityCloseDate:
+          type: string
+          format: date
+          description: >
+            Estimated date when the opportunity is expected to close, in
+            `yyyy-MM-dd` format.
+        expirationDate:
+          type: string
+          format: date
+          description: >
+            Date when the registration expires or is no longer eligible, in
+            `yyyy-MM-dd` format.
+        submissionDate:
+          type: string
+          format: date
+          description: >
+            Date when the registration was originally submitted, in `yyyy-MM-dd`
+            format.
+        approvalDate:
+          type: string
+          format: date
+          description: |
+            Date when the registration was approved, in `yyyy-MM-dd` format.
+        createdAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the registration was created, in ISO 8601 date-time
+            format.
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the registration was last updated, in ISO 8601
+            date-time format.
+        denialReason:
+          type: string
+          description: Reason for denial when the registration has been rejected.
+        comments:
+          type: string
+          description: >-
+            Additional internal or external comments related to the
+            registration.
+        dealRegDcExceptionReason:
+          type: string
+          description: >
+            Reason for requesting an exception related to Data Center in the
+            context of this deal registration.
+        budgetAllocated:
+          type: string
+          description: >
+            Indicates whether budget has been approved and allocated for this
+            deal.
+          enum:
+            - 'YES'
+            - 'NO'
+            - UNKNOWN
+        customerKeyDecisionMakersEngagedInProcess:
+          type: boolean
+          description: >
+            Indicates whether key decision makers on the customer side are
+            actively engaged in the sales process.
+        crucialEvent:
+          type: string
+          description: >
+            Critical milestone, event, or deadline (for example, contract
+            renewal, go-live date) that drives the deal timeline.
+        rfpRelated:
+          type: boolean
+          description: >-
+            Indicates whether this deal is associated with a formal RFP or
+            tender.
+        rfpRelatedTo:
+          type: string
+          description: >
+            Specifies the kind of RFP or tender associated with this deal, when
+            `rfpRelated` is true.
+          enum:
+            - ATLASSIAN_SPECIFIED_PRODUCT_PROPOSAL
+            - GENERAL_SOLUTION_PROPOSAL
+            - GOVERNMENT_TENDER
+        salesType:
+          type: string
+          description: >
+            Sales motion classification for this deal (for example, new,
+            renewal, or platform change).
+          enum:
+            - NEW
+            - UPGRADE
+            - RENEWAL
+            - NEW_PRODUCT
+            - EXPANSION_UPGRADE
+            - PLATFORM_CHANGE_WITH_EXPANSION_UPGRADE
+            - PLATFORM_CHANGE_WITHOUT_EXPANSION_UPGRADE
+        senOrEntitlementNumber:
+          type: string
+          description: >
+            Support Entitlement Number (SEN) or other entitlement identifier
+            associated with this opportunity.
+        additionalInfo:
+          type: string
+          description: Additional free-form information or context about the deal.
+        eccListedAboveIsKeyDecisionMaker:
+          type: boolean
+          description: >
+            Indicates whether the primary end-customer contact (ECC) already
+            referenced above is also the key decision maker.
+        eccKeyDecisionMaker:
+          $ref: '#/components/schemas/EccKeyDecisionMaker'
+          description: >
+            Details of the end-customer key decision maker when different from
+            the primary customer contact.
+    AsyncJobErrorDetail:
+      type: object
+      description: Detailed field-level issue within an async job error.
+      properties:
+        field:
+          type: string
+          description: Name or path of the field that failed validation.
+        issue:
+          type: string
+          description: >-
+            Machine-readable code describing the validation issue (for example,
+            `BELOW_THRESHOLD`).
+        message:
+          type: string
+          description: Human-readable explanation of the validation issue.
+    AsyncJobError:
+      type: object
+      description: Error information returned for a failed or validation-error async job.
+      properties:
+        code:
+          type: string
+          description: >-
+            Machine-readable error code (for example, `VALIDATION_ERROR`,
+            `SUBMISSION_TIMEOUT`).
+        message:
+          type: string
+          description: Human-readable error message describing the failure.
+        details:
+          type: array
+          description: Optional list of field-level validation details.
+          items:
+            $ref: '#/components/schemas/AsyncJobErrorDetail'
+    JobStatusSuccess:
+      type: object
+      description: Response representing the status of an async job.
+      properties:
+        jobId:
+          type: string
+          description: Unique identifier of the async submission job.
+        status:
+          type: string
+          description: >
+            Current status of the async job. Typical values include:
+            `IN_PROGRESS`, `COMPLETED`, `FAILED`, `VALIDATION_ERROR`.
+        createdAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the async job was created, in ISO 8601 date-time
+            format.
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the async job was last updated, in ISO 8601 date-time
+            format.
+        registrationId:
+          type: string
+          description: >-
+            Unique identifier of the registration whose submission is being
+            processed.
+        error:
+          $ref: '#/components/schemas/AsyncJobError'
+          nullable: true
+          description: >
+            Error details when the job is in `FAILED` or `VALIDATION_ERROR`
+            status; null for `IN_PROGRESS` or `COMPLETED`.
+    ExtensionRequestPayload:
+      type: object
+      description: Payload for requesting an extension on a deal registration.
+      properties:
+        proposedClosureDate:
+          type: string
+          format: date
+          description: >
+            Proposed new closure date for the registration, in `yyyy-MM-dd`
+            format.
+        extensionNotes:
+          type: string
+          description: >
+            Free-form notes explaining why an extension is required and any
+            additional context.
+    ExtensionRequestResponse:
+      type: object
+      description: Response returned when an extension request is submitted.
+      properties:
+        registrationId:
+          type: string
+          description: Identifier of the registration for which extension was requested.
+        status:
+          type: string
+          description: >
+            Current status of the registration after the extension request
+            (typically `SUBMITTED` while the extension is under review).
+        message:
+          type: string
+          description: Human-readable confirmation message for the extension request.
+    RegistrationSearchResult:
+      type: object
+      description: >
+        Lightweight registration record returned by the search API, combining
+        common deal and service registration fields.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier of the registration (for example, `D-xxxx` or
+            `CD-xxxx`).
+        parentRegistrationId:
+          type: string
+          description: >-
+            Identifier of the parent registration if this is a child
+            registration.
+        dealName:
+          type: string
+          description: Name of the deal or service engagement.
+        programType:
+          type: string
+          description: >-
+            Program type of the registration (for example, `DEAL_REGISTRATION`,
+            `SERVICE_REGISTRATION`).
+        status:
+          type: string
+          description: Current lifecycle status of the registration.
+        customerContactEmailId:
+          type: string
+          description: Email address of the primary customer contact.
+        customerDomain:
+          type: string
+          description: Domain name of the customer organization.
+        partnerSalesRepresentativeEmailId:
+          type: string
+          description: Email address of the partner sales representative.
+        partnerSubmittedOpportunityNumber:
+          type: string
+          description: Partner-submitted opportunity identifier.
+        opportunityNumber:
+          type: string
+          description: >-
+            Internal or external opportunity number associated with this
+            registration.
+        estimatedRevenue:
+          type: string
+          description: Estimated revenue value for the registration, formatted as a string.
+        extensionStatus:
+          type: string
+          description: >
+            Current status of any extension request associated with the
+            registration.
+        expirationDate:
+          type: string
+          format: date
+          description: |
+            Current expiration date of the registration, in `yyyy-MM-dd` format.
+        submissionDate:
+          type: string
+          format: date
+          description: >
+            Date when the registration was originally submitted, in `yyyy-MM-dd`
+            format.
+        approvalDate:
+          type: string
+          format: date
+          description: |
+            Date when the registration was approved, in `yyyy-MM-dd` format.
+        createdAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the registration was created, in ISO 8601 date-time
+            format.
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: >-
+            Timestamp when the registration was last updated, in ISO 8601
+            date-time format.
+    PaginationLinks:
+      type: object
+      description: Hypermedia links for navigating paginated search results.
+      properties:
+        self:
+          type: string
+          description: URL of the current page of search results.
+        next:
+          type: string
+          description: URL of the next page of search results, if available.
+    Pagination:
+      type: object
+      description: Pagination metadata for registration search results.
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of results requested per page.
+        nextPageToken:
+          type: string
+          description: >
+            Opaque token to be used as `pageToken` to fetch the next page of
+            results.
+        hasNext:
+          type: boolean
+          description: Indicates whether there is a next page of results.
+        hasPrevious:
+          type: boolean
+          description: Indicates whether there is a previous page of results.
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+          description: Hypermedia navigation links for the current and next pages.
+    SearchRegistrationsResponse:
+      type: object
+      description: Response envelope for registration search results.
+      properties:
+        registrations:
+          type: array
+          description: List of registration search results matching the query.
+          items:
+            $ref: '#/components/schemas/RegistrationSearchResult'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+          description: Pagination metadata and navigation links for the result set.
+    PartnerAccount:
+      type: object
+      description: >
+        Partner account that the caller can act on, including roles and primary
+        flag.
+      properties:
+        partnerId:
+          type: string
+          description: Unique identifier of the partner account.
+        accountName:
+          type: string
+          description: Display name of the partner account.
+        roles:
+          type: array
+          description: Roles that the caller holds on this partner account.
+          items:
+            type: string
+            description: Role name assigned to the caller (for example, `ADMIN`, `SELLER`).
+        isPrimary:
+          type: boolean
+          description: Indicates whether this is the caller's primary partner account.
+    PartnerAccountsResponse:
+      type: object
+      description: Response containing partner accounts accessible to the caller.
+      properties:
+        partnerAccounts:
+          type: array
+          description: List of partner accounts that the caller can act on.
+          items:
+            $ref: '#/components/schemas/PartnerAccount'
