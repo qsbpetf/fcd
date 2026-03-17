@@ -29,7 +29,7 @@ export default class AtlassianRegEditButton extends LightningElement {
         return this.showModal && this.programType !== PROGRAM_TYPE_SERVICE;
     }
 
-    get showServicePlaceholder() {
+    get showServiceForm() {
         return this.showModal && this.programType === PROGRAM_TYPE_SERVICE;
     }
 

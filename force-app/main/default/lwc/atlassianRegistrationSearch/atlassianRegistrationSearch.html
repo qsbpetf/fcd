@@ -208,7 +208,7 @@
                                 <template if:true={isDetailModalInEditMode}>Edit</template>
                                 <template if:false={isDetailModalInEditMode}>Registration Details</template> - {_detailRegistrationId}
                             </h2>
-                            <template if:true={isDealRegistration}>
+                            <template if:true={isEditableRegistration}>
                                 <template if:true={isDetailModalInEditMode}>
                                     <lightning-button label="Back to View" variant="neutral" onclick={handleBackToView} class="slds-m-left_medium"></lightning-button>
                                 </template>
@@ -220,12 +220,21 @@
                     </header>
                     <div class="slds-modal__content slds-p-around_medium detail-modal-content" id="detail-modal-content">
                         <template if:true={isDetailModalInEditMode}>
-                            <c-atlassian-deal-reg-draft-form
-                                registration-id={_detailRegistrationId}
-                                partner-account-id={_detailPartnerId}
-                                program-type={_detailProgramType}
-                                onupdated={handleFormUpdated}
-                            ></c-atlassian-deal-reg-draft-form>
+                            <template if:true={isDealRegistration}>
+                                <c-atlassian-deal-reg-draft-form
+                                    registration-id={_detailRegistrationId}
+                                    partner-account-id={_detailPartnerId}
+                                    program-type={_detailProgramType}
+                                    onupdated={handleFormUpdated}
+                                ></c-atlassian-deal-reg-draft-form>
+                            </template>
+                            <template if:true={isServiceRegistration}>
+                                <c-atlassian-service-reg-draft-form
+                                    registration-id={_detailRegistrationId}
+                                    partner-account-id={_detailPartnerId}
+                                    onupdated={handleFormUpdated}
+                                ></c-atlassian-service-reg-draft-form>
+                            </template>
                         </template>
                         <template if:false={isDetailModalInEditMode}>
                             <c-atlassian-registration-detail

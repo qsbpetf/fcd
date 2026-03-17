@@ -21,12 +21,10 @@
                 ></c-atlassian-deal-reg-draft-form>
             </template>
 
-            <template if:true={showServicePlaceholder}>
-                <div class="slds-box slds-theme_shade slds-p-around_large slds-text-align_center">
-                    <lightning-icon icon-name="standard:service_appointment" size="large" class="slds-m-bottom_small"></lightning-icon>
-                    <h3 class="slds-text-heading_medium slds-m-bottom_x-small">Create Service Draft</h3>
-                    <p class="slds-text-color_weak">Service registration draft creation is coming soon.</p>
-                </div>
+            <template if:true={showServiceForm}>
+                <c-atlassian-service-reg-draft-form
+                    title="Create Service Draft"
+                ></c-atlassian-service-reg-draft-form>
             </template>
         </div>
     </lightning-card>

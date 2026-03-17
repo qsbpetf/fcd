@@ -16,12 +16,12 @@ export default class AtlassianRegistrationCreate extends LightningElement {
         return this.selectedRegistrationType === REGISTRATION_TYPE_DEAL;
     }
 
-    get showServicePlaceholder() {
+    get showServiceForm() {
         return this.selectedRegistrationType === REGISTRATION_TYPE_SERVICE;
     }
 
     get showFormContent() {
-        return this.showDealForm || this.showServicePlaceholder;
+        return this.showDealForm || this.showServiceForm;
     }
 
     handleRegistrationTypeChange(event) {

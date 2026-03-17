@@ -79,21 +79,8 @@
                 </div>
             </template>
             <template if:true={hasTermsOrDescriptionOrDealContext}>
-                <div class="terms-description-deal-grid slds-m-top_medium">
-                    <div class="terms-description-deal-grid__left">
-                        <template if:true={hasDealContextFields}>
-                            <div class="detail-section">
-                                <h3 class="section-title">Deal Context</h3>
-                                <template for:each={dealContextFields} for:item="field">
-                                    <div key={field.key} class="field-row">
-                                        <span class="field-label">{field.key}</span>
-                                        <span class={field.valueClass}>{field.value}</span>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
-                    </div>
-                    <div class="terms-description-deal-grid__right">
+                <template if:true={isServiceRegistration}>
+                    <div class="terms-description-service-row slds-m-top_medium">
                         <template if:true={hasTermsFields}>
                             <div class="detail-section">
                                 <h3 class="section-title">Terms</h3>
@@ -117,7 +104,48 @@
                             </div>
                         </template>
                     </div>
-                </div>
+                </template>
+                <template if:false={isServiceRegistration}>
+                    <div class="terms-description-deal-grid slds-m-top_medium">
+                        <div class="terms-description-deal-grid__left">
+                            <template if:true={hasDealContextFields}>
+                                <div class="detail-section">
+                                    <h3 class="section-title">Deal Context</h3>
+                                    <template for:each={dealContextFields} for:item="field">
+                                        <div key={field.key} class="field-row">
+                                            <span class="field-label">{field.key}</span>
+                                            <span class={field.valueClass}>{field.value}</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="terms-description-deal-grid__right">
+                            <template if:true={hasTermsFields}>
+                                <div class="detail-section">
+                                    <h3 class="section-title">Terms</h3>
+                                    <template for:each={termsFields} for:item="field">
+                                        <div key={field.key} class="field-row">
+                                            <span class="field-label">{field.key}</span>
+                                            <span class={field.valueClass}>{field.value}</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template if:true={hasDescriptionFields}>
+                                <div class="detail-section">
+                                    <h3 class="section-title">Description</h3>
+                                    <template for:each={descriptionFields} for:item="field">
+                                        <div key={field.key} class="field-row">
+                                            <span class="field-label">{field.key}</span>
+                                            <span class={field.valueClass}>{field.value}</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
             </template>
             <template if:true={hasAdditionalFields}>
                 <div class="detail-section slds-m-top_medium">

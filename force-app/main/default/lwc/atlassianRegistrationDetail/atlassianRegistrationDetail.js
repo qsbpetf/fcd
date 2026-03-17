@@ -296,6 +296,10 @@ export default class AtlassianRegistrationDetail extends LightningElement {
         return this.hasTermsFields || this.hasDescriptionFields || this.hasDealContextFields;
     }
 
+    get isServiceRegistration() {
+        return (this.registration?.programType || '').toUpperCase() === 'SERVICE_REGISTRATION';
+    }
+
     get hasRegistration() {
         return this.registration != null && !this.isLoading;
     }

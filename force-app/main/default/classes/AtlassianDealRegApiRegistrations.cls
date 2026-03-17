@@ -268,6 +268,9 @@ public with sharing class AtlassianDealRegApiRegistrations {
         if (String.isBlank(body)) {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('body is required');
         }
+        
+        System.debug('createServiceRegistration body:\n' + body);
+
         HttpResponse response = client.createServiceRegistration(partnerAccountId, body);
         if (response.getStatusCode() != 201) {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Create service failed: ' + parseErrorMessage(response));

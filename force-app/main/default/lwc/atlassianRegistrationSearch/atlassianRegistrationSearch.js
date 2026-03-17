@@ -200,6 +200,14 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         return (this._detailProgramType || '').toUpperCase() === 'DEAL_REGISTRATION';
     }
 
+    get isServiceRegistration() {
+        return (this._detailProgramType || '').toUpperCase() === 'SERVICE_REGISTRATION';
+    }
+
+    get isEditableRegistration() {
+        return this.isDealRegistration || this.isServiceRegistration;
+    }
+
     handleSearch() {
         if (!this.selectedPartnerId) {
             return;

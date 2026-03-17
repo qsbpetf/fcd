@@ -1,0 +1,71 @@
+/* Compact form layout - matches atlassianDealRegDraftForm */
+.compact-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 1rem;
+    row-gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .compact-form .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .compact-form .form-grid.form-grid-2,
+    .compact-form .form-grid.form-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .compact-form .form-grid .form-grid-span-2 {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .compact-form .form-grid,
+    .compact-form .form-grid.form-grid-2,
+    .compact-form .form-grid.form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .compact-form .form-grid .form-grid-span-2 {
+        grid-column: span 1;
+    }
+}
+
+.compact-form .form-grid .slds-form-element {
+    margin-bottom: 0 !important;
+    min-width: 0;
+}
+
+.compact-form .form-grid.form-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.compact-form .form-grid.form-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.compact-form .form-grid .form-grid-span-2 {
+    grid-column: span 2;
+}
+
+.compact-form .form-grid.partner-account-row {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.compact-form .form-grid.products-platform-row {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0.5rem;
+}
+
+.compact-form .form-grid.products-row {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0.5rem;
+}
+
+.compact-form .form-grid.products-cloud-row {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.compact-form .form-grid.service-multi-row {
+    margin-top: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+}
