@@ -28,11 +28,14 @@ public with sharing class GeneralHttpCalloutMock implements HttpCalloutMock {
     }
 
     public void addOkResponse(String key, String body) {
-        HttpResponse resp = new HttpResponse();
-        resp.setStatusCode(200);
-        resp.setStatus('OK');
-        resp.setBody(body);
+        addResponse(key, 200, body);
+    }
 
+    public void addResponse(String key, Integer statusCode, String body) {
+        HttpResponse resp = new HttpResponse();
+        resp.setStatusCode(statusCode);
+        resp.setStatus(statusCode == 200 ? 'OK' : statusCode == 201 ? 'Created' : statusCode == 202 ? 'Accepted' : statusCode == 204 ? 'No Content' : 'Custom');
+        resp.setBody(body != null ? body : '');
         this.responseMap.put(key, resp);
     }
 

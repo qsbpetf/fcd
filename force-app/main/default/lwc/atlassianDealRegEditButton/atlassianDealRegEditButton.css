@@ -1,0 +1,9 @@
+.edit-registration-modal__container {
+    width: 90vw;
+    max-width: 70rem;
+}
+
+.edit-registration-modal-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}

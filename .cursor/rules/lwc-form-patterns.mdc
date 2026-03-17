@@ -1,0 +1,51 @@
+---
+description: LWC form layout and Lightning base component patterns for Salesforce
+globs: force-app/**/lwc/**/*.html, force-app/**/lwc/**/*.css
+alwaysApply: false
+---
+
+# LWC Form Patterns
+
+## Labels: Use Built-in `label` Attribute
+
+**Never** use separate `<label for="...">` elements with Lightning base components. LWC transforms IDs at render time, so `for`/`id` associations break—causing accessibility errors and "label's for attribute doesn't match any element id" warnings in DevTools.
+
+Use the component's built-in `label` attribute instead. The component handles programmatic association correctly.
+
+```html
+<!-- ❌ BAD: Separate label breaks in LWC -->
+<label class="slds-form-element__label" for="deal-name">Deal Name</label>
+<lightning-input id="deal-name" data-field="dealName" ...></lightning-input>
+
+<!-- ✅ GOOD: Built-in label -->
+<lightning-input label="Deal Name" data-field="dealName" ...></lightning-input>
+```
+
+Applies to: `lightning-input`, `lightning-combobox`, `lightning-textarea`, `lightning-dual-listbox` (uses `label`).
+
+## Multi-Column Form Layout: Row-Based CSS Grid
+
+For forms with multiple columns, use **row-based CSS Grid** so fields align vertically across columns. Avoid stacked `slds-col` divs—they cause misaligned rows.
+
+```css
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 1rem;
+    row-gap: 0.5rem;
+}
+```
+
+```html
+<div class="form-grid">
+    <div class="slds-form-element"><lightning-input label="Deal Name" ...></lightning-input></div>
+    <div class="slds-form-element"><lightning-input label="Parent ID" ...></lightning-input></div>
+    <!-- Grid flows left-to-right, top-to-bottom; fields align across columns -->
+</div>
+```
+
+Variants: `form-grid-2` (2 cols), `form-grid-3` (3 cols). Use `form-grid-span-2` for fields that span multiple columns (e.g. dual-listbox).
+
+## Label-to-Input Spacing
+
+The built-in `label` on Lightning components provides proper spacing. Avoid wrapping components in extra label wrappers—that creates double structure and excessive gaps.

@@ -22,7 +22,26 @@ const PARTNER_FIELDS = [
     'opportunityNumber'
 ];
 
-const REVENUE_FIELDS = ['estimatedRevenue'];
+const REVENUE_FIELDS = ['estimatedRevenue', 'estimatedOpportunityCloseDate'];
+
+const PRODUCTS_PLATFORM_FIELDS = ['products', 'platform', 'customerHasCloudSite', 'cloudSite'];
+
+const TERMS_FIELDS = ['termsAccepted', 'sowConfirmed', 'termsConfirmed'];
+
+const DESCRIPTION_FIELDS = ['detailedDescription', 'notes', 'comments', 'additionalInfo'];
+
+const DEAL_CONTEXT_FIELDS = [
+    'crucialEvent',
+    'rfpRelated',
+    'rfpRelatedTo',
+    'salesType',
+    'budgetAllocated',
+    'dealRegDcExceptionReason',
+    'senOrEntitlementNumber',
+    'customerKeyDecisionMakersEngagedInProcess',
+    'eccListedAboveIsKeyDecisionMaker',
+    'eccKeyDecisionMaker'
+];
 
 const DATE_TIME_FIELDS = new Set(['createdAt', 'lastModifiedAt', 'submissionDate', 'expirationDate', 'approvalDate', 'serviceStartDate', 'serviceEndDate', 'estimatedOpportunityCloseDate']);
 
@@ -31,6 +50,10 @@ const KNOWN_FIELDS = new Set([
     ...CUSTOMER_FIELDS,
     ...PARTNER_FIELDS,
     ...REVENUE_FIELDS,
+    ...PRODUCTS_PLATFORM_FIELDS,
+    ...TERMS_FIELDS,
+    ...DESCRIPTION_FIELDS,
+    ...DEAL_CONTEXT_FIELDS,
     'extensionStatus',
     'denialReason',
     'comments',
@@ -79,6 +102,10 @@ export default class AtlassianRegistrationDetail extends LightningElement {
     _customerFields = [];
     _partnerFields = [];
     _revenueFields = [];
+    _productsPlatformFields = [];
+    _termsFields = [];
+    _descriptionFields = [];
+    _dealContextFields = [];
     _additionalFields = [];
 
     connectedCallback() {
@@ -133,6 +160,10 @@ export default class AtlassianRegistrationDetail extends LightningElement {
         this._customerFields = this._pickFields(data, CUSTOMER_FIELDS);
         this._partnerFields = this._pickFields(data, PARTNER_FIELDS);
         this._revenueFields = this._pickFields(data, REVENUE_FIELDS);
+        this._productsPlatformFields = this._pickFields(data, PRODUCTS_PLATFORM_FIELDS);
+        this._termsFields = this._pickFields(data, TERMS_FIELDS);
+        this._descriptionFields = this._pickFields(data, DESCRIPTION_FIELDS);
+        this._dealContextFields = this._pickFields(data, DEAL_CONTEXT_FIELDS);
 
         const additional = [];
         for (const [key, value] of Object.entries(data)) {
@@ -150,7 +181,17 @@ export default class AtlassianRegistrationDetail extends LightningElement {
 
     _pickFields(data, keys) {
         return keys
-            .filter((k) => data[k] != null && data[k] !== '')
+            .filter((k) => {
+                const v = data[k];
+                if (v == null) return false;
+                if (typeof v === 'string' && v === '') return false;
+                if (Array.isArray(v) && v.length === 0) return false;
+                if (k === 'eccKeyDecisionMaker' && typeof v === 'object') {
+                    const ecc = v;
+                    return ecc.endCustomerFirstName || ecc.endCustomerLastName || ecc.endCustomerEmail || ecc.endCustomerJobTitle;
+                }
+                return true;
+            })
             .map((k) => {
                 const isId = k === 'id';
                 return {
@@ -174,6 +215,15 @@ export default class AtlassianRegistrationDetail extends LightningElement {
         if (value === null || value === undefined) return '';
         if (typeof value === 'boolean') return value ? 'Yes' : 'No';
         if (Array.isArray(value)) return value.join(', ');
+        if (key === 'eccKeyDecisionMaker' && typeof value === 'object') {
+            const parts = [];
+            if (value.endCustomerFirstName || value.endCustomerLastName) {
+                parts.push([value.endCustomerFirstName, value.endCustomerLastName].filter(Boolean).join(' '));
+            }
+            if (value.endCustomerEmail) parts.push(value.endCustomerEmail);
+            if (value.endCustomerJobTitle) parts.push(value.endCustomerJobTitle);
+            return parts.length > 0 ? parts.join(' • ') : '';
+        }
         if (typeof value === 'object') return JSON.stringify(value);
         if (key === 'estimatedRevenue') {
             const num = parseFloat(value);
@@ -208,6 +258,42 @@ export default class AtlassianRegistrationDetail extends LightningElement {
 
     get hasAdditionalFields() {
         return this._additionalFields && this._additionalFields.length > 0;
+    }
+
+    get productsPlatformFields() {
+        return this._productsPlatformFields;
+    }
+
+    get hasProductsPlatformFields() {
+        return this._productsPlatformFields && this._productsPlatformFields.length > 0;
+    }
+
+    get termsFields() {
+        return this._termsFields;
+    }
+
+    get hasTermsFields() {
+        return this._termsFields && this._termsFields.length > 0;
+    }
+
+    get descriptionFields() {
+        return this._descriptionFields;
+    }
+
+    get hasDescriptionFields() {
+        return this._descriptionFields && this._descriptionFields.length > 0;
+    }
+
+    get dealContextFields() {
+        return this._dealContextFields;
+    }
+
+    get hasDealContextFields() {
+        return this._dealContextFields && this._dealContextFields.length > 0;
+    }
+
+    get hasTermsOrDescriptionOrDealContext() {
+        return this.hasTermsFields || this.hasDescriptionFields || this.hasDealContextFields;
     }
 
     get hasRegistration() {

@@ -1,0 +1,92 @@
+/* Compact form layout - row-based grid for vertical alignment, tight spacing */
+.compact-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 1rem;
+    row-gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .compact-form .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .compact-form .form-grid.form-grid-2,
+    .compact-form .form-grid.form-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .compact-form .form-grid .form-grid-span-2 {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .compact-form .form-grid,
+    .compact-form .form-grid.form-grid-2,
+    .compact-form .form-grid.form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .compact-form .form-grid .form-grid-span-2 {
+        grid-column: span 1;
+    }
+}
+
+.compact-form .form-grid .slds-form-element {
+    margin-bottom: 0 !important;
+    min-width: 0;
+}
+
+.compact-form .form-grid.form-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.compact-form .form-grid.form-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.compact-form .form-grid .form-grid-span-2 {
+    grid-column: span 2;
+}
+
+/* Partner Account: single column, same width as other grid fields */
+.compact-form .form-grid.partner-account-row {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.compact-form .form-grid.partner-account-row .slds-form-element {
+    grid-column: span 1;
+}
+
+/* ECC checkbox: own row, same width as other grid fields */
+.compact-form .form-grid.ecc-checkbox-row {
+    margin-top: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.compact-form .form-grid.ecc-checkbox-row .slds-form-element {
+    grid-column: span 1;
+}
+
+/* Products & Platform: Platform on its own row, narrow like other fields */
+.compact-form .form-grid.products-platform-row {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0.5rem;
+}
+
+.compact-form .form-grid.products-platform-row .slds-form-element {
+    grid-column: span 1;
+}
+
+/* Products row: Products span 2, full width on its row */
+.compact-form .form-grid.products-row {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0.5rem;
+}
+
+/* Cloud fields: own row, Customer Has Cloud Site left of Cloud Site URL */
+.compact-form .form-grid.products-cloud-row {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.compact-form .form-grid.products-cloud-row .slds-form-element {
+    grid-column: span 1;
+}

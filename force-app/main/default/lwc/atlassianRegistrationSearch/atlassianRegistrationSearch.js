@@ -74,6 +74,7 @@ export default class AtlassianRegistrationSearch extends LightningElement {
     previousPageTokenStack = [];
     hasPreviousPage = false;
     showDetailModal = false;
+    detailModalMode = 'view';
 
     columns = [
         { label: 'ID', type: 'action', typeAttributes: { rowActions: { fieldName: 'rowActions' } } },
@@ -164,6 +165,7 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         const row = event.detail?.row;
         if (action === 'view' && row && this.selectedPartnerId) {
             this.showDetailModal = true;
+            this.detailModalMode = 'view';
             this._detailRegistrationId = row.id;
             this._detailPartnerId = this.selectedPartnerId;
             this._detailProgramType = this.normalizeProgramType(row.programType) || 'DEAL_REGISTRATION';
@@ -172,9 +174,30 @@ export default class AtlassianRegistrationSearch extends LightningElement {
 
     handleCloseDetailModal() {
         this.showDetailModal = false;
+        this.detailModalMode = 'view';
         this._detailRegistrationId = null;
         this._detailPartnerId = null;
         this._detailProgramType = null;
+    }
+
+    handleEditInModal() {
+        this.detailModalMode = 'edit';
+    }
+
+    handleBackToView() {
+        this.detailModalMode = 'view';
+    }
+
+    handleFormUpdated() {
+        this.detailModalMode = 'view';
+    }
+
+    get isDetailModalInEditMode() {
+        return this.detailModalMode === 'edit';
+    }
+
+    get isDealRegistration() {
+        return (this._detailProgramType || '').toUpperCase() === 'DEAL_REGISTRATION';
     }
 
     handleSearch() {

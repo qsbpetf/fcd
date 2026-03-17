@@ -1,0 +1,28 @@
+{
+    "programType": "DEAL_REGISTRATION",
+    "id": "D-1000008235",
+    "dealName": "Peters Test Deal - Only for debugging",
+    "programType": "DEAL_REGISTRATION",
+    "products": [
+        "BAMBOO",
+        "CONFLUENCE",
+        "JIRA",
+        "BITBUCKET"
+    ],
+    "customerHasCloudSite": "NO",
+    "sowConfirmed": false,
+    "termsConfirmed": false,
+    "detailedDescription": "This is a test deal detailed description!",
+    "platform": "CLOUD",
+    "estimatedRevenue": 911.0,
+    "status": "Draft",
+    "estimatedOpportunityCloseDate": "2026-04-30",
+    "createdAt": "2026-03-17T10:59:11.108Z",
+    "lastModifiedAt": "2026-03-17T10:59:11.108Z",
+    "customerKeyDecisionMakersEngagedInProcess": true,
+    "crucialEvent": "New License Purchase",
+    "rfpRelated": true,
+    "rfpRelatedTo": "GENERAL_SOLUTION_PROPOSAL",
+    "salesType": "NEW_PRODUCT",
+    "eccListedAboveIsKeyDecisionMaker": true
+}

@@ -1,0 +1,28 @@
+<template>
+    <lightning-button
+        label="Edit registration"
+        variant="brand"
+        onclick={handleOpenModal}
+    ></lightning-button>
+
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open edit-registration-modal" aria-labelledby="edit-modal-heading" aria-modal="true">
+            <div class="slds-modal__container edit-registration-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="edit-modal-heading" class="slds-modal__title slds-hyphenate">Edit Deal Registration</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium edit-registration-modal-content">
+                    <c-atlassian-deal-reg-draft-form
+                        record-id={recordId}
+                        onupdated={handleFormUpdated}
+                    ></c-atlassian-deal-reg-draft-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" onclick={handleCloseModal}></div>
+    </template>
+</template>

@@ -1,0 +1,227 @@
+<template>
+    <lightning-card title={pageTitle} icon-name="standard:opportunity">
+        <div slot="actions">
+            <template if:true={isEditMode}>
+                <template if:true={canSubmit}>
+                    <lightning-button
+                        label="Submit Draft"
+                        variant="brand"
+                        onclick={handleSubmit}
+                        disabled={isSubmitting}
+                    ></lightning-button>
+                </template>
+                <template if:true={canPoll}>
+                    <lightning-button
+                        label="Poll Status"
+                        variant="neutral"
+                        onclick={handlePollStatus}
+                        disabled={isPolling}
+                    ></lightning-button>
+                </template>
+            </template>
+            <template if:false={isFormReadOnly}>
+                <lightning-button
+                    label={saveButtonLabel}
+                    variant="brand"
+                    onclick={handleSave}
+                    disabled={isSaving}
+                ></lightning-button>
+            </template>
+        </div>
+
+        <template if:true={isLoading}>
+            <div class="slds-p-around_large slds-align_absolute-center">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={isFormReadOnly}>
+            <div class="slds-p-around_small">
+                <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                    <span class="slds-assistive-text">Notice</span>
+                    <h2>This registration cannot be edited (status: {submissionStatus}).</h2>
+                </div>
+            </div>
+        </template>
+        <template if:true={hasError}>
+            <div class="slds-p-around_small">
+                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>{errorMessage}</h2>
+                </div>
+            </div>
+        </template>
+
+        <template if:false={isLoading}>
+            <div class="slds-p-horizontal_small slds-p-vertical_x-small compact-form">
+                <template if:true={isCreateMode}>
+                    <div class="form-grid partner-account-row">
+                        <div class="slds-form-element">
+                            <lightning-combobox
+                                label="Partner Account"
+                                data-field="selectedPartnerId"
+                                value={selectedPartnerId}
+                                options={partnerOptions}
+                                onchange={handlePartnerChange} disabled={isFormReadOnly}
+                                required
+                            ></lightning-combobox>
+                        </div>
+                    </div>
+                </template>
+
+                <lightning-accordion allow-multiple-sections-open active-section-name="core">
+                    <lightning-accordion-section name="core" label="Core &amp; Customer">
+                        <div class="form-grid">
+                            <div class="slds-form-element">
+                                <lightning-input label="Deal Name" data-field="dealName" type="text" value={dealName} onchange={handleInputChange} read-only={isFormReadOnly} required></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Parent Registration ID" data-field="parentRegistrationId" type="text" value={parentRegistrationId} onchange={handleInputChange} read-only={isFormReadOnly} placeholder="For child deals only"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Partner Sales Rep Email" data-field="partnerSalesRepresentativeEmailId" type="email" value={partnerSalesRepresentativeEmailId} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Estimated Revenue" data-field="estimatedRevenue" type="number" value={estimatedRevenue} onchange={handleInputChange} read-only={isFormReadOnly} formatter="decimal"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Customer Domain" data-field="customerDomain" type="text" value={customerDomain} onchange={handleInputChange} read-only={isFormReadOnly} placeholder="example.com"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Customer Contact Email" data-field="customerContactEmailId" type="email" value={customerContactEmailId} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Opportunity Number" data-field="partnerSubmittedOpportunityNumber" type="text" value={partnerSubmittedOpportunityNumber} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Estimated Close Date" data-field="estimatedOpportunityCloseDate" type="date" value={estimatedOpportunityCloseDate} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <lightning-accordion-section name="products" label="Products &amp; Platform">
+                        <div class="form-grid products-platform-row">
+                            <div class="slds-form-element">
+                                <lightning-combobox label="Platform" data-field="platform" value={platform} options={platformOptions} onchange={handleInputChange} disabled={isFormReadOnly}></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="form-grid products-row">
+                            <div class="slds-form-element form-grid-span-2">
+                                <lightning-dual-listbox
+                                    name="products"
+                                    label="Products"
+                                    source-label="Available"
+                                    selected-label="Selected"
+                                    options={productOptions}
+                                    value={productsValue}
+                                    onchange={handleProductsChange} disabled={isFormReadOnly}
+                                ></lightning-dual-listbox>
+                            </div>
+                        </div>
+                        <div class="form-grid products-cloud-row">
+                            <div class="slds-form-element">
+                                <lightning-input label="Customer Has Cloud Site" data-field="customerHasCloudSite" type="text" value={customerHasCloudSite} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Cloud Site URL" data-field="cloudSite" type="url" value={cloudSite} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <lightning-accordion-section name="terms" label="Terms &amp; Confirmation">
+                        <div class="form-grid form-grid-3">
+                            <div class="slds-form-element">
+                                <lightning-input type="checkbox" data-field="termsAccepted" checked={termsAccepted} onchange={handleCheckboxChange} disabled={isFormReadOnly} label="Terms Accepted"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input type="checkbox" data-field="sowConfirmed" checked={sowConfirmed} onchange={handleCheckboxChange} disabled={isFormReadOnly} label="SOW Confirmed"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input type="checkbox" data-field="termsConfirmed" checked={termsConfirmed} onchange={handleCheckboxChange} disabled={isFormReadOnly} label="Terms Confirmed"></lightning-input>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <lightning-accordion-section name="description" label="Description &amp; Notes">
+                        <div class="form-grid form-grid-2">
+                            <div class="slds-form-element">
+                                <lightning-textarea label="Detailed Description" data-field="detailedDescription" value={detailedDescription} onchange={handleInputChange} read-only={isFormReadOnly} rows="2"></lightning-textarea>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-textarea label="Notes" data-field="notes" value={notes} onchange={handleInputChange} read-only={isFormReadOnly} rows="2"></lightning-textarea>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-textarea label="Comments" data-field="comments" value={comments} onchange={handleInputChange} read-only={isFormReadOnly} rows="2"></lightning-textarea>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-textarea label="Additional Info" data-field="additionalInfo" value={additionalInfo} onchange={handleInputChange} read-only={isFormReadOnly} rows="2"></lightning-textarea>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <lightning-accordion-section name="deal" label="Deal Context">
+                        <div class="form-grid">
+                            <div class="slds-form-element">
+                                <lightning-combobox label="Budget Allocated" data-field="budgetAllocated" value={budgetAllocated} options={budgetOptions} onchange={handleInputChange} disabled={isFormReadOnly}></lightning-combobox>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-combobox label="Sales Type" data-field="salesType" value={salesType} options={salesTypeOptions} onchange={handleInputChange} disabled={isFormReadOnly}></lightning-combobox>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="SEN or Entitlement Number" data-field="senOrEntitlementNumber" type="text" value={senOrEntitlementNumber} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Crucial Event" data-field="crucialEvent" type="text" value={crucialEvent} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input type="checkbox" data-field="customerKeyDecisionMakersEngagedInProcess" checked={customerKeyDecisionMakersEngagedInProcess} onchange={handleCheckboxChange} disabled={isFormReadOnly} label="Key Decision Makers Engaged"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input type="checkbox" data-field="rfpRelated" checked={rfpRelated} onchange={handleCheckboxChange} disabled={isFormReadOnly} label="RFP Related"></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-combobox label="RFP Related To" data-field="rfpRelatedTo" value={rfpRelatedTo} options={rfpOptions} onchange={handleInputChange} disabled={isFormReadOnly}></lightning-combobox>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="DC Exception Reason" data-field="dealRegDcExceptionReason" type="text" value={dealRegDcExceptionReason} onchange={handleInputChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <lightning-accordion-section name="ecc" label="ECC Key Decision Maker">
+                        <div class="form-grid">
+                            <div class="slds-form-element">
+                                <lightning-input label="First Name" data-field="endCustomerFirstName" type="text" value={eccKeyDecisionMaker.endCustomerFirstName} onchange={handleEccChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Last Name" data-field="endCustomerLastName" type="text" value={eccKeyDecisionMaker.endCustomerLastName} onchange={handleEccChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Email" data-field="endCustomerEmail" type="email" value={eccKeyDecisionMaker.endCustomerEmail} onchange={handleEccChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning-input label="Job Title" data-field="endCustomerJobTitle" type="text" value={eccKeyDecisionMaker.endCustomerJobTitle} onchange={handleEccChange} read-only={isFormReadOnly}></lightning-input>
+                            </div>
+                        </div>
+                        <div class="form-grid ecc-checkbox-row">
+                            <div class="slds-form-element">
+                                <lightning-input type="checkbox" data-field="eccListedAboveIsKeyDecisionMaker" checked={eccListedAboveIsKeyDecisionMaker} onchange={handleCheckboxChange} disabled={isFormReadOnly} label="ECC Listed Above Is Key Decision Maker"></lightning-input>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+
+                <template if:true={isEditMode}>
+                    <div class="slds-m-top_medium slds-p-top_medium slds-border_top">
+                        <p class="slds-text-color_weak">
+                            <strong>Status:</strong> {submissionStatus}
+                            <template if:true={submissionJobId}>
+                                | <strong>Job ID:</strong> {submissionJobId}
+                            </template>
+                        </p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </lightning-card>
+</template>

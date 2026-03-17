@@ -17,6 +17,18 @@
     gap: 0.25rem;
 }
 
+.registration-detail-modal__container {
+    width: 90vw;
+    max-width: 70rem;
+}
+
+.detail-modal-header__content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
 .detail-modal-content {
     max-height: 70vh;
     overflow-y: auto;

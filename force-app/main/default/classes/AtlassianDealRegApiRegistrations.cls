@@ -188,6 +188,8 @@ public with sharing class AtlassianDealRegApiRegistrations {
             );
         }
 
+        System.debug('getRegistration response:\n' + response.getBody());
+
         Object parsed = JSON.deserializeUntyped(response.getBody());
         if (parsed instanceof Map<String, Object>) {
             return (Map<String, Object>) parsed;
@@ -200,9 +202,225 @@ public with sharing class AtlassianDealRegApiRegistrations {
         return value.replaceAll('\\s+', '_').toUpperCase();
     }
 
+    private static String parseErrorMessage(HttpResponse response) {
+        String body = response.getBody();
+        if (String.isNotBlank(body)) {
+            try {
+                Map<String, Object> parsed = (Map<String, Object>) JSON.deserializeUntyped(body);
+                List<String> parts = new List<String>();
+                Object statusCode = parsed.get('statusCode');
+                if (statusCode != null) parts.add('Status ' + statusCode);
+                Object msg = parsed.get('message');
+                if (msg != null) parts.add(String.valueOf(msg));
+                Object errors = parsed.get('errors');
+                if (errors != null) parts.add('Details: ' + String.valueOf(errors));
+                if (!parts.isEmpty()) return String.join(parts, ' — ');
+            } catch (Exception e) { }
+        }
+        return response.getStatus() + ' (' + response.getStatusCode() + ')';
+    }
+
+    /**
+     * Create a new draft deal registration.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param body JSON payload for DealRegistrationPayload
+     * @return DraftCreationSuccess with id and status
+     */
+    @AuraEnabled(cacheable=false)
+    public static AtlassianDealRegApiClient.DraftCreationSuccess createDealRegistrationStatic(String partnerAccountId, String body) {
+        return AtlassianDealRegApiRegistrations.getInstance().createDealRegistration(partnerAccountId, body);
+    }
+
+    public AtlassianDealRegApiClient.DraftCreationSuccess createDealRegistration(String partnerAccountId, String body) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(body)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('body is required');
+        }
+        HttpResponse response = client.createDealRegistration(partnerAccountId, body);
+
+        System.debug('createDealRegistration response:\n' + response.getBody());
+        
+        if (response.getStatusCode() != 201) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Create deal failed: ' + parseErrorMessage(response));
+        }
+        return (AtlassianDealRegApiClient.DraftCreationSuccess) JSON.deserialize(response.getBody(), AtlassianDealRegApiClient.DraftCreationSuccess.class);
+    }
+
+    /**
+     * Create a new draft service registration.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param body JSON payload for ServiceRegistrationPayload
+     * @return DraftCreationSuccess with id and status
+     */
+    @AuraEnabled(cacheable=false)
+    public static AtlassianDealRegApiClient.DraftCreationSuccess createServiceRegistrationStatic(String partnerAccountId, String body) {
+        return AtlassianDealRegApiRegistrations.getInstance().createServiceRegistration(partnerAccountId, body);
+    }
+
+    public AtlassianDealRegApiClient.DraftCreationSuccess createServiceRegistration(String partnerAccountId, String body) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(body)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('body is required');
+        }
+        HttpResponse response = client.createServiceRegistration(partnerAccountId, body);
+        if (response.getStatusCode() != 201) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Create service failed: ' + parseErrorMessage(response));
+        }
+        return (AtlassianDealRegApiClient.DraftCreationSuccess) JSON.deserialize(response.getBody(), AtlassianDealRegApiClient.DraftCreationSuccess.class);
+    }
+
+    /**
+     * Update an existing deal registration.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param registrationId Registration ID (e.g. D-xxxx)
+     * @param body JSON payload (partial update)
+     */
+    @AuraEnabled(cacheable=false)
+    public static void updateDealRegistrationStatic(String partnerAccountId, String registrationId, String body) {
+        AtlassianDealRegApiRegistrations.getInstance().updateDealRegistration(partnerAccountId, registrationId, body);
+    }
+
+    public void updateDealRegistration(String partnerAccountId, String registrationId, String body) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(registrationId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
+        }
+        if (String.isBlank(body)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('body is required');
+        }
+        HttpResponse response = client.updateDealRegistration(partnerAccountId, registrationId, body);
+        if (response.getStatusCode() != 204) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Update deal failed: ' + parseErrorMessage(response));
+        }
+    }
+
+    /**
+     * Update an existing service registration.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param registrationId Registration ID (e.g. CD-xxxx)
+     * @param body JSON payload (partial update)
+     */
+    @AuraEnabled(cacheable=false)
+    public static void updateServiceRegistrationStatic(String partnerAccountId, String registrationId, String body) {
+        AtlassianDealRegApiRegistrations.getInstance().updateServiceRegistration(partnerAccountId, registrationId, body);
+    }
+
+    public void updateServiceRegistration(String partnerAccountId, String registrationId, String body) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(registrationId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
+        }
+        if (String.isBlank(body)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('body is required');
+        }
+        HttpResponse response = client.updateServiceRegistration(partnerAccountId, registrationId, body);
+        if (response.getStatusCode() != 204) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Update service failed: ' + parseErrorMessage(response));
+        }
+    }
+
+    /**
+     * Submit a deal registration for async processing.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param registrationId Registration ID (e.g. D-xxxx)
+     * @return JobStatusSuccess with jobId and status
+     */
+    @AuraEnabled(cacheable=false)
+    public static JobStatusSuccess submitDealRegistrationStatic(String partnerAccountId, String registrationId) {
+        return AtlassianDealRegApiRegistrations.getInstance().submitDealRegistration(partnerAccountId, registrationId);
+    }
+
+    public JobStatusSuccess submitDealRegistration(String partnerAccountId, String registrationId) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(registrationId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
+        }
+        HttpResponse response = client.submitDealRegistration(partnerAccountId, registrationId);
+        if (response.getStatusCode() != 202) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Submit deal failed: ' + parseErrorMessage(response));
+        }
+        return (JobStatusSuccess) JSON.deserialize(response.getBody(), JobStatusSuccess.class);
+    }
+
+    /**
+     * Submit a service registration for async processing.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param registrationId Registration ID (e.g. CD-xxxx)
+     * @return JobStatusSuccess with jobId and status
+     */
+    @AuraEnabled(cacheable=false)
+    public static JobStatusSuccess submitServiceRegistrationStatic(String partnerAccountId, String registrationId) {
+        return AtlassianDealRegApiRegistrations.getInstance().submitServiceRegistration(partnerAccountId, registrationId);
+    }
+
+    public JobStatusSuccess submitServiceRegistration(String partnerAccountId, String registrationId) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(registrationId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
+        }
+        HttpResponse response = client.submitServiceRegistration(partnerAccountId, registrationId);
+        if (response.getStatusCode() != 202) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Submit service failed: ' + parseErrorMessage(response));
+        }
+        return (JobStatusSuccess) JSON.deserialize(response.getBody(), JobStatusSuccess.class);
+    }
+
+    /**
+     * Get async job status for a submission.
+     *
+     * @param partnerAccountId partnerId from partner-accounts/v1/list
+     * @param jobId Job ID from submit response
+     * @return JobStatusSuccess with job status
+     */
+    @AuraEnabled(cacheable=false)
+    public static JobStatusSuccess getJobStatusStatic(String partnerAccountId, String jobId) {
+        return AtlassianDealRegApiRegistrations.getInstance().getJobStatus(partnerAccountId, jobId);
+    }
+
+    public JobStatusSuccess getJobStatus(String partnerAccountId, String jobId) {
+        if (String.isBlank(partnerAccountId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('partnerAccountId is required');
+        }
+        if (String.isBlank(jobId)) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('jobId is required');
+        }
+        HttpResponse response = client.getJobStatus(partnerAccountId, jobId);
+        if (response.getStatusCode() != 200) {
+            throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Get job status failed: ' + parseErrorMessage(response));
+        }
+        return (JobStatusSuccess) JSON.deserialize(response.getBody(), JobStatusSuccess.class);
+    }
+
     // ==================
     //  WRAPPER CLASSES
     // ==================
+
+    public class JobStatusSuccess {
+        @AuraEnabled public String jobId;
+        @AuraEnabled public String status;
+        @AuraEnabled public String createdAt;
+        @AuraEnabled public String lastModifiedAt;
+        @AuraEnabled public String registrationId;
+        @AuraEnabled public Object error;
+    }
 
     public class SearchRegistrationsResponse {
         @AuraEnabled public List<RegistrationSearchResult> registrations;

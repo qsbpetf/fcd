@@ -61,8 +61,21 @@
     gap: 1.25rem;
 }
 
+.terms-description-deal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.terms-description-deal-grid__right .detail-section + .detail-section {
+    margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
     .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    .terms-description-deal-grid {
         grid-template-columns: 1fr;
     }
 }
