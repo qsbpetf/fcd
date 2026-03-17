@@ -77,7 +77,7 @@ export default class AtlassianRegistrationSearch extends LightningElement {
     detailModalMode = 'view';
 
     columns = [
-        { label: 'ID', type: 'action', typeAttributes: { rowActions: { fieldName: 'rowActions' } } },
+        { label: 'ID', fieldName: 'id', type: 'text' },
         { label: 'Deal Name', fieldName: 'dealName', type: 'text', wrapText: true },
         { label: 'Program Type', fieldName: 'programType', type: 'text' },
         { label: 'Status', fieldName: 'status', type: 'text' },
@@ -85,7 +85,8 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         { label: 'Opp Number', fieldName: 'partnerSubmittedOpportunityNumber', type: 'text' },
         { label: 'Est. Revenue', fieldName: 'estimatedRevenue', type: 'currency', typeAttributes: { currencyCode: 'EUR' } },
         { label: 'Expiration', fieldName: 'expirationDate', type: 'date', typeAttributes: { year: 'numeric', month: '2-digit', day: '2-digit' } },
-        { label: 'Created', fieldName: 'createdAtFormatted', type: 'text' }
+        { label: 'Created', fieldName: 'createdAtFormatted', type: 'text' },
+        { label: 'View', type: 'button-icon', fixedWidth: 100, typeAttributes: { iconName: 'utility:preview', alternativeText: 'View', name: 'view', variant: 'bare' } }
     ];
 
     connectedCallback() {
@@ -324,7 +325,6 @@ export default class AtlassianRegistrationSearch extends LightningElement {
             const estimatedRevenueNum = rev == null || rev === '' ? null : (typeof rev === 'number' ? rev : parseFloat(String(rev)));
             return {
                 ...r,
-                rowActions: [{ label: r.id || '', name: 'view' }],
                 estimatedRevenue: isNaN(estimatedRevenueNum) ? null : estimatedRevenueNum,
                 createdAtFormatted: r.createdAt ? this.formatDateTime(r.createdAt) : ''
             };
