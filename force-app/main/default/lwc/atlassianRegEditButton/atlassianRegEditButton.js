@@ -1,21 +1,28 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import PROGRAM_TYPE_FIELD from '@salesforce/schema/AtlassianRegSubmission__c.Program_Type__c';
+import STATUS_FIELD from '@salesforce/schema/AtlassianRegSubmission__c.Status__c';
 
-const PROGRAM_TYPE_DEAL = 'DEAL_REGISTRATION';
 const PROGRAM_TYPE_SERVICE = 'SERVICE_REGISTRATION';
+const STATUS_DRAFT = 'DRAFT';
 
 export default class AtlassianRegEditButton extends LightningElement {
     @api recordId;
 
     programType = '';
+    status = '';
     showModal = false;
 
-    @wire(getRecord, { recordId: '$recordId', fields: [PROGRAM_TYPE_FIELD] })
-    wiredRecord({ data, error }) {
+    @wire(getRecord, { recordId: '$recordId', fields: [PROGRAM_TYPE_FIELD, STATUS_FIELD] })
+    wiredRecord({ data }) {
         if (data) {
             this.programType = getFieldValue(data, PROGRAM_TYPE_FIELD) || '';
+            this.status = getFieldValue(data, STATUS_FIELD) || '';
         }
+    }
+
+    get isEditDisabled() {
+        return this.status.toUpperCase() !== STATUS_DRAFT;
     }
 
     get modalTitle() {

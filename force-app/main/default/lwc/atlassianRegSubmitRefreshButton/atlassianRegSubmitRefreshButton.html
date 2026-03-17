@@ -1,0 +1,18 @@
+<template>
+    <template if:true={showSubmitButton}>
+        <lightning-button
+            label="Submit"
+            variant="brand"
+            onclick={handleSubmit}
+            disabled={isSubmitting}
+        ></lightning-button>
+    </template>
+    <template if:true={showRefreshButton}>
+        <lightning-button
+            label="Refresh"
+            variant="neutral"
+            onclick={handleRefresh}
+            disabled={isRefreshing}
+        ></lightning-button>
+    </template>
+</template>

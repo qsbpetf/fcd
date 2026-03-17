@@ -91,7 +91,7 @@ public with sharing class AtlassianDealRegApiRegistrations {
 
         Map<String, String> params = new Map<String, String>();
         if (String.isNotBlank(status)) {
-            params.put('status', status);
+            params.put('status', status.trim());
         }
         if (String.isNotBlank(registrationId)) {
             params.put('registrationId', registrationId);
@@ -354,6 +354,9 @@ public with sharing class AtlassianDealRegApiRegistrations {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
         }
         HttpResponse response = client.submitDealRegistration(partnerAccountId, registrationId);
+        
+        System.debug('submitDealRegistration response:\n' + response.getBody());
+        
         if (response.getStatusCode() != 202) {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Submit deal failed: ' + parseErrorMessage(response));
         }
@@ -380,6 +383,9 @@ public with sharing class AtlassianDealRegApiRegistrations {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('registrationId is required');
         }
         HttpResponse response = client.submitServiceRegistration(partnerAccountId, registrationId);
+
+        System.debug('submitServiceRegistration response:\n' + response.getBody());
+
         if (response.getStatusCode() != 202) {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Submit service failed: ' + parseErrorMessage(response));
         }
@@ -406,6 +412,9 @@ public with sharing class AtlassianDealRegApiRegistrations {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('jobId is required');
         }
         HttpResponse response = client.getJobStatus(partnerAccountId, jobId);
+
+        System.debug('getJobStatus response:\n' + response.getBody());
+
         if (response.getStatusCode() != 200) {
             throw new AtlassianDealRegApiClient.AtlassianDealRegApiException('Get job status failed: ' + parseErrorMessage(response));
         }

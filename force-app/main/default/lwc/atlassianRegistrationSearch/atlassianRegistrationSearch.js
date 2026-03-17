@@ -237,9 +237,13 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         this.hasError = false;
         this.errorMessage = '';
 
-        const statusStr = Array.isArray(this.selectedStatus) && this.selectedStatus.length > 0
-            ? this.selectedStatus.join(',')
-            : null;
+        const statusStr = (() => {
+            const v = this.selectedStatus;
+            if (!v) return null;
+            if (Array.isArray(v) && v.length > 0) return v.join(',');
+            if (typeof v === 'string' && v.trim()) return v.trim();
+            return null;
+        })();
         const programTypeStr = (() => {
             const v = this.selectedProgramType;
             if (!v) return null;
