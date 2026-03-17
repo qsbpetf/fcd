@@ -1,0 +1,9 @@
+.registration-type-select {
+    max-width: 25%;
+    min-width: 12rem;
+}
+
+.form-divider {
+    border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    margin: 1rem 0 1.5rem 0;
+}

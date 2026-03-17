@@ -8,7 +8,7 @@ private class AtlassianDealRegJobStatusPollBatchTest {
 
     @TestSetup
     static void setup() {
-        AtlassianDealRegSubmission__c sub = new AtlassianDealRegSubmission__c(
+        AtlassianRegSubmission__c sub = new AtlassianRegSubmission__c(
             Name = 'Test Submission',
             Registration_Id__c = 'D-12345',
             Job_Id__c = 'job-123',
@@ -28,7 +28,7 @@ private class AtlassianDealRegJobStatusPollBatchTest {
         AtlassianDealRegJobStatusPollBatch.run();
         Test.stopTest();
 
-        AtlassianDealRegSubmission__c sub = [SELECT Status__c, Last_Polled__c, Error__c FROM AtlassianDealRegSubmission__c LIMIT 1];
+        AtlassianRegSubmission__c sub = [SELECT Status__c, Last_Polled__c, Error__c FROM AtlassianRegSubmission__c LIMIT 1];
         System.assertEquals('COMPLETED', sub.Status__c, 'Status should be updated');
         System.assertNotEquals(null, sub.Last_Polled__c, 'Last Polled should be set');
         System.assertEquals(null, sub.Error__c, 'Error should be null on success');
@@ -36,7 +36,7 @@ private class AtlassianDealRegJobStatusPollBatchTest {
 
     @IsTest
     static void testBatchSkipsNonInProgress() {
-        AtlassianDealRegSubmission__c sub = [SELECT Id FROM AtlassianDealRegSubmission__c LIMIT 1];
+        AtlassianRegSubmission__c sub = [SELECT Id FROM AtlassianRegSubmission__c LIMIT 1];
         sub.Status__c = 'COMPLETED';
         update sub;
 

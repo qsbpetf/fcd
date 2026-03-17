@@ -9,7 +9,7 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <objects>
-                <object>AtlassianDealRegSubmission__c</object>
+                <object>AtlassianRegSubmission__c</object>
             </objects>
         </targetConfig>
         <targetConfig targets="lightning__AppPage">

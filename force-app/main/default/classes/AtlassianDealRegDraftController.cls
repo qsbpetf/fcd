@@ -1,21 +1,21 @@
 /**
  * Controller for creating and editing Atlassian deal registration drafts
- * via the AtlassianDealRegSubmission__c custom object.
+ * via the AtlassianRegSubmission__c custom object.
  */
 public with sharing class AtlassianDealRegDraftController {
 
     /**
-     * Create a new deal draft via API and persist to AtlassianDealRegSubmission__c.
+     * Create a new deal draft via API and persist to AtlassianRegSubmission__c.
      *
      * @param partnerAccountId Partner account ID from partner-accounts/v1/list
      * @param body JSON payload for DealRegistrationPayload
-     * @return Map with recordId of the created AtlassianDealRegSubmission__c
+     * @return Map with recordId of the created AtlassianRegSubmission__c
      */
     @AuraEnabled
     public static Map<String, Object> createDealDraft(String partnerAccountId, String body) {
         AtlassianDealRegApiClient.DraftCreationSuccess result = AtlassianDealRegApiRegistrations.createDealRegistrationStatic(partnerAccountId, body);
 
-        AtlassianDealRegSubmission__c sub = new AtlassianDealRegSubmission__c(
+        AtlassianRegSubmission__c sub = new AtlassianRegSubmission__c(
             Name = 'Draft ' + result.id,
             Registration_Id__c = result.id,
             Status__c = result.status,
@@ -34,14 +34,14 @@ public with sharing class AtlassianDealRegDraftController {
     /**
      * Update an existing deal draft via API.
      *
-     * @param recordId AtlassianDealRegSubmission__c record Id
+     * @param recordId AtlassianRegSubmission__c record Id
      * @param body JSON payload (partial update)
      */
     @AuraEnabled
     public static void updateDealDraft(Id recordId, String body) {
-        AtlassianDealRegSubmission__c sub = [
+        AtlassianRegSubmission__c sub = [
             SELECT Id, Registration_Id__c, Partner_Account_Id__c
-            FROM AtlassianDealRegSubmission__c
+            FROM AtlassianRegSubmission__c
             WHERE Id = :recordId
             WITH SECURITY_ENFORCED
             LIMIT 1
@@ -56,7 +56,7 @@ public with sharing class AtlassianDealRegDraftController {
     /**
      * Update a deal registration via API by registration ID (no SF record required).
      * Used when editing from search results where the registration may not have
-     * an AtlassianDealRegSubmission__c record.
+     * an AtlassianRegSubmission__c record.
      *
      * @param partnerAccountId Partner account ID from partner-accounts/v1/list
      * @param registrationId Registration ID (e.g. D-xxxx)
@@ -72,7 +72,7 @@ public with sharing class AtlassianDealRegDraftController {
     }
 
     /**
-     * Find AtlassianDealRegSubmission__c by registration ID and partner account.
+     * Find AtlassianRegSubmission__c by registration ID and partner account.
      * Returns record Id if found, null otherwise.
      *
      * @param partnerAccountId Partner account ID
@@ -81,9 +81,9 @@ public with sharing class AtlassianDealRegDraftController {
      */
     @AuraEnabled
     public static Map<String, Object> findSubmissionByRegistrationId(String partnerAccountId, String registrationId) {
-        List<AtlassianDealRegSubmission__c> subs = [
+        List<AtlassianRegSubmission__c> subs = [
             SELECT Id, Status__c, Job_Id__c
-            FROM AtlassianDealRegSubmission__c
+            FROM AtlassianRegSubmission__c
             WHERE Registration_Id__c = :registrationId
             AND Partner_Account_Id__c = :partnerAccountId
             WITH SECURITY_ENFORCED
@@ -102,14 +102,14 @@ public with sharing class AtlassianDealRegDraftController {
     /**
      * Submit a deal draft for async processing. Updates the record with jobId and status.
      *
-     * @param recordId AtlassianDealRegSubmission__c record Id
+     * @param recordId AtlassianRegSubmission__c record Id
      * @return Map with jobId and status
      */
     @AuraEnabled
     public static Map<String, Object> submitDealDraft(Id recordId) {
-        AtlassianDealRegSubmission__c sub = [
+        AtlassianRegSubmission__c sub = [
             SELECT Id, Registration_Id__c, Partner_Account_Id__c
-            FROM AtlassianDealRegSubmission__c
+            FROM AtlassianRegSubmission__c
             WHERE Id = :recordId
             WITH SECURITY_ENFORCED
             LIMIT 1
@@ -136,14 +136,14 @@ public with sharing class AtlassianDealRegDraftController {
     /**
      * Get submission record for edit mode.
      *
-     * @param recordId AtlassianDealRegSubmission__c record Id
+     * @param recordId AtlassianRegSubmission__c record Id
      * @return Map with Registration_Id__c, Partner_Account_Id__c, Status__c, Job_Id__c
      */
     @AuraEnabled
     public static Map<String, Object> getSubmissionRecord(Id recordId) {
-        AtlassianDealRegSubmission__c sub = [
+        AtlassianRegSubmission__c sub = [
             SELECT Id, Registration_Id__c, Partner_Account_Id__c, Status__c, Job_Id__c
-            FROM AtlassianDealRegSubmission__c
+            FROM AtlassianRegSubmission__c
             WHERE Id = :recordId
             WITH SECURITY_ENFORCED
             LIMIT 1
@@ -159,14 +159,14 @@ public with sharing class AtlassianDealRegDraftController {
     /**
      * Poll job status and update the record.
      *
-     * @param recordId AtlassianDealRegSubmission__c record Id
+     * @param recordId AtlassianRegSubmission__c record Id
      * @return Map with status, error (if any)
      */
     @AuraEnabled
     public static Map<String, Object> pollJobStatus(Id recordId) {
-        AtlassianDealRegSubmission__c sub = [
+        AtlassianRegSubmission__c sub = [
             SELECT Id, Job_Id__c, Partner_Account_Id__c
-            FROM AtlassianDealRegSubmission__c
+            FROM AtlassianRegSubmission__c
             WHERE Id = :recordId
             WITH SECURITY_ENFORCED
             LIMIT 1

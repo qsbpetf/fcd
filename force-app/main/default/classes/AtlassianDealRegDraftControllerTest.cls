@@ -10,7 +10,7 @@ private class AtlassianDealRegDraftControllerTest {
 
     @TestSetup
     static void setup() {
-        AtlassianDealRegSubmission__c sub = new AtlassianDealRegSubmission__c(
+        AtlassianRegSubmission__c sub = new AtlassianRegSubmission__c(
             Name = 'Test',
             Registration_Id__c = 'D-12345',
             Partner_Account_Id__c = '0012000000yYBawAAG',
@@ -36,7 +36,7 @@ private class AtlassianDealRegDraftControllerTest {
         System.assertEquals('D-12345', result.get('registrationId'), 'Wrong registrationId');
         System.assertEquals('DRAFT', result.get('status'), 'Wrong status');
 
-        AtlassianDealRegSubmission__c sub = [SELECT Id, Registration_Id__c, Status__c FROM AtlassianDealRegSubmission__c WHERE Registration_Id__c = 'D-12345' LIMIT 1];
+        AtlassianRegSubmission__c sub = [SELECT Id, Registration_Id__c, Status__c FROM AtlassianRegSubmission__c WHERE Registration_Id__c = 'D-12345' LIMIT 1];
         System.assertEquals('DRAFT', sub.Status__c, 'Status should be DRAFT');
     }
 
@@ -46,7 +46,7 @@ private class AtlassianDealRegDraftControllerTest {
         mock.addResponse('registrations/v1/deals', 204, '');
         Test.setMock(HttpCalloutMock.class, mock);
 
-        Id recordId = [SELECT Id FROM AtlassianDealRegSubmission__c LIMIT 1].Id;
+        Id recordId = [SELECT Id FROM AtlassianRegSubmission__c LIMIT 1].Id;
 
         Test.startTest();
         AtlassianDealRegDraftController.updateDealDraft(recordId, '{"dealName":"Updated"}');
@@ -61,7 +61,7 @@ private class AtlassianDealRegDraftControllerTest {
         mock.addResponse('registrations/v1/deals', 202, JOB_STATUS);
         Test.setMock(HttpCalloutMock.class, mock);
 
-        Id recordId = [SELECT Id FROM AtlassianDealRegSubmission__c LIMIT 1].Id;
+        Id recordId = [SELECT Id FROM AtlassianRegSubmission__c LIMIT 1].Id;
 
         Test.startTest();
         Map<String, Object> result = AtlassianDealRegDraftController.submitDealDraft(recordId);
@@ -70,7 +70,7 @@ private class AtlassianDealRegDraftControllerTest {
         System.assertEquals('job-123', result.get('jobId'), 'Wrong jobId');
         System.assertEquals('IN_PROGRESS', result.get('status'), 'Wrong status');
 
-        AtlassianDealRegSubmission__c sub = [SELECT Job_Id__c, Status__c FROM AtlassianDealRegSubmission__c WHERE Id = :recordId];
+        AtlassianRegSubmission__c sub = [SELECT Job_Id__c, Status__c FROM AtlassianRegSubmission__c WHERE Id = :recordId];
         System.assertEquals('job-123', sub.Job_Id__c, 'Job Id should be set');
         System.assertEquals('IN_PROGRESS', sub.Status__c, 'Status should be IN_PROGRESS');
     }
@@ -81,7 +81,7 @@ private class AtlassianDealRegDraftControllerTest {
         mock.addOkResponse('jobs/v1', '{"jobId":"job-123","status":"COMPLETED","registrationId":"D-12345"}');
         Test.setMock(HttpCalloutMock.class, mock);
 
-        AtlassianDealRegSubmission__c sub = [SELECT Id FROM AtlassianDealRegSubmission__c LIMIT 1];
+        AtlassianRegSubmission__c sub = [SELECT Id FROM AtlassianRegSubmission__c LIMIT 1];
         sub.Job_Id__c = 'job-123';
         sub.Status__c = 'IN_PROGRESS';
         update sub;
@@ -95,7 +95,7 @@ private class AtlassianDealRegDraftControllerTest {
 
     @IsTest
     static void testGetSubmissionRecord() {
-        Id recordId = [SELECT Id FROM AtlassianDealRegSubmission__c LIMIT 1].Id;
+        Id recordId = [SELECT Id FROM AtlassianRegSubmission__c LIMIT 1].Id;
 
         Map<String, Object> result = AtlassianDealRegDraftController.getSubmissionRecord(recordId);
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Tracks Atlassian deal/service registration drafts and async submission jobs. Store registration ID from create, job ID from submit, and poll for status updates.</description>
+    <description>Tracks Atlassian deal and service registration drafts and async submission jobs. Store registration ID from create, job ID from submit, and poll for status updates.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -12,13 +12,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Atlassian Deal Reg Submission</label>
+    <label>Atlassian Reg Submission</label>
     <nameField>
         <label>Submission Name</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Atlassian Deal Reg Submissions</pluralLabel>
+    <pluralLabel>Atlassian Reg Submissions</pluralLabel>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

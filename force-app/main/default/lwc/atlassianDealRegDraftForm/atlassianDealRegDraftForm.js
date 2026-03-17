@@ -410,7 +410,7 @@ export default class AtlassianDealRegDraftForm extends NavigationMixin(Lightning
                 this.dispatchEvent(new ShowToastEvent({ title: 'Success', message: 'Deal draft created', variant: 'success' }));
                 this[NavigationMixin.Navigate]({
                     type: 'standard__recordPage',
-                    attributes: { recordId: result.recordId, objectApiName: 'AtlassianDealRegSubmission__c', actionName: 'view' }
+                    attributes: { recordId: result.recordId, objectApiName: 'AtlassianRegSubmission__c', actionName: 'view' }
                 });
             })
             .catch((err) => {

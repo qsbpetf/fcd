@@ -15,7 +15,7 @@ public with sharing class AtlassianDealRegJobStatusPollBatch implements Database
     public Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator([
             SELECT Id, Job_Id__c, Partner_Account_Id__c, Status__c, Error__c
-            FROM AtlassianDealRegSubmission__c
+            FROM AtlassianRegSubmission__c
             WHERE Job_Id__c != null
             AND Partner_Account_Id__c != null
             AND Status__c = :STATUS_IN_PROGRESS
@@ -23,11 +23,11 @@ public with sharing class AtlassianDealRegJobStatusPollBatch implements Database
     }
 
     public void execute(Database.BatchableContext bc, List<SObject> scope) {
-        List<AtlassianDealRegSubmission__c> toUpdate = new List<AtlassianDealRegSubmission__c>();
+        List<AtlassianRegSubmission__c> toUpdate = new List<AtlassianRegSubmission__c>();
         AtlassianDealRegApiRegistrations svc = AtlassianDealRegApiRegistrations.getInstance();
 
         for (SObject rec : scope) {
-            AtlassianDealRegSubmission__c sub = (AtlassianDealRegSubmission__c) rec;
+            AtlassianRegSubmission__c sub = (AtlassianRegSubmission__c) rec;
             try {
                 AtlassianDealRegApiRegistrations.JobStatusSuccess result = svc.getJobStatus(
                     sub.Partner_Account_Id__c,

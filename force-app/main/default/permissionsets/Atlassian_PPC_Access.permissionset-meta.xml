@@ -284,37 +284,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Registration_Id__c</field>
+        <field>AtlassianRegSubmission__c.Registration_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Job_Id__c</field>
+        <field>AtlassianRegSubmission__c.Job_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Status__c</field>
+        <field>AtlassianRegSubmission__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Program_Type__c</field>
+        <field>AtlassianRegSubmission__c.Program_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Partner_Account_Id__c</field>
+        <field>AtlassianRegSubmission__c.Partner_Account_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Last_Polled__c</field>
+        <field>AtlassianRegSubmission__c.Last_Polled__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AtlassianDealRegSubmission__c.Error__c</field>
+        <field>AtlassianRegSubmission__c.Error__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -644,7 +644,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>AtlassianDealRegSubmission__c</object>
+        <object>AtlassianRegSubmission__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -718,7 +718,7 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>AtlassianDealRegSubmission__c</tab>
+        <tab>AtlassianRegSubmission__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

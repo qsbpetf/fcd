@@ -8,8 +8,10 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <objects>
-                <object>AtlassianDealRegSubmission__c</object>
+                <object>AtlassianRegSubmission__c</object>
             </objects>
         </targetConfig>
     </targetConfigs>
+    <masterLabel>Edit Registration</masterLabel>
+    <description>Edit registration button that opens the appropriate form based on Program Type (Deal or Service).</description>
 </LightningComponentBundle>

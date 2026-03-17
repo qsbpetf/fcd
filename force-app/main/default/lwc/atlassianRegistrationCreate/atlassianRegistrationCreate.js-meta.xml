@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+    <masterLabel>Deal &amp; Service Registration</masterLabel>
+    <description>Create Deal or Service registration drafts. Select registration type to show the appropriate form.</description>
+</LightningComponentBundle>
