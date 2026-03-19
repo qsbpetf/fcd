@@ -131,10 +131,12 @@ public with sharing class AtlassianDealRegApiRegistrations {
             );
         }
         System.debug('searchRegistrations response:\n' + response.getBody());
+        System.debug('X-Trace-ID: ' + response.getHeader('X-Trace-Id'));
         SearchRegistrationsResponse result = (SearchRegistrationsResponse) JSON.deserialize(
             response.getBody(),
             SearchRegistrationsResponse.class
         );
+        result.traceId = response.getHeader('X-Trace-Id');
         if (result.registrations == null) {
             result.registrations = new List<RegistrationSearchResult>();
         }
@@ -437,6 +439,7 @@ public with sharing class AtlassianDealRegApiRegistrations {
     public class SearchRegistrationsResponse {
         @AuraEnabled public List<RegistrationSearchResult> registrations;
         @AuraEnabled public Pagination pagination;
+        @AuraEnabled public String traceId;
     }
 
     public class RegistrationSearchResult {

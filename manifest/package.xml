@@ -32,7 +32,10 @@
         <name>CustomField</name>
     </types>
     <types>
+        <members>CurrencyRateMarkup.CHF</members>
         <members>CurrencyRateMarkup.Default</members>
+        <members>CurrencyRateMarkup.GBP</members>
+        <members>LogEntryDataMaskRule.SocialSecurityNumber</members>
         <members>MakeWebhookOpportunityStageConfig.Cancelled_After_Invoice</members>
         <members>MakeWebhookOpportunityStageConfig.ClosedWonAwaitingApproval</members>
         <members>MakeWebhookOpportunityStageConfig.Closed_Lost</members>
@@ -142,6 +145,7 @@
         <members>ApiResponseCache__c</members>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
+        <members>AtlassianRegSubmission__c</members>
         <members>CurrencyRateMarkup__mdt</members>
         <members>DefaultOpportunityOwner__c</members>
         <members>InvoiceGroup__c</members>
@@ -175,6 +179,7 @@
         <members>ApiResponseCache__c</members>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
+        <members>AtlassianRegSubmission__c</members>
         <members>Batch_Job_Monitor</members>
         <members>InvoiceGroup__c</members>
         <members>PendingInvoice__c</members>
@@ -194,6 +199,7 @@
         <name>FlowDefinition</name>
     </types>
     <types>
+        <members>AtlassianRegSubmission__c-Atlassian Reg Submission Layout</members>
         <members>DefaultOpportunityOwner__c-Default Opportunity Owner Layout</members>
         <members>InvoiceGroup__c-Invoice Group Layout</members>
         <name>Layout</name>

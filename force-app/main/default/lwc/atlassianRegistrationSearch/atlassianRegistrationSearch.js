@@ -290,11 +290,13 @@ export default class AtlassianRegistrationSearch extends LightningElement {
                 this.hasNextPage = result.pagination?.hasNext ?? false;
                 this.hasPreviousPage = (result.pagination?.hasPrevious ?? false) || this.previousPageTokenStack.length > 0;
                 this.isSearching = false;
+                console.log('performSearch traceId:', result.traceId);
             })
             .catch((error) => {
                 this.isSearching = false;
                 this.hasError = true;
                 this.errorMessage = this.extractErrorMessage(error);
+                console.log('performSearch traceId:', error.traceId);
             });
     }
 
@@ -311,7 +313,6 @@ export default class AtlassianRegistrationSearch extends LightningElement {
         const allowed = new Set(selectedArr.map((v) => this.normalizeProgramType(v)));
         return registrations.filter((r) => {
             const pt = this.normalizeProgramType(r.programType);
-            console.log('  applyClientSideProgramTypeFilter pt:', pt, 'allowed:', allowed, 'filtered:', pt && allowed.has(pt));
             return pt && allowed.has(pt);
         });
     }
