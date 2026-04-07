@@ -20,10 +20,16 @@ public without sharing class MakeWebhookOpportunityHandler {
             return;
         }
 
-        Set<Id> oppIdsToNotify = new Set<Id>();
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
+            SELECT Id, StageName, Revenue_Types_Declarative__c, IsClosed, CloseDate, AccountId, Account.Name
+            FROM Opportunity
+            WHERE Id IN :newMap.keySet()
+        ]);
+
+        Set<Id> candidateOppIds = new Set<Id>();
 
         for (Id oppId : newMap.keySet()) {
-            Opportunity newOpp = newMap.get(oppId);
+            Opportunity newOpp = oppMap.get(oppId);
 
             if (newOpp == null) {
                 continue;
@@ -34,10 +40,24 @@ public without sharing class MakeWebhookOpportunityHandler {
             }
 
             if (shouldNotifyForOpportunity(newOpp, configuredStages)) {
-                oppIdsToNotify.add(oppId);
-                oppIdsAlreadyNotified.add(oppId);
-                System.debug('--- Adding Opportunity ' + oppId + ' to notify list for Agile Day');
+                candidateOppIds.add(oppId);
             }
+        }
+
+        if (candidateOppIds.isEmpty()) {
+            return;
+        }
+
+        Set<Id> oppIdsWithPricedOli = getOpportunityIdsWithUnitPrice(candidateOppIds);
+        Set<Id> oppIdsToNotify = new Set<Id>();
+        for (Id oppId : candidateOppIds) {
+            if (!oppIdsWithPricedOli.contains(oppId)) {
+                continue;
+            }
+
+            oppIdsToNotify.add(oppId);
+            oppIdsAlreadyNotified.add(oppId);
+            System.debug('--- Adding Opportunity ' + oppId + ' to notify list for Agile Day');
         }
 
         if (oppIdsToNotify.isEmpty()) {
@@ -108,9 +128,11 @@ public without sharing class MakeWebhookOpportunityHandler {
             return;
         }
 
-        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(
-            [SELECT Id, StageName, Revenue_Types_Declarative__c FROM Opportunity WHERE Id IN :oppIds]
-        );
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
+            SELECT Id, StageName, Revenue_Types_Declarative__c, IsClosed, CloseDate, AccountId, Account.Name
+            FROM Opportunity
+            WHERE Id IN :oppIds
+        ]);
         Set<String> configuredStages = getConfiguredStages();
 
         if (configuredStages.isEmpty()) {
@@ -125,7 +147,7 @@ public without sharing class MakeWebhookOpportunityHandler {
             }
 
             Opportunity opp = oppMap.get(oli.OpportunityId);
-            if (shouldNotifyForOpportunity(opp, configuredStages)) {
+            if (oli.UnitPrice != null && shouldNotifyForOpportunity(opp, configuredStages)) {
                 oliIdsToNotify.add(oli.Id);
                 oliIdsAlreadyNotified.add(oli.Id);
                 System.debug('--- Adding Opportunity Line Item ' + oli.Id + ' to notify list for Agile Day');
@@ -162,6 +184,27 @@ public without sharing class MakeWebhookOpportunityHandler {
             configuredStages != null &&
             configuredStages.contains(opp.StageName) &&
             opp.Revenue_Types_Declarative__c != null &&
+            opp.AccountId != null &&
+            opp.Account != null &&
+            String.isNotBlank(opp.Account.Name) &&
+            (!opp.IsClosed || (opp.CloseDate != null && opp.CloseDate >= Date.today().addDays(-15))) &&
             !opp.Revenue_Types_Declarative__c.equalsIgnoreCase('Licenses');
+    }
+
+    private static Set<Id> getOpportunityIdsWithUnitPrice(Set<Id> oppIds) {
+        Set<Id> result = new Set<Id>();
+        if (oppIds == null || oppIds.isEmpty()) {
+            return result;
+        }
+
+        for (AggregateResult ar : [
+            SELECT OpportunityId oppId
+            FROM OpportunityLineItem
+            WHERE OpportunityId IN :oppIds AND UnitPrice != null
+            GROUP BY OpportunityId
+        ]) {
+            result.add((Id) ar.get('oppId'));
+        }
+        return result;
     }
 }

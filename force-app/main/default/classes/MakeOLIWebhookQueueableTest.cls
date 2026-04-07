@@ -1,4 +1,4 @@
-@IsTest
+@IsTest(isParallel=false)
 private class MakeOLIWebhookQueueableTest {
 
     @IsTest
@@ -271,6 +271,148 @@ private class MakeOLIWebhookQueueableTest {
         System.assertEquals(0, requests.size(), 'No webhook call should be made when Revenue_Types_Declarative__c is Licenses');
     }
 
+    @IsTest
+    static void testNoWebhookWhenClosedMoreThan15DaysAgo() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
+        String closedConfiguredStage = getConfiguredClosedStage();
+        if (closedConfiguredStage == null) {
+            System.assert(true, 'No configured closed stage available in metadata for test context');
+            return;
+        }
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Id standardPbId = Test.getStandardPricebookId();
+        Product2 product = TestDataFactory.getProduct();
+        insert product;
+
+        PricebookEntry pbe = TestDataFactory.getPbEntry(standardPbId, product.Id, 'EUR');
+        insert pbe;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = closedConfiguredStage;
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Services';
+        opp.CloseDate = Date.today().addDays(-20);
+        insert opp;
+
+        OpportunityLineItem oli = TestDataFactory.getOppProd(pbe.Id, opp.Id);
+        insert oli;
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        delete oli;
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOLIWebhookQueueable.OLI_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(0, requests.size(), 'No webhook call should be made when opportunity was closed more than 15 days ago');
+    }
+
+    @IsTest
+    static void testWebhookWhenClosedWithin15Days() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
+        String closedConfiguredStage = getConfiguredClosedStage();
+        if (closedConfiguredStage == null) {
+            System.assert(true, 'No configured closed stage available in metadata for test context');
+            return;
+        }
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Id standardPbId = Test.getStandardPricebookId();
+        Product2 product = TestDataFactory.getProduct();
+        insert product;
+
+        PricebookEntry pbe = TestDataFactory.getPbEntry(standardPbId, product.Id, 'EUR');
+        insert pbe;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = closedConfiguredStage;
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Services';
+        opp.CloseDate = Date.today().addDays(-10);
+        insert opp;
+
+        OpportunityLineItem oli = TestDataFactory.getOppProd(pbe.Id, opp.Id);
+        insert oli;
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        delete oli;
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOLIWebhookQueueable.OLI_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(1, requests.size(), 'Webhook should be made when opportunity was closed within 15 days');
+    }
+
+    @IsTest
+    static void testNoWebhookWhenDeletedRowUnitPriceIsNull() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
+        MakeWebhookOpportunityStageConfig__mdt config =
+            [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = config.StageName__c;
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Services';
+        insert opp;
+
+        OpportunityLineItem fakeDeletedRow = new OpportunityLineItem(
+            Id = (Id) '00k000000000001AAA',
+            OpportunityId = opp.Id,
+            UnitPrice = null
+        );
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        MakeWebhookOpportunityHandler.handleOLIAfterDelete(new List<OpportunityLineItem>{ fakeDeletedRow });
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOLIWebhookQueueable.OLI_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(0, requests.size(), 'No webhook call should be made when deleted OLI row has null UnitPrice');
+    }
+
     /**
      * Best-effort helper to populate any payment-term-related fields
      * on the given SObject so that org-level validation rules depending
@@ -318,6 +460,31 @@ private class MakeOLIWebhookQueueableTest {
                 record.put(apiName, 1);
             }
         }
+    }
+
+    private static String getConfiguredClosedStage() {
+        Set<String> configuredStages = new Set<String>();
+        for (MakeWebhookOpportunityStageConfig__mdt m : [
+            SELECT StageName__c
+            FROM MakeWebhookOpportunityStageConfig__mdt
+            WHERE IsTestRecord__c = TRUE AND IsActive__c = TRUE
+        ]) {
+            if (String.isNotBlank(m.StageName__c)) {
+                configuredStages.add(m.StageName__c);
+            }
+        }
+
+        if (configuredStages.isEmpty()) {
+            return null;
+        }
+
+        List<OpportunityStage> stages = [
+            SELECT MasterLabel
+            FROM OpportunityStage
+            WHERE IsClosed = TRUE AND MasterLabel IN :configuredStages
+            LIMIT 1
+        ];
+        return stages.isEmpty() ? null : stages[0].MasterLabel;
     }
 }
 
