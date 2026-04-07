@@ -13,5 +13,5 @@
         </targetConfig>
     </targetConfigs>
     <masterLabel>Submit / Refresh Registration</masterLabel>
-    <description>Submit draft registration or refresh job status. Shows Submit when status is Draft, Refresh when status is IN_PROGRESS, COMPLETED, FAILED, or VALIDATION_ERROR.</description>
+    <description>Create in Atlassian (when no remote registration id yet), then Submit when status is DRAFT, Refresh when job status is IN_PROGRESS, COMPLETED, FAILED, or VALIDATION_ERROR.</description>
 </LightningComponentBundle>

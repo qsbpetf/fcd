@@ -92,4 +92,68 @@ private class AtlassianServiceRegDraftControllerTest {
 
         System.assertEquals(1, mock.getRequests().size(), 'Should have 1 request');
     }
+
+    @IsTest
+    static void testCreateLocalServiceDraft() {
+        Test.startTest();
+        Map<String, Object> result = AtlassianServiceRegDraftController.createLocalServiceDraft(
+            '0012000000yYBawAAG',
+            '{"dealName":"Local Svc","programType":"SERVICE_REGISTRATION","customerDomain":"example.com"}'
+        );
+        Test.stopTest();
+
+        Id newRecordId = (Id) result.get('recordId');
+        System.assertNotEquals(null, newRecordId, 'Should return recordId');
+        AtlassianRegSubmission__c sub = [
+            SELECT Registration_Id__c, Program_Type__c, Deal_Name__c
+            FROM AtlassianRegSubmission__c
+            WHERE Id = :newRecordId
+        ];
+        System.assertEquals(null, sub.Registration_Id__c, 'No remote id yet');
+        System.assertEquals('SERVICE_REGISTRATION', sub.Program_Type__c, 'Program');
+        System.assertEquals('Local Svc', sub.Deal_Name__c, 'Deal name');
+    }
+
+    @IsTest
+    static void testSyncServiceDraftToAtlassian() {
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addResponse('registrations/v1/services', 201, DRAFT_CREATION);
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        AtlassianRegSubmission__c sub = new AtlassianRegSubmission__c(
+            Name = 'Pending Svc',
+            Partner_Account_Id__c = '0012000000yYBawAAG',
+            Program_Type__c = 'SERVICE_REGISTRATION',
+            Draft_Payload_JSON__c = '{"dealName":"Svc Sync","programType":"SERVICE_REGISTRATION"}'
+        );
+        insert sub;
+
+        Test.startTest();
+        Map<String, Object> result = AtlassianDealRegDraftController.syncDraftToAtlassian(sub.Id);
+        Test.stopTest();
+
+        System.assertEquals('CD-67890', result.get('registrationId'), 'Service registration id');
+
+        sub = [SELECT Registration_Id__c FROM AtlassianRegSubmission__c WHERE Id = :sub.Id];
+        System.assertEquals('CD-67890', sub.Registration_Id__c, 'Stored');
+    }
+
+    @IsTest
+    static void testSubmitServiceDraft_requiresRegistrationId() {
+        AtlassianRegSubmission__c sub = new AtlassianRegSubmission__c(
+            Name = 'Local svc',
+            Partner_Account_Id__c = '0012000000yYBawAAG',
+            Program_Type__c = 'SERVICE_REGISTRATION',
+            Draft_Payload_JSON__c = '{"dealName":"Y","programType":"SERVICE_REGISTRATION"}'
+        );
+        insert sub;
+
+        Boolean gotError = false;
+        try {
+            AtlassianServiceRegDraftController.submitServiceDraft(sub.Id);
+        } catch (Exception e) {
+            gotError = true;
+        }
+        System.assertEquals(true, gotError, 'submitServiceDraft should fail without registration id');
+    }
 }

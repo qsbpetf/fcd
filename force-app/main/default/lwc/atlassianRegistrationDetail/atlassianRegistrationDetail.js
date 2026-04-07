@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import getRegistration from '@salesforce/apex/AtlassianDealRegApiRegistrations.getRegistrationStatic';
+import getSubmissionRecord from '@salesforce/apex/AtlassianDealRegDraftController.getSubmissionRecord';
 
 const CORE_FIELDS = [
     'id',
@@ -89,6 +90,8 @@ const KNOWN_FIELDS = new Set([
 ]);
 
 export default class AtlassianRegistrationDetail extends LightningElement {
+    /** Salesforce AtlassianRegSubmission__c Id — loads from Draft_Payload_JSON__c when no Atlassian registration yet */
+    @api recordId;
     @api registrationId;
     @api partnerAccountId;
     @api programType;
@@ -109,7 +112,53 @@ export default class AtlassianRegistrationDetail extends LightningElement {
     _additionalFields = [];
 
     connectedCallback() {
-        this.loadFromUrlState();
+        if (this.recordId) {
+            this.loadFromSubmissionRecord();
+        } else {
+            this.loadFromUrlState();
+        }
+    }
+
+    loadFromSubmissionRecord() {
+        this.isLoading = true;
+        this.hasError = false;
+        this.errorMessage = '';
+        this.registration = null;
+
+        getSubmissionRecord({ recordId: this.recordId })
+            .then((sub) => {
+                const regId = sub.Registration_Id__c;
+                const partnerId = sub.Partner_Account_Id__c;
+                if (regId && partnerId) {
+                    this.fetchRegistration(regId, partnerId, sub.Program_Type__c || this.programType);
+                    return;
+                }
+                const raw = sub.Draft_Payload_JSON__c;
+                if (!raw) {
+                    this.isLoading = false;
+                    this.hasError = true;
+                    this.errorMessage = 'No draft data saved on this record yet.';
+                    return;
+                }
+                try {
+                    const data = JSON.parse(raw);
+                    const merged = { ...data };
+                    merged.id = merged.id || '(not synced to Atlassian yet)';
+                    merged.status = merged.status || 'Local draft';
+                    merged.programType = merged.programType || sub.Program_Type__c || '';
+                    this.registration = merged;
+                    this._buildFieldSections(merged);
+                } catch (e) {
+                    this.hasError = true;
+                    this.errorMessage = 'Could not read saved draft JSON.';
+                }
+                this.isLoading = false;
+            })
+            .catch((error) => {
+                this.isLoading = false;
+                this.hasError = true;
+                this.errorMessage = this._extractErrorMessage(error);
+            });
     }
 
     loadFromUrlState() {

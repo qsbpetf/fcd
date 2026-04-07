@@ -1,4 +1,13 @@
 <template>
+    <template if:true={showSyncButton}>
+        <lightning-button
+            label="Create in Atlassian"
+            title="Creates the remote draft from saved data. Then use Submit."
+            variant="brand"
+            onclick={handleSync}
+            disabled={isSyncing}
+        ></lightning-button>
+    </template>
     <template if:true={showSubmitButton}>
         <lightning-button
             label="Submit"

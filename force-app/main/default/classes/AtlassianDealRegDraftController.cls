@@ -4,6 +4,164 @@
  */
 public with sharing class AtlassianDealRegDraftController {
 
+    private static final String PROGRAM_DEAL = 'DEAL_REGISTRATION';
+    private static final String PROGRAM_SERVICE = 'SERVICE_REGISTRATION';
+
+    /**
+     * Create a submission row only: store JSON locally, no Atlassian API call.
+     */
+    @AuraEnabled
+    public static Map<String, Object> createLocalDealDraft(String partnerAccountId, String body) {
+        validateDraftPayload(body);
+        String dealName = parseDealName(body);
+        if (String.isBlank(dealName)) {
+            throw new AuraHandledException('dealName is required in the draft payload');
+        }
+        if (String.isBlank(partnerAccountId)) {
+            throw new AuraHandledException('partnerAccountId is required');
+        }
+
+        AtlassianRegSubmission__c sub = new AtlassianRegSubmission__c(
+            Name = truncateToNameField(dealName),
+            Deal_Name__c = dealName.length() > 255 ? dealName.substring(0, 255) : dealName,
+            Draft_Payload_JSON__c = body,
+            Program_Type__c = PROGRAM_DEAL,
+            Partner_Account_Id__c = partnerAccountId
+        );
+        insert sub;
+
+        return new Map<String, Object>{
+            'recordId' => sub.Id,
+            'registrationId' => null,
+            'status' => sub.Status__c
+        };
+    }
+
+    /**
+     * Save draft JSON to Salesforce; if a remote registration exists, PATCH the API as well.
+     */
+    @AuraEnabled
+    public static void saveDraftPayload(Id recordId, String body) {
+        validateDraftPayload(body);
+        String dealName = parseDealName(body);
+
+        AtlassianRegSubmission__c sub = [
+            SELECT Id, Registration_Id__c, Partner_Account_Id__c, Program_Type__c
+            FROM AtlassianRegSubmission__c
+            WHERE Id = :recordId
+            WITH SECURITY_ENFORCED
+            LIMIT 1
+        ];
+
+        sub.Draft_Payload_JSON__c = body;
+        if (String.isNotBlank(dealName)) {
+            sub.Deal_Name__c = dealName.length() > 255 ? dealName.substring(0, 255) : dealName;
+            sub.Name = truncateToNameField(dealName);
+        }
+
+        if (String.isNotBlank(sub.Registration_Id__c)) {
+            if (PROGRAM_SERVICE.equalsIgnoreCase(sub.Program_Type__c)) {
+                AtlassianDealRegApiRegistrations.getInstance().updateServiceRegistration(
+                    sub.Partner_Account_Id__c,
+                    sub.Registration_Id__c,
+                    body
+                );
+            } else {
+                AtlassianDealRegApiRegistrations.getInstance().updateDealRegistration(
+                    sub.Partner_Account_Id__c,
+                    sub.Registration_Id__c,
+                    body
+                );
+            }
+        }
+
+        update sub;
+    }
+
+    /**
+     * Create remote Atlassian draft from stored JSON; updates Registration_Id__c and status.
+     */
+    @AuraEnabled
+    public static Map<String, Object> syncDraftToAtlassian(Id recordId) {
+        AtlassianRegSubmission__c sub = [
+            SELECT
+                Id,
+                Draft_Payload_JSON__c,
+                Partner_Account_Id__c,
+                Program_Type__c,
+                Registration_Id__c
+            FROM AtlassianRegSubmission__c
+            WHERE Id = :recordId
+            WITH SECURITY_ENFORCED
+            LIMIT 1
+        ];
+
+        if (String.isNotBlank(sub.Registration_Id__c)) {
+            throw new AuraHandledException('This submission already has a registration in Atlassian');
+        }
+        if (String.isBlank(sub.Draft_Payload_JSON__c)) {
+            throw new AuraHandledException('No draft payload to sync. Save the form first.');
+        }
+        if (String.isBlank(sub.Partner_Account_Id__c)) {
+            throw new AuraHandledException('Partner Account Id is required');
+        }
+
+        AtlassianDealRegApiClient.DraftCreationSuccess result;
+        if (PROGRAM_SERVICE.equalsIgnoreCase(sub.Program_Type__c)) {
+            result = AtlassianDealRegApiRegistrations.createServiceRegistrationStatic(
+                sub.Partner_Account_Id__c,
+                sub.Draft_Payload_JSON__c
+            );
+        } else {
+            result = AtlassianDealRegApiRegistrations.createDealRegistrationStatic(
+                sub.Partner_Account_Id__c,
+                sub.Draft_Payload_JSON__c
+            );
+        }
+
+        sub.Registration_Id__c = result.id;
+        sub.Status__c = result.status;
+        sub.Name = 'Draft ' + result.id;
+        update sub;
+
+        return new Map<String, Object>{
+            'recordId' => sub.Id,
+            'registrationId' => result.id,
+            'status' => result.status
+        };
+    }
+
+    private static void validateDraftPayload(String body) {
+        if (String.isBlank(body)) {
+            throw new AuraHandledException('Draft payload is required');
+        }
+        try {
+            JSON.deserializeUntyped(body);
+        } catch (Exception e) {
+            throw new AuraHandledException('Invalid JSON payload');
+        }
+    }
+
+    private static String parseDealName(String body) {
+        try {
+            Map<String, Object> m = (Map<String, Object>) JSON.deserializeUntyped(body);
+            Object dn = m.get('dealName');
+            return dn != null ? String.valueOf(dn).trim() : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Submission Name max 80 in standard Salesforce; keep local names short.
+     */
+    private static String truncateToNameField(String dealName) {
+        if (String.isBlank(dealName)) {
+            return 'Atlassian registration';
+        }
+        return dealName.length() > 80 ? dealName.substring(0, 80) : dealName;
+    }
+
     /**
      * Create a new deal draft via API and persist to AtlassianRegSubmission__c.
      *
@@ -19,9 +177,14 @@ public with sharing class AtlassianDealRegDraftController {
             Name = 'Draft ' + result.id,
             Registration_Id__c = result.id,
             Status__c = result.status,
-            Program_Type__c = 'DEAL_REGISTRATION',
-            Partner_Account_Id__c = partnerAccountId
+            Program_Type__c = PROGRAM_DEAL,
+            Partner_Account_Id__c = partnerAccountId,
+            Draft_Payload_JSON__c = body,
+            Deal_Name__c = parseDealName(body)
         );
+        if (sub.Deal_Name__c != null && sub.Deal_Name__c.length() > 255) {
+            sub.Deal_Name__c = sub.Deal_Name__c.substring(0, 255);
+        }
         insert sub;
 
         return new Map<String, Object>{
@@ -51,6 +214,13 @@ public with sharing class AtlassianDealRegDraftController {
             sub.Registration_Id__c,
             body
         );
+        sub.Draft_Payload_JSON__c = body;
+        String dealName = parseDealName(body);
+        if (String.isNotBlank(dealName)) {
+            sub.Deal_Name__c = dealName.length() > 255 ? dealName.substring(0, 255) : dealName;
+            sub.Name = truncateToNameField(dealName);
+        }
+        update sub;
     }
 
     /**
@@ -115,6 +285,10 @@ public with sharing class AtlassianDealRegDraftController {
             LIMIT 1
         ];
 
+        if (String.isBlank(sub.Registration_Id__c)) {
+            throw new AuraHandledException('Create the draft in Atlassian before submitting');
+        }
+
         AtlassianDealRegApiRegistrations.JobStatusSuccess result = AtlassianDealRegApiRegistrations.getInstance().submitDealRegistration(
             sub.Partner_Account_Id__c,
             sub.Registration_Id__c
@@ -142,7 +316,15 @@ public with sharing class AtlassianDealRegDraftController {
     @AuraEnabled
     public static Map<String, Object> getSubmissionRecord(Id recordId) {
         AtlassianRegSubmission__c sub = [
-            SELECT Id, Registration_Id__c, Partner_Account_Id__c, Status__c, Job_Id__c
+            SELECT
+                Id,
+                Registration_Id__c,
+                Partner_Account_Id__c,
+                Status__c,
+                Job_Id__c,
+                Program_Type__c,
+                Draft_Payload_JSON__c,
+                Deal_Name__c
             FROM AtlassianRegSubmission__c
             WHERE Id = :recordId
             WITH SECURITY_ENFORCED
@@ -153,6 +335,9 @@ public with sharing class AtlassianDealRegDraftController {
         result.put('Partner_Account_Id__c', sub.Partner_Account_Id__c);
         result.put('Status__c', sub.Status__c);
         result.put('Job_Id__c', sub.Job_Id__c);
+        result.put('Program_Type__c', sub.Program_Type__c);
+        result.put('Draft_Payload_JSON__c', sub.Draft_Payload_JSON__c);
+        result.put('Deal_Name__c', sub.Deal_Name__c);
         return result;
     }
 

@@ -3,8 +3,8 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
 import getPartnerAccounts from '@salesforce/apex/AtlassianDealRegApiPartnerAccounts.getPartnerAccountsStatic';
 import getRegistration from '@salesforce/apex/AtlassianDealRegApiRegistrations.getRegistrationStatic';
-import createDealDraft from '@salesforce/apex/AtlassianDealRegDraftController.createDealDraft';
-import updateDealDraft from '@salesforce/apex/AtlassianDealRegDraftController.updateDealDraft';
+import createLocalDealDraft from '@salesforce/apex/AtlassianDealRegDraftController.createLocalDealDraft';
+import saveDraftPayload from '@salesforce/apex/AtlassianDealRegDraftController.saveDraftPayload';
 import updateDealDraftByRegistrationId from '@salesforce/apex/AtlassianDealRegDraftController.updateDealDraftByRegistrationId';
 import findSubmissionByRegistrationId from '@salesforce/apex/AtlassianDealRegDraftController.findSubmissionByRegistrationId';
 import submitDealDraft from '@salesforce/apex/AtlassianDealRegDraftController.submitDealDraft';
@@ -229,6 +229,14 @@ export default class AtlassianDealRegDraftForm extends NavigationMixin(Lightning
                     programType: 'DEAL_REGISTRATION'
                 });
                 this._populateFromRegistration(reg);
+            } else if (sub.Draft_Payload_JSON__c) {
+                try {
+                    const reg = JSON.parse(sub.Draft_Payload_JSON__c);
+                    this._populateFromRegistration(reg);
+                } catch (parseErr) {
+                    this.hasError = true;
+                    this.errorMessage = 'Could not load saved draft data';
+                }
             }
         } catch (err) {
             this.hasError = true;
@@ -405,9 +413,9 @@ export default class AtlassianDealRegDraftForm extends NavigationMixin(Lightning
     _handleCreate() {
         this.isSaving = true;
         this.hasError = false;
-        createDealDraft({ partnerAccountId: this.selectedPartnerId, body: this._buildPayload() })
+        createLocalDealDraft({ partnerAccountId: this.selectedPartnerId, body: this._buildPayload() })
             .then((result) => {
-                this.dispatchEvent(new ShowToastEvent({ title: 'Success', message: 'Deal draft created', variant: 'success' }));
+                this.dispatchEvent(new ShowToastEvent({ title: 'Success', message: 'Registration saved locally. Open the record to sync to Atlassian when ready.', variant: 'success' }));
                 this[NavigationMixin.Navigate]({
                     type: 'standard__recordPage',
                     attributes: { recordId: result.recordId, objectApiName: 'AtlassianRegSubmission__c', actionName: 'view' }
@@ -426,7 +434,7 @@ export default class AtlassianDealRegDraftForm extends NavigationMixin(Lightning
         this.hasError = false;
         const recordId = this._effectiveRecordId;
         const promise = recordId
-            ? updateDealDraft({ recordId, body: this._buildPayload() })
+            ? saveDraftPayload({ recordId, body: this._buildPayload() })
             : updateDealDraftByRegistrationId({
                 partnerAccountId: this.partnerAccountId,
                 registrationId: this.registrationId,

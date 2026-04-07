@@ -150,7 +150,7 @@ private class AtlassianDealRegApiClientTest {
         Test.setMock(HttpCalloutMock.class, mock);
 
         Test.startTest();
-        AtlassianDealRegApiPartnerAccounts.PartnerAccountsResponse result = AtlassianDealRegApiPartnerAccounts.getPartnerAccountsStatic();
+        AtlassianDealRegApiPartnerAccounts.PartnerAccountsResponse result = AtlassianDealRegApiPartnerAccounts.getPartnerAccountsStatic(true);
         Test.stopTest();
 
         System.assertNotEquals(null, result, 'Result should not be null');

@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": "/Users/peterfriberg/IdeaProjects/Eficode/Eficode-GoLive"
+    }
+  ],
+  "settings": {
+    "eslint.workingDirectories": [
+      "/Users/peterfriberg/IdeaProjects/Eficode/Eficode-GoLive"
+    ],
+    "eslint.validate": [
+      "javascript",
+      "typescript"
+    ],
+    "eslint.options": {
+      "overrideConfigFile": "/Users/peterfriberg/IdeaProjects/Eficode/Eficode-GoLive/.eslintrc.json"
+    }
+  }
+}

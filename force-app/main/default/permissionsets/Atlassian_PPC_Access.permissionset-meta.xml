@@ -327,6 +327,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>AtlassianRegSubmission__c.Draft_Payload_JSON__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AtlassianRegSubmission__c.Deal_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.AutoInvoiceImport__c</field>
         <readable>true</readable>
     </fieldPermissions>

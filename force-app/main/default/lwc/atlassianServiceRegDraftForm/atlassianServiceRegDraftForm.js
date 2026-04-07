@@ -3,8 +3,8 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
 import getPartnerAccounts from '@salesforce/apex/AtlassianDealRegApiPartnerAccounts.getPartnerAccountsStatic';
 import getRegistration from '@salesforce/apex/AtlassianDealRegApiRegistrations.getRegistrationStatic';
-import createServiceDraft from '@salesforce/apex/AtlassianServiceRegDraftController.createServiceDraft';
-import updateServiceDraft from '@salesforce/apex/AtlassianServiceRegDraftController.updateServiceDraft';
+import createLocalServiceDraft from '@salesforce/apex/AtlassianServiceRegDraftController.createLocalServiceDraft';
+import saveDraftPayload from '@salesforce/apex/AtlassianDealRegDraftController.saveDraftPayload';
 import updateServiceDraftByRegistrationId from '@salesforce/apex/AtlassianServiceRegDraftController.updateServiceDraftByRegistrationId';
 import findSubmissionByRegistrationId from '@salesforce/apex/AtlassianDealRegDraftController.findSubmissionByRegistrationId';
 import submitServiceDraft from '@salesforce/apex/AtlassianServiceRegDraftController.submitServiceDraft';
@@ -250,6 +250,14 @@ export default class AtlassianServiceRegDraftForm extends NavigationMixin(Lightn
                     programType: 'SERVICE_REGISTRATION'
                 });
                 this._populateFromRegistration(reg);
+            } else if (sub.Draft_Payload_JSON__c) {
+                try {
+                    const reg = JSON.parse(sub.Draft_Payload_JSON__c);
+                    this._populateFromRegistration(reg);
+                } catch (parseE) {
+                    this.hasError = true;
+                    this.errorMessage = 'Could not load saved draft data';
+                }
             }
         } catch (err) {
             this.hasError = true;
@@ -418,9 +426,9 @@ export default class AtlassianServiceRegDraftForm extends NavigationMixin(Lightn
     _handleCreate() {
         this.isSaving = true;
         this.hasError = false;
-        createServiceDraft({ partnerAccountId: this.selectedPartnerId, body: this._buildPayload() })
+        createLocalServiceDraft({ partnerAccountId: this.selectedPartnerId, body: this._buildPayload() })
             .then((result) => {
-                this.dispatchEvent(new ShowToastEvent({ title: 'Success', message: 'Service draft created', variant: 'success' }));
+                this.dispatchEvent(new ShowToastEvent({ title: 'Success', message: 'Registration saved locally. Open the record to sync to Atlassian when ready.', variant: 'success' }));
                 this[NavigationMixin.Navigate]({
                     type: 'standard__recordPage',
                     attributes: { recordId: result.recordId, objectApiName: 'AtlassianRegSubmission__c', actionName: 'view' }
@@ -439,7 +447,7 @@ export default class AtlassianServiceRegDraftForm extends NavigationMixin(Lightn
         this.hasError = false;
         const recordId = this._effectiveRecordId;
         const promise = recordId
-            ? updateServiceDraft({ recordId, body: this._buildPayload() })
+            ? saveDraftPayload({ recordId, body: this._buildPayload() })
             : updateServiceDraftByRegistrationId({
                 partnerAccountId: this.partnerAccountId,
                 registrationId: this.registrationId,
