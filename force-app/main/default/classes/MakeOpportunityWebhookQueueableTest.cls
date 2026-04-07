@@ -21,6 +21,7 @@ private class MakeOpportunityWebhookQueueableTest {
         Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
         opp.StageName = 'Order';
         opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Services';
         insert opp;
 
         // Set up HTTP mock
@@ -81,6 +82,7 @@ private class MakeOpportunityWebhookQueueableTest {
         Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
         opp.StageName = targetStage;
         opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Services';
         insert opp;
 
         // Set up HTTP mock
@@ -125,6 +127,7 @@ private class MakeOpportunityWebhookQueueableTest {
         Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
         opp.StageName = 'Order';
         opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Services';
         insert opp;
 
         GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
@@ -144,6 +147,80 @@ private class MakeOpportunityWebhookQueueableTest {
         }
 
         System.assertEquals(0, requests.size(), 'No webhook call should be made when EnableOpportunityWebhook__c is false');
+    }
+
+    @IsTest
+    static void testNoWebhookWhenRevenueTypeIsNull() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
+        MakeWebhookOpportunityStageConfig__mdt config =
+            [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = 'Order';
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = null;
+        insert opp;
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        opp.StageName = config.StageName__c;
+        update opp;
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOpportunityWebhookQueueable.OPPORTUNITY_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(0, requests.size(), 'No webhook call should be made when Revenue_Types_Declarative__c is null');
+    }
+
+    @IsTest
+    static void testNoWebhookWhenRevenueTypeIsLicenses() {
+        upsert new MakeWebhookSettings__c(SetupOwnerId = UserInfo.getUserId(), EnableOpportunityWebhook__c = true);
+
+        MakeWebhookOpportunityStageConfig__mdt config =
+            [SELECT StageName__c FROM MakeWebhookOpportunityStageConfig__mdt WHERE IsTestRecord__c = TRUE LIMIT 1];
+
+        Account acc = TestDataFactory.getAccount('FI', 'EUR');
+        acc.BillingCountry = 'Finland';
+        acc.Payment_terms__c = '10 Days';
+        insert acc;
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, 'EUR');
+        opp.StageName = 'Order';
+        opp.Payment_Terms__c = acc.Payment_terms__c;
+        opp.Revenue_Types_Declarative__c = 'Licenses';
+        insert opp;
+
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        opp.StageName = config.StageName__c;
+        update opp;
+        Test.stopTest();
+
+        List<HttpRequest> requests = new List<HttpRequest>();
+        for (HttpRequest r : mock.getRequests()) {
+            if (r.getEndpoint() != null &&
+                r.getEndpoint().contains(MakeOpportunityWebhookQueueable.OPPORTUNITY_WEBHOOK_PATH)) {
+                requests.add(r);
+            }
+        }
+
+        System.assertEquals(0, requests.size(), 'No webhook call should be made when Revenue_Types_Declarative__c is Licenses');
     }
 }
 

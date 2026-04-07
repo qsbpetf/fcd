@@ -33,9 +33,7 @@ public without sharing class MakeWebhookOpportunityHandler {
                 continue;
             }
 
-            // Trigger whenever the Opportunity is in a configured stage,
-            if (newOpp.StageName != null &&
-                configuredStages.contains(newOpp.StageName)) {
+            if (shouldNotifyForOpportunity(newOpp, configuredStages)) {
                 oppIdsToNotify.add(oppId);
                 oppIdsAlreadyNotified.add(oppId);
                 System.debug('--- Adding Opportunity ' + oppId + ' to notify list for Agile Day');
@@ -111,7 +109,7 @@ public without sharing class MakeWebhookOpportunityHandler {
         }
 
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(
-            [SELECT Id, StageName FROM Opportunity WHERE Id IN :oppIds]
+            [SELECT Id, StageName, Revenue_Types_Declarative__c FROM Opportunity WHERE Id IN :oppIds]
         );
         Set<String> configuredStages = getConfiguredStages();
 
@@ -127,7 +125,7 @@ public without sharing class MakeWebhookOpportunityHandler {
             }
 
             Opportunity opp = oppMap.get(oli.OpportunityId);
-            if (opp != null && configuredStages.contains(opp.StageName)) {
+            if (shouldNotifyForOpportunity(opp, configuredStages)) {
                 oliIdsToNotify.add(oli.Id);
                 oliIdsAlreadyNotified.add(oli.Id);
                 System.debug('--- Adding Opportunity Line Item ' + oli.Id + ' to notify list for Agile Day');
@@ -152,5 +150,18 @@ public without sharing class MakeWebhookOpportunityHandler {
     public static Boolean isWebhookEnabled() {
         MakeWebhookSettings__c s = MakeWebhookSettings__c.getInstance();
         return (s == null || s.EnableOpportunityWebhook__c != false);
+    }
+
+    /**
+     * Shared eligibility rule for Opportunity-driven webhook notifications.
+     * Excludes licenses because Agile Day does not support them.
+     */
+    private static Boolean shouldNotifyForOpportunity(Opportunity opp, Set<String> configuredStages) {
+        return opp != null &&
+            opp.StageName != null &&
+            configuredStages != null &&
+            configuredStages.contains(opp.StageName) &&
+            opp.Revenue_Types_Declarative__c != null &&
+            !opp.Revenue_Types_Declarative__c.equalsIgnoreCase('Licenses');
     }
 }
