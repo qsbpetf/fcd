@@ -104,16 +104,16 @@ private class TierCalcServiceTest {
 
     @isTest
     static void testCalculateFor_UpdatesOpportunityFields() {
-        Opportunity opp = [SELECT Id, Total_Amount_T2_V2__c, Total_Amount_T3_V2__c FROM Opportunity LIMIT 1];
+        Opportunity opp = [SELECT Id, Total_Amount_T2__c, Total_Amount_T3__c FROM Opportunity LIMIT 1];
         Set<Id> oppIds = new Set<Id>{opp.Id};
 
         TierCalcService.calculateFor(oppIds, Date.today());
 
         // Assert - Opportunity T2 and T3 fields should be updated
-        Opportunity updatedOpp = [SELECT Total_Amount_T2_V2__c, Total_Amount_T3_V2__c
+        Opportunity updatedOpp = [SELECT Total_Amount_T2__c, Total_Amount_T3__c
                                    FROM Opportunity WHERE Id = :opp.Id];
-        System.assertNotEquals(null, updatedOpp.Total_Amount_T2_V2__c, 'T2_V2 should be calculated');
-        System.assertNotEquals(null, updatedOpp.Total_Amount_T3_V2__c, 'T3_V2 should be calculated');
+        System.assertNotEquals(null, updatedOpp.Total_Amount_T2__c, 'T2_V2 should be calculated');
+        System.assertNotEquals(null, updatedOpp.Total_Amount_T3__c, 'T3_V2 should be calculated');
     }
 
     @isTest
@@ -221,8 +221,43 @@ private class TierCalcServiceTest {
             System.assertNotEquals(null, line.Line_Key__c, 'Line key should be set');
             System.assert(line.Line_Key__c.contains(opp.Id), 'Line key should contain opportunity ID');
             System.assert(line.Line_Key__c.contains(line.User__c), 'Line key should contain user ID');
-            System.assert(line.Line_Key__c.contains('2024-12'), 'Line key should contain year-month');
         }
+    }
+
+    @isTest
+    static void testCalculateFor_T2OverridePreservesValue() {
+        // Arrange - set a known T2 value and enable override
+        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
+        opp.T2_Override__c = true;
+        opp.Total_Amount_T2__c = 7777;
+        update opp;
+
+        Set<Id> oppIds = new Set<Id>{opp.Id};
+
+        // Act
+        TierCalcService.calculateFor(oppIds, Date.today());
+
+        // Assert - Total_Amount_T2__c must not be overwritten by the calculation
+        Opportunity updatedOpp = [SELECT Total_Amount_T2__c FROM Opportunity WHERE Id = :opp.Id];
+        System.assertEquals(7777, updatedOpp.Total_Amount_T2__c, 'Total_Amount_T2__c should not be changed when T2_Override__c is true');
+    }
+
+    @isTest
+    static void testCalculateFor_T3OverridePreservesValue() {
+        // Arrange - set a known T3 value and enable override
+        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
+        opp.T3_Override__c = true;
+        opp.Total_Amount_T3__c = 6666;
+        update opp;
+
+        Set<Id> oppIds = new Set<Id>{opp.Id};
+
+        // Act
+        TierCalcService.calculateFor(oppIds, Date.today());
+
+        // Assert - Total_Amount_T3__c must not be overwritten by the calculation
+        Opportunity updatedOpp = [SELECT Total_Amount_T3__c FROM Opportunity WHERE Id = :opp.Id];
+        System.assertEquals(6666, updatedOpp.Total_Amount_T3__c, 'Total_Amount_T3__c should not be changed when T3_Override__c is true');
     }
 
 }

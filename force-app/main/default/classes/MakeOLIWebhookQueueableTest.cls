@@ -487,4 +487,3 @@ private class MakeOLIWebhookQueueableTest {
         return stages.isEmpty() ? null : stages[0].MasterLabel;
     }
 }
-

@@ -11,12 +11,13 @@
 public class TierCalcScheduledJob implements Database.Batchable<SObject>, Database.Stateful, Schedulable {
 
     // Stateful counters
-    private Integer totalProcessed = 0;
-    private Integer totalErrors = 0;
-    private List<String> errorMessages = new List<String>();
+    @TestVisible private Integer totalProcessed = 0;
+    @TestVisible private Integer totalErrors = 0;
+    @TestVisible private List<String> errorMessages = new List<String>();
 
     // Configurable lookback period (in hours)
     private Integer lookbackHours = 24;
+    private Set<Id> targetOppIds;
 
     // Default constructor - processes opportunities from last 24 hours
     public TierCalcScheduledJob() {
@@ -28,11 +29,25 @@ public class TierCalcScheduledJob implements Database.Batchable<SObject>, Databa
         this.lookbackHours = lookbackHours;
     }
 
+    // Constructor with specific Opportunity IDs
+    public TierCalcScheduledJob(Set<Id> oppIds) {
+        this.targetOppIds = oppIds;
+    }
+
     public void execute(SchedulableContext sc) {
         Database.executeBatch(this, 200);
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
+        if (targetOppIds != null && !targetOppIds.isEmpty()) {
+            System.debug('Starting batch for specific IDs: ' + targetOppIds);
+            return Database.getQueryLocator([
+                SELECT Id, Name, LastModifiedDate
+                FROM Opportunity
+                WHERE Id IN :targetOppIds
+            ]);
+        }
+
         Datetime cutoffTime = Datetime.now().addHours(-lookbackHours);
 
         // Get record count for debugging
@@ -97,19 +112,19 @@ public class TierCalcScheduledJob implements Database.Batchable<SObject>, Databa
 
         // Optional: Send email notification if there were errors
         if (totalErrors > 0) {
-//            sendErrorNotification(job, summary);
+            sendErrorNotification(job, summary);
         }
     }
 
     /**
      * Sends an email notification when errors occur
      */
-    private void sendErrorNotification(AsyncApexJob job, String summary) {
+    public void sendErrorNotification(AsyncApexJob job, String summary) {
         try {
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
             // Get all active System Administrators
-            List<User> sysAdmins = [SELECT Email FROM User WHERE Profile.Name = 'System Administrator' AND IsActive = TRUE AND Email != NULL];
+            List<User> sysAdmins = [SELECT Email FROM User WHERE Profile.Name = 'System Administrator' AND LastName = 'Skaruz' AND IsActive = TRUE AND Email != NULL];
 
             if (sysAdmins.isEmpty()) {
                 System.debug(LoggingLevel.WARN, 'No active System Administrators found to send error notification');

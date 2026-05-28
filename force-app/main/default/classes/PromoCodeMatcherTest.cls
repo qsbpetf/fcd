@@ -221,4 +221,3 @@ private class PromoCodeMatcherTest {
             'Should return empty list when quote string is invalid JSON');
     }
 }
-

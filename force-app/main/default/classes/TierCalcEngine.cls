@@ -51,8 +51,7 @@ public with sharing class TierCalcEngine {
             line.T3_Amount__c = r.t3calc;
 
             // key + snapshot + hash
-            String monthKey = DateTime.newInstance(asOfDate, Time.newInstance(0, 0, 0, 0)).format('yyyy-MM');
-            line.Line_Key__c = opp.Id + ':' + userId + ':' + monthKey;
+            line.Line_Key__c = opp.Id + ':' + userId;
 
             Map<String,Object> snap = new Map<String,Object>{
                 'oppId' => opp.Id,
@@ -81,6 +80,11 @@ public with sharing class TierCalcEngine {
         System.debug('calculateT2 start');
         if (opp == null) {
             return 0;
+        }
+
+        // If T2 is manually overridden, preserve the existing value — do not recalculate
+        if (opp.T2_Override__c == true) {
+            return opp.Total_Amount_T2__c ?? 0;
         }
 
         // we can add condition 'if opp.Total_Amount__c = 0'
@@ -118,6 +122,12 @@ public with sharing class TierCalcEngine {
         if (opp == null) {
             return 0;
         }
+
+        // If T3 is manually overridden, preserve the existing value — do not recalculate
+        if (opp.T3_Override__c == true) {
+            return opp.Total_Amount_T3__c ?? 0;
+        }
+
         // we can add condition 'if opp.Total_Amount__c = 0'
         // flow: T2_T3_Estimate
         // flow: T2_T3_Amounts_from_opportunity_when_Launch_Estimate_Flow_is_checked

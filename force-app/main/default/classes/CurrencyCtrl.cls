@@ -218,7 +218,8 @@ public with sharing class CurrencyCtrl {
                 records.add(new Map<String, Object>{
                     'attributes' => new Map<String, String>{ 'type' => 'DatedConversionRate', 'referenceId' => currencyCode + 'Rate' },
                     'IsoCode' => currencyCode,
-                    'StartDate' => effectiveDate.format(),
+//                    'StartDate' => effectiveDate.format(), // causing issues
+                    'StartDate' => Datetime.newInstance(effectiveDate, Time.newInstance(0,0,0,0)).format('yyyy-MM-dd'),
                     'ConversionRate' => markedUpRates.get(currencyCode)
                 });
             }

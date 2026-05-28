@@ -23,11 +23,65 @@ private class TierCalcScheduledJobTest {
     }
 
     @isTest
+    static void testErrorNotification() {
+        Profile sysAdminProfile = [SELECT Id FROM Profile WHERE Name = 'System Administrator' LIMIT 1];
+        String uniqueSkaruz = 'skaruz' + DateTime.now().getTime() + '@test.com';
+        
+        User skaruzUser = new User(
+            FirstName = 'Grzegorz',
+            LastName = 'Skaruz',
+            Email = 'skaruz@test.com',
+            Username = uniqueSkaruz,
+            Alias = 'skrz',
+            TimeZoneSidKey = 'Europe/Paris',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            ProfileId = sysAdminProfile.Id,
+            LanguageLocaleKey = 'en_US'
+        );
+        insert skaruzUser;
+
+        Test.startTest();
+        TierCalcScheduledJob jobInstance = new TierCalcScheduledJob();
+        jobInstance.sendErrorNotification(null, 'Test Error Summary Notification Coverage');
+        Test.stopTest();
+    }
+
+    @isTest
     static void testBatchExecution() {
         Test.startTest();
 
         // Execute the batch job
         TierCalcScheduledJob job = new TierCalcScheduledJob();
+        Database.executeBatch(job, 200);
+
+        Test.stopTest();
+
+        // Verify the batch ran successfully
+        List<AsyncApexJob> jobs = [
+            SELECT Id, Status, NumberOfErrors, JobItemsProcessed
+            FROM AsyncApexJob
+            WHERE ApexClass.Name = 'TierCalcScheduledJob'
+            AND JobType = 'BatchApex'
+        ];
+
+        System.assertEquals(1, jobs.size(), 'Batch job should have been executed');
+        System.assertEquals('Completed', jobs[0].Status, 'Batch job should complete successfully');
+    }
+
+    @isTest
+    static void testBatchWithTargetIds() {
+        // Get some test opportunities
+        List<Opportunity> opps = [SELECT Id FROM Opportunity LIMIT 2];
+        Set<Id> targetIds = new Set<Id>();
+        for (Opportunity o : opps) {
+            targetIds.add(o.Id);
+        }
+
+        Test.startTest();
+
+        // Execute the batch job with targeted IDs
+        TierCalcScheduledJob job = new TierCalcScheduledJob(targetIds);
         Database.executeBatch(job, 200);
 
         Test.stopTest();

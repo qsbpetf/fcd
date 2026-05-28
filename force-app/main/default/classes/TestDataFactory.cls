@@ -6,6 +6,23 @@
 @IsTest
 public class TestDataFactory {
 
+    public static AutomationSettings__c getAutomationSettings(Boolean automationEnabled, Boolean validationEnabled) {
+        return new AutomationSettings__c(
+            SetupOwnerId               = UserInfo.getOrganizationId(),
+            Automation_Enabled__c      = automationEnabled,
+            Validation_Rule_Enabled__c = validationEnabled
+        );
+    }
+
+    public static void setAutomation(Boolean enabled) {
+        AutomationSettings__c settings = AutomationSettings__c.getOrgDefaults();
+        settings.Automation_Enabled__c = enabled;
+        settings.Validation_Rule_Enabled__c = enabled;
+        // upsert without field works for Hierarchy Settings if Id is populated from getOrgDefaults
+        // but if it's new, it will insert.
+        upsert settings;
+    }
+
     public static User createTestUser(String email) {
         String uniqueSuffix = String.valueOf(System.currentTimeMillis()).right(5);
         String uniqueUsername = email.substringBefore('@') + uniqueSuffix + '@testorg.com';
@@ -25,8 +42,34 @@ public class TestDataFactory {
         return u;
     }
 
+    public static User createTestUser(String email, String lastName, String aliasBase) {
+        String uniqueSuffix = String.valueOf(System.currentTimeMillis()).right(5);
+        String uniqueUsername = email.substringBefore('@') + uniqueSuffix + '@testorg.com';
+        String alias = (aliasBase + uniqueSuffix).left(8);
+        SObject userRecord = Schema.getGlobalDescribe().get('User').newSObject();
+        userRecord.put('ProfileId', [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1].Id);
+        userRecord.put('LastName', lastName);
+        userRecord.put('Email', email);
+        userRecord.put('Username', uniqueUsername);
+        userRecord.put('Alias', alias);
+        userRecord.put('CommunityNickname', (aliasBase + uniqueSuffix).left(40));
+        userRecord.put('TimeZoneSidKey', 'America/Los_Angeles');
+        userRecord.put('LocaleSidKey', 'en_US');
+        userRecord.put('EmailEncodingKey', 'UTF-8');
+        userRecord.put('LanguageLocaleKey', 'en_US');
+        return (User) userRecord;
+    }
+
     public static Account getAccount(String billingCountry, String curr){
         Account acc = new Account(Name='Test Acc', BillingCountry=billingCountry, CurrencyIsoCode=curr);
+        return acc;
+    }
+
+    public static Account getAccount(String name, Id ownerId, Date t1StartDate) {
+        Account acc = new Account(Name = name, OwnerId = ownerId);
+        if (t1StartDate != null) {
+            acc.T1_Start_Date__c = t1StartDate;
+        }
         return acc;
     }
 
@@ -44,6 +87,29 @@ public class TestDataFactory {
         return opp;
     }
 
+    public static Opportunity getOpp(Id accId, Id ownerId, Date closeDate, String stageName, Decimal amount, String name) {
+        Opportunity opp = new Opportunity(
+            Name = String.isBlank(name) ? 'Test Opp' : name,
+            CloseDate = closeDate,
+            StageName = stageName,
+            AccountId = accId,
+            OwnerId = ownerId,
+            Description = 'Test',
+            NextStep = 'Test',
+            LeadSource = 'Adwords',
+            Type = 'Existing Customer',
+            Special_Instructions_to_Accounts__c = 'Test',
+            Delivery_Date__c = Date.newInstance(2026, 12, 15),
+            Atlassian_Payment_link__c = 'Test',
+            Customer_PO_Number__c = 'Test PO',
+            Atlassian_AT_Quote_ref__c = 'Test ref'
+        );
+        if (amount != null) {
+            opp.Amount = amount;
+        }
+        return opp;
+    }
+
     public static Product2 getProduct(){
         Product2 prod=new Product2(Name='Test product', Family='OtherVendorProduct',
                                    Academic_Cost_price_Dollars__c=10, Academic_Cost_price_Euros__c=8, Academic_Cost_price_Pounds__c=7,
@@ -52,7 +118,7 @@ public class TestDataFactory {
     }
 
     public static PricebookEntry getPbEntry(Id PricebookId, Id ProductId, String curr){
-        PricebookEntry pbEntry=new PricebookEntry(Pricebook2Id=PricebookId, Product2Id=ProductId, CurrencyIsoCode=curr, UnitPrice=1, isActive=true);
+        PricebookEntry pbEntry=new PricebookEntry(Pricebook2Id=PricebookId, Product2Id=ProductId, CurrencyIsoCode=curr, UnitPrice=1, IsActive=true);
         return pbEntry;
     }
 

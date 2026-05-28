@@ -419,4 +419,3 @@ private class MakeOpportunityWebhookQueueableTest {
         return stages.isEmpty() ? null : stages[0].MasterLabel;
     }
 }
-

@@ -30,8 +30,8 @@ public with sharing class TierCalcService {
                 Related_Project__c, Project_Type__c, Total_Amount__c,
                 T2_Override__c, T3_Override__c,
                 Estimate_Consulting_Revenue__c, Estimate_Managed_Service_Revenue__c, Estimate_Licensing_GP__c,
-                Total_Amount_T2_V2__c, Total_Amount_T3_V2__c,
-                Project_Start_Date_From_Project__c
+                Total_Amount_T2__c, Total_Amount_T3__c,
+                Project_Start_Date_From_Project__c, T3_From_Products__c
             FROM Opportunity WHERE Id IN :oppIds
         ]);
     }
@@ -187,13 +187,13 @@ public with sharing class TierCalcService {
 
         // Delete obsolete tier lines first
         if (!tierLinesToDelete.isEmpty()) {
-            System.debug('Deleting obsolete tier lines: ' + tierLinesToDelete.size());
+            System.debug('Deleting obsolete tier lines: ' + tierLinesToDelete.size() + ' lines: ' + tierLinesToDelete);
             delete tierLinesToDelete;
         }
 
         // Upsert changed tier lines
         if (!tierLinesToUpsert.isEmpty()) {
-            System.debug('Upserting tier lines (size): ' + tierLinesToUpsert.size());
+            System.debug('Upserting tier lines (size): ' + tierLinesToUpsert.size() + ' lines: ' + tierLinesToUpsert);
             upsert tierLinesToUpsert Line_Key__c; // External ID + Unique
         }
 
@@ -203,7 +203,7 @@ public with sharing class TierCalcService {
         return tierLinesToUpsert;
     }
 
-    // Updates Total_Amount_T2_V2__c and Total_Amount_T3_V2__c on Opportunities if values have changed
+    // Updates Total_Amount_T2__c and Total_Amount_T3__c on Opportunities if values have changed
     private static void updateOpportunityTierFields(
         Map<Id, Opportunity> oppMap,
         Map<Id, TierCalcEngine.Result> resultsByOppId
@@ -217,16 +217,24 @@ public with sharing class TierCalcService {
             Boolean needsUpdate = false;
             Opportunity oppUpdate = new Opportunity(Id = oppId);
 
-            // Update T2_V2 if different
-            if (opp.Total_Amount_T2_V2__c != res.t2calc) {
-                oppUpdate.Total_Amount_T2_V2__c = res.t2calc;
-                needsUpdate = true;
+            // Update T2 only if not manually overridden
+            if (opp.T2_Override__c != true) {
+                // Rounded to 2 decimal places to match database storage
+                Decimal roundedT2 = (res.t2calc != null) ? res.t2calc.setScale(2, RoundingMode.HALF_UP) : 0;
+                if (opp.Total_Amount_T2__c != roundedT2) {
+                    oppUpdate.Total_Amount_T2__c = roundedT2;
+                    needsUpdate = true;
+                }
             }
 
-            // Update T3_V2 if different
-            if (opp.Total_Amount_T3_V2__c != res.t3calc) {
-                oppUpdate.Total_Amount_T3_V2__c = res.t3calc;
-                needsUpdate = true;
+            // Update T3 only if not manually overridden
+            if (opp.T3_Override__c != true) {
+                // Rounded to 2 decimal places to match database storage
+                Decimal roundedT3 = (res.t3calc != null) ? res.t3calc.setScale(2, RoundingMode.HALF_UP) : 0;
+                if (opp.Total_Amount_T3__c != roundedT3) {
+                    oppUpdate.Total_Amount_T3__c = roundedT3;
+                    needsUpdate = true;
+                }
             }
 
             if (needsUpdate) {
