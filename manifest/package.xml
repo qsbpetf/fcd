@@ -186,6 +186,10 @@
         <name>CustomTab</name>
     </types>
     <types>
+        <members>Atlassian_Deal_Reg_IDP</members>
+        <name>ExternalAuthIdentityProvider</name>
+    </types>
+    <types>
         <members>Atlassian_Deal_Reg_EC</members>
         <name>ExternalCredential</name>
     </types>
