@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>myRule_1</name>
+        <label>Product familly</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>myRule_6_A1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Product familly</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_1</name>
+            <conditionLogic>1 AND (2 OR 3) AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Product2Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Product2.Family</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>LIC</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Product2.Family</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>MS</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Opportunity.Large_Duplicates__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>TRUE_Product familly</label>
+        </rules>
+    </decisions>
+    <description>Version 12022024 Jasmin/Ceili: Added entry condition to only trigger when Eficode Subsidiary is UK or US.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>LIC</name>
+        <dataType>String</dataType>
+        <expression>&quot;LIC:&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>MS</name>
+        <dataType>String</dataType>
+        <expression>&quot;MS:&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>One_year_from_start_date</name>
+        <dataType>Date</dataType>
+        <expression>DATE(YEAR({!$Record.License_Start_date__c}  ) + 1,MONTH({!$Record.License_Start_date__c}),DAY({!$Record.License_Start_date__c}))</expression>
+    </formulas>
+    <formulas>
+        <name>TODAY</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <interviewLabel>Licence Start Date and End Date {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Licence Start Date and End Date</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>Update start date</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>myRule_6_A1</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>License_Start_date__c</field>
+            <operator>EqualTo</operator>
+        </filters>
+        <inputAssignments>
+            <field>License_Start_date__c</field>
+            <value>
+                <elementReference>TODAY</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_6_A1</name>
+        <label>Update Licence end date</label>
+        <locationX>182</locationX>
+        <locationY>623</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>License_Start_date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>License_end_date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>License_end_date__c</field>
+            <value>
+                <elementReference>One_year_from_start_date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_1</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+OR(
+ ISPICKVAL( {!$Record.Opportunity.Account.CV_Subsidiary__c},&quot;UK&quot;),
+ ISPICKVAL( {!$Record.Opportunity.Account.CV_Subsidiary__c},&quot;US&quot;))</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>myRule_16</name>
+        <label>Web Inbound: Email Marketing</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>myRule_18</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Web Inbound: Email Marketing</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_16</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email marketing</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_16_A1</targetReference>
+            </connector>
+            <label>TRUE_Web Inbound: Email Marketing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_18</name>
+        <label>Web Inbound: Paid Campaign</label>
+        <locationX>182</locationX>
+        <locationY>623</locationY>
+        <defaultConnector>
+            <targetReference>myRule_20</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Web Inbound: Paid Campaign</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_18</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Paid search</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Paid social</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_18_A1</targetReference>
+            </connector>
+            <label>TRUE_Web Inbound: Paid Campaign</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_20</name>
+        <label>Web Inbound: Organic</label>
+        <locationX>182</locationX>
+        <locationY>923</locationY>
+        <defaultConnector>
+            <targetReference>myRule_22</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Web Inbound: Organic</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_20</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Organic search</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Direct traffic</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Social media</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Organic Social</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_20_A1</targetReference>
+            </connector>
+            <label>TRUE_Web Inbound: Organic</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_22</name>
+        <label>Web Inbound: Referrals</label>
+        <locationX>182</locationX>
+        <locationY>1223</locationY>
+        <defaultConnector>
+            <targetReference>myRule_24</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Web Inbound: Referrals</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_22</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Referrals</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_22_A1</targetReference>
+            </connector>
+            <label>TRUE_Web Inbound: Referrals</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_24</name>
+        <label>Inbound Campaign Allocation : Offline sources</label>
+        <locationX>182</locationX>
+        <locationY>1523</locationY>
+        <defaultConnector>
+            <targetReference>myRule_26</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Inbound Campaign Allocation : Offline sources</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_24</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Offline sources</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Other campaigns</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_24_A1</targetReference>
+            </connector>
+            <label>TRUE_Inbound Campaign Allocation : Offline sources</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_26</name>
+        <label>Web Inbound: Bus Dev: Agency Lead</label>
+        <locationX>182</locationX>
+        <locationY>1823</locationY>
+        <defaultConnectorLabel>FALSE_Web Inbound: Bus Dev: Agency Lead</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_26</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inbound_Campaign_Allocation__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Bus Dev Agency</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_26_A1</targetReference>
+            </connector>
+            <label>TRUE_Web Inbound: Bus Dev: Agency Lead</label>
+        </rules>
+    </decisions>
+    <description>Assign the correct &quot;Primary Campaign Source&quot; based on the &quot;Inbound Campaign Allocation&quot; coming from lead</description>
+    <environments>Default</environments>
+    <interviewLabel>Assign Primary Campaign Source based on {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Assign Primary Campaign Source based on Inbound Campaign Allocation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_16_A1</name>
+        <label>Update Campaign</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>myRule_18</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Primary_Campaign_Source__c</field>
+            <value>
+                <stringValue>7011n0000017Yl6AAE</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_18_A1</name>
+        <label>Update Campaign</label>
+        <locationX>50</locationX>
+        <locationY>731</locationY>
+        <connector>
+            <targetReference>myRule_20</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Primary_Campaign_Source__c</field>
+            <value>
+                <stringValue>7011n0000017YkwAAE</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_20_A1</name>
+        <label>Update Campaign</label>
+        <locationX>50</locationX>
+        <locationY>1031</locationY>
+        <connector>
+            <targetReference>myRule_22</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Primary_Campaign_Source__c</field>
+            <value>
+                <stringValue>7011n0000017Yl1AAE</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_22_A1</name>
+        <label>Update Campaign</label>
+        <locationX>50</locationX>
+        <locationY>1331</locationY>
+        <connector>
+            <targetReference>myRule_24</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Primary_Campaign_Source__c</field>
+            <value>
+                <stringValue>7011n000001FNPoAAO</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_24_A1</name>
+        <label>Update Campaign</label>
+        <locationX>50</locationX>
+        <locationY>1631</locationY>
+        <connector>
+            <targetReference>myRule_26</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Primary_Campaign_Source__c</field>
+            <value>
+                <stringValue>7011n000001AVqgAAG</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_26_A1</name>
+        <label>Update Campaign</label>
+        <locationX>50</locationX>
+        <locationY>1931</locationY>
+        <inputAssignments>
+            <field>Primary_Campaign_Source__c</field>
+            <value>
+                <stringValue>7011n000001FNWkAAO</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_16</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

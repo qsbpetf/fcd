@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MediCompli__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>If lead is MediCompli, please tick</inlineHelpText>
+    <label>MediCompli</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

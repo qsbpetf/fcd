@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <decisions>
+        <name>Deal_Reg_Status</name>
+        <label>Deal Reg Status</label>
+        <locationX>1502</locationX>
+        <locationY>287</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Eligible</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not Eligible</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_Not_Eligible</targetReference>
+            </connector>
+            <label>Not Eligible</label>
+        </rules>
+        <rules>
+            <name>Submitted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_Submitted</targetReference>
+            </connector>
+            <label>Submitted</label>
+        </rules>
+        <rules>
+            <name>Returned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Returned</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_Returned</targetReference>
+            </connector>
+            <label>Returned</label>
+        </rules>
+        <rules>
+            <name>Approved</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Approved</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Approved_not_paid</targetReference>
+            </connector>
+            <label>Approved</label>
+        </rules>
+        <rules>
+            <name>Denied</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Denied</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Not_Approved_Not_escalating</targetReference>
+            </connector>
+            <label>Denied</label>
+        </rules>
+        <rules>
+            <name>On_Hold</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Hold</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_On_Hold</targetReference>
+            </connector>
+            <label>On Hold</label>
+        </rules>
+        <rules>
+            <name>Closed_Won</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_Closed_Won</targetReference>
+            </connector>
+            <label>Closed Won</label>
+        </rules>
+        <rules>
+            <name>In_Refund_period</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Refund Period</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_In_Refund_period</targetReference>
+            </connector>
+            <label>In Refund period</label>
+        </rules>
+        <rules>
+            <name>In_Payment_process</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Payment Process</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_In_Payment_process</targetReference>
+            </connector>
+            <label>In Payment process</label>
+        </rules>
+        <rules>
+            <name>Paid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Paid</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Approved_paid</targetReference>
+            </connector>
+            <label>Paid</label>
+        </rules>
+        <rules>
+            <name>No_deal_reg_submitted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Deal_Reg_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Deal Reg Not Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Internal_No_deal_reg_submitted</targetReference>
+            </connector>
+            <label>No deal reg submitted</label>
+        </rules>
+    </decisions>
+    <description>Copy License Deal Reg Status value to License Deal Reg Status (Internal)</description>
+    <environments>Default</environments>
+    <interviewLabel>License Deal Reg Status &amp; Deal Reg Status Internal {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>License Deal Reg Status &amp; Deal Reg Status Internal</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Approved_not_paid</name>
+        <label>Approved - not paid</label>
+        <locationX>842</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Approved - Not Paid</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Approved_paid</name>
+        <label>Approved - paid</label>
+        <locationX>2426</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Approved - Paid</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_Closed_Won</name>
+        <label>Internal - Closed Won</label>
+        <locationX>1634</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Closed Won</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_In_Payment_process</name>
+        <label>Internal - In Payment process</label>
+        <locationX>2162</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>In Payment Process</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_In_Refund_period</name>
+        <label>Internal - In Refund period</label>
+        <locationX>1898</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>In Refund Period</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_No_deal_reg_submitted</name>
+        <label>Internal - No deal reg submitted</label>
+        <locationX>2690</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>No Deal Reg Submitted</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_Not_Eligible</name>
+        <label>Internal - Not Eligible</label>
+        <locationX>50</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Not Eligible</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_On_Hold</name>
+        <label>Internal - On Hold</label>
+        <locationX>1370</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>On Hold</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_Returned</name>
+        <label>Internal Returned</label>
+        <locationX>578</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Returned</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Internal_Submitted</name>
+        <label>Internal Submitted</label>
+        <locationX>314</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Submitted</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Not_Approved_Not_escalating</name>
+        <label>Not Approved - Not escalating</label>
+        <locationX>1106</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>License_Deal_Reg_Status_Internal__c</field>
+            <value>
+                <stringValue>Not Approved - Not Escalating</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>1376</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Deal_Reg_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>License_Deal_Reg_Status__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

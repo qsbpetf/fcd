@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>This action triggers a function that will submit an Opportunity to Partner Central API.</description>
+        <name>Sync_to_Partner_Central_API</name>
+        <label>Sync to Partner Central API</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>awsapn__OpportunityController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordIds</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>awsapn__OpportunityController</nameSegment>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <description>Flow template to sync ACE Opportunity to Partner Central API on creation</description>
+    <environments>Default</environments>
+    <interviewLabel>Sync ACE Opportunity to Partner Central API {!$Flow.CurrentDateTime}</interviewLabel>
+    <isTemplate>true</isTemplate>
+    <label>Sync ACE Opportunity to Partner Central API</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Sync_to_Partner_Central_API</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>awsapn__Opportunity_Ownership__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>AWS Referral</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>awsapn__Opportunity_Engagement_Invitation_ARN__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>awsapn__ACE_Opportunity__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

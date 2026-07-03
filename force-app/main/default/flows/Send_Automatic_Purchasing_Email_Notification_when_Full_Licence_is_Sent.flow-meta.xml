@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>myRule_21_A1</name>
+        <label>Automatic Purchasing Email Notification</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>Opportunity.Automatic_Purchasing_Email_Notification</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Automatic_Purchasing_Email_Notification</nameSegment>
+    </actionCalls>
+    <apiVersion>58.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>Send Automatic Purchasing Email Notification when Full Licence is Sent {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send Automatic Purchasing Email Notification when Full Licence is Sent</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_21_A1</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterFormula>{!$Record.Full_License_Sent__c} = true &amp;&amp;
+{!$Record.Atlassian_AT_Quote_amount__c} &gt; 0   &amp;&amp;
+NOT(ISBLANK({!$Record.Purchase_Notification_Contact__c})) 
+&amp;&amp;{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+(ISPICKVAL({!$Record.Account.CV_Subsidiary__c} , &quot;UK&quot;) || ISPICKVAL({!$Record.Account.CV_Subsidiary__c} , &quot;US&quot;))</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

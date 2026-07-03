@@ -3,19 +3,19 @@
     <label>Test - Closed won - awaiting approval</label>
     <protected>false</protected>
     <values>
-        <field>StageName__c</field>
-        <value xsi:type="xsd:string">Closed won - awaiting approval</value>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Used only in Apex tests. Isolates test data from production config.</value>
     </values>
     <values>
         <field>IsActive__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
-        <field>Description__c</field>
-        <value xsi:type="xsd:string">Used only in Apex tests. Isolates test data from production config.</value>
-    </values>
-    <values>
         <field>IsTestRecord__c</field>
         <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>StageName__c</field>
+        <value xsi:type="xsd:string">Closed won - awaiting approval</value>
     </values>
 </CustomMetadata>

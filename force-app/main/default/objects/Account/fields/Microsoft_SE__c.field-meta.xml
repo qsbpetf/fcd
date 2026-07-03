@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Microsoft_SE__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The Solution Engineer at Microsoft</description>
+    <inlineHelpText>The Solution Engineer at Microsoft</inlineHelpText>
+    <label>Microsoft SE</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contacts (Microsoft SE)</relationshipLabel>
+    <relationshipName>AccountsoSqh</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

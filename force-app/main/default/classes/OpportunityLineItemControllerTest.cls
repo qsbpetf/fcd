@@ -21,7 +21,7 @@
  */@IsTest private class OpportunityLineItemControllerTest {
     @IsTest static void getOpportunityLineItemsTestSuccess() {
         Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
-        Map<String, Object> result = OpportunityLineItemController.getOpportunityLineItems(opp.Id, 0, 30, 'Name', 'ASC', null);
+        Map<String, Object> result = OpportunityLineItemController.getOpportunityLineItems(opp.Id, 0, 30, 'Name', 'ASC');
         List<OpportunityLineItem> olis = (List<OpportunityLineItem>) result.get('olis');
         System.assertEquals(2, olis.size(), 'There was an unexpected number of opportunity line items');
     }
@@ -38,33 +38,6 @@
         List<OpportunityLineItem> olis = OpportunityLineItemController.getOpportunityLineItemsByIds(oliIds);
         System.debug(olis);
         System.assertEquals(1, olis.size(), 'There was an unexpected number of opportunity line items');
-    }
-
-    @IsTest static void getColumnConfigTestSuccess() {
-        List<Map<String, Object>> columnConfig = OpportunityLineItemController.getColumnConfig();
-        System.assertNotEquals(null, columnConfig, 'columnConfig was null');
-    }
-
-    @IsTest static void getOpportunityLineItemsWithColumnConfigsTestSuccess() {
-        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
-        List<Object> columnConfigs = new List<Object>{
-            new Map<String, Object>{
-                'fieldApiName' => 'Quantity',
-                'queryFieldApiNames' => null
-            },
-            new Map<String, Object>{
-                'fieldApiName' => 'UnitPrice',
-                'queryFieldApiNames' => null
-            }
-        };
-        Map<String, Object> result = OpportunityLineItemController.getOpportunityLineItems(opp.Id, 0, 30, 'Quantity', 'ASC', columnConfigs);
-        List<OpportunityLineItem> olis = (List<OpportunityLineItem>) result.get('olis');
-        System.assertEquals(2, olis.size(), 'There was an unexpected number of opportunity line items');
-    }
-
-    @IsTest static void getPicklistValuesTestSuccess() {
-        List<Map<String, String>> picklistValues = OpportunityLineItemController.getPicklistValues('Renewal__c');
-        System.assertNotEquals(0, picklistValues.size(), 'picklistValues was empty');
     }
 
     @IsTest static void getTypePicklistValuesTestSuccess() {

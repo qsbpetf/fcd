@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Quote Default German</label>
+    <protected>false</protected>
+    <values>
+        <field>Language_Selected__c</field>
+        <value xsi:type="xsd:string">German</value>
+    </values>
+    <values>
+        <field>Quote_Introduction__c</field>
+        <value xsi:type="xsd:string">Vielen Dank für die Berücksichtigung von Eficode. Unten finden Sie unser detailliertes Angebot mit unseren Dienstleistungen, Preisen und Bedingungen. Wir freuen uns auf die Möglichkeit, mit Ihnen zusammenzuarbeiten.
+
+Zur Vermeidung von Missverständnissen möchten wir darauf hinweisen, dass dieses Angebot keinen Vertrag darstellt. Der Kauf und die Lieferung der angebotenen Artikel gemäß den im Abschnitt Angebotene Details beschriebenen Bedingungen sind ausdrücklich von der Unterzeichnung und Abschluss separater Vereinbarungen zwischen den jeweiligen Parteien abhängig.</value>
+    </values>
+    <values>
+        <field>Quote_remarks__c</field>
+        <value xsi:type="xsd:string">Wir sind stolz darauf, qualitativ hochwertige Dienstleistungen anzubieten und dabei außergewöhnliche Sorgfalt für die Bedürfnisse unserer Kunden zu gewährleisten. Wenn Sie Fragen haben oder weitere Klarstellungen benötigen, freuen wir uns, von Ihnen zu hören, und sehen der Möglichkeit einer Zusammenarbeit entgegen.</value>
+    </values>
+</CustomMetadata>

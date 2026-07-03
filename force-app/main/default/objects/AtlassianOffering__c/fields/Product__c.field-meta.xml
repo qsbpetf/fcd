@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Product__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>Salesforce Product</description>
+    <description>salesforce product</description>
     <label>Salesforce Product</label>
     <referenceTo>Product2</referenceTo>
     <relationshipLabel>Atlassian Offerings</relationshipLabel>

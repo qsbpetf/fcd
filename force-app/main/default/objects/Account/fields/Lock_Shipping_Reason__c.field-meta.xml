@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lock_Shipping_Reason__c</fullName>
+    <description>In order to lock an address, you must first give a reason why you are locking the address</description>
+    <inlineHelpText>In order to lock an address, you must first give a reason why you are locking the address</inlineHelpText>
+    <label>Lock Shipping Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

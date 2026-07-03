@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>P_L_Type__c</fullName>
+    <description>This field is to tell us what where the web form submission will sit against the Profit and Loss. This field is relevant only to web leads.</description>
+    <inlineHelpText>This field is relevant only for Web Leads. The field objective is to tell you where the web lead will sit against the P&amp;L</inlineHelpText>
+    <label>P&amp;L Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Atlassian License</fullName>
+                <default>false</default>
+                <label>Atlassian License</label>
+            </value>
+            <value>
+                <fullName>ClearHub</fullName>
+                <default>false</default>
+                <label>ClearHub</label>
+            </value>
+            <value>
+                <fullName>Consulting</fullName>
+                <default>false</default>
+                <label>Consulting</label>
+            </value>
+            <value>
+                <fullName>Hosting</fullName>
+                <default>false</default>
+                <label>Hosting</label>
+            </value>
+            <value>
+                <fullName>Mavenlink</fullName>
+                <default>false</default>
+                <label>Mavenlink</label>
+            </value>
+            <value>
+                <fullName>Partner License</fullName>
+                <default>false</default>
+                <label>Partner License</label>
+            </value>
+            <value>
+                <fullName>Project Management</fullName>
+                <default>false</default>
+                <label>Project Management</label>
+            </value>
+            <value>
+                <fullName>Support</fullName>
+                <default>false</default>
+                <label>Support</label>
+            </value>
+            <value>
+                <fullName>Training</fullName>
+                <default>false</default>
+                <label>Training</label>
+            </value>
+            <value>
+                <fullName>Whitepaper</fullName>
+                <default>false</default>
+                <label>Whitepaper</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>PPM</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>PPM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>7</visibleLines>
+</CustomField>

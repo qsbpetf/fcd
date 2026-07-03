@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Cohorts__c</fullName>
+    <description>Group accounts by the Fiscal Year to which that First Order Date (Reporting) came valid. 
+Including Customers, Partners, Resellers, Parent-Child company.</description>
+    <inlineHelpText>The fiscal year of the FIrst order date (Reporting), groups accounts based on when they became active. This includes customers, partners, resellers, and parent-child companies.</inlineHelpText>
+    <label>Account Cohorts</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>FY26</fullName>
+                <default>false</default>
+                <label>FY26</label>
+            </value>
+            <value>
+                <fullName>FY25</fullName>
+                <default>false</default>
+                <label>FY25</label>
+            </value>
+            <value>
+                <fullName>FY24</fullName>
+                <default>false</default>
+                <label>FY24</label>
+            </value>
+            <value>
+                <fullName>FY23</fullName>
+                <default>false</default>
+                <label>FY23</label>
+            </value>
+            <value>
+                <fullName>FY22</fullName>
+                <default>false</default>
+                <label>FY22</label>
+            </value>
+            <value>
+                <fullName>FY21</fullName>
+                <default>false</default>
+                <label>FY21</label>
+            </value>
+            <value>
+                <fullName>FY20</fullName>
+                <default>false</default>
+                <label>FY20</label>
+            </value>
+            <value>
+                <fullName>FY19</fullName>
+                <default>false</default>
+                <label>FY19</label>
+            </value>
+            <value>
+                <fullName>Pre FY19</fullName>
+                <default>false</default>
+                <label>Pre FY19</label>
+            </value>
+            <value>
+                <fullName>FY27</fullName>
+                <default>false</default>
+                <label>FY27</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

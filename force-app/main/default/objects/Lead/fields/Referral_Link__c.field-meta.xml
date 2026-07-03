@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Referral_Link__c</fullName>
+    <description>Link to the referral in Microsoft Partner Center</description>
+    <inlineHelpText>Link to the referral in Microsoft Partner Center</inlineHelpText>
+    <label>Referral Link</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Url</type>
+</CustomField>

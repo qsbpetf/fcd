@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <description>Every time the T3 from product field is changed (updated via RollUp Helper) the flow add the .Deal Reg Rebate Value to get the final value.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>TotalT3</name>
+        <dataType>Currency</dataType>
+        <expression>{!$Record.T3_From_Products__c} + {!$Record.Deal_Reg_Rebate_Value_Currency__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Calculate Final T3 Amount {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Calculate Final T3 Amount</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_T3_Amount</name>
+        <label>Update T3 Amount</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Total_Amount_T3__c</field>
+            <value>
+                <elementReference>TotalT3</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_T3_Amount</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+(ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;US&quot;)) &amp;&amp; 
+(
+ISCHANGED({!$Record.T3_From_Products__c}) || ISCHANGED({!$Record.Deal_Reg_Rebate_Value__c})
+)</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

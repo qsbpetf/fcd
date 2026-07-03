@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <description>This flow updates the Start Date of Opportunity Product records for products where the Revenue Type is Consulting or Managed Service, based on the Closed Date of the related Opportunity record.
+For the Product End Date, it adds 60 days to the Opportunity’s Closed Date.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>AddSixMonthistoClosedDate</name>
+        <dataType>Date</dataType>
+        <expression>ADDMONTHS({!Get_Opportunity_record_linked_to_Opportunity_Product.CloseDate},6)</expression>
+    </formulas>
+    <interviewLabel>Update Opportunity Product Start and End Date Information {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Opportunity Product Start and End Date Information based on Opportunity closed date</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Opportunity_record_linked_to_Opportunity_Product</name>
+        <label>Get Opportunity record linked to Opportunity Product</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Start_date_and_End_Date</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OpportunityId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Start_date_and_End_Date</name>
+        <label>Update Start date and End Date</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>License_Start_date__c</field>
+            <value>
+                <elementReference>Get_Opportunity_record_linked_to_Opportunity_Product.CloseDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>License_end_date__c</field>
+            <value>
+                <elementReference>AddSixMonthistoClosedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Opportunity_record_linked_to_Opportunity_Product</targetReference>
+        </connector>
+        <filterLogic>(1 AND 2) AND (3 OR 4)</filterLogic>
+        <filters>
+            <field>License_Start_date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>License_end_date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Revenue_Type_Pick__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Consulting</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Revenue_Type_Pick__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Managed Services</stringValue>
+            </value>
+        </filters>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

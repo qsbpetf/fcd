@@ -5,5 +5,6 @@
     <fieldManageability>SubscriberControlled</fieldManageability>
     <inlineHelpText>Optional description for administrators.</inlineHelpText>
     <label>Description</label>
+    <required>false</required>
     <type>TextArea</type>
 </CustomField>

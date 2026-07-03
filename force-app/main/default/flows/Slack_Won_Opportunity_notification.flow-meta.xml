@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_consultancy_support_notification</name>
+        <label>Send consultancy support notification</label>
+        <locationX>484</locationX>
+        <locationY>1092</locationY>
+        <actionName>custom__Consultancy_Sales_Support_notification</actionName>
+        <actionType>sendNotification</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>projecting_room_id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>custom__Consultancy_Sales_Support_notification</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_opportunity_won_notification</name>
+        <label>Send opportunity won notification</label>
+        <locationX>220</locationX>
+        <locationY>1092</locationY>
+        <actionName>custom__Opportunity_closed_notification</actionName>
+        <actionType>sendNotification</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>deals_won_roomid</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>custom__Opportunity_closed_notification</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Assign_deals_won_room_id</name>
+        <label>Assign deals won room id</label>
+        <locationX>572</locationX>
+        <locationY>708</locationY>
+        <assignmentItems>
+            <assignToReference>deals_won_roomid</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Slack_channel_IDs.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Slack_channel_IDs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_projecting_room_id</name>
+        <label>Assign projecting room id</label>
+        <locationX>836</locationX>
+        <locationY>708</locationY>
+        <assignmentItems>
+            <assignToReference>projecting_room_id</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Slack_channel_IDs.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Slack_channel_IDs</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Get_room_IDs</name>
+        <label>Get room IDs</label>
+        <locationX>836</locationX>
+        <locationY>600</locationY>
+        <defaultConnector>
+            <targetReference>Get_Slack_channel_IDs</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Deals_won_room</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Slack_channel_IDs.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>deals-won</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_deals_won_room_id</targetReference>
+            </connector>
+            <label>Deals-won room</label>
+        </rules>
+        <rules>
+            <name>Projecting_room</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Slack_channel_IDs.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>projecting</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_projecting_room_id</targetReference>
+            </connector>
+            <label>Projecting room</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>has_Automation_Enabled</name>
+        <label>has Automation Enabled</label>
+        <locationX>748</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>has_Automation_Enabled_Settings</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.AutomationSettings__c.Automation_Enabled__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Slack_Channels</targetReference>
+            </connector>
+            <label>has Automation Enabled</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Which_notifications_to_send</name>
+        <label>Which notifications to send?</label>
+        <locationX>484</locationX>
+        <locationY>984</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Send_won_deal_notifications</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed won - awaiting approval</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>NetRevenueInCorporate</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>3000.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_opportunity_won_notification</targetReference>
+            </connector>
+            <label>Send won deal notifications</label>
+        </rules>
+        <rules>
+            <name>Send_sales_support_notification</name>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Identify Needs</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Delivery_Owner__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Estimate_Consulting_Revenue__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Revenue_Types_Declarative__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Consulting</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_consultancy_support_notification</targetReference>
+            </connector>
+            <label>Send sales support notification</label>
+        </rules>
+    </decisions>
+    <description>Automation Enabled checking added //Ceili: Atte 7.5.-24</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>NetRevenueInCorporate</name>
+        <dataType>Number</dataType>
+        <expression>{!$Record.Net_Revenue__c} / CURRENCYRATE(TEXT({!$Record.CurrencyIsoCode}))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>TotalAmountInCorporate</name>
+        <dataType>Number</dataType>
+        <expression>{!$Record.Total_Amount__c} / CURRENCYRATE(TEXT({!$Record.CurrencyIsoCode}))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>Total amount in DKK, used to check if #denmark notification should be sent.</description>
+        <name>TotalAmountInDKK</name>
+        <dataType>Number</dataType>
+        <expression>IF(
+TEXT({!$Record.CurrencyIsoCode}) = &quot;DKK&quot;,
+{!$Record.Total_Amount__c},
+{!$Record.Total_Amount__c} / CURRENCYRATE(TEXT({!$Record.CurrencyIsoCode})) * CURRENCYRATE(&quot;DKK&quot;)
+)</expression>
+        <scale>0</scale>
+    </formulas>
+    <interviewLabel>Slack - Won Opportunity notification {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Slack - Send Won Opportunity notifications</label>
+    <loops>
+        <name>Get_Slack_channel_IDs</name>
+        <label>Get Slack channel IDs</label>
+        <locationX>484</locationX>
+        <locationY>492</locationY>
+        <collectionReference>SlackChannels</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_room_IDs</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Which_notifications_to_send</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get Slack channels for notifications.</description>
+        <name>Get_Slack_Channels</name>
+        <label>Get Slack Channels</label>
+        <locationX>484</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Slack_channel_IDs</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>deals-won</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>projecting</stringValue>
+            </value>
+        </filters>
+        <object>CollaborationRoom</object>
+        <outputReference>SlackChannels</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <filterLogic>(1 OR 2) AND 3</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Closed won - awaiting approval</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Identify Needs</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>has_Automation_Enabled</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>big_deals_won_roomid</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>deals_won_denmark_roomid</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>deals_won_roomid</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>projecting_room_id</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>SlackChannels</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>CollaborationRoom</objectType>
+    </variables>
+</Flow>

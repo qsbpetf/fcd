@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <assignments>
+        <name>Accumulate_Data</name>
+        <label>Accumulate Data</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varCounter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varDataText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>formulaDataLine</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Stalled_Opps</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assignment_2</name>
+        <label>Calculate Days Stalled</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varDaysStalled</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formulaDaysStalled</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_Match_Check</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Generate_Stalled_Deals_Report</name>
+        <elementSubtype>AddPromptInstructions</elementSubtype>
+        <label>Generate Stalled Deals Report</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Output.Prompt</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>You are a RevOps assistant helping sales managers monitor pipeline health.
+IMPORTANT FILTER RULE:
+The user asked about a specific region or owner. Even though all stalled deals are returned below, you MUST filter your response:
+- If the user mentioned a region (UK, Germany, Scandinavia, etc.), only show deals where the Account name or context suggests that region
+- If the user mentioned an owner name, only show deals owned by that person
+- Always state which filter you applied in your response
+TASK: Analyze the stalled opportunity data below and present a clear report.
+
+CONTEXT:
+- Threshold: {!inputThresholdDays} days without changes
+- Owner filter: {!inputOwnerName}
+- Region filter: {!inputSubsidiaryFilter}
+- Number of stalled deals: {!varCounter}
+
+STALLED DEALS DATA (Name|Stage|DaysStalled|Owner|Amount|CloseDate|Account):
+{!varDataText}
+
+RESPONSE RULES:
+1. First line: &quot;[count] stalled deal(s) found (no changes in [threshold]+ days). Total value at risk: €[value]&quot;
+2. If owner or region filter was applied and not empty, mention it on the second line
+3. List each deal numbered with this format:
+   [Number]. [Opportunity Name] — [Account]
+   Stage: [Stage] | Owner: [Owner] | Stalled: [Days] days | Amount: €[Amount]
+4. Sort by days stalled, longest first
+5. Mark deals stalled 30+ days with a warning flag as CRITICAL
+6. After the list add Recommended Actions section with 2-3 suggestions
+7. If count is 0 respond: Good news — no stalled deals found for the specified criteria
+8. Format all currency amounts with € symbol
+9. Respond in the same language the user used
+10. Show maximum 15 deals. If more say and X more at the end
+</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_Cutoff_Date</name>
+        <label>Set Cutoff Date</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varCutoffDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formulaCutoffDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_Subsidiary_API_Value</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Subsidiary_API_Value</name>
+        <label>Set Subsidiary API Value</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varSubsidiaryApiValue</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formulaSubsidiaryMapping</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Stalled_Opportunities</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Owner_Match_Check</name>
+        <label>Owner Match Check</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_Stalled_Opps</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Owner_Match_Check1</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>formulaIsOwnerBlank</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Stalled_Opps.Opportunity_Owner_Name__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>inputOwnerName</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subsidiary_Filter</targetReference>
+            </connector>
+            <label>Owner Match Check</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Subsidiary_Filter</name>
+        <label>Subsidiary Filter</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_Stalled_Opps</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Include_Subsidiary</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>formulaIsSubsidiaryBlank</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Stalled_Opps.Account.CV_Subsidiary__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>varSubsidiaryApiValue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Accumulate_Data</targetReference>
+            </connector>
+            <label>Include Subsidiary</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>formulaCutoffDate</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() - {!inputThresholdDays}</expression>
+    </formulas>
+    <formulas>
+        <name>formulaDataLine</name>
+        <dataType>String</dataType>
+        <expression>{!Loop_Stalled_Opps.Name} &amp; &quot;|&quot; &amp; TEXT({!Loop_Stalled_Opps.StageName}) &amp; &quot;|&quot; &amp; TEXT({!varDaysStalled}) &amp; &quot;|&quot; &amp; {!Loop_Stalled_Opps.Opportunity_Owner_Name__c} &amp; &quot;|&quot; &amp; TEXT({!Loop_Stalled_Opps.Amount}) &amp; &quot;|&quot; &amp; TEXT({!Loop_Stalled_Opps.CloseDate}) &amp; &quot;|&quot; &amp; {!Loop_Stalled_Opps.Account_name__c} &amp; BR()</expression>
+    </formulas>
+    <formulas>
+        <name>formulaDaysStalled</name>
+        <dataType>Number</dataType>
+        <expression>TODAY() - DATEVALUE({!Loop_Stalled_Opps.LastModifiedDate})</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>formulaIsOwnerBlank</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!inputOwnerName})</expression>
+    </formulas>
+    <formulas>
+        <name>formulaIsSubsidiaryBlank</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!inputSubsidiaryFilter})</expression>
+    </formulas>
+    <formulas>
+        <name>formulaPromptText</name>
+        <dataType>String</dataType>
+        <expression>&quot;You are a RevOps assistant. Analyze this stalled opportunity data and respond.&quot; &amp; BR() &amp; BR() &amp;
+  &quot;STALLED DEALS DATA:&quot; &amp; BR() &amp;
+  &quot;Threshold: &quot; &amp; TEXT({!inputThresholdDays}) &amp; &quot; days&quot; &amp; BR() &amp;
+  &quot;Owner filter: &quot; &amp; IF(ISBLANK({!inputOwnerName}), &quot;All owners&quot;, {!inputOwnerName}) &amp; BR() &amp;
+  &quot;Region filter: &quot; &amp; IF(ISBLANK({!inputSubsidiaryFilter}), &quot;All regions&quot;, {!inputSubsidiaryFilter}) &amp; BR() &amp;
+  &quot;Stalled count: &quot; &amp; TEXT({!varCounter}) &amp; BR() &amp;
+  &quot;Total value at risk: &quot; &amp; TEXT({!varValueAccum}) &amp; BR() &amp; BR() &amp;
+  &quot;RAW DATA (Name|Stage|DaysStalled|Owner|Amount|CloseDate|Account):&quot; &amp; BR() &amp;
+  IF({!varCounter} &gt; 0, {!varDataText}, &quot;No stalled deals found.&quot;) &amp; BR() &amp; BR() &amp;
+  &quot;RESPONSE FORMAT:&quot; &amp; BR() &amp;
+  &quot;1. Start with summary: [count] stalled deals found, total value at risk&quot; &amp; BR() &amp;
+  &quot;2. If filters applied, mention them&quot; &amp; BR() &amp;
+  &quot;3. List each deal numbered: Name, Account, Stage, Owner, Days Stalled, Amount&quot; &amp; BR() &amp;
+  &quot;4. Sort by days stalled longest first&quot; &amp; BR() &amp;
+  &quot;5. Mark 30+ day deals as CRITICAL&quot; &amp; BR() &amp;
+  &quot;6. End with 2-3 recommended actions&quot; &amp; BR() &amp;
+  &quot;7. If count is 0, say Good news no stalled deals found&quot; &amp; BR() &amp;
+  &quot;8. Format amounts with euro symbol&quot; &amp; BR() &amp;
+  &quot;9. Respond in the same language the user used&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>formulaSubsidiaryMapping</name>
+        <dataType>String</dataType>
+        <expression>CASE(UPPER({!inputSubsidiaryFilter}),
+&quot;UK&quot;, &quot;33&quot;,
+&quot;UNITED KINGDOM&quot;, &quot;33&quot;,
+&quot;GERMANY&quot;, &quot;20&quot;,
+&quot;FINLAND&quot;, &quot;2&quot;,
+&quot;DENMARK&quot;, &quot;3&quot;,
+&quot;SWEDEN&quot;, &quot;8&quot;,
+&quot;NORWAY&quot;, &quot;7&quot;,
+&quot;NETHERLANDS&quot;, &quot;5&quot;,
+&quot;SWITZERLAND&quot;, &quot;10&quot;,
+&quot;UNITED STATES&quot;, &quot;12&quot;,
+&quot;US&quot;, &quot;12&quot;,
+&quot;USA&quot;, &quot;12&quot;,
+&quot;POLAND&quot;, &quot;9&quot;,
+{!inputSubsidiaryFilter})</expression>
+    </formulas>
+    <interviewLabel>Stalled Opportunities {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Stalled Opportunities</label>
+    <loops>
+        <name>Loop_Stalled_Opps</name>
+        <label>Loop Stalled Opps</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Stalled_Opportunities</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assignment_2</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Generate_Stalled_Deals_Report</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>PromptFlow</processType>
+    <recordLookups>
+        <name>Get_Stalled_Opportunities</name>
+        <label>Get Stalled Opportunities</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Stalled_Opps</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>LastModifiedDate</field>
+            <operator>LessThan</operator>
+            <value>
+                <elementReference>varCutoffDate</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CV_Subsiduary__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varSubsidiaryApiValue</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <sortField>LastModifiedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_Cutoff_Date</targetReference>
+        </connector>
+        <triggerType>Capability</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <variables>
+        <name>inputMaxResults</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>20.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>inputOwnerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>inputSubsidiaryFilter</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>inputThresholdDays</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>21.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varCounter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varCutoffDate</name>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varDataText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varDaysStalled</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>varLoopOpp</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+    <variables>
+        <name>varSubsidiaryApiValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varValueAccum</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+</Flow>

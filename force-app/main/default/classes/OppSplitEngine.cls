@@ -54,8 +54,8 @@ public without sharing class OppSplitEngine {
             }
             Opportunity old = oldMap != null ? oldMap.get(opp.Id) : null;
 
-            // 1. Admin Repair
-            if (opp.Run_Splits_Flow__c == true && (old == null || old.Run_Splits_Flow__c != true) && !OppSplitService.isClosed(opp)) {
+            // 1. Admin Repair — runs even for closed opportunities when triggered via Run_Splits_Flow__c
+            if (opp.Run_Splits_Flow__c == true && (old == null || old.Run_Splits_Flow__c != true)) {
                 processAdminRepair(opp, populated, existingKeys, cs, typeIds);
                 cs.oppsToUpdate.put(opp.Id, new Opportunity(Id = opp.Id, Run_Splits_Flow__c = false));
             }

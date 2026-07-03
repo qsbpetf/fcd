@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_change_to_Account_Name_with_orders</fullName>
+    <active>true</active>
+    <description>00e1q000000RAye = Finance Team profile
+edits 8.2.2024//Iida
+
+Celigo Admin</description>
+    <errorConditionFormula>(((
+(ISPICKVAL(CV_Subsidiary__c , &quot;UK&quot;) || ISPICKVAL(CV_Subsidiary__c, &quot;US&quot;))
+
+&amp;&amp;
+
+$Profile.Id &lt;&gt; &quot;00e0Y000001NxlW&quot; &amp;&amp;
+$Profile.Id &lt;&gt; &quot;00eP5000002KBpO&quot; &amp;&amp;
+$Profile.Id &lt;&gt; &quot;00e1n000000jrhN&quot; &amp;&amp;
+NOT(ISBLANK(celigo_sfnsio__NetSuite_Id__c))
+
+)
+
+||
+
+(
+NOT(ISPICKVAL(CV_Subsidiary__c , &quot;UK&quot;)) &amp;&amp; NOT(ISPICKVAL(CV_Subsidiary__c, &quot;US&quot;)) &amp;&amp;
+
+$Profile.Id &lt;&gt; &quot;00e0Y000001NxlW&quot; &amp;&amp;
+$Profile.Id &lt;&gt; &quot;00eP5000002KBpO&quot; &amp;&amp;
+$Profile.Id &lt;&gt; &quot;00e1n000000jrhN&quot; &amp;&amp;
+$Profile.Id &lt;&gt; &quot;00e1n000000ZaNu&quot; &amp;&amp;
+NOT(ISBLANK(celigo_sfnsio__NetSuite_Id__c))
+
+))
+
+
+
+&amp;&amp;
+(
+(
+ISCHANGED(Name) &amp;&amp; ISBLANK(Name) ||
+ISCHANGED(Account_Currency__c) &amp;&amp; ISBLANK(Account_Currency__c) ||
+ISCHANGED(Vat_Tax_ID__c) &amp;&amp; ISBLANK(Vat_Tax_ID__c) ||
+ISCHANGED(Company_ID__c) &amp;&amp; ISBLANK(Company_ID__c) ||
+ISCHANGED(E_invoice_Address__c) &amp;&amp; ISBLANK(E_invoice_Address__c) ||
+ISCHANGED(Main_Invoice_Contact__c) &amp;&amp; ISBLANK(Main_Invoice_Contact__c) ||
+ISCHANGED(Invoice_Delivery_Method__c) &amp;&amp; ISBLANK(TEXT(Invoice_Delivery_Method__c))
+) ||
+(
+NOT(ISBLANK(PRIORVALUE(Name))) &amp;&amp; ISCHANGED(Name) ||
+NOT(ISBLANK(PRIORVALUE(Account_Currency__c))) &amp;&amp; ISCHANGED(Account_Currency__c) ||
+NOT(ISBLANK(PRIORVALUE(Vat_Tax_ID__c))) &amp;&amp; ISCHANGED(Vat_Tax_ID__c) ||
+NOT(ISBLANK(PRIORVALUE(Company_ID__c))) &amp;&amp; ISCHANGED(Company_ID__c) ||
+NOT(ISBLANK(PRIORVALUE(E_invoice_Address__c))) &amp;&amp; ISCHANGED(E_invoice_Address__c) ||
+NOT(ISBLANK(PRIORVALUE(Main_Invoice_Contact__c))) &amp;&amp; ISCHANGED(Main_Invoice_Contact__c) ||
+NOT(ISBLANK(PRIORVALUE(Invoice_Delivery_Method__c))) &amp;&amp; ISCHANGED(Invoice_Delivery_Method__c)
+)
+)
+&amp;&amp; $Setup.rh2__PS_Settings__c.rh2__Run_Validation_Rule__c) &amp;&amp; $Setup.rh2__PS_Settings__c.rh2__Run_Validation_Rule__c</errorConditionFormula>
+    <errorMessage>You cannot change this field value for an Account that is already on Netsuite. Please Chatter your Finance team who can carry out this action.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>myRule_1</name>
+        <label>License Product</label>
+        <locationX>281</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>myRule_4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_License Product</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_1</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PricebookEntry.Product2.Family</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>LIC</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>TRUE_License Product</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_4</name>
+        <label>Support Product</label>
+        <locationX>512</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>myRule_6</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Support Product</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_4</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PricebookEntry.Product2.Family</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MS: Application Support</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Product2.Family</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MS: Total Support</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_4_A1</targetReference>
+            </connector>
+            <label>TRUE_Support Product</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_6</name>
+        <label>Hosting Product</label>
+        <locationX>710</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>FALSE_Hosting Product</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_6</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PricebookEntry.Product2.Family</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MS: Hosting</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_6_A1</targetReference>
+            </connector>
+            <label>TRUE_Hosting Product</label>
+        </rules>
+    </decisions>
+    <description>Check the relevant checkbox (Licence, Hosting or Support) based on the product family</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>LIC</name>
+        <dataType>String</dataType>
+        <expression>&quot;LIC:&quot;</expression>
+    </formulas>
+    <interviewLabel>Product Category {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Product Category Logic</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>License Product</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>License_Product__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_4_A1</name>
+        <label>Support Product</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Support_Product__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_6_A1</name>
+        <label>Hosting Product</label>
+        <locationX>578</locationX>
+        <locationY>647</locationY>
+        <inputAssignments>
+            <field>Hosting_Product__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>155</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_1</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
+        <object>QuoteLineItem</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

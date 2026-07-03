@@ -3,19 +3,19 @@
     <label>Duplicate - Multiple Options</label>
     <protected>false</protected>
     <values>
-        <field>StageName__c</field>
-        <value xsi:type="xsd:string">Duplicate - Multiple Options</value>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Triggers Make.com webhook when Opportunity moves to Duplicate - Multiple Options.</value>
     </values>
     <values>
         <field>IsActive__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
-        <field>Description__c</field>
-        <value xsi:type="xsd:string">Triggers Make.com webhook when Opportunity moves to Duplicate - Multiple Options.</value>
-    </values>
-    <values>
         <field>IsTestRecord__c</field>
         <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>StageName__c</field>
+        <value xsi:type="xsd:string">Duplicate - Multiple Options</value>
     </values>
 </CustomMetadata>

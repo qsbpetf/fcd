@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LinkedIn_Navigator__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Tick this box if LinkedIn Navigator has been used to create lead. Also, click on this field if this LinkedIn Navigator was used as a supplementary tool when using Lead Forensics.</description>
+    <inlineHelpText>Tick if LinkedIn Navigator was used creating the lead</inlineHelpText>
+    <label>LinkedIn Navigator</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

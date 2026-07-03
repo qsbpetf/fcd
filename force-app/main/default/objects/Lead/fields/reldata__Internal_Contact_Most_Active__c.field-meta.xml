@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>reldata__Internal_Contact_Most_Active__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The coworker who has had the highest number of email and meeting interactions with this person</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The coworker who has had the highest number of email and meeting interactions with this person</inlineHelpText>
+    <label>Most Active Relationship</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Email</type>
+    <unique>false</unique>
+</CustomField>

@@ -3,7 +3,6 @@
     <fullName>StartDate__c</fullName>
     <defaultValue>TODAY()</defaultValue>
     <description>Starting date for the promo code</description>
-    <externalId>false</externalId>
     <inlineHelpText>Starting date for the promo code</inlineHelpText>
     <label>Start Date</label>
     <required>true</required>

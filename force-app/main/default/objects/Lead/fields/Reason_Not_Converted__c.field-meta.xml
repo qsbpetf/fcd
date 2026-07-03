@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_Not_Converted__c</fullName>
+    <label>Reason Not Converted</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Non requirement within 6 months</fullName>
+                <default>false</default>
+                <label>Non requirement within 6 months</label>
+            </value>
+            <value>
+                <fullName>Qualified out - No corporate email (gmail etc)</fullName>
+                <default>false</default>
+                <label>Qualified out - No corporate email (gmail etc)</label>
+            </value>
+            <value>
+                <fullName>Qualified out - No opportunity at all</fullName>
+                <default>false</default>
+                <label>Qualified out - No opportunity at all</label>
+            </value>
+            <value>
+                <fullName>Qualified out - Price</fullName>
+                <default>false</default>
+                <label>Qualified out - Price</label>
+            </value>
+            <value>
+                <fullName>Qualified out - Service</fullName>
+                <default>false</default>
+                <label>Qualified out - Service</label>
+            </value>
+            <value>
+                <fullName>Qualified out - Product</fullName>
+                <default>false</default>
+                <label>Qualified out - Product</label>
+            </value>
+            <value>
+                <fullName>Already engaged with customer</fullName>
+                <default>false</default>
+                <label>Already engaged with customer</label>
+            </value>
+            <value>
+                <fullName>Requalifed - Quality Process</fullName>
+                <default>false</default>
+                <label>Requalifed - Quality Process</label>
+            </value>
+            <value>
+                <fullName>Other (Specify)</fullName>
+                <default>false</default>
+                <label>Other (Specify)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

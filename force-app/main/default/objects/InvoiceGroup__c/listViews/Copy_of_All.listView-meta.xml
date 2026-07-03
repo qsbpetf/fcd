@@ -21,7 +21,11 @@
     <filters>
         <field>NAME</field>
         <operation>notContain</operation>
-        <value>zzz-</value>
+        <value>zzz-,USD - CARD,[Do not modify] migrated-internal-usage-licenses</value>
+    </filters>
+    <filters>
+        <field>ShipToPartyName__c</field>
+        <operation>notEqual</operation>
     </filters>
     <label>TO BE DONE</label>
 </ListView>

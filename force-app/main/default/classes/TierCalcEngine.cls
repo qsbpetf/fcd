@@ -135,6 +135,9 @@ public with sharing class TierCalcEngine {
             return opp.Estimate_Licensing_GP__c ?? 0;
         }
 
+        Decimal dealRegRebate = opp.Deal_Reg_Rebate_Value_Currency__c ?? 0;
+        Decimal atlassianPvrRebate = opp.Atlassian_PVR_Rebate_Currency__c ?? 0;
+
         Decimal totalMargin = 0;
 
         // Loop through OpportunityLineItems for T3
@@ -149,8 +152,7 @@ public with sharing class TierCalcEngine {
         opp.T3_From_Products__c = totalMargin;
 
         // Calculate Final T3 Amount
-        Decimal dealRegRebate = opp.Deal_Reg_Rebate_Value_Currency__c ?? 0;
-        return opp.T3_From_Products__c + dealRegRebate;
+        return opp.T3_From_Products__c + dealRegRebate + atlassianPvrRebate;
     }
 
 

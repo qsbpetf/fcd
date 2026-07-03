@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Error_Account_RollUps__c</fullName>
+    <formula>ISNULL(Open_ACDC_Services__c  ) || 
+  ISNULL(Open_Atlassian_Agile_Services__c ) || 
+  ISNULL(Open_Atlassian_Cloud_Licenses__c ) || 
+  ISNULL (Open_Atlassian_Cloud_Services__c ) || 
+  ISNULL (Open_Atlassian_DC_Licenses__c ) || 
+  ISNULL (Open_Atlassian_ITSM_Services__c ) || 
+  ISNULL (Open_Atlassian_Services__c ) || 
+  ISNULL (Open_DevOps_Cloud_Licenses__c ) || 
+  ISNULL (Open_DevOps_Cloud_Services__c ) || 
+  ISNULL (Open_GitHub_Microsoft_Licenses__c) ||  
+  ISNULL (Open_GitHub_Microsoft_Services__c) ||  
+  ISNULL (Open_Managed_Services__c ) || 
+
+  ISNULL (Active_Atlassian_Agile_Services__c ) || 
+  ISNULL (Active_Atlassian_Cloud_Licenses__c ) || 
+  ISNULL (Active_Atlassian_Cloud_Services__c ) || 
+  ISNULL (Active_Atlassian_DC_Licenses__c ) || 
+  ISNULL (Active_Atlassian_ITSM_Services__c ) || 
+  ISNULL (Active_Atlassian_Services__c ) || 
+  ISNULL (Active_DevOps_Cloud_Licenses__c ) || 
+  ISNULL (Active_DevOps_Cloud_Services__c ) || 
+  ISNULL (Active_GitHub_Microsoft_Licenses__c ) || 
+  ISNULL (Active_GitHub_Microsoft_Services__c ) || 
+  ISNULL (Active_Managed_Services__c ) || 
+  ISNULL (Active_Opp_in_ACDC_Campaign__c ) || 
+
+
+  ISNULL (Closed_Won_Atlassian_Agile_Services__c ) ||  
+  ISNULL (Closed_Won_Atlassian_Cloud_Licenses__c ) || 
+  ISNULL (Closed_Won_Atlassian_Cloud_Services__c ) || 
+  ISNULL (Closed_Won_Atlassian_DC_Licenses__c ) || 
+  ISNULL (Closed_Won_Atlassian_ITSM_Services__c ) || 
+  ISNULL (Closed_Won_Atlassian_Services__c ) || 
+  ISNULL (Closed_Won_DevOps_Cloud_Licenses__c ) || 
+  ISNULL (Closed_Won_DevOps_Cloud_Services__c ) || 
+  ISNULL (Closed_Won_GitHub_Microsoft_Licenses__c ) || 
+  ISNULL (Closed_Won_GitHub_Microsoft_Services__c ) || 
+  ISNULL (Closed_Won_Managed_Services__c ) || 
+  ISNULL (Won_ACDC_Services__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Error Account RollUps</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

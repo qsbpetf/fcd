@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>Has_Discount</name>
+        <label>Has Discount</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>myRule_5_A1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Discount</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Discount__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A2</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>TotalPrice</name>
+        <dataType>Currency</dataType>
+        <expression>{!$Record.Quantity} * {!$Record.UnitPrice}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>TotalSalesPrice</name>
+        <dataType>Currency</dataType>
+        <expression>{!$Record.Total_Price__c} - (   {!$Record.Total_Price__c}*   ({!$Record.Discount__c}/100))</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Total Price and Final Price Logic {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Total Price and Final Price Logic</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>Update Total Price</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Has_Discount</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Total_Price__c</field>
+            <value>
+                <elementReference>TotalPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_1_A2</name>
+        <label>Update Final Price</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Final_Price_After_Discount__c</field>
+            <value>
+                <elementReference>TotalSalesPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_5_A1</name>
+        <label>Update Final Price</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Final_Price_After_Discount__c</field>
+            <value>
+                <elementReference>$Record.Total_Price__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_1_A1</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp; 
+(ISCHANGED({!$Record.Discount__c}) ||
+ISCHANGED({!$Record.UnitPrice}) ||
+ISCHANGED({!$Record.Quantity}))</filterFormula>
+        <object>QuoteLineItem</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

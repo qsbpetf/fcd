@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hybrid_Attribution__c</fullName>
+    <label>Hybrid Attribution</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Atlassian PD</fullName>
+                <default>false</default>
+                <label>Atlassian PD</label>
+            </value>
+            <value>
+                <fullName>Referral / Advocate</fullName>
+                <default>false</default>
+                <label>Referral / Advocate</label>
+            </value>
+            <value>
+                <fullName>Google Ad</fullName>
+                <default>false</default>
+                <label>Google Ad</label>
+            </value>
+            <value>
+                <fullName>Bing Paid</fullName>
+                <default>false</default>
+                <label>Bing Paid</label>
+            </value>
+            <value>
+                <fullName>Google Natural Search</fullName>
+                <default>false</default>
+                <label>Google Natural Search</label>
+            </value>
+            <value>
+                <fullName>LinkedIn</fullName>
+                <default>false</default>
+                <label>LinkedIn</label>
+            </value>
+            <value>
+                <fullName>Other social media</fullName>
+                <default>false</default>
+                <label>Other social media</label>
+            </value>
+            <value>
+                <fullName>Event</fullName>
+                <default>false</default>
+                <label>Event</label>
+            </value>
+            <value>
+                <fullName>Direct / Unknown</fullName>
+                <default>false</default>
+                <label>Direct / Unknown</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

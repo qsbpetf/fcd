@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>myRule_10</name>
+        <label>Dormant Customer Opp</label>
+        <locationX>512</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>myRule_12</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Dormant Customer Opp</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_10</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_TRUE_myRule_10</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_10_A1</targetReference>
+            </connector>
+            <label>TRUE_Dormant Customer Opp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_12</name>
+        <label>Customer Opp</label>
+        <locationX>710</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>myRule_6_A1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Customer Opp</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_12</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_TRUE_myRule_12</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_12_A1</targetReference>
+            </connector>
+            <label>TRUE_Customer Opp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_8</name>
+        <label>Prospect Opp</label>
+        <locationX>281</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>myRule_10</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Prospect Opp</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_8</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Prospect</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>MDF</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Intercompany</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_8_A1</targetReference>
+            </connector>
+            <label>TRUE_Prospect Opp</label>
+        </rules>
+    </decisions>
+    <description>Assign the correct type depending on Account type and last order date</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>formula_TRUE_myRule_10</name>
+        <dataType>Boolean</dataType>
+        <expression>ISPICKVAL({!$Record.Account.Type} ,&quot;Customer&quot;)
+
+ &amp;&amp;
+NOT(ISPICKVAL({!$Record.Type} , &quot;MDF&quot;))
+&amp;&amp;
+NOT(ISPICKVAL({!$Record.Type} , &quot;Intercompany&quot;))
+
+&amp;&amp;
+({!$Record.Account.Last_Order_Date_Final_Formula_Field__c}  + 730 &lt;=  TODAY() || ISBLANK({!$Record.Account.Last_Order_Date_Final_Formula_Field__c}))</expression>
+    </formulas>
+    <formulas>
+        <name>formula_TRUE_myRule_12</name>
+        <dataType>Boolean</dataType>
+        <expression>(ISPICKVAL({!$Record.Account.Type} ,&quot;Customer&quot;) 
+
+&amp;&amp;
+
+NOT(ISPICKVAL({!$Record.Type} , &quot;Customer Opp - NEW Division&quot;))
+ &amp;&amp;
+NOT(ISPICKVAL({!$Record.Type} , &quot;MDF&quot;))
+&amp;&amp;
+NOT(ISPICKVAL({!$Record.Type} , &quot;Intercompany&quot;))
+
+&amp;&amp;
+{!$Record.Account.Last_Order_Date_Final_Formula_Field__c} + 730 &gt; TODAY() )
+
+|| 
+
+(ISPICKVAL({!$Record.Account.Type} ,&quot;Reseller&quot;) 
+
+&amp;&amp;
+
+NOT(ISPICKVAL({!$Record.Type} , &quot;Customer Opp - NEW Division&quot;))
+ &amp;&amp;
+NOT(ISPICKVAL({!$Record.Type} , &quot;MDF&quot;))
+&amp;&amp;
+NOT(ISPICKVAL({!$Record.Type} , &quot;Intercompany&quot;)))</expression>
+    </formulas>
+    <interviewLabel>Opportunity Type Logic {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity Type Logic</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_10_A1</name>
+        <label>Update Opp Type</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Dormant Customer Opp</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_12_A1</name>
+        <label>Update Opp Type</label>
+        <locationX>578</locationX>
+        <locationY>647</locationY>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Customer_Opp</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_6_A1</name>
+        <label>Update Opp Type</label>
+        <locationX>842</locationX>
+        <locationY>647</locationY>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Customer_Opp</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_8_A1</name>
+        <label>Update Opp Type</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Prospect_Opp</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>155</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_8</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+{!$Record.Auto_Renewal_Automation__c} = false</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

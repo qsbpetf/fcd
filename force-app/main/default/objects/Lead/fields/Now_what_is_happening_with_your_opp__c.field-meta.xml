@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Now_what_is_happening_with_your_opp__c</fullName>
+    <description>what is happening with your opp</description>
+    <inlineHelpText>what is happening with your opp</inlineHelpText>
+    <label>Now (what is happening with your opp)</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

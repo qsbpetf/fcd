@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <customErrors>
+        <description>This license product is loss making. If this is correct, check &quot;Loss Reviewed&quot; in order to save the record.</description>
+        <name>Loss_Making</name>
+        <label>Loss Making</label>
+        <locationX>968</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>This license product is loss making. If this is correct, check &quot;Loss Reviewed&quot; in order to save the record.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>No_User_Tier</name>
+        <label>No User Tier</label>
+        <locationX>704</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>This product has been marked as having No User Tier, therefore you must state the User Tier in the Additional Information field</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>You_must_add_an_SEN_value_to_save_this_record</name>
+        <label>You must add an SEN value to save this record</label>
+        <locationX>440</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>&quot;You must add an SEN value to save this record&quot;</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Check_Error_Message</name>
+        <label>Check Error Message</label>
+        <locationX>836</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SEN</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.FaultMessage</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>You must add an SEN value to save this record</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>You_must_add_an_SEN_value_to_save_this_record</targetReference>
+            </connector>
+            <label>SEN</label>
+        </rules>
+        <rules>
+            <name>User_Tier</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.FaultMessage</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>This product has been marked as having No User Tier</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>No_User_Tier</targetReference>
+            </connector>
+            <label>User Tier</label>
+        </rules>
+        <rules>
+            <name>Loss_Making_Product</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.FaultMessage</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>This license product is loss making. If this is correct, check &quot;Loss Reviewed&quot; in order to save the record.</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loss_Making</targetReference>
+            </connector>
+            <label>Loss Making Product</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Total Buy Price calculation {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Total Buy Price calculation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>Update Total Buy Price and Total List Price</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <faultConnector>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Buy_Price_Inc_Licence_Type__c</field>
+            <value>
+                <elementReference>$Record.Total_Buy_Price__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>List_Price_Inc_Licence_Type__c</field>
+            <value>
+                <elementReference>$Record.TotalPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_1_A1</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true )</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

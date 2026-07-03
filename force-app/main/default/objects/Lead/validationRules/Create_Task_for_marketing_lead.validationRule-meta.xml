@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Create_Task_for_marketing_lead</fullName>
+    <active>false</active>
+    <errorConditionFormula>OwnerId = &quot;0050Y0000039oIf&quot;  &amp;&amp;  Create_Task__c = true</errorConditionFormula>
+    <errorDisplayField>OwnerId</errorDisplayField>
+    <errorMessage>You must assign this lead to somebody first before creating a task</errorMessage>
+</ValidationRule>

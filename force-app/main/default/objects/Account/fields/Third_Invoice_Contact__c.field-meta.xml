@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Third_Invoice_Contact__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Third Invoice Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Accounts (Third Invoice Contact)</relationshipLabel>
+    <relationshipName>Accounts2</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

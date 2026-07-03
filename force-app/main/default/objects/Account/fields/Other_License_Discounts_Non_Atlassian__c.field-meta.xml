@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Other_License_Discounts_Non_Atlassian__c</fullName>
+    <description>Other_License_Discounts_Non_Atlassian - such as CheckMarx, Mavenlink, Sonatype</description>
+    <inlineHelpText>Other_License_Discounts_Non_Atlassian - such as CheckMarx, Mavenlink, Sonatype</inlineHelpText>
+    <label>Non-Atlassian Discount</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

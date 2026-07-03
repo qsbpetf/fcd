@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>How_happy_are_you_with_current_solution__c</fullName>
+    <inlineHelpText>How happy are you with your current solution to your problem?</inlineHelpText>
+    <label>How happy are you with current solution?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>How_happy_are_you_with_current_solution</valueSetName>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anglosphere_MQLs_for_prospecting</fullName>
+    <booleanFilter>(  (1 AND 2 AND 3 AND 4) AND  (   (5 AND 6) OR 7  ) )</booleanFilter>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>Disqualification_Reason__c</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>What_challenge_do_you_want_to_solve__c</columns>
+    <columns>What_is_your_role_in_the_company__c</columns>
+    <columns>Most_support_needed_with_solution_vendor__c</columns>
+    <columns>How_happy_are_you_with_current_solution__c</columns>
+    <columns>What_is_your_project_schedule__c</columns>
+    <columns>What_is_the_status_of_your_business_case__c</columns>
+    <columns>How_mature_are_your_Agile_practices__c</columns>
+    <columns>How_mature_are_your_DevOps_practices__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>LEAD.STATUS</field>
+        <operation>equals</operation>
+        <value>MQL</value>
+    </filters>
+    <filters>
+        <field>CV_Subsidiary__c</field>
+        <operation>equals</operation>
+        <value>UK,US</value>
+    </filters>
+    <filters>
+        <field>Disqualification_Reason__c</field>
+        <operation>contains</operation>
+    </filters>
+    <filters>
+        <field>Hot_Lead__c</field>
+        <operation>contains</operation>
+    </filters>
+    <filters>
+        <field>What_challenge_do_you_want_to_solve__c</field>
+        <operation>notContain</operation>
+    </filters>
+    <filters>
+        <field>What_is_your_role_in_the_company__c</field>
+        <operation>notContain</operation>
+    </filters>
+    <filters>
+        <field>Most_support_needed_with_solution_vendor__c</field>
+        <operation>notContain</operation>
+    </filters>
+    <label>Anglosphere MQLs for prospecting</label>
+</ListView>

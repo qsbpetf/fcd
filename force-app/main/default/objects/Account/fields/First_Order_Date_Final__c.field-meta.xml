@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Order_Date_Final__c</fullName>
+    <description>This is the first order date for this account - please note if there is a parent account, the first order date will pull from the parent. Note the automation to fill this field runs overnight, not instantly, so there is a delay.</description>
+    <formula>IF ( NOT(ISBLANK(First_Order_Date_Import__c)), First_Order_Date_Import__c,
+IF( 
+AND( 
+ISBLANK(First_Order_Date_Final_Formula_Field__c), 
+ISBLANK(First_Order_Date_from_Children_Account__c), 
+ISBLANK(First_Order_Date_from_Parent_Account__c)
+
+), 
+NULL, 
+
+DATE(2998,1,1) - MAX( 
+DATE(2998,1,1) - BLANKVALUE(First_Order_Date_Final_Formula_Field__c , DATE(2998,1,1)), 
+DATE(2998,1,1) - BLANKVALUE(First_Order_Date_from_Children_Account__c, DATE(2998,1,1)), 
+DATE(2998,1,1) - BLANKVALUE(First_Order_Date_from_Parent_Account__c ,DATE(2998,1,1))
+) 
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>This is the first order date for this account - please note if there is a parent account, the first order date will pull from the parent. Note the automation to fill this field runs overnight, not instantly, so there is a delay.</inlineHelpText>
+    <label>First Order Date (Reporting)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

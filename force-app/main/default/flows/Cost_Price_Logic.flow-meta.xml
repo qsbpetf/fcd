@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>myRule_31</name>
+        <label>Pounds</label>
+        <locationX>281</locationX>
+        <locationY>287</locationY>
+        <defaultConnector>
+            <targetReference>myRule_39</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Commercial Pounds</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_31</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CurrencyIsoCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>GBP</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_31_A1</targetReference>
+            </connector>
+            <label>TRUE_Pounds</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_35</name>
+        <label>Dollars</label>
+        <locationX>710</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>FALSE_Commercial Dollars</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_35</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CurrencyIsoCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USD</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_35_A1</targetReference>
+            </connector>
+            <label>TRUE_Dollars</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_39</name>
+        <label>Euros</label>
+        <locationX>512</locationX>
+        <locationY>395</locationY>
+        <defaultConnector>
+            <targetReference>myRule_35</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Commercial Euros</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_39</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CurrencyIsoCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>EUR</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_39_A1</targetReference>
+            </connector>
+            <label>TRUE_Euros</label>
+        </rules>
+    </decisions>
+    <description>Assign the correct cost price from the product to the opportunity product based on the currency.</description>
+    <environments>Default</environments>
+    <interviewLabel>Cost Price Logic {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Cost Price Logic</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_31_A1</name>
+        <label>Update Cost</label>
+        <locationX>50</locationX>
+        <locationY>395</locationY>
+        <inputAssignments>
+            <field>Cost_Price__c</field>
+            <value>
+                <elementReference>$Record.Product2.Commercial_Cost_price_Pounds__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_35_A1</name>
+        <label>Update Cost</label>
+        <locationX>578</locationX>
+        <locationY>611</locationY>
+        <inputAssignments>
+            <field>Cost_Price__c</field>
+            <value>
+                <elementReference>$Record.Product2.Commercial_Cost_price_Dollars__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_39_A1</name>
+        <label>Update Cost</label>
+        <locationX>314</locationX>
+        <locationY>503</locationY>
+        <inputAssignments>
+            <field>Cost_Price__c</field>
+            <value>
+                <elementReference>$Record.Product2.Commercial_Cost_price_Euros__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>155</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_31</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true )</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

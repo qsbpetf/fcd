@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_Opp_Source__c</fullName>
+    <label>Sales Opp Source (Created from case)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Customer Inbound</fullName>
+                <default>false</default>
+                <label>Customer Inbound</label>
+            </value>
+            <value>
+                <fullName>Strategic Account Manager</fullName>
+                <default>false</default>
+                <label>Strategic Account Manager</label>
+            </value>
+            <value>
+                <fullName>Support Team</fullName>
+                <default>false</default>
+                <label>Support Team</label>
+            </value>
+            <value>
+                <fullName>Client Services Team</fullName>
+                <default>false</default>
+                <label>Client Services Team</label>
+            </value>
+            <value>
+                <fullName>Partner Inbound</fullName>
+                <default>false</default>
+                <label>Partner Inbound</label>
+            </value>
+            <value>
+                <fullName>Management Team</fullName>
+                <default>false</default>
+                <label>Management Team</label>
+            </value>
+            <value>
+                <fullName>Innovation Team</fullName>
+                <default>false</default>
+                <label>Innovation Team</label>
+            </value>
+            <value>
+                <fullName>ClearHub Team</fullName>
+                <default>false</default>
+                <label>ClearHub Team</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

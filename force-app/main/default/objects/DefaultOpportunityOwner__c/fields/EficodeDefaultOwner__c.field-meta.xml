@@ -5,7 +5,7 @@
     <description>Check this to set default owner for all other subsidiaries not already defined by a separate default opportunity record.</description>
     <inlineHelpText>Check this to set default owner for all other subsidiaries not already defined by a separate default opportunity record.</inlineHelpText>
     <label>Eficode Default</label>
-    <trackHistory>false</trackHistory>
+    <trackHistory>true</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>
 </CustomField>

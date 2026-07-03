@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>myRule_10</name>
+        <label>Not product for renewal</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>FALSE_Not product for renewal</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_10</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LIC_or_MS_NOT_to_renew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_10_A1</targetReference>
+            </connector>
+            <label>TRUE_Not product for renewal</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_8</name>
+        <label>Product for renewal</label>
+        <locationX>248</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>myRule_10</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Product for renewal</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_8</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LIC_or_MS_to_renew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_8_A1</targetReference>
+            </connector>
+            <label>TRUE_Product for renewal</label>
+        </rules>
+    </decisions>
+    <description>Check or uncheck the field &quot;Product for renewal&quot; based on type and product family</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>LIC_or_MS_NOT_to_renew</name>
+        <dataType>Boolean</dataType>
+        <expression>NOT(
+AND(ISPICKVAL({!$Record.Renewal__c} , &quot;Renewal (CV Owned)&quot;) ,
+
+OR(
+CONTAINS(TEXT({!$Record.PricebookEntry.Product2.Family}) ,&quot;LIC:&quot;),
+CONTAINS(TEXT({!$Record.PricebookEntry.Product2.Family}) ,&quot;MS:&quot;)))
+
+
+)</expression>
+    </formulas>
+    <formulas>
+        <name>LIC_or_MS_to_renew</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+
+
+
+OR(			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Renewal (CV Owned)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Renewal (New to CV)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Upgrade (Same Platform)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Upgrade (Server to DC)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Upgrade (Server to Cloud)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Upgrade (DC to Cloud)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Downgrade (Same Platform)&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Cloud Monthly to Annual&quot;) ,			
+ISPICKVAL({!$Record.Renewal__c} , &quot;Cloud Annual to Monthly&quot;)) ,			
+
+OR(
+CONTAINS(TEXT({!$Record.PricebookEntry.Product2.Family}) ,&quot;LIC:&quot;),
+CONTAINS(TEXT({!$Record.PricebookEntry.Product2.Family}) ,&quot;MS:&quot;)))</expression>
+    </formulas>
+    <interviewLabel>Product for renewal {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Product for renewal</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_10_A1</name>
+        <label>Uncheck checkbox</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Product_for_Renewal_Checkbox__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_8_A1</name>
+        <label>Checkbox</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Product_for_Renewal_Checkbox__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>122</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_8</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
+        <object>QuoteLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

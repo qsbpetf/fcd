@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <description>Copy relevant information to Additional Info field to be synced with Netsuite</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>F_AdditionalInfoNetsuite</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Additional_Info__c} 
+&amp; BR() &amp; 
+IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), &quot;Cloud Site: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), {!$Record.Cloud_Site_Name__c} , &quot;&quot;) 
+
+&amp; IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), BR() , &quot;&quot;) &amp; 
+
+IF(NOT(ISBLANK({!$Record.SEN__c})), &quot;SEN: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.SEN__c})), {!$Record.SEN__c} , &quot;&quot;) 
+
+&amp; IF(NOT(ISBLANK({!$Record.SEN__c})), BR() , &quot;&quot;) &amp; 
+
+IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})), &quot;Entitlement Number: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})), {!$Record.Entitlement_Number__c}, &quot;&quot;)
+
+&amp; IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})),  BR(), &quot;&quot;)&amp; 
+
+IF(NOT(ISBLANK(TEXT({!$Record.User_Count__c}))), &quot;User Count: &quot;, &quot;&quot;) &amp;
+IF(AND(NOT(ISBLANK(TEXT({!$Record.User_Count__c}))), {!$Record.User_Count__c} = 987654321),  &quot;Unlimited&quot;,
+IF(NOT(ISBLANK(TEXT({!$Record.User_Count__c}))), TEXT({!$Record.User_Count__c}), &quot;&quot;))
+
+&amp; IF(NOT(ISBLANK({!$Record.User_Count__c})),  BR(), &quot;&quot;)&amp; 
+
+IF(NOT(ISBLANK({!$Record.License_Start_date__c})), &quot;Start Date: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.License_Start_Date__c})), {!$Record.Start_Date_Text__c}, &quot;&quot;)
+
+&amp; IF(NOT(ISBLANK({!$Record.License_Start_Date__c})), BR(), &quot;&quot;)&amp; 
+
+IF(NOT(ISBLANK({!$Record.License_End_Date__c})), &quot;End Date: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.License_End_Date__c})), {!$Record.End_Date_Text__c}, &quot;&quot;)
+
+&amp; IF(NOT(ISBLANK({!$Record.License_End_Date__c})), BR(), &quot;&quot;)&amp; 
+
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;) ,NOT(ISBLANK({!$Record.List_Price_Inc_Licence_Type__c}))), &quot;List Price: &quot;, &quot;&quot;) &amp;
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;) ,NOT(ISBLANK({!$Record.List_Price_Inc_Licence_Type__c}))) , TEXT({!$Record.List_Price_Inc_Licence_Type__c}),&quot;&quot;) &amp;
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;)
+,NOT(ISBLANK({!$Record.List_Price_Inc_Licence_Type__c}))), &quot; &quot;, &quot;&quot;) &amp;
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;)
+,NOT(ISBLANK({!$Record.List_Price_Inc_Licence_Type__c}))), TEXT({!$Record.CurrencyIsoCode}), &quot;&quot;)
+
+&amp; IF(NOT(ISBLANK({!$Record.List_Price_Inc_Licence_Type__c})), BR(), &quot;&quot;)&amp; 
+
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;),NOT(ISBLANK({!$Record.Discount__c}))), &quot;Discount: &quot;, &quot;&quot;) &amp;
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;),NOT(ISBLANK({!$Record.Discount__c}))) , TEXT({!$Record.Discount__c}),&quot;&quot;) &amp;
+IF(AND(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;CH&quot;),NOT(ISBLANK({!$Record.Discount__c}))) ,&quot; %&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <interviewLabel>Additional Info Netsuite {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Additional Info Netsuite</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Additional_Info</name>
+        <label>Update Additional Info</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <inputAssignments>
+            <field>Additional_Info_Netsuite__c</field>
+            <value>
+                <elementReference>F_AdditionalInfoNetsuite</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Additional_Info</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true )</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>Date</name>
+        <label>Date</label>
+        <locationX>594</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>T2_Calculation</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>In between</defaultConnectorLabel>
+        <rules>
+            <name>After_Project_Start_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Start_date__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>ProjectStartDate365</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>T2_0</targetReference>
+            </connector>
+            <label>After Project Start Date</label>
+        </rules>
+        <rules>
+            <name>Before_Project_Start_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_end_date__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>ProjectStartDate365</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>T2_total_Sales_Price</targetReference>
+            </connector>
+            <label>Before Project Start Date</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_project</name>
+        <label>Has project</label>
+        <locationX>858</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>T2_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Project</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Opportunity.Related_Project__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Date</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Product_Type</name>
+        <label>Product Type</label>
+        <locationX>462</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Has_project</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>New_or_Upgrade</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Renewal__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Renewal__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Upgrade (Same Platform)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>T2_total_Sales_Price</targetReference>
+            </connector>
+            <label>New or Upgrade</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Revenue_Type</name>
+        <label>Revenue Type</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Product_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Consulting or MS</defaultConnectorLabel>
+        <rules>
+            <name>Licenses</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Product2.Revenue_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Licenses</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Revenue_Type_Formula__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>T2_0</targetReference>
+            </connector>
+            <label>Licenses</label>
+        </rules>
+    </decisions>
+    <description>This flow calculates the T2 Attainment amount on opportunity product when a product is added or edited and one of field affecting the Total Price or Margin is changed</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ProjectStartDate365</name>
+        <dataType>Date</dataType>
+        <expression>{!$Record.Opportunity.Project_Start_Date_From_Project__c} + 365</expression>
+    </formulas>
+    <formulas>
+        <name>T2Amount</name>
+        <dataType>Currency</dataType>
+        <expression>IF(ISNULL({!$Record.Opportunity.Related_Project__c}),  {!$Record.Total_List_Price_Incl_Discount__c} , 
+IF(({!$Record.Revenue_Type_Formula__c} = &quot;Consulting&quot; || {!$Record.Revenue_Type_Formula__c} = &quot;Managed Services&quot;) , 
+   0, 
+IF((ISPICKVAL({!$Record.Renewal__c}, &quot;New&quot;) || ISPICKVAL({!$Record.Renewal__c}, &quot;Renewal (CV Owned)&quot;)), 
+    {!$Record.Total_List_Price_Incl_Discount__c} , 
+
+IF({!$Record.Opportunity.Project_Start_Date_From_Project__c} + 365 &lt; {!$Record.License_Start_date__c} , 
+   0, 
+
+IF({!$Record.License_end_date__c} &lt; {!$Record.Opportunity.Project_Start_Date_From_Project__c} + 365  , 
+    {!$Record.Total_List_Price_Incl_Discount__c} , 
+
+((({!$Record.Opportunity.Project_Start_Date_From_Project__c}  + 365 -  {!$Record.License_Start_date__c} ) / {!$Record.days__c}) * 
+  {!$Record.Total_List_Price_Incl_Discount__c})
+)))))</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>T2Calculation</name>
+        <dataType>Currency</dataType>
+        <expression>((({!$Record.Opportunity.Project_Start_Date_From_Project__c}  + 365 -  {!$Record.License_Start_date__c} ) / {!$Record.days__c}) * 
+  {!$Record.Total_List_Price_Incl_Discount__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>T2 Amount Calculation + Launch Roll Ups {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>T2 Amount Calculation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>T2_0</name>
+        <label>T2 0</label>
+        <locationX>176</locationX>
+        <locationY>1307</locationY>
+        <inputAssignments>
+            <field>T2_Attainment_Amount__c</field>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>T2_Calculation</name>
+        <label>T2 Calculation</label>
+        <locationX>858</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>T2_Attainment_Amount__c</field>
+            <value>
+                <elementReference>T2Calculation</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>T2_total_Sales_Price</name>
+        <label>T2 Full Amount</label>
+        <locationX>66</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>T2_Attainment_Amount__c</field>
+            <value>
+                <elementReference>$Record.Total_List_Price_Incl_Discount__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Revenue_Type</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c}= true &amp;&amp; 
+{!$Record.Opportunity.Quota_Update_Allowed__c} = true &amp;&amp; 
+(ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}, &quot;US&quot;)) &amp;&amp;
+(ISNEW() ||
+ISCHANGED({!$Record.PricebookEntry.Product2.Revenue_Type__c} )||
+ISCHANGED({!$Record.Renewal__c})||
+ISCHANGED({!$Record.Quantity})||
+ISCHANGED({!$Record.UnitPrice})||
+ISCHANGED({!$Record.List_Price_Inc_Licence_Type__c})||
+ISCHANGED({!$Record.Discount__c})||
+ISCHANGED({!$Record.Total_List_Price_Incl_Discount__c})||
+ISCHANGED({!$Record.License_Start_date__c})||
+ISCHANGED({!$Record.License_end_date__c})||
+ISCHANGED({!$Record.Editable_Unit_List_Price_in_USD__c})||
+ISCHANGED({!$Record.Editable_Cost_Price__c})||
+ISCHANGED({!$Record.Editable_Cost_Price_in_Dollars__c})||
+ISCHANGED({!$Record.Total_Buy_Price_Incl_Discount__c})||
+ISCHANGED({!$Record.Unit_Buy_Price__c})
+)</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

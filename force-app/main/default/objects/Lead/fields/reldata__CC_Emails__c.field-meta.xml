@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>reldata__CC_Emails__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The total number of emails sent or received by any of your coworkers where this person was included as a cc on the email</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The total number of emails sent or received by any of your coworkers where this person was included as a cc on the email</inlineHelpText>
+    <label>SigParser CC Emails</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

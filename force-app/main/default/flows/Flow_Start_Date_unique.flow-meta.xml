@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <customErrors>
+        <name>Unique_Start_Date_New</name>
+        <label>Unique Start Date</label>
+        <locationX>572</locationX>
+        <locationY>647</locationY>
+        <customErrorMessages>
+            <errorMessage>A record with the same start date and currency already exists.</errorMessage>
+            <fieldSelection>Start_Date__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Check_Error_Message</name>
+        <label>Check Error Message</label>
+        <locationX>704</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Unique_Start_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.FaultMessage</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Start_Date_Unique__c duplicates value</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Unique_Start_Date_New</targetReference>
+            </connector>
+            <label>Unique Start Date</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_unique_value_exists</name>
+        <label>Check if unique value exists</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>mainUpdate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Unique_value_exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Start_Date_Unique__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <label>Unique value exists</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>Start_Date_uniqueFormula</name>
+        <dataType>String</dataType>
+        <expression>TEXT( $Record.Start_Date__c )&amp; TEXT({!$Record.CurrencyIsoCode})</expression>
+    </formulas>
+    <interviewLabel>Start Date unique {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Start Date unique</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>308</locationX>
+        <locationY>431</locationY>
+        <faultConnector>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Start_Date_Unique__c</field>
+            <value>
+                <elementReference>Start_Date_uniqueFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_if_unique_value_exists</targetReference>
+        </connector>
+        <object>Buying_Exchange_Rate__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

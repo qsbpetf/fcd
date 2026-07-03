@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <decisions>
+        <name>Auto_Response</name>
+        <label>Auto Response</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>FALSE_Auto Response</defaultConnectorLabel>
+        <rules>
+            <name>Auto_Response_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subject</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Clearvision Customer Service Team: Auto-Response</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.AutoResponse_Sent__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Case_Autoresponse_Sent</targetReference>
+            </connector>
+            <label>Auto Response</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Email_New_Read_or_Replied</name>
+        <label>Email New &gt; Read or Replied</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Auto_Response</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Email New &gt; Read or Replied</defaultConnectorLabel>
+        <rules>
+            <name>Email_New_Read_or_Replied_1</name>
+            <conditionLogic>(1 OR 2 OR 3) AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Read</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>2</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RelatedToId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>500</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Nb_of_Read_Emails</targetReference>
+            </connector>
+            <label>Email New &gt; Read or Replied</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>New_email_case</name>
+        <label>New email case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Email_New_Read_or_Replied</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_New email case</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_New_email_case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RelatedToId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>500</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Nb_of_New_Email</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>TRUE_New email case</label>
+        </rules>
+    </decisions>
+    <description>Migrated from the Emails updates (Edit) process using multiple criteria.
+Fire any automation on Email Creation or Edit</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>NewEmailFormula</name>
+        <dataType>Number</dataType>
+        <expression>{!$Record.Parent.Nb_of_Emails__c} +1</expression>
+        <scale>18</scale>
+    </formulas>
+    <formulas>
+        <name>NumberofReadEmail</name>
+        <dataType>Number</dataType>
+        <expression>{!$Record.Parent.Nb_of_read_Emails__c}  +1</expression>
+        <scale>18</scale>
+    </formulas>
+    <label>Emails updates (Edit)_1</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Nb_of_Read_Emails</name>
+        <label>Nb of Read Emails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Auto_Response</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Nb_of_read_Emails__c</field>
+            <value>
+                <elementReference>NumberofReadEmail</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Parent</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Case_Autoresponse_Sent</name>
+        <label>Update Case Autoresponse Sent</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>AutoResponse_Sent__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Parent</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Nb_of_New_Email</name>
+        <label>Update Nb of New Email</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Email_New_Read_or_Replied</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Nb_of_Emails__c</field>
+            <value>
+                <elementReference>NewEmailFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Parent</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>New_email_case</targetReference>
+        </connector>
+        <object>EmailMessage</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

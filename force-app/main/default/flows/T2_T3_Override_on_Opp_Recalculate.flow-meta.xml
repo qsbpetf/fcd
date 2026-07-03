@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>Launch_Flow</name>
+        <label>Launch Flow</label>
+        <locationX>446</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>T2_Only</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.T2_Override__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.T3_Override__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>T2_Roll_Up</targetReference>
+            </connector>
+            <label>T2 Only</label>
+        </rules>
+        <rules>
+            <name>T3_Only</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.T2_Override__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.T3_Override__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>T3_Roll_Up</targetReference>
+            </connector>
+            <label>T3 Only</label>
+        </rules>
+        <rules>
+            <name>T2_T3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.T2_Override__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.T3_Override__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>T2_T3_Launch_Roll_Ups</targetReference>
+            </connector>
+            <label>T2 &amp; T3</label>
+        </rules>
+    </decisions>
+    <description>When T2 or T3 Override checkboxes are checked or unchecked on the opportunity, this flow launches the rollup calculation to bring the new value to the opp.</description>
+    <environments>Default</environments>
+    <interviewLabel>T2 &amp; T3 Override on Opp - Launch Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>T2 &amp; T3 Override on Opp -  Recalculate</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Launch_Flow</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+{!$Record.Quota_Update_Allowed__c} =true &amp;&amp;
+(ISCHANGED({!$Record.T2_Override__c}) || ISCHANGED({!$Record.T3_Override__c}))</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <subflows>
+        <name>T2_Roll_Up</name>
+        <label>T2 Roll Up</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <flowName>T2_Roll_Up</flowName>
+        <inputAssignments>
+            <name>OpportunityID</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>T2_T3_Launch_Roll_Ups</name>
+        <label>T2 T3 Launch Roll Ups</label>
+        <locationX>578</locationX>
+        <locationY>431</locationY>
+        <flowName>Launch_Roll_Ups</flowName>
+        <inputAssignments>
+            <name>OpportunityID</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>T3_Roll_Up</name>
+        <label>T3 Roll Up</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <flowName>T3_Roll_Up</flowName>
+        <inputAssignments>
+            <name>OpportunityID</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+</Flow>

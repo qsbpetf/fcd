@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Deliver value to customers faster</fullName>
+        <default>false</default>
+        <label>Deliver value to customers faster</label>
+    </customValue>
+    <customValue>
+        <fullName>Improve software quality</fullName>
+        <default>false</default>
+        <label>Improve software quality</label>
+    </customValue>
+    <customValue>
+        <fullName>Lower development costs</fullName>
+        <default>false</default>
+        <label>Lower development costs</label>
+    </customValue>
+    <customValue>
+        <fullName>Give customers better user experience</fullName>
+        <default>false</default>
+        <label>Give customers better user experience</label>
+    </customValue>
+    <customValue>
+        <fullName>Run my applications on the cloud</fullName>
+        <default>false</default>
+        <label>Run my applications on the cloud</label>
+    </customValue>
+    <customValue>
+        <fullName>Adopt Agile</fullName>
+        <default>false</default>
+        <label>Adopt Agile</label>
+    </customValue>
+    <customValue>
+        <fullName>Improve product-focus</fullName>
+        <default>false</default>
+        <label>Improve product-focus</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>What challenge do you want to solve?</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <assignments>
+        <name>Add_Prompt_Instruction</name>
+        <elementSubtype>AddPromptInstructions</elementSubtype>
+        <label>Add Prompt Instruction</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Output.Prompt</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>You are a sales operations assistant. Below is the list of open opportunities for the {!inputsubsidiary} subsidiary that have not been updated in 21 days. Each line is: Name | Stage | Amount | Last updated.
+IMPORTANT FILTER RULE:
+The user asked about a specific region or owner. Even though all stalled deals are returned below, you MUST filter your response:
+- If the user mentioned a region (UK, Germany, Scandinavia, etc.), only show deals where the Account name or context suggests that region
+- If the user mentioned an owner name, only show deals owned by that person
+- Always state which filter you applied in your response
+TASK: Analyze the stalled opportunity data below and present a clear report.
+{!groundingText}
+
+Present these as a clear, readable list grouped by stage, with the amount and how stale each one is. If the list above is empty, reply that there are no stale open opportunities for {!inputsubsidiary}. Do not invent records.
+</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Assign_Subsidiary_Value</name>
+        <label>Assign Subsidiary Value</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>inputsubsidiary</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formulasubsidiary</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Opportunity_Records</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Values_to_Grounding_Text</name>
+        <label>Assign Values to Grounding Text</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>groundingText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Founded_Record.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>groundingText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Founded_Record.Amount</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>groundingText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Founded_Record.StageName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>groundingText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Founded_Record.LastModifiedDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>groundingText</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Founded_Record.Opportunity_Owner_Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Founded_Record</targetReference>
+        </connector>
+    </assignments>
+    <environments>Default</environments>
+    <formulas>
+        <name>cutoffDateTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()-21</expression>
+    </formulas>
+    <formulas>
+        <name>formulasubsidiary</name>
+        <dataType>String</dataType>
+        <expression>CASE(UPPER({!inputsubsidiary}),
+&quot;2&quot;, &quot;Finland&quot;,
+&quot;3&quot;, &quot;Denmark&quot;,
+&quot;5&quot;, &quot;Netherlands&quot;,
+&quot;7&quot;, &quot;Norway&quot;,
+&quot;8&quot;, &quot;Sweden&quot;,
+&quot;9&quot;, &quot;Poland&quot;,
+&quot;10&quot;, &quot;Switzerland&quot;,
+&quot;12&quot;, &quot;United States&quot;,
+&quot;20&quot;, &quot;Germany&quot;,
+&quot;33&quot;, &quot;United Kingdom&quot;,
+{!inputsubsidiary})</expression>
+    </formulas>
+    <interviewLabel>Stall Opportunity Records {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Stall Opportunity Records</label>
+    <loops>
+        <name>Loop_Founded_Record</name>
+        <label>Loop Founded Record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>VarOppRecordCollection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_Values_to_Grounding_Text</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Add_Prompt_Instruction</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>PromptFlow</processType>
+    <recordLookups>
+        <name>Get_Opportunity_Records</name>
+        <label>Get Opportunity Records</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Founded_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>LastModifiedDate</field>
+            <operator>LessThan</operator>
+            <value>
+                <elementReference>cutoffDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CV_Subsiduary__c</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>inputsubsidiary</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Opportunity_Owner_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>inputownerName</elementReference>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <outputReference>VarOppRecordCollection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>StageName</queriedFields>
+        <queriedFields>Amount</queriedFields>
+        <queriedFields>Opportunity_Owner_Name__c</queriedFields>
+        <queriedFields>LastModifiedDate</queriedFields>
+        <sortField>LastModifiedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Assign_Subsidiary_Value</targetReference>
+        </connector>
+        <triggerType>Capability</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <variables>
+        <name>groundingText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>inputownerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>inputsubsidiary</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>LimitFoundedRecord</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>20.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>VarOppRecordCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atlassian_Mark_server_Renewnal_Discount__c</fullName>
+    <description>Signed off Atlassian License Discount Renewal of Atlassian Marketplace Server Licenses only</description>
+    <label>Disc: Atlassian: Server: Apps: Renewal</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Percent</type>
+</CustomField>

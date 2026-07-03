@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <decisions>
+        <name>Account_set_to_Inactive</name>
+        <label>Account set to Inactive</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Prospect_Order_1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Account set to Inactive</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Active__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>TRUE_Account set to Inactive</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Change_Original_Campaign_Source</name>
+        <label>Change Original Campaign Source</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>FALSE_Change Original Campaign Source</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_16</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PrimaryAccountFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_16_A1</targetReference>
+            </connector>
+            <label>TRUE_Change Original Campaign Source</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_10</name>
+        <label>License Renewal Contact</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Purchase_notification_contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_License Renewal Contact</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_10</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.License_Renewal_Contact__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_10_A1</targetReference>
+            </connector>
+            <label>TRUE_License Renewal Contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_7</name>
+        <label>Main Contact Invoice</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myRule_10</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Main Contact Invoice</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Main_Contact_Invoice</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Main_Invoice_Contact__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_7_A1</targetReference>
+            </connector>
+            <label>TRUE_Main Contact Invoice</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Prospect_Order_1</name>
+        <label>Prospect , Order = 1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myRule_7</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Prospect , Order = 1</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Prospect_Order_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Number_of_orders__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Prospect</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>TRUE_Prospect , Order = 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Purchase_notification_contact</name>
+        <label>Purchase notification contact</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Change_Original_Campaign_Source</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Purchase notification contact</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Purchase_notification_contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PurchaseNotificationContact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PurchaseNotificationContact__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Opps</targetReference>
+            </connector>
+            <label>TRUE_Purchase notification contact</label>
+        </rules>
+    </decisions>
+    <description>Migrated from the Update Account (Create and Edit) process using multiple criteria.
+Fire any automation on Account Creation or Edit</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ParentAccountFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>(ISNEW() &amp;&amp; NOT(ISBLANK({!$Record.ParentId})))
+
+|| (ISCHANGED({!$Record.ParentId}) &amp;&amp; NOT(ISBLANK({!$Record.ParentId})))</expression>
+    </formulas>
+    <formulas>
+        <name>PrimaryAccountFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW() || ISCHANGED({!$Record.Primary_Account_Source__c})</expression>
+    </formulas>
+    <label>Update Account (Create and Edit)_1</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_10_A1</name>
+        <label>Update Open Opps</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Purchase_notification_contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Order</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Closed won - awaiting approval</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Closed Lost</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cancelled After Invoice</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>License_Renewal_Contact__c</field>
+            <value>
+                <elementReference>$Record.License_Renewal_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Opportunities</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_16_A1</name>
+        <label>Update children Accounts</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Primary_Account_Source__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Primary_Account_Source__c</field>
+            <value>
+                <elementReference>$Record.Primary_Account_Source__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.ChildAccounts</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>Contact to Inactive</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Prospect_Order_1</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Inactive_Contact_They_have_left__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Contacts</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_3_A1</name>
+        <label>Update Account Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_7</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Customer</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_7_A1</name>
+        <label>Update Opportunity</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_10</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Invoice_contact_1__c</field>
+            <value>
+                <elementReference>$Record.Main_Invoice_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Opportunities</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Opps</name>
+        <label>Update Opps</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Change_Original_Campaign_Source</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Purchase_Notification_Contact__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Purchase_Notification_Contact__c</field>
+            <value>
+                <elementReference>$Record.PurchaseNotificationContact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Opportunities</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Account_set_to_Inactive</targetReference>
+        </connector>
+        <object>Account</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

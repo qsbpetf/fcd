@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Very mature</fullName>
+        <default>false</default>
+        <label>Very mature</label>
+    </customValue>
+    <customValue>
+        <fullName>Somewhat mature</fullName>
+        <default>false</default>
+        <label>Somewhat mature</label>
+    </customValue>
+    <customValue>
+        <fullName>not mature or immature</fullName>
+        <default>false</default>
+        <label>not mature or immature</label>
+    </customValue>
+    <customValue>
+        <fullName>Somewhat immature</fullName>
+        <default>false</default>
+        <label>Somewhat immature</label>
+    </customValue>
+    <customValue>
+        <fullName>Very immature</fullName>
+        <default>false</default>
+        <label>Very immature</label>
+    </customValue>
+    <customValue>
+        <fullName>I don&apos;t know</fullName>
+        <default>false</default>
+        <label>I don&apos;t know</label>
+    </customValue>
+    <customValue>
+        <fullName>Our maturity varies by function or team</fullName>
+        <default>false</default>
+        <label>Our maturity varies by function or team</label>
+    </customValue>
+    <masterLabel>How mature are your Agile practices?</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

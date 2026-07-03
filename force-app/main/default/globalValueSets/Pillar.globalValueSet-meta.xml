@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Atlassian Cloud</fullName>
+        <default>false</default>
+        <label>Atlassian Cloud Migration</label>
+    </customValue>
+    <customValue>
+        <fullName>ITSM</fullName>
+        <default>false</default>
+        <label>Atlassian Service Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Agile Practice</fullName>
+        <default>false</default>
+        <label>Atlassian Agile, Portfolio and Developer Experience</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian Ecosystem Licenses</fullName>
+        <default>false</default>
+        <label>Atlassian Ecosystem Licenses</label>
+    </customValue>
+    <customValue>
+        <fullName>GitHub Copilot</fullName>
+        <default>false</default>
+        <label>GitHub Copilot</label>
+    </customValue>
+    <customValue>
+        <fullName>GitHub Actions and Advanced Security</fullName>
+        <default>false</default>
+        <label>GitHub Actions and Advanced Security</label>
+    </customValue>
+    <customValue>
+        <fullName>GitHub</fullName>
+        <default>false</default>
+        <label>GitHub Enterprise</label>
+    </customValue>
+    <customValue>
+        <fullName>Microsoft Agile and Portfolio</fullName>
+        <default>false</default>
+        <label>Microsoft Agile and Portfolio</label>
+    </customValue>
+    <customValue>
+        <fullName>Azure</fullName>
+        <default>false</default>
+        <label>Azure</label>
+    </customValue>
+    <customValue>
+        <fullName>Eficode ROOT</fullName>
+        <default>false</default>
+        <label>Eficode ROOT</label>
+    </customValue>
+    <customValue>
+        <fullName>Total Support</fullName>
+        <default>false</default>
+        <label>Total Support</label>
+    </customValue>
+    <customValue>
+        <fullName>Application Management</fullName>
+        <default>false</default>
+        <label>Application Management</label>
+    </customValue>
+    <customValue>
+        <fullName>DevOps</fullName>
+        <default>false</default>
+        <label>DevOps Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Platform Engineering</fullName>
+        <default>false</default>
+        <label>Platform Engineering</label>
+    </customValue>
+    <customValue>
+        <fullName>Quality Assurance</fullName>
+        <default>false</default>
+        <label>Quality Assurance</label>
+    </customValue>
+    <customValue>
+        <fullName>Software Development</fullName>
+        <default>false</default>
+        <label>Software Development</label>
+    </customValue>
+    <customValue>
+        <fullName>Cloud Native</fullName>
+        <default>false</default>
+        <label>Cloud Native</label>
+    </customValue>
+    <customValue>
+        <fullName>AWS</fullName>
+        <default>false</default>
+        <label>AWS</label>
+    </customValue>
+    <customValue>
+        <fullName>GitLab</fullName>
+        <default>false</default>
+        <label>GitLab</label>
+    </customValue>
+    <customValue>
+        <fullName>DevOps &amp; Cloud Ecosystem Licenses</fullName>
+        <default>false</default>
+        <label>DevOps &amp; Cloud Ecosystem Licenses</label>
+    </customValue>
+    <customValue>
+        <fullName>ClearHub</fullName>
+        <default>false</default>
+        <label>ClearHub</label>
+    </customValue>
+    <customValue>
+        <fullName>User Experience</fullName>
+        <default>false</default>
+        <label>User Experience</label>
+    </customValue>
+    <customValue>
+        <fullName>Pillar not necessary</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Pillar not necessary</label>
+    </customValue>
+    <customValue>
+        <fullName>ESM</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>ESM</label>
+    </customValue>
+    <masterLabel>Solution Domain</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

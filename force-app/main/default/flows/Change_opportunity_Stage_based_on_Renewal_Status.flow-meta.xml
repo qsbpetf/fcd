@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>Change opportunity Stage based on Renewal Status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Change opportunity Stage based on Renewal Status</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Move_to_Closing</name>
+        <label>Move to Closing</label>
+        <locationX>176</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Closing</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Renewal_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Commit</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Closing</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Move_to_Evaluate</name>
+        <label>Move to Evaluate</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Move_to_Justify</targetReference>
+        </connector>
+        <filterLogic>(1 OR 2 OR 3) AND (4 OR 5 OR 6 OR 7)</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Explore</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Identify Needs</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Develop Solution</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Renewal_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Meeting Arranged</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Renewal_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Live Discussion</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Renewal_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>At Risk</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Renewal_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>No Action Necessary</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Evaluate</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Move_to_Justify</name>
+        <label>Move to Justify</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Move_to_Closing</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Renewal_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Best Case</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Justify</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Move_to_Evaluate</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+(ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;US&quot;)) &amp;&amp;
+ISCHANGED({!$Record.Renewal_Status__c})  &amp;&amp;
+{!$Record.Total_Amount_Licences_Final__c}&gt; 0</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

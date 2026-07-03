@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <decisions>
+        <name>Account_Owner_Different</name>
+        <label>Account Owner Different</label>
+        <locationX>248</locationX>
+        <locationY>839</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesAccountOwner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Account.OwnerId</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_T1_Account_Owner_Split</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_T1_Account_Owner_Split</name>
+        <label>Has T1 Account Owner Split</label>
+        <locationX>50</locationX>
+        <locationY>1055</locationY>
+        <defaultConnector>
+            <targetReference>Create_Split_Account_Owner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Yes_T1AccountOwner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_T1_Account_Owner_Split</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_T1_Owner_Split</name>
+        <label>Has T1 Owner Split</label>
+        <locationX>248</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Create_Split</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_T1Owner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_T1_Owner_Split</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Account_Owner_Different</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>When an opportunity is created or its closed date or account name is changed , this flow sets the T1 Opp to &quot;Yes&quot; if the close date is &gt;= to the T1 Start Date on the account</description>
+    <environments>Default</environments>
+    <interviewLabel>T1 Opp = Yes from Opportunity {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>T1 Opp = Yes from Opportunity</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Split</name>
+        <label>Create Split</label>
+        <locationX>336</locationX>
+        <locationY>647</locationY>
+        <connector>
+            <targetReference>Account_Owner_Different</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>OpportunityId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SplitOwnerId</field>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SplitPercentage</field>
+            <value>
+                <numberValue>100.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SplitTypeId</field>
+            <value>
+                <stringValue>149P5000001tntxIAA</stringValue>
+            </value>
+        </inputAssignments>
+        <object>OpportunitySplit</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Split_Account_Owner</name>
+        <label>Create Split Account Owner</label>
+        <locationX>182</locationX>
+        <locationY>1163</locationY>
+        <inputAssignments>
+            <field>OpportunityId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SplitOwnerId</field>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SplitPercentage</field>
+            <value>
+                <numberValue>100.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SplitTypeId</field>
+            <value>
+                <stringValue>149P5000001tntxIAA</stringValue>
+            </value>
+        </inputAssignments>
+        <object>OpportunitySplit</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_T1_Account_Owner_Split</name>
+        <label>Get T1 Account Owner Split</label>
+        <locationX>50</locationX>
+        <locationY>947</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Has_T1_Account_Owner_Split</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SplitTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>149P5000001tntxIAA</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>SplitOwnerId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>OpportunitySplit</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_T1_Owner_Split</name>
+        <label>Get T1 Owner Split</label>
+        <locationX>248</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Has_T1_Owner_Split</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SplitTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>149P5000001tntxIAA</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>SplitOwnerId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>OpportunitySplit</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Check_T1</name>
+        <label>Check T1</label>
+        <locationX>248</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Get_T1_Owner_Split</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>T1_Opp__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Yes</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>T1_Opp__c</field>
+            <value>
+                <stringValue>Yes</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>122</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_T1</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true ) 
+&amp;&amp; (ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;US&quot;))
+&amp;&amp; 
+{!$Record.Quota_Update_Allowed__c} = true &amp;&amp;
+{!$Record.CloseDate} &gt;= {!$Record.Account.T1_Start_Date__c} &amp;&amp;
+( ISNEW() 
+|| ISCHANGED({!$Record.CloseDate})
+||  (
+ISCHANGED({!$Record.Amount}) 
+&amp;&amp;
+({!$Record__Prior.Amount}  = 0 ||
+ISBLANK({!$Record__Prior.Amount}))
+&amp;&amp;
+{!$Record.Amount} &lt;&gt; 0)
+)
+||  
+ISCHANGED({!$Record.AccountId})</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

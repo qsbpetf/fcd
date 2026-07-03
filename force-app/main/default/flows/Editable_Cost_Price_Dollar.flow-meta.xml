@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <description>Migrated from the: Editable Cost Price Dollar workflow rule
+Workflow rule description: &quot;</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Calculate_Editable_Cost_PriceFormula</name>
+        <dataType>Currency</dataType>
+        <expression>CASE($Record.CurrencyIsoCode, 
+&apos;GBP&apos;,  $Record.Editable_Cost_Price_in_Dollars__c * $Record.Buying_ExchangeRate_USDtoGBP_on_creation__c, 
+&apos;EUR&apos;, $Record.Editable_Cost_Price_in_Dollars__c * $Record.Buying_ExchangeRate_USDtoEUR_on_creation__c, 
+$Record.Editable_Cost_Price_in_Dollars__c)</expression>
+        <scale>0</scale>
+    </formulas>
+    <label>Editable Cost Price Dollar</label>
+    <migratedFromWorkflowRuleName>Editable Cost Price Dollar</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <inputAssignments>
+            <field>Editable_Cost_Price__c</field>
+            <value>
+                <elementReference>Calculate_Editable_Cost_PriceFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>(ISNEW() || ISCHANGED({!$Record.Editable_Cost_Price_in_Dollars__c})) 
+&amp;&amp; NOT(ISBLANK({!$Record.Editable_Cost_Price_in_Dollars__c}))
+&amp;&amp;{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

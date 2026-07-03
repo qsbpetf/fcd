@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Scandinavia_MQLs_for_prospecting</fullName>
+    <booleanFilter>(  (1 AND 2 AND 3 AND 4) AND  (   (5 AND 6) OR 7  ) )</booleanFilter>
+    <columns>Days_as_MQL__c</columns>
+    <columns>CORE.USERS.FIRST_NAME</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>CV_Subsidiary__c</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>What_challenge_do_you_want_to_solve__c</columns>
+    <columns>What_is_your_role_in_the_company__c</columns>
+    <columns>Most_support_needed_with_solution_vendor__c</columns>
+    <columns>LEAD.LEAD_SOURCE</columns>
+    <columns>Contact_Source_Description__c</columns>
+    <columns>LEAD.MOBILE_PHONE</columns>
+    <columns>LEAD.PHONE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>LEAD.STATUS</field>
+        <operation>equals</operation>
+        <value>MQL</value>
+    </filters>
+    <filters>
+        <field>CV_Subsidiary__c</field>
+        <operation>equals</operation>
+        <value>SE,DK,NO</value>
+    </filters>
+    <filters>
+        <field>Disqualification_Reason__c</field>
+        <operation>contains</operation>
+    </filters>
+    <filters>
+        <field>Hot_Lead__c</field>
+        <operation>contains</operation>
+    </filters>
+    <filters>
+        <field>What_challenge_do_you_want_to_solve__c</field>
+        <operation>notContain</operation>
+    </filters>
+    <filters>
+        <field>What_is_your_role_in_the_company__c</field>
+        <operation>notContain</operation>
+    </filters>
+    <filters>
+        <field>Most_support_needed_with_solution_vendor__c</field>
+        <operation>notContain</operation>
+    </filters>
+    <label>Scandinavia MQLs for prospecting</label>
+</ListView>

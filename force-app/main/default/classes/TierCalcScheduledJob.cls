@@ -123,20 +123,35 @@ public class TierCalcScheduledJob implements Database.Batchable<SObject>, Databa
         try {
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
-            // Get all active System Administrators
-            List<User> sysAdmins = [SELECT Email FROM User WHERE Profile.Name = 'System Administrator' AND LastName = 'Skaruz' AND IsActive = TRUE AND Email != NULL];
+            // Use Org-Wide Email Address as sender to avoid domain authorization issues
+            List<OrgWideEmailAddress> owas = [ SELECT Id FROM OrgWideEmailAddress WHERE IsAllowAllProfiles = TRUE LIMIT 1 ];
+            if (!owas.isEmpty()) {
+                mail.setOrgWideEmailAddressId(owas[0].Id);
+            }
 
-            if (sysAdmins.isEmpty()) {
-                System.debug(LoggingLevel.WARN, 'No active System Administrators found to send error notification');
+            // Get recipient addresses from Apex Email Notification
+            Set<String> recipientEmails = new Set<String>();
+            List<ApexEmailNotification> notifications = [
+                SELECT Email, User.Email, User.IsActive
+                FROM ApexEmailNotification
+                WHERE Email != NULL OR (UserId != NULL AND User.IsActive = true)
+            ];
+
+            for (ApexEmailNotification n : notifications) {
+                if (n.Email != null) {
+                    recipientEmails.add(n.Email);
+                }
+                if (n.User != null && n.User.IsActive && n.User.Email != null) {
+                    recipientEmails.add(n.User.Email);
+                }
+            }
+
+            if (recipientEmails.isEmpty()) {
+                System.debug(LoggingLevel.WARN, 'No active recipients found in Apex Email Notification, skipping error email');
                 return;
             }
 
-            List<String> adminEmails = new List<String>();
-            for (User admin : sysAdmins) {
-                adminEmails.add(admin.Email);
-            }
-
-            mail.setToAddresses(adminEmails);
+            mail.setToAddresses(new List<String>(recipientEmails));
             mail.setSubject('Tier Calculation Batch Job - Errors Detected');
             mail.setPlainTextBody(summary);
 

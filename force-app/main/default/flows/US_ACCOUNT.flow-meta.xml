@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>US ACCOUNT {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>US ACCOUNT</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Default_Purchasing_Status_fields</name>
+        <label>Default Purchasing Status fields</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <inputAssignments>
+            <field>Purchasing_Approved_Date_Last_Reviewed__c</field>
+            <value>
+                <elementReference>$Record.CreatedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Purchasing_Status_Approver__c</field>
+            <value>
+                <stringValue>0050Y000001tbaA</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Purchasing_Status_Comments__c</field>
+            <value>
+                <stringValue>US accounts automatically granted purchase on PO</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Purchasing_Status__c</field>
+            <value>
+                <stringValue>Purchase on PO</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Default_Purchasing_Status_fields</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp; ISPICKVAL({!$Record.CV_Subsidiary__c}, &quot;US&quot;)</filterFormula>
+        <object>Account</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

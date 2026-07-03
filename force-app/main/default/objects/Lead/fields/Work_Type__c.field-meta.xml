@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Work_Type__c</fullName>
+    <label>[REDUNDANT] Work Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>5G</fullName>
+                <default>false</default>
+                <label>5G</label>
+            </value>
+            <value>
+                <fullName>Consulting: Assessments</fullName>
+                <default>false</default>
+                <label>Consulting: Assessments</label>
+            </value>
+            <value>
+                <fullName>Consulting: Atlassian</fullName>
+                <default>false</default>
+                <label>Consulting: Atlassian</label>
+            </value>
+            <value>
+                <fullName>Consulting: Atlassian cloud migration</fullName>
+                <default>false</default>
+                <label>Consulting: Atlassian cloud migration</label>
+            </value>
+            <value>
+                <fullName>Consulting: Cloud native</fullName>
+                <default>false</default>
+                <label>Consulting: Cloud native</label>
+            </value>
+            <value>
+                <fullName>Consulting: DevOps</fullName>
+                <default>false</default>
+                <label>Consulting: DevOps</label>
+            </value>
+            <value>
+                <fullName>Consulting: Product management</fullName>
+                <default>false</default>
+                <label>Consulting: Product management</label>
+            </value>
+            <value>
+                <fullName>Consulting: Project management</fullName>
+                <default>false</default>
+                <label>Consulting: Project management</label>
+            </value>
+            <value>
+                <fullName>Consulting: Software Development</fullName>
+                <default>false</default>
+                <label>Consulting: Software Development</label>
+            </value>
+            <value>
+                <fullName>Consulting: Trainings</fullName>
+                <default>false</default>
+                <label>Consulting: Trainings</label>
+            </value>
+            <value>
+                <fullName>Consulting: Transformation</fullName>
+                <default>false</default>
+                <label>Consulting: Transformation</label>
+            </value>
+            <value>
+                <fullName>Design &amp; Research</fullName>
+                <default>false</default>
+                <label>Design &amp; Research</label>
+            </value>
+            <value>
+                <fullName>Licenses: Atlassian</fullName>
+                <default>false</default>
+                <label>Licenses: Atlassian</label>
+            </value>
+            <value>
+                <fullName>Licenses: AWS</fullName>
+                <default>false</default>
+                <label>Licenses: AWS</label>
+            </value>
+            <value>
+                <fullName>Licenses: GitHub</fullName>
+                <default>false</default>
+                <label>Licenses: GitHub</label>
+            </value>
+            <value>
+                <fullName>Licenses: GitLab</fullName>
+                <default>false</default>
+                <label>Licenses: GitLab</label>
+            </value>
+            <value>
+                <fullName>Licenses: Google Cloud</fullName>
+                <default>false</default>
+                <label>Licenses: Google Cloud</label>
+            </value>
+            <value>
+                <fullName>Licenses: Hansel</fullName>
+                <default>false</default>
+                <label>Licenses: Hansel</label>
+            </value>
+            <value>
+                <fullName>Licenses: HashiCorp</fullName>
+                <default>false</default>
+                <label>Licenses: HashiCorp</label>
+            </value>
+            <value>
+                <fullName>Licenses: Microsoft</fullName>
+                <default>false</default>
+                <label>Licenses: Microsoft</label>
+            </value>
+            <value>
+                <fullName>Licenses: Sonatype</fullName>
+                <default>false</default>
+                <label>Licenses: Sonatype</label>
+            </value>
+            <value>
+                <fullName>MS: App Management</fullName>
+                <default>false</default>
+                <label>MS: App Management</label>
+            </value>
+            <value>
+                <fullName>MS: ROOT</fullName>
+                <default>false</default>
+                <label>MS: ROOT</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

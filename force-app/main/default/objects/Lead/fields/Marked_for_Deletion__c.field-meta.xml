@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Marked_for_Deletion__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>In use when doing mass clean-ups of contacts</description>
+    <inlineHelpText>ONLY to be used in contact clean-up projects</inlineHelpText>
+    <label>Marked for Deletion</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

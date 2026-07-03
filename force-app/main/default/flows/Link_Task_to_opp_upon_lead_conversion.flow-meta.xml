@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>Automation enabled check added to start conditions</description>
+    <environments>Default</environments>
+    <interviewLabel>Link Task to opp upon lead conversion {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Link Task to opp upon lead conversion</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Tasks</name>
+        <label>Update Tasks</label>
+        <locationX>436</locationX>
+        <locationY>346</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Related_to_Lead_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Converted_From_Lead_ID__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Related_to_Opportunity__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Update_Tasks</targetReference>
+        </connector>
+        <filterFormula>NOT(ISNULL({!$Record.Converted_From_Lead_ID__c})) &amp;&amp; {!$Setup.AutomationSettings__c.Automation_Enabled__c} = True</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

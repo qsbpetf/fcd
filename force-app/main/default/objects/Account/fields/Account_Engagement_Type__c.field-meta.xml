@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account_Engagement_Type__c</fullName>
+    <label>Engagement Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+                <label>Monthly</label>
+            </value>
+            <value>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+                <label>Quarterly</label>
+            </value>
+            <value>
+                <fullName>Bi-Annual</fullName>
+                <default>false</default>
+                <label>Bi-Annual</label>
+            </value>
+            <value>
+                <fullName>Annual</fullName>
+                <default>false</default>
+                <label>Annual</label>
+            </value>
+            <value>
+                <fullName>High Touch</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>High Touch</label>
+            </value>
+            <value>
+                <fullName>Low Touch</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Low Touch</label>
+            </value>
+            <value>
+                <fullName>Tech Touch</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Tech Touch</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

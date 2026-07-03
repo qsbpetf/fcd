@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Github_SE__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The Solution Engineer at Github</description>
+    <inlineHelpText>The Solution Engineer at Github</inlineHelpText>
+    <label>Github SE</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contacts (Github SE)</relationshipLabel>
+    <relationshipName>AccountsodD7</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

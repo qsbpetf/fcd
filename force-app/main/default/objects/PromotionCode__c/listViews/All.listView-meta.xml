@@ -2,11 +2,11 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>All</fullName>
     <columns>NAME</columns>
+    <columns>PromoCode__c</columns>
     <columns>SearchString__c</columns>
     <columns>Platform__c</columns>
     <columns>Edition__c</columns>
-    <columns>PromoCode__c</columns>
-    <columns>CodeUrl__c</columns>
+    <columns>ShortInfo__c</columns>
     <columns>StartDate__c</columns>
     <columns>EndDate__c</columns>
     <columns>IsActive__c</columns>

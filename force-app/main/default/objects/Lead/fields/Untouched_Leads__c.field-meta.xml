@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Untouched_Leads__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Status, &apos;MQL&apos;) &amp;&amp;  SLA__c&gt;1,
+ IMAGE(&apos;/img/msg_icons/error24.png&apos;, &apos;Red flag&apos;),
+ IF(ISPICKVAL(Status, &apos;MQL&apos;) &amp;&amp;  SLA__c&lt;1,
+  IMAGE(&apos;/img/msg_icons/warning24.png&apos;, &apos;Warning flag&apos;),
+   IMAGE(&apos;/img/msg_icons/confirm24.png&apos;, &apos;Green flag&apos;)
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Untouched Leads</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

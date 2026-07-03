@@ -2,7 +2,6 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Edition__c</fullName>
     <description>If you select an edition, the quote line must contain the selected edition.</description>
-    <externalId>false</externalId>
     <inlineHelpText>If you select an edition, the quote line must contain the selected edition.</inlineHelpText>
     <label>Edition</label>
     <required>false</required>

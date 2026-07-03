@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>License_Renewal_Contact__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Add a contact if the customer has specified that their license renewal quote needs to be sent to somebody OTHER than the my.Atlassian technical contact</description>
+    <inlineHelpText>Add a contact if the customer has specified that their license renewal quote needs to be sent to somebody OTHER than the my.Atlassian technical contact</inlineHelpText>
+    <label>License Renewal Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Accounts (License Renewal Contact)</relationshipLabel>
+    <relationshipName>Accounts4</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

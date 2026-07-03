@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>0 Days</fullName>
+        <default>false</default>
+        <label>0 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>7 Days</fullName>
+        <default>false</default>
+        <label>7 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>8 Days</fullName>
+        <default>false</default>
+        <label>8 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>10 Days</fullName>
+        <default>false</default>
+        <label>10 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>14 Days</fullName>
+        <default>false</default>
+        <label>14 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>15 Days</fullName>
+        <default>false</default>
+        <label>15 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>20 Days</fullName>
+        <default>false</default>
+        <label>20 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>21 Days</fullName>
+        <default>false</default>
+        <label>21 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>30 Days</fullName>
+        <default>true</default>
+        <label>30 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>35 days</fullName>
+        <default>false</default>
+        <label>35 days</label>
+    </customValue>
+    <customValue>
+        <fullName>40 days</fullName>
+        <default>false</default>
+        <label>40 days</label>
+    </customValue>
+    <customValue>
+        <fullName>45 Days</fullName>
+        <default>false</default>
+        <label>45 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>60 Days</fullName>
+        <default>false</default>
+        <label>60 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>90 Days</fullName>
+        <default>false</default>
+        <label>90 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>120 Days</fullName>
+        <default>false</default>
+        <label>120 Days</label>
+    </customValue>
+    <customValue>
+        <fullName>30 Days EOM</fullName>
+        <default>false</default>
+        <label>30 Days EOM</label>
+    </customValue>
+    <customValue>
+        <fullName>45 Days EOM</fullName>
+        <default>false</default>
+        <label>45 Days EOM</label>
+    </customValue>
+    <customValue>
+        <fullName>60 Days EOM</fullName>
+        <default>false</default>
+        <label>60 Days EOM</label>
+    </customValue>
+    <customValue>
+        <fullName>60 Days EOM5</fullName>
+        <default>false</default>
+        <label>60 Days EOM5</label>
+    </customValue>
+    <customValue>
+        <fullName>60D 2% / 75D Net</fullName>
+        <default>false</default>
+        <label>60D 2% / 75D Net</label>
+    </customValue>
+    <customValue>
+        <fullName>60D EOM5 4% / 90D EOM5</fullName>
+        <default>false</default>
+        <label>60D EOM5 4% / 90D EOM5</label>
+    </customValue>
+    <customValue>
+        <fullName>90 Days EOM</fullName>
+        <default>false</default>
+        <label>90 Days EOM</label>
+    </customValue>
+    <customValue>
+        <fullName>120 Days EOM</fullName>
+        <default>false</default>
+        <label>120 Days EOM</label>
+    </customValue>
+    <customValue>
+        <fullName>60 Days EOM	5%</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>60 Days EOM	5%</label>
+    </customValue>
+    <customValue>
+        <fullName>90 Days EOM5</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>90 Days EOM5</label>
+    </customValue>
+    <customValue>
+        <fullName>60 Days EOM5 4%</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>60 Days EOM5 4%</label>
+    </customValue>
+    <masterLabel>Payment Terms</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Choose_correct_subsidiary</fullName>
+    <active>true</active>
+    <errorConditionFormula>((ISPICKVAL(CV_Subsidiary__c, &quot;UK&quot;)  || ISPICKVAL(CV_Subsidiary__c, &quot;US&quot;)) &amp;&amp; 
+
+NOT(Subsidiary_Address_Override__c)
+&amp;&amp;
+ Nb_of_won_opps__c  &gt;= 1
+&amp;&amp;
+(
+(BillingCountry=&apos;United States&apos; &amp;&amp;  NOT(ISPICKVAL(CV_Subsidiary__c, &apos;US&apos;)))
+||
+(BillingCountry=&apos;United Kingdom&apos; &amp;&amp;  NOT(ISPICKVAL(CV_Subsidiary__c, &apos;UK&apos;)))
+)) &amp;&amp; $Setup.rh2__PS_Settings__c.rh2__Run_Validation_Rule__c</errorConditionFormula>
+    <errorDisplayField>CV_Subsidiary__c</errorDisplayField>
+    <errorMessage>Please amend the &apos;Eficode Subsidiary&apos; field to match the customer location. If strictly necessary speak to an admin who can apply &apos;Address/Currency Override&apos;</errorMessage>
+</ValidationRule>

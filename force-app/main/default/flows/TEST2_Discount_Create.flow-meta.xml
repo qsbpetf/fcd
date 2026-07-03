@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <assignments>
+        <name>Assign_Recommended_Discount_Partner</name>
+        <label>Assign Recommended Discount Partner</label>
+        <locationX>182</locationX>
+        <locationY>839</locationY>
+        <assignmentItems>
+            <assignToReference>LockRecommendedDiscountPartner</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>RecommendedDiscountPartner</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>NegativeMargin</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Lock_Recommended_Discount</name>
+        <label>Lock Recommended Discount</label>
+        <locationX>446</locationX>
+        <locationY>623</locationY>
+        <assignmentItems>
+            <assignToReference>LockRecommendedDiscount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>RecommendedDiscount</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Apply_Partner_Discount</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Apply_Partner_Discount</name>
+        <label>Apply Partner Discount</label>
+        <locationX>446</locationX>
+        <locationY>731</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_NegativeMargin</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Partner_Discount_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Atlassian_Partner_Discount__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.License_Platform__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cloud</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Renewal__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Upgrade (Same Platform)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Recommended_Discount_Partner</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_NegativeMargin</name>
+        <label>Copy 1 of NegativeMargin</label>
+        <locationX>710</locationX>
+        <locationY>839</locationY>
+        <defaultConnector>
+            <targetReference>Update_Recommended_Discount_Discount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Positive</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Yes_Negative</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Margin</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Manager_discount_sign_off__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Recommended_Discount_Discount_0</targetReference>
+            </connector>
+            <label>Copy 1 of Yes_Negative</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_Parent_Account</name>
+        <label>Has Parent Account</label>
+        <locationX>446</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Update_Recommended_Discount_Formula</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_parent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Opportunity.Account.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Recommended_Discount_Formula_Parent</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>NegativeMargin</name>
+        <label>NegativeMargin</label>
+        <locationX>182</locationX>
+        <locationY>947</locationY>
+        <defaultConnector>
+            <targetReference>Update_Discount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Positive</defaultConnectorLabel>
+        <rules>
+            <name>Yes_NegativeMargin</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MarginPartner</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Manager_discount_sign_off__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Recommended_Discount_NegativeMargin</targetReference>
+            </connector>
+            <label>Yes_Negative</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>ISNEW</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <formulas>
+        <name>Margin</name>
+        <dataType>Currency</dataType>
+        <expression>({!$Record.TotalPrice} - ({!$Record.TotalPrice} * ({!RecommendedDiscount}/100))) 
+- {!$Record.Total_Buy_Price__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>MarginPartner</name>
+        <dataType>Currency</dataType>
+        <expression>({!$Record.TotalPrice} - ({!$Record.TotalPrice} * ({!RecommendedDiscountPartner}/100))) 
+- {!$Record.Total_Buy_Price__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>RecommendedDiscount</name>
+        <dataType>Number</dataType>
+        <expression>IF(NOT(ISBLANK({!$Record.Recommended_Discount_Formula__c} )) ,{!$Record.Recommended_Discount_Formula__c} , 
+
+
+IF(ISBLANK({!$Record.Recommended_Discount_Formula__c} )  
+&amp;&amp;   {!$Record.Revenue_Type_Formula__c} =&quot;Licenses&quot;
+&amp;&amp;  {!$Record.License_Platform__c} = &quot;Server&quot;, 1.5, 
+
+
+IF(ISBLANK({!$Record.Recommended_Discount_Formula__c})  
+&amp;&amp;   {!$Record.Revenue_Type_Formula__c} =&quot;Licenses&quot;
+&amp;&amp;  {!$Record.License_Platform__c}  &lt;&gt; &quot;Server&quot;
+&amp;&amp;  ( {!$Record.License_Order_Type__c} = &quot;New&quot;  || {!$Record.License_Order_Type__c} = &quot;Upgrade&quot;) , 5 , 
+
+IF(ISBLANK({!$Record.Recommended_Discount_Formula__c})  
+&amp;&amp;   {!$Record.Revenue_Type_Formula__c} =&quot;Licenses&quot;
+&amp;&amp;  {!$Record.License_Platform__c}  &lt;&gt; &quot;Server&quot;
+&amp;&amp;  {!$Record.License_Order_Type__c} = &quot;Renewal&quot; , 3 , NULL ))))</expression>
+        <scale>1</scale>
+    </formulas>
+    <formulas>
+        <name>RecommendedDiscountFormula_NoParent</name>
+        <dataType>Number</dataType>
+        <expression>IF({!$Record.License_Order_Type__c} = &quot;New Renewal&quot; , 0, 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Server: Core&quot; , {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Atlassian_Server_Discount_NEW__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Core&quot; , {!$Record.License_Order_Type__c} = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Atlassian_core_Discount_RENEWAL__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Core&quot; , {!$Record.License_Order_Type__c} = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Server_Discount_UPGRADE__c} ,
+
+IF(AND(
+{!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Apps&quot;  , {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Marketplace_SERVER_Discount__c}  ,
+IF(AND(
+{!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Apps&quot; , {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Mark_server_Renewnal_Discount__c} ,
+IF(AND(
+{!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Apps&quot;, {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Market_server_Discount_Upgrade__c} , 
+
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Data Center: Core&quot; ,  {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Atlassian_Data_Center_Discount_new__c}, 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Core&quot; ,  {!$Record.License_Order_Type__c} = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Atlassian_Data_Center_Discount_renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Core&quot; , {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Data_Center_Discount_upgrade__c} ,
+
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Apps&quot; ,  {!$Record.License_Order_Type__c} = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Atlassian_Data_Center_Marketplace_new__c}, 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Apps&quot; ,  {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Atlassian_Data_Center_Marketpl_Renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Apps&quot; , {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Data_Center_Marketpl_Upgrade__c} ,
+
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Cloud: Core&quot; ,  {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Atlassian_Cloud_Discount_new__c}, 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Core&quot; , {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Atlassian_Cloud_Discount_Renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Cloud: Core&quot; ,{!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Atlassian_Cloud_Discount_Upgrade__c} ,
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Apps&quot; ,  {!$Record.License_Order_Type__c} = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Atlass_Cloud_Marketplace_Discount_New__c}, 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Apps&quot; ,  {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Atlass_Cloud_Marketplace_Dis_Renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Apps&quot; , {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Atlass_Cloud_Marketplace_Dis_Upgrade__c} ,
+
+ NULL )))))))))))))))))))</expression>
+        <scale>1</scale>
+    </formulas>
+    <formulas>
+        <name>RecommendedDiscountFormula_Parent</name>
+        <dataType>Currency</dataType>
+        <expression>IF({!$Record.License_Order_Type__c} = &quot;New Renewal&quot; , 0, 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Server: Core&quot; , {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Parent.Atlassian_Server_Discount_NEW__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Core&quot; , {!$Record.License_Order_Type__c} = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Parent.Atlassian_core_Discount_RENEWAL__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Core&quot; , {!$Record.License_Order_Type__c} = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Server_Discount_UPGRADE__c} ,
+
+IF(AND(
+{!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Apps&quot;  , {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Marketplace_SERVER_Discount__c}  ,
+IF(AND(
+{!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Apps&quot; , {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Mark_server_Renewnal_Discount__c} ,
+IF(AND(
+{!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Server: Apps&quot;, {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Market_server_Discount_Upgrade__c}, 
+
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Data Center: Core&quot; ,  {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Parent.Atlassian_Data_Center_Discount_new__c}, 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Core&quot; ,  {!$Record.License_Order_Type__c} = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Parent.Atlassian_Data_Center_Discount_renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Core&quot; , {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Data_Center_Discount_upgrade__c} ,
+
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Apps&quot; ,  {!$Record.License_Order_Type__c} = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Parent.Atlassian_Data_Center_Marketplace_new__c}, 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Apps&quot; ,  {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Parent.Atlassian_Data_Center_Marketpl_Renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Data Center: Apps&quot; , {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Data_Center_Marketpl_Upgrade__c} ,
+
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Cloud: Core&quot; ,  {!$Record.License_Order_Type__c}  = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Parent.Atlassian_Cloud_Discount_new__c}, 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Core&quot; , {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Parent.Atlassian_Cloud_Discount_Renewal__c}, 
+
+IF(AND({!$Record.Product_Familly__c}  = &quot;LIC: Atlassian: Cloud: Core&quot; ,{!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlassian_Cloud_Discount_Upgrade__c},
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Apps&quot; ,  {!$Record.License_Order_Type__c} = &quot;New&quot;) ,  {!$Record.Opportunity.Account.Parent.Atlass_Cloud_Marketplace_Discount_New__c}, 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Apps&quot; ,  {!$Record.License_Order_Type__c}  = &quot;Renewal&quot;) ,   {!$Record.Opportunity.Account.Parent.Atlass_Cloud_Marketplace_Dis_Renewal__c} , 
+
+IF(AND({!$Record.Product_Familly__c} = &quot;LIC: Atlassian: Cloud: Apps&quot; , {!$Record.License_Order_Type__c}  = &quot;Upgrade&quot;) ,    {!$Record.Opportunity.Account.Parent.Atlass_Cloud_Marketplace_Dis_Upgrade__c} ,
+
+ NULL )))))))))))))))))))</expression>
+        <scale>1</scale>
+    </formulas>
+    <formulas>
+        <name>RecommendedDiscountPartner</name>
+        <dataType>Number</dataType>
+        <expression>IF({!LockRecommendedDiscount} * ({!$Record.Partner_Discount_Formula__c} / 25) &lt; 3 , 3 , 
+IF({!$Record.Partner_Discount_Formula__c} &gt; 25, {!LockRecommendedDiscount} , 
+{!LockRecommendedDiscount} * ({!$Record.Partner_Discount_Formula__c} / 25)))</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>TEST2_Discount Create {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>TEST2_Discount Create</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Discount</name>
+        <label>Update Discount</label>
+        <locationX>314</locationX>
+        <locationY>1055</locationY>
+        <inputAssignments>
+            <field>Discount__c</field>
+            <value>
+                <elementReference>LockRecommendedDiscountPartner</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Recommended_Discount__c</field>
+            <value>
+                <elementReference>LockRecommendedDiscountPartner</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Recommended_Discount_Discount</name>
+        <label>Update Recommended Discount + Discount</label>
+        <locationX>842</locationX>
+        <locationY>947</locationY>
+        <inputAssignments>
+            <field>Discount__c</field>
+            <value>
+                <elementReference>LockRecommendedDiscount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Recommended_Discount__c</field>
+            <value>
+                <elementReference>LockRecommendedDiscount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Recommended_Discount_Discount_0</name>
+        <label>Update Recommended Discount + Discount</label>
+        <locationX>578</locationX>
+        <locationY>947</locationY>
+        <inputAssignments>
+            <field>Discount__c</field>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Recommended_Discount__c</field>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Recommended_Discount_Formula</name>
+        <label>Update Recommended Discount Formula</label>
+        <locationX>578</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Lock_Recommended_Discount</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Recommended_Discount_Formula__c</field>
+            <value>
+                <elementReference>RecommendedDiscountFormula_NoParent</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Recommended_Discount_Formula_Parent</name>
+        <label>Recommended Discount Formula</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Lock_Recommended_Discount</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Recommended_Discount_Formula__c</field>
+            <value>
+                <elementReference>RecommendedDiscountFormula_Parent</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Recommended_Discount_NegativeMargin</name>
+        <label>Update Recommended Discount</label>
+        <locationX>50</locationX>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>UpdateDiscount_Yes_Negative</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Recommended_Discount__c</field>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>UpdateDiscount_Yes_Negative</name>
+        <label>UpdateDiscount</label>
+        <locationX>50</locationX>
+        <locationY>1163</locationY>
+        <inputAssignments>
+            <field>Discount__c</field>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Has_Parent_Account</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true ) 
+&amp;&amp; (ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c} , &quot;UK&quot;) || ISPICKVAL({!$Record.Opportunity.Account.CV_Subsidiary__c}  , &quot;US&quot;))</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>LockRecommendedDiscount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>LockRecommendedDiscountPartner</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+</Flow>

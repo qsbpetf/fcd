@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>ISCHANGED</name>
+        <label>ISCHANGED</label>
+        <locationX>314</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>T1_Start_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.T1_Start_Date__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Children_Accounts</targetReference>
+            </connector>
+            <label>T1 Start Date</label>
+        </rules>
+        <rules>
+            <name>Parent_Account</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_T1_from_Parent_Account</targetReference>
+            </connector>
+            <label>Parent Account</label>
+        </rules>
+    </decisions>
+    <description>This flow handles T1 Start date changes in the context of the parent/child account relationship
+1/ When the T1 Start date is changed on a parent account, it updates it on all children account. 
+2/ the parent account is changed on an account record that does not have a T1 Start Date set, it will inherit it from the new parent account</description>
+    <environments>Default</environments>
+    <interviewLabel>T1 Start date updates - Parent/child account relationship {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>T1 Start date updates - Parent/child account relationship</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Children_Accounts</name>
+        <label>Update Children Accounts</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>T1_Start_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>T1_Start_Date__c</field>
+            <value>
+                <elementReference>$Record.T1_Start_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.ChildAccounts</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_T1_from_Parent_Account</name>
+        <label>Update T1 from Parent Account</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>T1_Start_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>T1_Start_Date__c</field>
+            <value>
+                <elementReference>$Record.Parent.T1_Start_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>ISCHANGED</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = True &amp;&amp;
+(ISPICKVAL({!$Record.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.CV_Subsidiary__c}, &quot;US&quot;)) &amp;&amp;
+(ISCHANGED({!$Record.T1_Start_Date__c}) || ISCHANGED({!$Record.ParentId}))</filterFormula>
+        <object>Account</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

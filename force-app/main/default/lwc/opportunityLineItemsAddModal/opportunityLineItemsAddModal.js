@@ -45,6 +45,7 @@ export default class OpportunityLineItemsAddModal extends LightningModal {
                 UnitPrice: opportunityLineItem?.UnitPrice,
                 Quantity: opportunityLineItem?.Quantity,
                 Discount__c: opportunityLineItem?.Discount__c,
+                Units__c: opportunityLineItem?.Units__c,
                 Renewal__c: opportunityLineItem?.Renewal__c,
                 License_Start_date__c: opportunityLineItem?.License_Start_date__c,
                 License_end_date__c: opportunityLineItem?.License_end_date__c,
@@ -62,14 +63,10 @@ export default class OpportunityLineItemsAddModal extends LightningModal {
 
         this.isSubmitting = true;
         try {
-            debugger;
-            console.log('DATA = ', opportunityLineItems);
-            console.log('DATA = ' + JSON.stringify(opportunityLineItems));
             const { ids, errors } = await insertOpportunityLineItems({
                 olis: opportunityLineItems,
             });
-            console.log('IDS = ', ids);
-            console.log('ERRORS = ', errors);
+
             await notifyRecordUpdateAvailable(ids.map((recordId) => ({ recordId })));
             await notifyRecordUpdateAvailable([{ recordId: this.opportunityId }]);
 

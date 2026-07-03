@@ -21,7 +21,7 @@
     <filters>
         <field>NAME</field>
         <operation>notContain</operation>
-        <value>zzz-</value>
+        <value>zzz-,[Do not modify] migrated-internal-usage-licenses,USD - CARD</value>
     </filters>
     <filters>
         <field>CV_Subsidiary__c</field>

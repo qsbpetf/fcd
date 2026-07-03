@@ -1,0 +1,7 @@
+:host {
+    display: block;
+}
+
+lightning-card {
+    --sds-c-card-heading-font-size: 1.1rem;
+}

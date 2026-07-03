@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>Decision_Date_Changed_to_Accepted</name>
+        <label>Date Changed to Accepted</label>
+        <locationX>573</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Date_Changed_to_Contacting</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Date_Changed_to_Accepted</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Changed_to_Accepted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X3_Date_Changed_to_Accepted</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Yes Date Changed to Accepted</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Date_Changed_to_Contacting</name>
+        <label>Date Changed to Contacting</label>
+        <locationX>833</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Date_Changed_to_Held_for_Reapproach</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Date_Changed_to_Contacting</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Changed_to_Contacting</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Contacting</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X4_Date_Changed_to_Contacting</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Date Changed to Contacting</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Date_Changed_to_Held_for_Reapproach</name>
+        <label>Date Changed to Held for Reapproach</label>
+        <locationX>1089</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Date_Changed_to_SQL</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Date_Changed_to_Held_for_Reapproach</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Changed_to_Held_for_Reapproach</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Held for Reapproach</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X2_Date_Changed_to_Held_for_Reapproach</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Date Changed to Held for Reapproach</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Date_Changed_to_MQL</name>
+        <label>Date Changed to MQL</label>
+        <locationX>311</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Date_Changed_to_Accepted</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Date_Changed_to_MQL</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Changed_to_MQL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MQL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Action_Date_Changed_to_MQL</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Date Changed to MQL</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Date_Changed_to_SQL</name>
+        <label>Date Changed to SQL</label>
+        <locationX>1337</locationX>
+        <locationY>755</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Date_Converted</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Date_Changed_to_SLQ</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Changed_to_SQL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SQL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X5_Date_Changed_to_SQL</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Yes Date Changed to sql</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Date_Converted</name>
+        <label>Date Converted</label>
+        <locationX>1568</locationX>
+        <locationY>863</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Date_Disqualified</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No_Date_Converted</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Converted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Converted to an Account</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X6_Date_Converted</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Yes Date Converted</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Date_Disqualified</name>
+        <label>Date Disqualified</label>
+        <locationX>1766</locationX>
+        <locationY>971</locationY>
+        <defaultConnectorLabel>No_Date_Disqualified</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Date_Disqualified</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Disqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X7_Date_Disqualified</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Yes Date Disqualified</label>
+        </rules>
+    </decisions>
+    <description>Update the relevant &quot; Status date changed&quot; fields when status is changed</description>
+    <environments>Default</environments>
+    <interviewLabel>Lead Status change date {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Lead Status change date</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Action_Date_Changed_to_MQL</name>
+        <label>1 - Date Changed to MQL</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Date_changed_to_MQL__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>X2_Date_Changed_to_Held_for_Reapproach</name>
+        <label>2 - Date Changed to Held for Reapproach</label>
+        <locationX>842</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>Date_Changed_to_Held_for_Reapproach__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>X3_Date_Changed_to_Accepted</name>
+        <label>3 - Date Changed to Accepted</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Date_Changed_to_Accepted__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>X4_Date_Changed_to_Contacting</name>
+        <label>4 - Date Changed to Contacting</label>
+        <locationX>578</locationX>
+        <locationY>647</locationY>
+        <inputAssignments>
+            <field>Date_Changed_to_Contacting__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>X5_Date_Changed_to_SQL</name>
+        <label>5 - Date Changed to SQL</label>
+        <locationX>1106</locationX>
+        <locationY>863</locationY>
+        <inputAssignments>
+            <field>Date_Changed_to_SQL__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>X6_Date_Converted</name>
+        <label>6 - Date Converted</label>
+        <locationX>1370</locationX>
+        <locationY>971</locationY>
+        <inputAssignments>
+            <field>Lead_Converted_date__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>X7_Date_Disqualified</name>
+        <label>7 - Date Disqualified</label>
+        <locationX>1634</locationX>
+        <locationY>1079</locationY>
+        <inputAssignments>
+            <field>Date_Changed_to_Disqualified__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>185</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Date_Changed_to_MQL</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
+        <object>Lead</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

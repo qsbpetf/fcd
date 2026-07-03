@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Order_Date_Final_Formula_Field__c</fullName>
+    <formula>IF ( NOT(ISBLANK(First_Order_Date_Import__c)), First_Order_Date_Import__c,
+
+IF (
+
+OR( First_Order_Date_from_Children_Account__c &lt; First_Order_Date_Opp_RollUp__c , ISBLANK(First_Order_Date_Opp_RollUp__c))
+
+, First_Order_Date_from_Children_Account__c , First_Order_Date_Opp_RollUp__c ))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>First Order Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

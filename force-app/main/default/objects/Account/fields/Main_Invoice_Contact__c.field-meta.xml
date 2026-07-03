@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Main_Invoice_Contact__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>*MUST* be the invoice recipient i.e. accounts payable &amp; NOT the main technical contact - please check the PO to find the accounts contact or ASK for it. Other non-finance contacts can be added as contact 2 or 3 on the opp &amp; will be copied on to invoices.</description>
+    <inlineHelpText>*MUST* be the invoice recipient i.e. accounts payable &amp; NOT the main technical contact - please check the PO to find the accounts contact or ASK for it. Other non-finance contacts can be added as contact 2 or 3 on the opp &amp; will be copied on to invoices.</inlineHelpText>
+    <label>Main Invoice Contact</label>
+    <lookupFilter>
+        <active>false</active>
+        <errorMessage>The main invoice contact does not belong to the account.</errorMessage>
+        <filterItems>
+            <field>$Source.Id</field>
+            <operation>equals</operation>
+            <valueField>Contact.AccountId</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Accounts (Main Invoice Contact)</relationshipLabel>
+    <relationshipName>Accounts1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

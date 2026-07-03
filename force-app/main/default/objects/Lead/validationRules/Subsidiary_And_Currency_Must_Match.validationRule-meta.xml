@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subsidiary_And_Currency_Must_Match</fullName>
+    <active>true</active>
+    <description>Lead can&apos;t be converted if subsidiary and currency doesn&apos;t match. -12012024 Jasmin/Ceili</description>
+    <errorConditionFormula>(
+  AND(
+    ISPICKVAL(Status, &quot;Converted to an Account&quot;),
+    IsConverted = true,
+    OR(
+      OR(
+        ISPICKVAL(CV_Subsidiary__c, &quot;FI&quot;),
+        ISPICKVAL(CV_Subsidiary__c, &quot;Jodocus GmbH&quot;),
+        ISPICKVAL(CV_Subsidiary__c, &quot;NL&quot;),
+        ISPICKVAL(CV_Subsidiary__c, &quot;PL&quot;)
+      ) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;EUR&quot;)),
+      ISPICKVAL(CV_Subsidiary__c, &quot;SE&quot;) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;SEK&quot;)),
+      ISPICKVAL(CV_Subsidiary__c, &quot;DK&quot;) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;DKK&quot;)),
+      ISPICKVAL(CV_Subsidiary__c, &quot;NO&quot;) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;NOK&quot;)),
+      ISPICKVAL(CV_Subsidiary__c, &quot;CH&quot;) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;CHF&quot;)),
+      ISPICKVAL(CV_Subsidiary__c, &quot;UK&quot;) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;GBP&quot;)),
+      ISPICKVAL(CV_Subsidiary__c, &quot;US&quot;) &amp;&amp; NOT(ISPICKVAL(CurrencyIsoCode, &quot;USD&quot;))
+    )
+  )
+) &amp;&amp; $Setup.rh2__PS_Settings__c.rh2__Run_Validation_Rule__c</errorConditionFormula>
+    <errorMessage>Please choose the correct currency to correspond to the Eficode Subsidiary</errorMessage>
+</ValidationRule>

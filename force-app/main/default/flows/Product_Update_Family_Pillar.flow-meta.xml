@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <environments>Default</environments>
+    <formulas>
+        <name>FamilyPillars</name>
+        <dataType>String</dataType>
+        <expression>If(ISPICKVAL({!$Record.Family}, &quot;Atlassian Cloud&quot;), &quot;Atlassian Cloud&quot;,
+If(ISPICKVAL({!$Record.Family}, &quot;Atlassian Jira Align&quot;), &quot;Agile Practice&quot;,
+If(ISPICKVAL({!$Record.Family}, &quot;X Squad Services&quot;), &quot;Gitlab&quot;,
+&quot;Pillar not necessary&quot;)))</expression>
+    </formulas>
+    <interviewLabel>Product - Update Family Pillar {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Product - Update Family Pillar</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Pillar</name>
+        <label>Update Pillar</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian Cloud</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian Jira Align</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>X Squad Services</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Internal</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian Marketplace (Data Center)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian - Server</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian Marketplace</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian addons (non Marketplace)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian Data Center</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian - Services</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian - Training</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Atlassian ELA</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Strategic Partner Licenses</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Family</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>OtherVendorProduct</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Family_Pillar__c</field>
+            <value>
+                <elementReference>FamilyPillars</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Pillar</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Pillar__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Product2</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

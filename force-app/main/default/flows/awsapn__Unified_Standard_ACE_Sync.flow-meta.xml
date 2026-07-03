@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <name>Check_If_ACE_Exists</name>
+        <label>Check If ACE Exists</label>
+        <locationX>176</locationX>
+        <locationY>300</locationY>
+        <defaultConnector>
+            <targetReference>Get_Account_Details</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Create New ACE</defaultConnectorLabel>
+        <rules>
+            <name>ACE_Already_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varExistingACE.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Existing_ACE</targetReference>
+            </connector>
+            <label>ACE Already Exists</label>
+        </rules>
+    </decisions>
+    <description>Unified flow to sync Standard and ACE opportunities using only standard fields</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>MapStage</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+            {!$Record.StageName},
+            &quot;Prospecting&quot;, &quot;Prospect&quot;,
+            &quot;Qualification&quot;, &quot;Prospect&quot;,
+            &quot;Needs Analysis&quot;, &quot;Qualified&quot;,
+            &quot;Value Proposition&quot;, &quot;Technical Validation&quot;,
+            &quot;Id. Decision Makers&quot;, &quot;Technical Validation&quot;,
+            &quot;Perception Analysis&quot;, &quot;Business Validation&quot;,
+            &quot;Proposal/Price Quote&quot;, &quot;Business Validation&quot;,
+            &quot;Negotiation/Review&quot;, &quot;Committed&quot;,
+            &quot;Closed Won&quot;, &quot;Launched&quot;,
+            &quot;Closed Lost&quot;, &quot;Closed Lost&quot;,
+            &quot;Prospect&quot;
+        )</expression>
+    </formulas>
+    <formulas>
+        <name>MapStateValue</name>
+        <dataType>String</dataType>
+        <expression>IF(
+            AND(
+                NOT(ISBLANK({!varAccount.BillingState})),
+                OR(
+                    {!varAccount.BillingCountry} = &quot;United States&quot;,
+                    {!varAccount.BillingCountry} = &quot;US&quot;,
+                    {!varAccount.BillingCountry} = &quot;USA&quot;
+                )
+            ),
+            CASE({!varAccount.BillingState},
+                &quot;AL&quot;, &quot;Alabama&quot;,
+                &quot;AK&quot;, &quot;Alaska&quot;,
+                &quot;AZ&quot;, &quot;Arizona&quot;,
+                &quot;AR&quot;, &quot;Arkansas&quot;,
+                &quot;CA&quot;, &quot;California&quot;,
+                &quot;CO&quot;, &quot;Colorado&quot;,
+                &quot;CT&quot;, &quot;Connecticut&quot;,
+                &quot;DE&quot;, &quot;Delaware&quot;,
+                &quot;FL&quot;, &quot;Florida&quot;,
+                &quot;GA&quot;, &quot;Georgia&quot;,
+                &quot;HI&quot;, &quot;Hawaii&quot;,
+                &quot;ID&quot;, &quot;Idaho&quot;,
+                &quot;IL&quot;, &quot;Illinois&quot;,
+                &quot;IN&quot;, &quot;Indiana&quot;,
+                &quot;IA&quot;, &quot;Iowa&quot;,
+                &quot;KS&quot;, &quot;Kansas&quot;,
+                &quot;KY&quot;, &quot;Kentucky&quot;,
+                &quot;LA&quot;, &quot;Louisiana&quot;,
+                &quot;ME&quot;, &quot;Maine&quot;,
+                &quot;MD&quot;, &quot;Maryland&quot;,
+                &quot;MA&quot;, &quot;Massachusetts&quot;,
+                &quot;MI&quot;, &quot;Michigan&quot;,
+                &quot;MN&quot;, &quot;Minnesota&quot;,
+                &quot;MS&quot;, &quot;Mississippi&quot;,
+                &quot;MO&quot;, &quot;Missouri&quot;,
+                &quot;MT&quot;, &quot;Montana&quot;,
+                &quot;NE&quot;, &quot;Nebraska&quot;,
+                &quot;NV&quot;, &quot;Nevada&quot;,
+                &quot;NH&quot;, &quot;New Hampshire&quot;,
+                &quot;NJ&quot;, &quot;New Jersey&quot;,
+                &quot;NM&quot;, &quot;New Mexico&quot;,
+                &quot;NY&quot;, &quot;New York&quot;,
+                &quot;NC&quot;, &quot;North Carolina&quot;,
+                &quot;ND&quot;, &quot;North Dakota&quot;,
+                &quot;OH&quot;, &quot;Ohio&quot;,
+                &quot;OK&quot;, &quot;Oklahoma&quot;,
+                &quot;OR&quot;, &quot;Oregon&quot;,
+                &quot;PA&quot;, &quot;Pennsylvania&quot;,
+                &quot;RI&quot;, &quot;Rhode Island&quot;,
+                &quot;SC&quot;, &quot;South Carolina&quot;,
+                &quot;SD&quot;, &quot;South Dakota&quot;,
+                &quot;TN&quot;, &quot;Tennessee&quot;,
+                &quot;TX&quot;, &quot;Texas&quot;,
+                &quot;UT&quot;, &quot;Utah&quot;,
+                &quot;VT&quot;, &quot;Vermont&quot;,
+                &quot;VA&quot;, &quot;Virginia&quot;,
+                &quot;WA&quot;, &quot;Washington&quot;,
+                &quot;WV&quot;, &quot;West Virginia&quot;,
+                &quot;WI&quot;, &quot;Wisconsin&quot;,
+                &quot;WY&quot;, &quot;Wyoming&quot;,
+                {!varAccount.BillingState}
+            ),
+            null
+        )</expression>
+    </formulas>
+    <interviewLabel>Unified Standard-ACE Sync {!$Flow.CurrentDateTime}</interviewLabel>
+    <isTemplate>true</isTemplate>
+    <label>Unified Standard-ACE Opportunity Sync Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_ACE_Opportunity</name>
+        <label>Create ACE Opportunity</label>
+        <locationX>176</locationX>
+        <locationY>500</locationY>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Country__c</field>
+            <value>
+                <elementReference>varAccount.BillingCountry</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Customer_Company_Name__c</field>
+            <value>
+                <elementReference>$Record.Account.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Customer_Website__c</field>
+            <value>
+                <elementReference>varAccount.Website</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Delivery_Model__c</field>
+            <value>
+                <stringValue>Professional Services</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Expected_Monthly_AWS_Revenue__c</field>
+            <value>
+                <elementReference>$Record.ExpectedRevenue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Industry__c</field>
+            <value>
+                <stringValue>Education</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Involvement_Type__c</field>
+            <value>
+                <stringValue>Co-Sell</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Is_Opp_From_Marketing_Activity__c</field>
+            <value>
+                <stringValue>No</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Next_Step__c</field>
+            <value>
+                <elementReference>$Record.NextStep</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Opportunity_Ownership__c</field>
+            <value>
+                <stringValue>Partner Referral</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Partner_Primary_Need_From_AWS_new__c</field>
+            <value>
+                <stringValue>Do Not Need Support from AWS Sales Rep</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Partner_Project_Title__c</field>
+            <value>
+                <stringValue>AWS Implementation Project</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Postal_Code__c</field>
+            <value>
+                <elementReference>varAccount.BillingPostalCode</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Project_Description_new__c</field>
+            <value>
+                <stringValue>Default business problem description - Customer is looking to implement AWS solutions to improve their business operations and infrastructure.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Source_Opportunity__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Stage__c</field>
+            <value>
+                <elementReference>MapStage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__State__c</field>
+            <value>
+                <elementReference>MapStateValue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Target_Close_Date__c</field>
+            <value>
+                <elementReference>$Record.CloseDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Use_Case__c</field>
+            <value>
+                <stringValue>Training</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Visibility__c</field>
+            <value>
+                <stringValue>Full</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__awsProducts__c</field>
+            <value>
+                <stringValue>AWSBatch</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__opportunityType__c</field>
+            <value>
+                <stringValue>Net New Business</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__salesActivities__c</field>
+            <value>
+                <stringValue>Initialized discussions with customer</stringValue>
+            </value>
+        </inputAssignments>
+        <object>awsapn__ACE_Opportunity__c</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Check_Existing_ACE</name>
+        <label>Check Existing ACE</label>
+        <locationX>176</locationX>
+        <locationY>200</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_If_ACE_Exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>awsapn__Source_Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>awsapn__ACE_Opportunity__c</object>
+        <outputReference>varExistingACE</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Account_Details</name>
+        <label>Get Account Details</label>
+        <locationX>176</locationX>
+        <locationY>400</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_ACE_Opportunity</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputReference>varAccount</outputReference>
+        <queriedFields>BillingCountry</queriedFields>
+        <queriedFields>BillingState</queriedFields>
+        <queriedFields>BillingPostalCode</queriedFields>
+        <queriedFields>Website</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Existing_ACE</name>
+        <label>Update Existing ACE</label>
+        <locationX>400</locationX>
+        <locationY>300</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varExistingACE.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>awsapn__Expected_Monthly_AWS_Revenue__c</field>
+            <value>
+                <elementReference>$Record.ExpectedRevenue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Next_Step__c</field>
+            <value>
+                <elementReference>$Record.NextStep</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Stage__c</field>
+            <value>
+                <elementReference>MapStage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>awsapn__Target_Close_Date__c</field>
+            <value>
+                <elementReference>$Record.CloseDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>awsapn__ACE_Opportunity__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Existing_ACE</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Description</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Create ACE</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <name>varAccount</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>varExistingACE</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>awsapn__ACE_Opportunity__c</objectType>
+    </variables>
+</Flow>

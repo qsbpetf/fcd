@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Reg_Submissions</fullName>
+    <columns>NAME</columns>
+    <columns>Program_Type__c</columns>
+    <columns>Status__c</columns>
+    <columns>Error__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>Last_Polled__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>My Reg Submissions</label>
+</ListView>

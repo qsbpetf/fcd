@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_DC_Eligibility_Status</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Account_Owner__c</columns>
+    <columns>DC_Eligibility_Status_Date__c</columns>
+    <columns>DC_Eligibility_Status_Challenging__c</columns>
+    <columns>PARENT_NAME</columns>
+    <columns>CV_Subsidiary__c</columns>
+    <columns>ACCOUNT.TYPE</columns>
+    <columns>Last_Activity_Date__c</columns>
+    <columns>Last_Order_Date_Final_Formula_Field__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>DC_Eligibility_Status__c</field>
+        <operation>equals</operation>
+        <value>Eligible,Not Eligible,Needs Review</value>
+    </filters>
+    <label>My DC Eligibility Status</label>
+</ListView>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Days_as_SQL__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(AND(ISBLANK(Lead_Converted_date__c),NOT(ISBLANK( Date_Changed_to_Disqualified__c ))) ,   Date_Changed_to_Disqualified__c  - Date_Changed_to_SQL__c, 
+IF(AND(ISBLANK(Date_Changed_to_Disqualified__c),NOT(ISBLANK(Lead_Converted_date__c))) ,  Lead_Converted_date__c  - Date_Changed_to_SQL__c, 
+
+TODAY() - Date_Changed_to_SQL__c ))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Days as SQL</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

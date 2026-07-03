@@ -42,6 +42,7 @@ export default class OpportunityLineItemsEditModal extends LightningModal {
                 UnitPrice: opportunityLineItem.UnitPrice,
                 Quantity: opportunityLineItem.Quantity,
                 Discount__c: opportunityLineItem.Discount__c,
+                Units__c: opportunityLineItem.Units__c,
                 Renewal__c: opportunityLineItem.Renewal__c,
                 License_Start_date__c: opportunityLineItem.License_Start_date__c,
                 License_end_date__c: opportunityLineItem.License_end_date__c,

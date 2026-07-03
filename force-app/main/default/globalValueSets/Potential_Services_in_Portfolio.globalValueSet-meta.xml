@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Accessibility Assessment</fullName>
+        <default>false</default>
+        <label>Accessibility Assessment</label>
+    </customValue>
+    <customValue>
+        <fullName>Agile consulting and coaching</fullName>
+        <default>false</default>
+        <label>Agile consulting and coaching</label>
+    </customValue>
+    <customValue>
+        <fullName>Agile training</fullName>
+        <default>false</default>
+        <label>Agile training</label>
+    </customValue>
+    <customValue>
+        <fullName>AI-driven Development Consultation</fullName>
+        <default>false</default>
+        <label>AI-driven Development Consultation</label>
+    </customValue>
+    <customValue>
+        <fullName>Application Management</fullName>
+        <default>false</default>
+        <label>Application Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Architectural Planning</fullName>
+        <default>false</default>
+        <label>Architectural Planning</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian: Jira Align Consulting</fullName>
+        <default>false</default>
+        <label>Atlassian: Jira Align Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian: Agile ways of working</fullName>
+        <default>false</default>
+        <label>Atlassian: Agile ways of working</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian: Cloud Migrations</fullName>
+        <default>false</default>
+        <label>Atlassian: Cloud Migrations</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian: Enterprise License Agreement (ELA)</fullName>
+        <default>false</default>
+        <label>Atlassian: Enterprise License Agreement (ELA)</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian: Jira Service Management Consulting</fullName>
+        <default>false</default>
+        <label>Atlassian: Jira Service Management Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian: Server EOL (End of Life)</fullName>
+        <default>false</default>
+        <label>Atlassian: Server EOL (End of Life)</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian Cloud Consulting</fullName>
+        <default>false</default>
+        <label>Atlassian Cloud Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian Data Center Consulting</fullName>
+        <default>false</default>
+        <label>Atlassian Data Center Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian Training Services</fullName>
+        <default>false</default>
+        <label>Atlassian Training Services</label>
+    </customValue>
+    <customValue>
+        <fullName>AWS Consulting</fullName>
+        <default>false</default>
+        <label>AWS Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Azure Consulting</fullName>
+        <default>false</default>
+        <label>Azure Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>CI/CD Boost</fullName>
+        <default>false</default>
+        <label>CI/CD Boost</label>
+    </customValue>
+    <customValue>
+        <fullName>CI/CD Migration</fullName>
+        <default>false</default>
+        <label>CI/CD Migration</label>
+    </customValue>
+    <customValue>
+        <fullName>Cloud Migration and Modernization</fullName>
+        <default>false</default>
+        <label>Cloud Migration and Modernization</label>
+    </customValue>
+    <customValue>
+        <fullName>DevOps Assessment &amp; Roadmap</fullName>
+        <default>false</default>
+        <label>DevOps Assessment &amp; Roadmap</label>
+    </customValue>
+    <customValue>
+        <fullName>DevOps Consulting</fullName>
+        <default>false</default>
+        <label>DevOps Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>DevSecOps Assessment</fullName>
+        <default>false</default>
+        <label>DevSecOps Assessment</label>
+    </customValue>
+    <customValue>
+        <fullName>Eficode Accessibility Keeper</fullName>
+        <default>false</default>
+        <label>Eficode Accessibility Keeper</label>
+    </customValue>
+    <customValue>
+        <fullName>Github Advanced Security Workshop</fullName>
+        <default>false</default>
+        <label>Github Advanced Security Workshop</label>
+    </customValue>
+    <customValue>
+        <fullName>GitHub Copilot Proof of Concept</fullName>
+        <default>false</default>
+        <label>GitHub Copilot Proof of Concept</label>
+    </customValue>
+    <customValue>
+        <fullName>HashiCorp licenses</fullName>
+        <default>false</default>
+        <label>HashiCorp licenses</label>
+    </customValue>
+    <customValue>
+        <fullName>JFrog licenses</fullName>
+        <default>false</default>
+        <label>JFrog licenses</label>
+    </customValue>
+    <customValue>
+        <fullName>Licenses: Atlassian Cloud</fullName>
+        <default>false</default>
+        <label>Licenses: Atlassian Cloud</label>
+    </customValue>
+    <customValue>
+        <fullName>Licenses: Atlassian Data Center</fullName>
+        <default>false</default>
+        <label>Licenses: Atlassian Data Center</label>
+    </customValue>
+    <customValue>
+        <fullName>Managed DevOps</fullName>
+        <default>false</default>
+        <label>Managed DevOps</label>
+    </customValue>
+    <customValue>
+        <fullName>Minimum Viable Product</fullName>
+        <default>false</default>
+        <label>Minimum Viable Product</label>
+    </customValue>
+    <customValue>
+        <fullName>Product &amp; Portfolio Management Training</fullName>
+        <default>false</default>
+        <label>Product &amp; Portfolio Management Training</label>
+    </customValue>
+    <customValue>
+        <fullName>Product and Portfolio Management</fullName>
+        <default>false</default>
+        <label>Product and Portfolio Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Service Design Consulting</fullName>
+        <default>false</default>
+        <label>Service Design Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Software Development Consulting</fullName>
+        <default>false</default>
+        <label>Software Development Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>Software Development Team</fullName>
+        <default>false</default>
+        <label>Software Development Team</label>
+    </customValue>
+    <customValue>
+        <fullName>Sonatype licenses</fullName>
+        <default>false</default>
+        <label>Sonatype licenses</label>
+    </customValue>
+    <customValue>
+        <fullName>Technical Due Diligence</fullName>
+        <default>false</default>
+        <label>Technical Due Diligence</label>
+    </customValue>
+    <customValue>
+        <fullName>Test Automation as a Service</fullName>
+        <default>false</default>
+        <label>Test Automation as a Service</label>
+    </customValue>
+    <customValue>
+        <fullName>Test Automation Proof-of-Value</fullName>
+        <default>false</default>
+        <label>Test Automation Proof-of-Value</label>
+    </customValue>
+    <customValue>
+        <fullName>Tooling Assessment</fullName>
+        <default>false</default>
+        <label>Tooling Assessment</label>
+    </customValue>
+    <customValue>
+        <fullName>Training: DevOps and Cloud Native</fullName>
+        <default>false</default>
+        <label>Training: DevOps and Cloud Native</label>
+    </customValue>
+    <customValue>
+        <fullName>Training: UX &amp; Accessibility for management</fullName>
+        <default>false</default>
+        <label>Training: UX &amp; Accessibility for management</label>
+    </customValue>
+    <customValue>
+        <fullName>UI &amp; UX Design Consulting</fullName>
+        <default>false</default>
+        <label>UI &amp; UX Design Consulting</label>
+    </customValue>
+    <customValue>
+        <fullName>User experience Assessment</fullName>
+        <default>false</default>
+        <label>User experience Assessment</label>
+    </customValue>
+    <customValue>
+        <fullName>Licenses: GitHub</fullName>
+        <default>false</default>
+        <label>Licenses: GitHub</label>
+    </customValue>
+    <customValue>
+        <fullName>Licenses: GitLab</fullName>
+        <default>false</default>
+        <label>Licenses: GitLab</label>
+    </customValue>
+    <masterLabel>Potential Services in Portfolio</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

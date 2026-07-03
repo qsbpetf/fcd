@@ -3,6 +3,7 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 
 import CurrencyIsoCode from '@salesforce/schema/Opportunity.CurrencyIsoCode';
 import getTypePicklistValues from '@salesforce/apex/OpportunityLineItemController.getTypePicklistValues';
+import getUnitsPicklistValues from '@salesforce/apex/OpportunityLineItemController.getUnitsPicklistValues';
 
 export default class OpportunityEditLineItemsDatatable extends LightningElement {
     @api opportunityId;
@@ -14,6 +15,7 @@ export default class OpportunityEditLineItemsDatatable extends LightningElement 
 
     @track opportunityLineItemColumns = [];
     @track types = [];
+    @track units = [];
     @track opportunity = {};
 
     @wire(getRecord, {
@@ -34,6 +36,15 @@ export default class OpportunityEditLineItemsDatatable extends LightningElement 
     @wire(getTypePicklistValues) getTypePicklistValuesWire({ data, error }) {
         if (data) {
             this.types = data;
+            this.handleOpportunityLineItemColumnsSet();
+        } else if (error) {
+            console.error(error);
+        }
+    }
+
+    @wire(getUnitsPicklistValues) getUnitsPicklistValuesWire({ data, error }) {
+        if (data) {
+            this.units = data;
             this.handleOpportunityLineItemColumnsSet();
         } else if (error) {
             console.error(error);
@@ -126,6 +137,18 @@ export default class OpportunityEditLineItemsDatatable extends LightningElement 
                 fieldName: 'Quantity',
                 type: 'number',
                 initialWidth: 100,
+                editable: true,
+            },
+            {
+                label: 'Units',
+                fieldName: 'Units__c',
+                type: 'picklist',
+                typeAttributes: {
+                    name: 'Units__c',
+                    placeholder: 'Select Units...',
+                    options: this.computedUnits,
+                },
+                initialWidth: 140,
                 editable: true,
             },
             {
@@ -258,5 +281,9 @@ export default class OpportunityEditLineItemsDatatable extends LightningElement 
 
     get computedTypes() {
         return [{ label: '--None--', value: '' }, ...this.types];
+    }
+
+    get computedUnits() {
+        return [{ label: '--None--', value: '' }, ...this.units];
     }
 }

@@ -30,8 +30,8 @@ public with sharing class PortalCommerceApiQuotes
         }
         QuoteList quotes = (QuoteList) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"quoteNumber"')
-                .replaceAll('"currency"', '"isoCurrency"'),
+                .replace('"number"', '"quoteNumber"')
+                .replace('"currency"', '"isoCurrency"'),
             QuoteList.class);
         return quotes;
     }
@@ -52,8 +52,8 @@ public with sharing class PortalCommerceApiQuotes
         }
         QuoteInfo theQuote = (QuoteInfo) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"quoteNumber"')
-                .replaceAll('"currency"', '"isoCurrency"'),
+                .replace('"number"', '"quoteNumber"')
+                .replace('"currency"', '"isoCurrency"'),
             QuoteInfo.class);
         System.debug('QUOTE = ' + response.getBody());
         return theQuote;

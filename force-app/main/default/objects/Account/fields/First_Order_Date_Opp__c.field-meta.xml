@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Order_Date_Opp__c</fullName>
+    <description>This is the first order date for this account. Note the automation to fill this field runs overnight, not instantly, so there is a delay.</description>
+    <inlineHelpText>This is the first order date for this account. Note the automation to fill this field runs overnight, not instantly, so there is a delay.</inlineHelpText>
+    <label>[REDUNDANT] First Order Date (Opp)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

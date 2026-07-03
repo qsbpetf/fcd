@@ -25,21 +25,21 @@ private class TierCalcScheduledJobTest {
     @isTest
     static void testErrorNotification() {
         Profile sysAdminProfile = [SELECT Id FROM Profile WHERE Name = 'System Administrator' LIMIT 1];
-        String uniqueSkaruz = 'skaruz' + DateTime.now().getTime() + '@test.com';
-        
-        User skaruzUser = new User(
-            FirstName = 'Grzegorz',
-            LastName = 'Skaruz',
-            Email = 'skaruz@test.com',
-            Username = uniqueSkaruz,
-            Alias = 'skrz',
+        String uniqueAdmin = 'admin' + DateTime.now().getTime() + '@test.com';
+
+        User adminUser = new User(
+            FirstName = 'Test',
+            LastName = 'Admin',
+            Email = 'admin@test.com',
+            Username = uniqueAdmin,
+            Alias = 'tadm',
             TimeZoneSidKey = 'Europe/Paris',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'UTF-8',
             ProfileId = sysAdminProfile.Id,
             LanguageLocaleKey = 'en_US'
         );
-        insert skaruzUser;
+        insert adminUser;
 
         Test.startTest();
         TierCalcScheduledJob jobInstance = new TierCalcScheduledJob();

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disqualification_Reason__c</fullName>
+    <label>Disqualification Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Status</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Already a customer</fullName>
+                <default>false</default>
+                <label>Already a customer</label>
+            </value>
+            <value>
+                <fullName>Career related</fullName>
+                <default>false</default>
+                <label>Career related</label>
+            </value>
+            <value>
+                <fullName>Competitor</fullName>
+                <default>false</default>
+                <label>Competitor</label>
+            </value>
+            <value>
+                <fullName>Partner</fullName>
+                <default>false</default>
+                <label>Partner</label>
+            </value>
+            <value>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+                <label>Vendor</label>
+            </value>
+            <value>
+                <fullName>Inaccurate info</fullName>
+                <default>false</default>
+                <label>Inaccurate info</label>
+            </value>
+            <value>
+                <fullName>Left the company</fullName>
+                <default>false</default>
+                <label>Left the company</label>
+            </value>
+            <value>
+                <fullName>Not responding</fullName>
+                <default>false</default>
+                <label>Not responding</label>
+            </value>
+            <value>
+                <fullName>Budget Constraints</fullName>
+                <default>false</default>
+                <label>Budget Constraints</label>
+            </value>
+            <value>
+                <fullName>Low expected ROI</fullName>
+                <default>false</default>
+                <label>Low expected ROI</label>
+            </value>
+            <value>
+                <fullName>No budget or authority</fullName>
+                <default>false</default>
+                <label>No budget or authority</label>
+            </value>
+            <value>
+                <fullName>No goals</fullName>
+                <default>false</default>
+                <label>No goals</label>
+            </value>
+            <value>
+                <fullName>No internal advocate</fullName>
+                <default>false</default>
+                <label>No internal advocate</label>
+            </value>
+            <value>
+                <fullName>No need or pain points</fullName>
+                <default>false</default>
+                <label>No need or pain points</label>
+            </value>
+            <value>
+                <fullName>Not an ideal customer</fullName>
+                <default>false</default>
+                <label>Not an ideal customer</label>
+            </value>
+            <value>
+                <fullName>Reputation</fullName>
+                <default>false</default>
+                <label>Reputation</label>
+            </value>
+            <value>
+                <fullName>Requirements not met</fullName>
+                <default>false</default>
+                <label>Requirements not met</label>
+            </value>
+            <value>
+                <fullName>Sales team bandwidth</fullName>
+                <default>false</default>
+                <label>Sales team bandwidth</label>
+            </value>
+            <value>
+                <fullName>Timing</fullName>
+                <default>false</default>
+                <label>Timing</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Already a customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Career related</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Competitor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Partner</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Vendor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Inaccurate info</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Left the company</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Not responding</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Budget Constraints</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Low expected ROI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>No budget or authority</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>No goals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>No internal advocate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>No need or pain points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Not an ideal customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Reputation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Requirements not met</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Sales team bandwidth</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Disqualified</controllingFieldValue>
+            <valueName>Timing</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

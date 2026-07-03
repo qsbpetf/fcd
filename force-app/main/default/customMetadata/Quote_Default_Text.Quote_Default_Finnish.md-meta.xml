@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Quote Default Finnish</label>
+    <protected>false</protected>
+    <values>
+        <field>Language_Selected__c</field>
+        <value xsi:type="xsd:string">Finnish</value>
+    </values>
+    <values>
+        <field>Quote_Introduction__c</field>
+        <value xsi:type="xsd:string">Kiitos kun otit yhteyttä Eficodeen. Alla on yksityiskohtainen tarjouksemme, joka sisältää palvelumme, hinnoittelumme ja ehdot. Odotamme innolla yhteistyötä kanssanne.
+
+Selkeyden vuoksi huomautamme, että tämä tarjous ei muodosta sopimusta. Tarjouksen yksityiskohdat -osiossa kuvatuista tuotteista tehtävät hankinnat ja toimitukset edellyttävät erillisen sopimuksen.</value>
+    </values>
+    <values>
+        <field>Quote_remarks__c</field>
+        <value xsi:type="xsd:string">Olemme ylpeitä tarjotessamme laadukkaita palveluita samalla varmistaen poikkeuksellista huolenpitoa asiakkaidemme tarpeista. Mikäli sinulla on kysymyksiä tai tarvitset lisäselvityksiä, olemme iloisia kuullessamme sinusta ja odotamme mahdollisuutta työskennellä yhdessä.</value>
+    </values>
+</CustomMetadata>

@@ -4,7 +4,6 @@
     <description>Local copy of deal/service registration JSON sent to the Atlassian API on sync and submit. Edited until Create in Atlassian is run.</description>
     <label>Draft Payload JSON</label>
     <length>131072</length>
-    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>LongTextArea</type>
     <visibleLines>3</visibleLines>

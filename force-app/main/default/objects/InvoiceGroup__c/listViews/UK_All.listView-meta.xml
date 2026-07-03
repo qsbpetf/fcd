@@ -19,5 +19,10 @@
         <operation>equals</operation>
         <value>UK</value>
     </filters>
+    <filters>
+        <field>NAME</field>
+        <operation>notContain</operation>
+        <value>zzz</value>
+    </filters>
     <label>UK - All</label>
 </ListView>

@@ -31,7 +31,8 @@ public without sharing class OppSplitService {
         settings = null;
     }
 
-    // No split automation of any kind should run for closed opportunities.
+    // Closed opportunities skip T1/T2/T3 assignment and owner-change logic.
+    // Exception: Run_Splits_Flow__c (admin repair) is allowed to run on closed opportunities.
     public static Boolean isClosed(Opportunity opp) {
         return opp.IsClosed;
     }

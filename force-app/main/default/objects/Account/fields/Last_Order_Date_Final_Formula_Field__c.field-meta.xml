@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Order_Date_Final_Formula_Field__c</fullName>
+    <formula>IF ( AND (Last_Order_Date_Import__c &gt; Last_Order_Date_from_Children_Accounts__c , Last_Order_Date_Import__c &gt; Last_Order_Date__c ) ,
+Last_Order_Date_Import__c ,
+
+IF ( AND (Last_Order_Date_from_Children_Accounts__c &gt; Last_Order_Date_Import__c , Last_Order_Date_from_Children_Accounts__c &gt; Last_Order_Date__c ) , Last_Order_Date_from_Children_Accounts__c ,
+
+IF ( AND (Last_Order_Date__c &gt; Last_Order_Date_Import__c , Last_Order_Date__c &gt; Last_Order_Date_from_Children_Accounts__c ) ,
+Last_Order_Date__c ,
+
+
+IF
+(AND ( ISBLANK (Last_Order_Date_Import__c) , Last_Order_Date_from_Children_Accounts__c &gt; Last_Order_Date__c ) , Last_Order_Date_from_Children_Accounts__c,
+IF(
+AND ( ISBLANK (Last_Order_Date_Import__c) , Last_Order_Date__c &gt; Last_Order_Date_from_Children_Accounts__c ) , Last_Order_Date__c,
+
+IF(
+AND ( ISBLANK (Last_Order_Date_from_Children_Accounts__c) , Last_Order_Date_Import__c &gt; Last_Order_Date__c ) , Last_Order_Date_Import__c,
+IF(
+AND ( ISBLANK (Last_Order_Date_from_Children_Accounts__c) , Last_Order_Date__c &gt; Last_Order_Date_Import__c ) , Last_Order_Date__c,
+
+IF(
+AND ( ISBLANK (Last_Order_Date__c) , Last_Order_Date_Import__c &gt; Last_Order_Date_from_Children_Accounts__c ) , Last_Order_Date_Import__c,
+IF(
+AND ( ISBLANK (Last_Order_Date__c) , Last_Order_Date_from_Children_Accounts__c &gt; Last_Order_Date_Import__c ) , Last_Order_Date_from_Children_Accounts__c,
+
+
+IF (AND (ISBLANK (Last_Order_Date__c) , ISBLANK (Last_Order_Date_Import__c)) , Last_Order_Date_from_Children_Accounts__c ,
+IF (AND (ISBLANK (Last_Order_Date_from_Children_Accounts__c) , ISBLANK (Last_Order_Date_Import__c)) , Last_Order_Date__c ,
+IF (AND (ISBLANK (Last_Order_Date__c) , ISBLANK (Last_Order_Date_from_Children_Accounts__c)) , Last_Order_Date_Import__c , NULL ))))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Last Order Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

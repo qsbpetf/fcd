@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subsidiary_Address_Override__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Check to allow UK sub to have US address and vice-versa [ADMINS ONLY]</description>
+    <inlineHelpText>Check to allow UK sub to have US address and vice-versa [ADMINS ONLY]</inlineHelpText>
+    <label>Address/Currency Override</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

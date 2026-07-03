@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pathway_OLD__c</fullName>
+    <description>At what stage is the customer on their journey to cloud</description>
+    <label>Pathway_OLD</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Migrating or On track to</fullName>
+                <default>false</default>
+                <label>Migrating or On track to</label>
+            </value>
+            <value>
+                <fullName>Discussion ongoing</fullName>
+                <default>false</default>
+                <label>Discussion ongoing</label>
+            </value>
+            <value>
+                <fullName>Cannot migrate</fullName>
+                <default>false</default>
+                <label>Cannot migrate</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

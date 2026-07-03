@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Amazon Web Services</fullName>
+        <default>false</default>
+        <label>Amazon Web Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian (Jira, Confluence, ...)</fullName>
+        <default>false</default>
+        <label>Atlassian (Jira, Confluence, ...)</label>
+    </customValue>
+    <customValue>
+        <fullName>HashiCorp (Terraform, ...)</fullName>
+        <default>false</default>
+        <label>HashiCorp (Terraform, ...)</label>
+    </customValue>
+    <customValue>
+        <fullName>GitLab</fullName>
+        <default>false</default>
+        <label>GitLab</label>
+    </customValue>
+    <customValue>
+        <fullName>GitHub</fullName>
+        <default>false</default>
+        <label>GitHub</label>
+    </customValue>
+    <customValue>
+        <fullName>Jenkins</fullName>
+        <default>false</default>
+        <label>Jenkins</label>
+    </customValue>
+    <customValue>
+        <fullName>Microsoft Azure</fullName>
+        <default>false</default>
+        <label>Microsoft Azure</label>
+    </customValue>
+    <customValue>
+        <fullName>Multiple vendors</fullName>
+        <default>false</default>
+        <label>Multiple vendors</label>
+    </customValue>
+    <description>With which solution vendor do you need most support?</description>
+    <masterLabel>Most support needed with solution vendor</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

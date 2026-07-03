@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Slack_Message_for_Scandinavian_Opportunity_Record</name>
+        <label>Send Slack Message for Scandinavian Opportunity Record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>slackPostMessage</actionName>
+        <actionType>slackPostMessage</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>slackAppIdForToken</name>
+            <value>
+                <stringValue>A03269G3DNE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>slackWorkspaceIdForToken</name>
+            <value>
+                <stringValue>T029SKM7N</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>slackConversationId</name>
+            <value>
+                <stringValue>C0ARNEH08TE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>slackMessage</name>
+            <value>
+                <elementReference>ClosedWonMessage</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>slackPostMessage</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>66.0</apiVersion>
+    <decisions>
+        <name>Does_the_Opportunity_s_subsidiary_information_belong_to_a_Scandinavian_country</name>
+        <label>Does the Opportunity’s subsidiary information belong to a Scandinavian country?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FormulaSubsidiaryandCurrency</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Slack_Message_for_Scandinavian_Opportunity_Record</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>If the opportunity stage is changed to closed won, and the total amount final value is greater than 1000 EU, then send the deal information to the specified Slack channel</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>CurrencyNetRevenue</name>
+        <dataType>String</dataType>
+        <expression>TEXT({!$Record.Net_Revenue__c})&amp; &quot; &quot; &amp; {!$Record.Opportunity_Currency_F__c}</expression>
+    </formulas>
+    <formulas>
+        <name>FormulaSubsidiaryandCurrency</name>
+        <dataType>Boolean</dataType>
+        <expression>(
+  ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &apos;SE&apos;) ||
+  ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &apos;NO&apos;) ||
+  ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &apos;DK&apos;)
+)
+&amp;&amp;
+({!$Record.Net_Revenue__c} / {!Get_Currency_Type.ConversionRate}) &gt; 1000</expression>
+    </formulas>
+    <interviewLabel>Send Slack Notification to ScandicDeals Channel {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send Slack Notification to ScandicDeals Channel</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Currency_Type</name>
+        <label>Get Currency Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Does_the_Opportunity_s_subsidiary_information_belong_to_a_Scandinavian_country</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsoCode</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity_Currency_F__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CurrencyType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Closed won - awaiting approval</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>Get_Currency_Type</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>ClosedWonMessage</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Opportunity Name: {!$Record.Name}
+Account Name: {!$Record.Account.Name}
+Stage:{!$Record.StageName}
+Net Revenue: {!CurrencyNetRevenue}
+Link Opp: &lt;https://eficode.my.salesforce.com/lightning/r/Opportunity/{!$Record.Id}/view|Open Opportunity in Salesforce&gt;</text>
+    </textTemplates>
+</Flow>

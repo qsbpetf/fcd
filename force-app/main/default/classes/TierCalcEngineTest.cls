@@ -170,6 +170,26 @@ private class TierCalcEngineTest {
     }
 
     @isTest
+    static void testCalculateT3WithAtlassianRebate() {
+        // Arrange - set source field (Atlassian_PVR_Rebate_Currency__c is a formula field)
+        Opportunity opp = getOpportunityWithAllFields(null);
+        opp.Atlassian_PVR_Rebate__c = 1500; // currency is USD, so formula = this value
+        opp.T3_Override__c = false;
+        update opp;
+
+        Opportunity updatedOpp = getOpportunityWithAllFields(opp.Id);
+
+        // Pass a non-empty OLI list so the main path runs (not the fallback).
+        // T3_Product__c is a formula - leave unset (false), so no product margins count.
+        // The rebate is still added, which is what we're testing.
+        List<OpportunityLineItem> olis = new List<OpportunityLineItem>{ new OpportunityLineItem() };
+
+        // Act
+        Decimal result = TierCalcEngine.calculateT3(updatedOpp, olis);
+        System.assertEquals(1500, result, 'T3 should include Atlassian PVR Rebate even with no qualifying T3 products');
+    }
+
+    @isTest
     static void testCalculateT3WithNullLineItems() {
         // Arrange
         Opportunity opp = getOpportunityWithAllFields(null);
@@ -414,7 +434,7 @@ private class TierCalcEngineTest {
             'T2_Override__c, T3_Override__c, ' +
             'Estimate_Consulting_Revenue__c, Estimate_Managed_Service_Revenue__c, Estimate_Licensing_GP__c, ' +
             'Total_Amount_T2__c, Total_Amount_T3__c, T3_From_Products__c, ' +
-            'Project_Start_Date_From_Project__c ' +
+            'Project_Start_Date_From_Project__c, Atlassian_PVR_Rebate_Currency__c ' +
             'FROM Opportunity ' +
             (oppId != null ? 'WHERE Id = :oppId ' : '') +
             'LIMIT 1';

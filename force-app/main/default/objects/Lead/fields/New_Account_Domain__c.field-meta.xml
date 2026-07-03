@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Account_Domain__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>On the leads screen user will select if the lead is a new account that we do not manage</description>
+    <inlineHelpText>Please select if this is a potential new account or a new division within an existing account.</inlineHelpText>
+    <label>New Account Domain</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

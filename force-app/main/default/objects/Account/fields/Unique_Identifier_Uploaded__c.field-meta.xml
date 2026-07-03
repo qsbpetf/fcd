@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unique_Identifier_Uploaded__c</fullName>
+    <description>This field is used to upload unique identifiers so that records can be filtered easily into a report.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This field is used to upload unique identifiers so that records can be filtered easily into a report.</inlineHelpText>
+    <label>Unique Identifier Uploaded</label>
+    <length>30</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

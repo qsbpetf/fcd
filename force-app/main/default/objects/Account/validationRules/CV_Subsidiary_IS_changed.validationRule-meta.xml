@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CV_Subsidiary_IS_changed</fullName>
+    <active>true</active>
+    <errorConditionFormula>(NOT(ISBLANK(celigo_sfnsio__NetSuite_Id__c))
+ &amp;&amp; 
+NOT(ISBLANK(PRIORVALUE(CV_Subsidiary__c ))) 
+ &amp;&amp; 
+ISCHANGED(CV_Subsidiary__c)
+ &amp;&amp;  
+Subsidiary_Address_Override__c = FALSE) &amp;&amp; $Setup.rh2__PS_Settings__c.rh2__Run_Validation_Rule__c</errorConditionFormula>
+    <errorMessage>You cannot change the subsidiary of an active account. A new account may need to be created if you are selling via a different subsidiary. Please chatter your Finance team if unsure.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <decisions>
+        <name>Bespoke_Quote_Terms_NOT_NULL</name>
+        <label>Bespoke Quote Terms NOT NULL</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>FALSE_Bespoke Quote Terms NOT NULL</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Bespoke_Quote_Terms_NOT_NULL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Opportunity.Account.Bespoke_Quote_Terms__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_4_A1</targetReference>
+            </connector>
+            <label>TRUE_Bespoke Quote Terms NOT NULL</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_blank</name>
+        <label>Is blank</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Bespoke_Quote_Terms_NOT_NULL</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_If blank</defaultConnectorLabel>
+        <rules>
+            <name>TRUE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ExpirationDate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_expiration_date</targetReference>
+            </connector>
+            <label>TRUE</label>
+        </rules>
+    </decisions>
+    <description>Migrated from the Quote updates (Creation) process using multiple criteria.
+Fire any automation on Quote Creation</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ExpringDateFormula</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+
+
+OR({!$Record.Opportunity.AT_quote_expiry_formula__c} &gt; TODAY() + 30 , ISBLANK({!$Record.Opportunity.AT_quote_expiry_formula__c})),
+
+
+
+DATEVALUE({!$Record.CreatedDate}) + 30 , {!$Record.Opportunity.AT_quote_expiry_formula__c})</expression>
+    </formulas>
+    <label>Quote updates (Creation)</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_4_A1</name>
+        <label>Update Bespoke Quote Terms field</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Bespoke_Quote_Terms__c</field>
+            <value>
+                <elementReference>$Record.Opportunity.Account.Bespoke_Quote_Terms__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_expiration_date</name>
+        <label>Update expiration date</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Bespoke_Quote_Terms_NOT_NULL</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ExpirationDate</field>
+            <value>
+                <elementReference>ExpringDateFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_blank</targetReference>
+        </connector>
+        <object>Quote</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>We have confirmed funds available, and we are looking for the right solution</fullName>
+        <default>false</default>
+        <label>We have confirmed funds available, and we are looking for the right solution</label>
+    </customValue>
+    <customValue>
+        <fullName>We have to build a business case to confirm funds for the project</fullName>
+        <default>false</default>
+        <label>We have to build a business case to confirm funds for the project</label>
+    </customValue>
+    <customValue>
+        <fullName>We have a reason to request funds</fullName>
+        <default>false</default>
+        <label>We have a reason to request funds</label>
+    </customValue>
+    <customValue>
+        <fullName>We have not yet requested funds</fullName>
+        <default>false</default>
+        <label>We have not yet requested funds</label>
+    </customValue>
+    <customValue>
+        <fullName>We need help to build a business case</fullName>
+        <default>false</default>
+        <label>We need help to build a business case</label>
+    </customValue>
+    <masterLabel>What is the status of your business case</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

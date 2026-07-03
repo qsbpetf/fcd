@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PurchaseNotificationContact__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Enter a contact here if you would like them to receive email notifications when we purchase licenses on their opportunities.</description>
+    <inlineHelpText>Enter a contact here if you would like them to receive email notifications when we purchase licenses on their opportunities.</inlineHelpText>
+    <label>Purchase Notification Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Accounts (Purchase Notification Contact)</relationshipLabel>
+    <relationshipName>Accounts5</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

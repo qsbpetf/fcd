@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <decisions>
+        <description>Checks if Opportunity has Quote records before new Quote record is created.</description>
+        <name>Opportunity_has_Quote_Record</name>
+        <label>Opportunity has Quote Record?</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Update_Date_First_Last_Offer_Sent_Date</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Quote Records Before</defaultConnectorLabel>
+        <rules>
+            <name>Has_Quote_Records_Already</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Opportunity.Nb_of_Quotes__c</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Date_Last_Offer_Sent_Date</targetReference>
+            </connector>
+            <label>Has Quote Records Already</label>
+        </rules>
+    </decisions>
+    <description>Updates &apos;Date First Offer Sent&apos; or &apos;Date Last Offer Sent&apos; field on related Opportunity object depending on does Opportunity have Quote Record already or not.
+//Ceili/Janne P/04.03.2024/https://ceili.atlassian.net/browse/EF-214
+
+Updated to fill &apos;Date Last Offer Sent&apos; field also when first Quote record is created. //Ceili/Janne P/07.03.2024</description>
+    <environments>Default</environments>
+    <interviewLabel>Quote - Update First/Last Offer Sent Field {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Quote - Update First/Last Offer Sent Field</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Date_First_Last_Offer_Sent_Date</name>
+        <label>Update Date First &amp; Last Offer Sent Date</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Date_Last_Offer_Sent__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Date_Offer_Sent__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Date_Last_Offer_Sent_Date</name>
+        <label>Update Date Last Offer Sent Date</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Date_Last_Offer_Sent__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Opportunity_has_Quote_Record</targetReference>
+        </connector>
+        <object>Quote</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

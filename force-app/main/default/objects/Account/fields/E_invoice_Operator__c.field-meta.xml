@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>E_invoice_Operator__c</fullName>
+    <label>E-invoice Operator</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aktia - HELSFIHH</fullName>
+                <default>false</default>
+                <label>Aktia - HELSFIHH</label>
+            </value>
+            <value>
+                <fullName>Apix Messaging Oy - 003723327487</fullName>
+                <default>false</default>
+                <label>Apix Messaging Oy - 003723327487</label>
+            </value>
+            <value>
+                <fullName>Basware Oyj - BAWCFI22</fullName>
+                <default>false</default>
+                <label>Basware Oyj - BAWCFI22</label>
+            </value>
+            <value>
+                <fullName>CGI Suomi Oy - 003703575029</fullName>
+                <default>false</default>
+                <label>CGI Suomi Oy - 003703575029</label>
+            </value>
+            <value>
+                <fullName>Danske Bank A/S, Suomen sivuliike - DABAFIHH</fullName>
+                <default>false</default>
+                <label>Danske Bank A/S, Suomen sivuliike - DABAFIHH</label>
+            </value>
+            <value>
+                <fullName>Handelsbanken - HANDFIHH</fullName>
+                <default>false</default>
+                <label>Handelsbanken - HANDFIHH</label>
+            </value>
+            <value>
+                <fullName>Maventa - 003721291126</fullName>
+                <default>false</default>
+                <label>Maventa - 003721291126</label>
+            </value>
+            <value>
+                <fullName>Netbox Finland Oy - 003726044706</fullName>
+                <default>false</default>
+                <label>Netbox Finland Oy - 003726044706</label>
+            </value>
+            <value>
+                <fullName>Nordea - NDEAFIHH</fullName>
+                <default>false</default>
+                <label>Nordea - NDEAFIHH</label>
+            </value>
+            <value>
+                <fullName>Notebeat Oy - 003717203971</fullName>
+                <default>false</default>
+                <label>Notebeat Oy - 003717203971</label>
+            </value>
+            <value>
+                <fullName>OP Osuuskunta - OKOYFIHH</fullName>
+                <default>false</default>
+                <label>OP Osuuskunta - OKOYFIHH</label>
+            </value>
+            <value>
+                <fullName>Open Text Oy - 003708599126</fullName>
+                <default>false</default>
+                <label>Open Text Oy - 003708599126</label>
+            </value>
+            <value>
+                <fullName>OpusCapita Solutions Oy - E204503</fullName>
+                <default>false</default>
+                <label>OpusCapita Solutions Oy - E204503</label>
+            </value>
+            <value>
+                <fullName>Pagero Oy - 003723609900</fullName>
+                <default>false</default>
+                <label>Pagero Oy - 003723609900</label>
+            </value>
+            <value>
+                <fullName>POP Pankki - POPFFI22</fullName>
+                <default>false</default>
+                <label>POP Pankki - POPFFI22</label>
+            </value>
+            <value>
+                <fullName>Posti Messaging Oy - FI28768767</fullName>
+                <default>false</default>
+                <label>Posti Messaging Oy - FI28768767</label>
+            </value>
+            <value>
+                <fullName>PostNord Strålfors Oy - 003701150617</fullName>
+                <default>false</default>
+                <label>PostNord Strålfors Oy - 003701150617</label>
+            </value>
+            <value>
+                <fullName>Ropo Capital Oy - 003714377140</fullName>
+                <default>false</default>
+                <label>Ropo Capital Oy - 003714377140</label>
+            </value>
+            <value>
+                <fullName>S-Pankki/LähiTapiola - SBANFIHH</fullName>
+                <default>false</default>
+                <label>S-Pankki/LähiTapiola - SBANFIHH</label>
+            </value>
+            <value>
+                <fullName>Säästöpankit - ITELFIHH</fullName>
+                <default>false</default>
+                <label>Säästöpankit - ITELFIHH</label>
+            </value>
+            <value>
+                <fullName>TeliaSonera Finland Oyj - 003714756079</fullName>
+                <default>false</default>
+                <label>TeliaSonera Finland Oyj - 003714756079</label>
+            </value>
+            <value>
+                <fullName>TietoEVRY Oyj - 003701011385</fullName>
+                <default>false</default>
+                <label>TietoEVRY Oyj - 003701011385</label>
+            </value>
+            <value>
+                <fullName>Ålandsbanken - AABAFI22</fullName>
+                <default>false</default>
+                <label>Ålandsbanken - AABAFI22</label>
+            </value>
+            <value>
+                <fullName>Peppol</fullName>
+                <default>false</default>
+                <label>Peppol</label>
+            </value>
+            <value>
+                <fullName>Comarch - 5909000716438</fullName>
+                <default>false</default>
+                <label>Comarch - 5909000716438</label>
+            </value>
+            <value>
+                <fullName>INEXCHANGE</fullName>
+                <default>false</default>
+                <label>INEXCHANGE</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

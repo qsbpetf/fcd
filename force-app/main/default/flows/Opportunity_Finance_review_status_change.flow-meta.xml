@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <decisions>
+        <name>Opportunity_is_updated</name>
+        <label>Opportunity is updated</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Billing_Type_changed</name>
+            <conditionLogic>1 AND (2 OR 3) AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.New_or_Extension__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.New_or_Extension__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Finance_Review_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Awaiting sales form completion</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Finance_review_status</targetReference>
+            </connector>
+            <label>Billing Type changed</label>
+        </rules>
+        <rules>
+            <name>Stage_changes_to_CW_AA_And_contracting</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Finance_Review_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Contracting</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed won - awaiting approval</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.New_or_Extension__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Finance_review_status</targetReference>
+            </connector>
+            <label>Stage changes to CW -AA And contracting</label>
+        </rules>
+        <rules>
+            <name>Stage_changed_to_Closing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closing</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Finance_review_status_Closing</targetReference>
+            </connector>
+            <label>Stage changed to Closing</label>
+        </rules>
+        <rules>
+            <name>Stage_changed_to_Closed_won_AA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed won - awaiting approval</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.New_or_Extension__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Finance_review_status_to_Awaiting_Sales</targetReference>
+            </connector>
+            <label>Stage changed to Closed won - AA</label>
+        </rules>
+    </decisions>
+    <description>When Finance review Status is Awaiting sales form completion or blank and Project Type is changed from blank to any other value, update Finance Review status to Awaiting finance team review // Iida 8.3.2024
+If Opportunity Stage is moved to &quot;Closing&quot;, then move Finance Review Status field to &quot;Closing&quot;
+If Opportunity Stage is moved to &quot;Closed Won - Awaiting Approval&quot; AND Project_Type_c = BLANK, then move Finance Review Status field to &quot;Awaiting sales form completion&quot; // Iida 21.3
+Updated entry conditions // Atte 6.5.-24</description>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity: {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity: Finance review status change</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Finance_review_status</name>
+        <label>Update Finance review status</label>
+        <locationX>176</locationX>
+        <locationY>731</locationY>
+        <inputAssignments>
+            <field>Finance_Review_Status__c</field>
+            <value>
+                <stringValue>Awaiting finance team review</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Finance_review_status_Closing</name>
+        <label>Update Finance review status Closing</label>
+        <locationX>88</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Finance_Review_Status__c</field>
+            <value>
+                <stringValue>Contracting</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Finance_review_status_to_Awaiting_Sales</name>
+        <label>Update Finance review status to Awaiting Sales</label>
+        <locationX>352</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Finance_Review_Status__c</field>
+            <value>
+                <stringValue>Awaiting sales form completion</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Opportunity_is_updated</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true &amp;&amp;
+
+(OR(TEXT({!$Record.Finance_Review_Status__c}) = &quot;Awaiting sales form completion&quot;,
+      ISNULL(TEXT({!$Record.Finance_Review_Status__c})),
+      AND(ISCHANGED({!$Record.StageName}), OR(TEXT({!$Record.StageName}) = &quot;Closing&quot;, TEXT({!$Record.StageName}) = &quot;Closed Won - awaiting approval&quot;))))</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

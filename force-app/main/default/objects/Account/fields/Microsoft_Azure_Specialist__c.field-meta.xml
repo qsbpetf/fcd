@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Microsoft_Azure_Specialist__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The Azure specialist at Microsoft</description>
+    <inlineHelpText>The Azure specialist at Microsoft</inlineHelpText>
+    <label>Microsoft Azure Specialist</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contacts (Microsoft Azure Specialist)</relationshipLabel>
+    <relationshipName>AccountsoSQX</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

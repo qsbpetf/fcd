@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Manual_Sync_to_NS__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>For use by accounts team only - check to sync account to Netsuite without having closed an opp first</description>
+    <inlineHelpText>For use by accounts team only - check to sync account to Netsuite without having closed an opp first</inlineHelpText>
+    <label>Manual Sync to NS</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

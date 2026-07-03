@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>List_Leads_Emma</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>TDOC_Attendance_Status__c</columns>
+    <columns>Conversation_Overview__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>LEAD.LEAD_SOURCE</field>
+        <operation>equals</operation>
+        <value>Event we organize</value>
+    </filters>
+    <filters>
+        <field>TDOC_Attendance_Status__c</field>
+        <operation>equals</operation>
+        <value>Yes - Online,Yes - Onsite,No</value>
+    </filters>
+    <label>TDOC 24 London _ Event Leads</label>
+</ListView>

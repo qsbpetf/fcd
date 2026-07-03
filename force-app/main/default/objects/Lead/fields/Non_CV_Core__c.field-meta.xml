@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Non_CV_Core__c</fullName>
+    <label>Non CV Core</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ClearHub</fullName>
+                <default>false</default>
+                <label>ClearHub</label>
+            </value>
+            <value>
+                <fullName>QAS</fullName>
+                <default>false</default>
+                <label>QAS</label>
+            </value>
+            <value>
+                <fullName>Sonatype</fullName>
+                <default>false</default>
+                <label>Sonatype</label>
+            </value>
+            <value>
+                <fullName>JFrog / Artifactory</fullName>
+                <default>false</default>
+                <label>JFrog / Artifactory</label>
+            </value>
+            <value>
+                <fullName>Tempo</fullName>
+                <default>false</default>
+                <label>Tempo</label>
+            </value>
+            <value>
+                <fullName>Lucid Chart</fullName>
+                <default>false</default>
+                <label>Lucid Chart</label>
+            </value>
+            <value>
+                <fullName>Linchpin</fullName>
+                <default>false</default>
+                <label>Linchpin</label>
+            </value>
+            <value>
+                <fullName>Zendesk</fullName>
+                <default>false</default>
+                <label>Zendesk</label>
+            </value>
+            <value>
+                <fullName>Zephyr</fullName>
+                <default>false</default>
+                <label>Zephyr</label>
+            </value>
+            <value>
+                <fullName>Gerrit</fullName>
+                <default>false</default>
+                <label>Gerrit</label>
+            </value>
+            <value>
+                <fullName>Hindsight</fullName>
+                <default>false</default>
+                <label>Hindsight</label>
+            </value>
+            <value>
+                <fullName>Spectrum</fullName>
+                <default>false</default>
+                <label>Spectrum</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

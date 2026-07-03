@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>I have the budget and I make the final decision</fullName>
+        <default>false</default>
+        <label>I have the budget and I make the final decision</label>
+    </customValue>
+    <customValue>
+        <fullName>I am not involved in decision-making</fullName>
+        <default>false</default>
+        <label>I am not involved in decision-making</label>
+    </customValue>
+    <customValue>
+        <fullName>I define requirements and propose a solution</fullName>
+        <default>false</default>
+        <label>I define requirements and propose a solution</label>
+    </customValue>
+    <customValue>
+        <fullName>I influence the decision</fullName>
+        <default>false</default>
+        <label>I influence the decision</label>
+    </customValue>
+    <customValue>
+        <fullName>I give recommendations</fullName>
+        <default>false</default>
+        <label>I give recommendations</label>
+    </customValue>
+    <customValue>
+        <fullName>I want to make a change</fullName>
+        <default>false</default>
+        <label>I want to make a change</label>
+    </customValue>
+    <customValue>
+        <fullName>I am an end user</fullName>
+        <default>false</default>
+        <label>I am an end user</label>
+    </customValue>
+    <customValue>
+        <fullName>I am a student or potential future employee</fullName>
+        <default>false</default>
+        <label>I am a student or potential future employee</label>
+    </customValue>
+    <customValue>
+        <fullName>Consultant</fullName>
+        <default>false</default>
+        <label>Consultant</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>What is your role in the company?</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

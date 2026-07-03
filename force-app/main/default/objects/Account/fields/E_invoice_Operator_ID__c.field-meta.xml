@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>E_invoice_Operator_ID__c</fullName>
+    <description>Replaced by the new field E-invoice Operator ID - Data Type: Picklist, due to Netsuite changing their e-invoice operator process. Do not delete as historical data is still rerevant. 
+For more questions, reach out to Katri Nykänen</description>
+    <externalId>false</externalId>
+    <label>E-invoice Operator ID</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

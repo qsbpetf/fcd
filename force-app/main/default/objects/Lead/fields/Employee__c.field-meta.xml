@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Employee__c</fullName>
+    <label>No. of Employees</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1-25</fullName>
+                <default>false</default>
+                <label>1-25</label>
+            </value>
+            <value>
+                <fullName>26-50</fullName>
+                <default>false</default>
+                <label>26-50</label>
+            </value>
+            <value>
+                <fullName>51-100</fullName>
+                <default>false</default>
+                <label>51-100</label>
+            </value>
+            <value>
+                <fullName>101-200</fullName>
+                <default>false</default>
+                <label>101-200</label>
+            </value>
+            <value>
+                <fullName>201-350</fullName>
+                <default>false</default>
+                <label>201-350</label>
+            </value>
+            <value>
+                <fullName>351-500</fullName>
+                <default>false</default>
+                <label>351-500</label>
+            </value>
+            <value>
+                <fullName>501-750</fullName>
+                <default>false</default>
+                <label>501-750</label>
+            </value>
+            <value>
+                <fullName>751-1000</fullName>
+                <default>false</default>
+                <label>751-1000</label>
+            </value>
+            <value>
+                <fullName>1001 - 2000</fullName>
+                <default>false</default>
+                <label>1001 - 2000</label>
+            </value>
+            <value>
+                <fullName>2001 - 3000</fullName>
+                <default>false</default>
+                <label>2001 - 3000</label>
+            </value>
+            <value>
+                <fullName>3001 - 4000</fullName>
+                <default>false</default>
+                <label>3001 - 4000</label>
+            </value>
+            <value>
+                <fullName>4001 - 5000</fullName>
+                <default>false</default>
+                <label>4001 - 5000</label>
+            </value>
+            <value>
+                <fullName>5001 - 6000</fullName>
+                <default>false</default>
+                <label>5001 - 6000</label>
+            </value>
+            <value>
+                <fullName>6001 - 7000</fullName>
+                <default>false</default>
+                <label>6001 - 7000</label>
+            </value>
+            <value>
+                <fullName>7001 - 8000</fullName>
+                <default>false</default>
+                <label>7001 - 8000</label>
+            </value>
+            <value>
+                <fullName>8001 - 9000</fullName>
+                <default>false</default>
+                <label>8001 - 9000</label>
+            </value>
+            <value>
+                <fullName>9001 - 10,000</fullName>
+                <default>false</default>
+                <label>9001 - 10,000</label>
+            </value>
+            <value>
+                <fullName>10,001 - 15,000</fullName>
+                <default>false</default>
+                <label>10,001 - 15,000</label>
+            </value>
+            <value>
+                <fullName>15,001 - 25,000</fullName>
+                <default>false</default>
+                <label>15,001 - 25,000</label>
+            </value>
+            <value>
+                <fullName>25,001 - 50,000</fullName>
+                <default>false</default>
+                <label>25,001 - 50,000</label>
+            </value>
+            <value>
+                <fullName>50,001 - 100,000</fullName>
+                <default>false</default>
+                <label>50,001 - 100,000</label>
+            </value>
+            <value>
+                <fullName>100,001 - 200,000</fullName>
+                <default>false</default>
+                <label>100,001 - 200,000</label>
+            </value>
+            <value>
+                <fullName>200,001 - 300,000</fullName>
+                <default>false</default>
+                <label>200,001 - 300,000</label>
+            </value>
+            <value>
+                <fullName>300,001 - 400,000</fullName>
+                <default>false</default>
+                <label>300,001 - 400,000</label>
+            </value>
+            <value>
+                <fullName>500,000 +</fullName>
+                <default>false</default>
+                <label>500,000 +</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

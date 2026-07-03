@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Jodocus_customers</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.TYPE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Account_Owner__c</columns>
+    <columns>Account_Director__c</columns>
+    <columns>ACCOUNT.CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CV_Subsidiary__c</field>
+        <operation>equals</operation>
+        <value>Jodocus GmbH</value>
+    </filters>
+    <filters>
+        <field>ACCOUNT.CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>7/3/2024 12:00 AM</value>
+    </filters>
+    <label>Jodocus customers</label>
+</ListView>

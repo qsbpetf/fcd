@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>myRule_1_A1</name>
+        <label>Post to chatter</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>Case_from_Jira</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>ChatterMessage</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>65.0</apiVersion>
+    <decisions>
+        <name>Add_Internal_comments</name>
+        <label>Add Internal comments</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Case_from_Jira</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Add Internal comments</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Add_Internal_comments</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Custom_Internal_Comments__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>TRUE_Add Internal comments</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Case_from_Jira</name>
+        <label>Case from Jira</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myRule_6</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Case from Jira</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Case_from_Jira</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>JSD</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_New_License_Query</targetReference>
+            </connector>
+            <label>TRUE_Case from Jira</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Case_is_closed</name>
+        <label>Case is closed</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myRule_16</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Case is closed</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_14</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_JSD_Status</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>TRUE_Case is closed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>JSD_status_Open</name>
+        <label>JSD status - Open</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Case_is_closed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_JSD status - Open</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_12</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.JSD_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In progress</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.JSD_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Re_Open_Case</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>TRUE_JSD status - Open</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_16</name>
+        <label>New emails = Read Emails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>New_emails_Read_Emails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_New emails = Read Emails</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_New_emails_Read_Emails</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Nb_of_Emails__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Nb_of_read_Emails__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UnCheck_Has_UnRead_Emails</targetReference>
+            </connector>
+            <label>TRUE_New emails = Read Emails</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_6</name>
+        <label>Sales Opp Pass Through</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>JSD_status_Open</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE_Sales Opp Pass Through</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_Sales_Opp_Pass_Through</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Sales Opp Pass Through</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_6_A1</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>TRUE_Sales Opp Pass Through</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>New_emails_Read_Emails</name>
+        <label>New emails &lt;&gt; Read Emails</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>FALSE_New emails &lt;&gt; Read Emails</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_New_emails_Read_Emails_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Nb_of_Emails__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Record.Nb_of_read_Emails__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Has_UnRead_Emails</targetReference>
+            </connector>
+            <label>TRUE_New emails &lt;&gt; Read Emails</label>
+        </rules>
+    </decisions>
+    <description>Migrated from the Case Update (Creation &amp; Edit) process using multiple criteria.
+Fire any automation on Case Creation or Edit</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>CompanyFormula</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT(ISBLANK({!$Record.AccountId})) , {!$Record.Account.Name} , &quot;{UNKNOWN}&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>FirstName</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT(ISBLANK({!$Record.ContactId} )) , {!$Record.Contact.FirstName}  , &quot;{UNKNOWN}&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>LastNameFormula</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT(ISBLANK({!$Record.ContactId} )) , {!$Record.Contact.LastName}  , &quot;{UNKNOWN}&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>MessageFormula</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Subject} &amp; BR() &amp; {!$Record.Description}</expression>
+    </formulas>
+    <interviewLabel>Case Update (Creation &amp; Edit) {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Update (Creation &amp; Edit)</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>myRule_6_A2</name>
+        <label>Create Lead</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>JSD_status_Open</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Case__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Comments_from_case__c</field>
+            <value>
+                <elementReference>$Record.Custom_Internal_Comments__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Company</field>
+            <value>
+                <elementReference>CompanyFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Conversation_Overview__c</field>
+            <value>
+                <elementReference>MessageFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CurrencyIsoCode</field>
+            <value>
+                <elementReference>$Record.CurrencyIsoCode</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Email</field>
+            <value>
+                <elementReference>$Record.ContactEmail</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FirstName</field>
+            <value>
+                <elementReference>FirstName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LastName</field>
+            <value>
+                <elementReference>LastNameFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Lead_Type__c</field>
+            <value>
+                <stringValue>Pass Throughs</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G0Y0000053ZykUAE</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Phone</field>
+            <value>
+                <elementReference>$Record.ContactPhone</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sales_Opp_Source__c</field>
+            <value>
+                <elementReference>$Record.Sales_Opp_Source__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Unqualified</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>Check_Has_UnRead_Emails</name>
+        <label>Check &quot;Has UnRead Emails&quot;</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Has_Unread_Emails__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Clear_off_promised_date</name>
+        <label>Clear off promised date</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_16</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Promised_Date__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_6_A1</name>
+        <label>Close case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_6_A2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Re_Open_Case</name>
+        <label>Re-Open Case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Case_is_closed</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>UnCheck_Has_UnRead_Emails</name>
+        <label>UnCheck &quot;Has UnRead Emails&quot;</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Has_Unread_Emails__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_JSD_Status</name>
+        <label>Update JSD Status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Clear_off_promised_date</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>JSD_Status__c</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_New_License_Query</name>
+        <label>Update New License Query</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Upgrade_Downgrade_Query</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Jira_Request_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New license requests</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Jira_Sales_Licence_request_type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>New License Query</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_proposal_Request</name>
+        <label>Update proposal Request</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_6</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Jira_Request_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Proposal Requests</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Proposal Request</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Renewal_Query</name>
+        <label>Update Renewal Query</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Renewal_Query_2</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Jira_Request_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New license requests</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Jira_Sales_Licence_request_type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Net New renewal</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Renewal Query</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Renewal_Query_2</name>
+        <label>Update Renewal Query 2</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_proposal_Request</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Jira_Request_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CV Renewal</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Renewal Query</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Upgrade_Downgrade_Query</name>
+        <label>Update Upgrade/Downgrade Query</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Renewal_Query</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Jira_Request_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New license requests</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Jira_Sales_Licence_request_type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Upgrade</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Upgrade/Downgrade Query</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Add_Internal_comments</targetReference>
+        </connector>
+        <object>Case</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>ChatterMessage</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>{!$Record.LastModifiedBy.FirstName} {!$Record.LastModifiedBy.LastName} commented {!$Record.Custom_Internal_Comments__c}</text>
+    </textTemplates>
+</Flow>

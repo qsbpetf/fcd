@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atlassian_Cloud_details__c</fullName>
+    <description>This is the area we will log all the finite details of atlassian cloud for the customer. such as URL, user tier, tech contact, products</description>
+    <inlineHelpText>This is the area we will log all the finite details of atlassian cloud for the customer. such as URL, user tier, tech contact, products</inlineHelpText>
+    <label>Atlassian Cloud details</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

@@ -14,6 +14,7 @@
  *   5. Account changed → stale (old acc owner's) splits removed
  *   6. Run_Splits_Flow__c checked (admin repair) → missing splits recreated, flag reset
  *   7. Automation disabled → no splits created on insert
+ *   8. Run_Splits_Flow__c on a closed opportunity → splits still recreated
  *
  * Infrastructure note:
  *   OppSplitService.tryEnterAutomation() sets a static recursion guard that remains
@@ -339,6 +340,45 @@ private class OppSplitE2ETest {
         Opportunity refreshed = [SELECT Run_Splits_Flow__c FROM Opportunity WHERE Id = :opp.Id];
         System.assertEquals(false, refreshed.Run_Splits_Flow__c,
             'Run_Splits_Flow__c should be automatically unchecked after admin repair.');
+    }
+
+    // Scenario 8 — Run_Splits_Flow__c recreates splits even when the opportunity is closed
+    @IsTest
+    static void update_runSplitsFlowOnClosedOpp_recreatesMissingSplits() {
+        Id t1TypeId = getSplitTypeId('T1');
+
+        Account acc     = getAccount();
+        Id oppOwnerId   = getOppOwnerId();
+
+        // Insert with automation DISABLED so no splits are created.
+        Opportunity opp = buildOpp(acc.Id, oppOwnerId);
+        opp.T1_Opp__c               = 'Yes';
+        opp.Net_Revenue_Forecast__c = 1000;
+        insert opp;
+
+        // Close the opportunity — automation is still disabled so nothing fires here.
+        opp.StageName = 'Closed Won';
+        update opp;
+
+        System.assertEquals(0, countSplits(opp.Id, t1TypeId),
+            'No T1 splits should exist before admin repair.');
+
+        // Enable automation and trigger admin repair on the closed opportunity.
+        enableAutomation();
+        resetBetweenActions();
+
+        opp.Run_Splits_Flow__c = true;
+
+        Test.startTest();
+        update opp;
+        Test.stopTest();
+
+        System.assertNotEquals(0, countSplits(opp.Id, t1TypeId),
+            'Run_Splits_Flow__c should recreate T1 splits even on a closed opportunity.');
+
+        Opportunity refreshed = [SELECT Run_Splits_Flow__c FROM Opportunity WHERE Id = :opp.Id];
+        System.assertEquals(false, refreshed.Run_Splits_Flow__c,
+            'Run_Splits_Flow__c should be automatically unchecked after repair on a closed opportunity.');
     }
 
     // Scenario 7 — Automation disabled: no splits created on insert

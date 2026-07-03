@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Automatic_Purchasing_Email_Notification</fullName>
+        <description>Automatic Purchasing Email Notification</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Purchase_Notification_Contact__c</field>
+            <type>contactLookup</type>
+        </recipients>
+        <senderAddress>customerservice@clearvision-cm.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/PurchasingNotification</template>
+    </alerts>
+    <alerts>
+        <fullName>Engagement_Notification_Email_Alert</fullName>
+        <ccEmails>csservicedesk@clearvision-cm.com</ccEmails>
+        <description>Engagement Notification Email Alert</description>
+        <protected>false</protected>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Engagement_Visual_Template</template>
+    </alerts>
+    <alerts>
+        <fullName>New_IT_Notifications</fullName>
+        <ccEmails>customersupport@eficode.com</ccEmails>
+        <description>New IT Notifications</description>
+        <protected>false</protected>
+        <senderAddress>licensing_uk@eficode.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/IT_Visual_Template</template>
+    </alerts>
+    <alerts>
+        <fullName>On_Demand_Notification_Email_Alert</fullName>
+        <ccEmails>csservicedesk@clearvision-cm.com</ccEmails>
+        <description>On-Demand Notification Email Alert</description>
+        <protected>false</protected>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/OnDemand_Visual_Template</template>
+    </alerts>
+    <alerts>
+        <fullName>Opportunity_Approval_Approved</fullName>
+        <description>Opportunity Approval - Approved</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Approval_Approved</template>
+    </alerts>
+    <alerts>
+        <fullName>Opportunity_Approval_Notification_User</fullName>
+        <description>Opportunity Approval - Notification User</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Approval_Notification_User</template>
+    </alerts>
+    <alerts>
+        <fullName>Opportunity_Approval_Rejected</fullName>
+        <description>Opportunity Approval - Rejected</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Approval_Rejected</template>
+    </alerts>
+    <alerts>
+        <fullName>Upgrade_Notification_Email_Alert</fullName>
+        <ccEmails>customersupport@eficode.com</ccEmails>
+        <description>Upgrade Notification Email Alert</description>
+        <protected>false</protected>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Upgrade_Visual_Template</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Copy_description</fullName>
+        <field>Description_TextFormula__c</field>
+        <formula>LEFT( Description , 255)</formula>
+        <name>Copy description</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Is_Approved</fullName>
+        <field>Is_Approved__c</field>
+        <literalValue>1</literalValue>
+        <name>Update Is Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Copy description</fullName>
+        <actions>
+            <name>Copy_description</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Opportunity.Description</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <failedMigrationToolVersion>246.9.1</failedMigrationToolVersion>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>IT Support Opportunity Alert</fullName>
+        <actions>
+            <name>New_IT_Notifications</name>
+            <type>Alert</type>
+        </actions>
+        <active>false</active>
+        <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+        <criteriaItems>
+            <field>Opportunity.Hosting_Products__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.Support_Products__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Closed won - awaiting approval</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>IT Total Support Opportunity Alert</fullName>
+        <actions>
+            <name>On_Demand_Notification_Email_Alert</name>
+            <type>Alert</type>
+        </actions>
+        <active>false</active>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <criteriaItems>
+            <field>Opportunity.total_support_products__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Closed won - awaiting approval</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.Sent_to_Netsuite__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>IT Upgrade Opportunity Alert</fullName>
+        <actions>
+            <name>Upgrade_Notification_Email_Alert</name>
+            <type>Alert</type>
+        </actions>
+        <active>false</active>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <criteriaItems>
+            <field>Opportunity.Upgrades_products__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Closed won - awaiting approval</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.Sent_to_Netsuite__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

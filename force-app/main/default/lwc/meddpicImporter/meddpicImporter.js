@@ -19,7 +19,7 @@ export default class MeddpicImporter extends LightningElement {
     connectedCallback() {
         console.log('connectedCallback', this.recordId);
         this.isLoading = false;
-        // debugger;
+        debugger;
     }
 
     get acceptedFormats() {

@@ -26,9 +26,9 @@ public class msft_SolutionTriggerTest {
             Solution_Play__c=solPlay.Id
         );
         insert opp;
-        
+		
         Microsoft_Solution_Detail__c solDetail1= new Microsoft_Solution_Detail__c(
-            Name='Test MSFT Solution Detail 1',
+        	Name='Test MSFT Solution Detail 1',
             Solution_Identifier__c='000001',
             Type__c='1P',
             Publisher_Name__c='Microsoft'

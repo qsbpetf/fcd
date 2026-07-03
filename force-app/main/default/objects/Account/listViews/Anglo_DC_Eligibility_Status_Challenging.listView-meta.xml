@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anglo_DC_Eligibility_Status_Challenging</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Account_Owner__c</columns>
+    <columns>DC_Eligibility_Status_Date__c</columns>
+    <columns>DC_Eligibility_Status_Challenging__c</columns>
+    <columns>PARENT_NAME</columns>
+    <columns>CV_Subsidiary__c</columns>
+    <columns>ACCOUNT.TYPE</columns>
+    <columns>Last_Activity_Date__c</columns>
+    <columns>Last_Order_Date_Final_Formula_Field__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CV_Subsidiary__c</field>
+        <operation>equals</operation>
+        <value>UK,US</value>
+    </filters>
+    <filters>
+        <field>DC_Eligibility_Status__c</field>
+        <operation>equals</operation>
+        <value>Eligible,Not Eligible,Needs Review</value>
+    </filters>
+    <filters>
+        <field>DC_Eligibility_Status_Challenging__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Anglo DC Eligibility Status- Challenging</label>
+</ListView>

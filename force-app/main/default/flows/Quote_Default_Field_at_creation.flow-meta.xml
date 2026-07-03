@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>Bespoke_Quote_Terms_on_account</name>
+        <label>Bespoke Quote Terms on account</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Expriation_Date</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Opportunity.Account.Bespoke_Quote_Terms__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_4_A1</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Expriation_Date</name>
+        <label>Expriation Date?</label>
+        <locationX>182</locationX>
+        <locationY>623</locationY>
+        <defaultConnectorLabel>Yes, expiration Date</defaultConnectorLabel>
+        <rules>
+            <name>TRUE_myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ExpirationDate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>No Expiration Date</label>
+        </rules>
+    </decisions>
+    <description>Default field at creation of the quote</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>formula_1_myRule_1_A1_6694984207</name>
+        <dataType>Date</dataType>
+        <expression>IF(
+
+
+OR({!$Record.Opportunity.AT_quote_expiry_formula__c} &gt; TODAY() + 30 , ISBLANK({!$Record.Opportunity.AT_quote_expiry_formula__c})),
+
+
+
+DATEVALUE({!$Record.CreatedDate}) + 30 , {!$Record.Opportunity.AT_quote_expiry_formula__c})</expression>
+    </formulas>
+    <interviewLabel>Quote Creation Update {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Quote Default Field at creation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>Update expiration date</label>
+        <locationX>50</locationX>
+        <locationY>731</locationY>
+        <inputAssignments>
+            <field>ExpirationDate</field>
+            <value>
+                <elementReference>formula_1_myRule_1_A1_6694984207</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_4_A1</name>
+        <label>Update Bespoke Quote Terms field</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Expriation_Date</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Bespoke_Quote_Terms__c</field>
+            <value>
+                <elementReference>$Record.Opportunity.Account.Bespoke_Quote_Terms__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Bespoke_Quote_Terms_on_account</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
+        <object>Quote</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

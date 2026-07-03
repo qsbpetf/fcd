@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <customErrors>
+        <name>DiscountErrorMessage</name>
+        <label>DiscountErrorMessage</label>
+        <locationX>968</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>Please review discount - we cannot give a discount if we are not making a margin on this product. Check &apos;unusual discount reviewed&apos; if you are confident this is correct.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Check_Error_Message</name>
+        <label>Check Error Message</label>
+        <locationX>1100</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Discount</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.FaultMessage</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Please review discount - we cannot give a discount</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DiscountErrorMessage</targetReference>
+            </connector>
+            <label>Discount</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>EditableCostPrice</name>
+        <dataType>Currency</dataType>
+        <expression>IF(ISPICKVAL({!$Record.CurrencyIsoCode}, &quot;USD&quot;), {!$Record.Editable_Cost_Price_in_Dollars__c}, 
+ {!$Record.Editable_Cost_Price_in_Dollars__c} * {!$Record.Exchange_Rate__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>UNITPRICE</name>
+        <dataType>Currency</dataType>
+        <expression>IF(ISPICKVAL({!$Record.CurrencyIsoCode}, &quot;USD&quot;), {!$Record.Editable_Unit_List_Price_in_USD__c} , 
+ {!$Record.Editable_Unit_List_Price_in_USD__c} * {!$Record.Exchange_Rate__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Update Editable List Price and Cost Price {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Editable List Price and Cost Price</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Editable_Cost_Price</name>
+        <label>Update Editable Cost Price</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Update_Final_Prices</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Editable_Cost_Price_in_Dollars__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Editable_Cost_Price__c</field>
+            <value>
+                <elementReference>EditableCostPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Final_Prices</name>
+        <label>Update Final Prices</label>
+        <locationX>176</locationX>
+        <locationY>539</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Buy_Price_Inc_Licence_Type__c</field>
+            <value>
+                <elementReference>$Record.Total_Buy_Price__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>List_Price_Inc_Licence_Type__c</field>
+            <value>
+                <elementReference>$Record.TotalPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Unit_Prices</name>
+        <label>Update Unit Prices</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Update_Editable_Cost_Price</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Editable_Unit_List_Price_in_USD__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>UnitPrice</field>
+            <value>
+                <elementReference>UNITPRICE</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Unit_Prices</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true ) &amp;&amp;
+(ISNEW() 
+||
+(NOT(ISBLANK({!$Record.Editable_Cost_Price_in_Dollars__c})) &amp;&amp;
+ISCHANGED({!$Record.Editable_Cost_Price_in_Dollars__c}))
+||
+(NOT(ISBLANK({!$Record.Editable_Unit_List_Price_in_USD__c})) &amp;&amp;
+ISCHANGED({!$Record.Editable_Unit_List_Price_in_USD__c}))
+)</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

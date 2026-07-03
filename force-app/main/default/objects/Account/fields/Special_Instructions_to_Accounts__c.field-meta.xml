@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Special_Instructions_to_Accounts__c</fullName>
+    <description>Atlassian Cloud Monthly Invoicing Instruction.
+This field will be copied to each Opportunity automatically created from PPC Invoice Import.</description>
+    <inlineHelpText>Atlassian Cloud Monthly Invoicing Instruction.
+This field will be copied to each Opportunity automatically created from PPC Invoice Import.</inlineHelpText>
+    <label>Atlassian Cloud Monthly Invoicing Instr</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

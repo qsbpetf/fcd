@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <environments>Default</environments>
+    <formulas>
+        <name>F_AdditionalInfoNetsuite</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Additional_Info__c} 
+&amp; BR() &amp; 
+IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), &quot;Cloud Site: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), {!$Record.Cloud_Site_Name__c} , &quot;&quot;) 
+
+&amp; IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), BR() , &quot;&quot;) &amp; 
+
+IF(NOT(ISBLANK({!$Record.SEN__c})), &quot;SEN: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.SEN__c})), {!$Record.SEN__c} , &quot;&quot;) 
+
+&amp; IF(NOT(ISBLANK({!$Record.SEN__c})), BR() , &quot;&quot;) &amp; 
+
+IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})), &quot;Entitlement Number: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})), {!$Record.Entitlement_Number__c}, &quot;&quot;)
+
+&amp; IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})),  BR(), &quot;&quot;)&amp; 
+
+IF(NOT(ISBLANK({!$Record.Licence_Start_Date__c})), &quot;Start Date: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Licence_Start_Date__c})), {!$Record.Start_Date_Text__c}, &quot;&quot;)
+
+&amp; IF(NOT(ISBLANK({!$Record.Licence_Start_Date__c})), BR(), &quot;&quot;)&amp; 
+
+IF(NOT(ISBLANK({!$Record.Licence_End_Date__c})), &quot;End Date: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Licence_End_Date__c})), {!$Record.End_Date_Text__c}, &quot;&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>F_AdditionalInfoQuote</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Additional_Info__c} 
+&amp; BR() &amp; 
+IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), &quot;Cloud Site: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), {!$Record.Cloud_Site_Name__c} , &quot;&quot;) 
+
+&amp; IF(NOT(ISBLANK({!$Record.Cloud_Site_Name__c} )), BR()  , &quot;&quot;) &amp; 
+
+IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})), &quot;Entitlement Number: &quot;, &quot;&quot;) &amp;
+IF(NOT(ISBLANK({!$Record.Entitlement_Number__c})), {!$Record.Entitlement_Number__c}, &quot;&quot;)</expression>
+    </formulas>
+    <interviewLabel>Update Additionnal infos fields ONE OFF {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Additionnal infos fields ONE OFF</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Line_Item</name>
+        <label>Update Line Item</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <inputAssignments>
+            <field>Additional_Info_Netsuite__c</field>
+            <value>
+                <elementReference>F_AdditionalInfoNetsuite</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Additional_Info_Quote__c</field>
+            <value>
+                <elementReference>F_AdditionalInfoQuote</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Line_Item</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Open_Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>QuoteLineItem</object>
+        <schedule>
+            <frequency>Once</frequency>
+            <startDate>2024-07-21</startDate>
+            <startTime>13:30:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

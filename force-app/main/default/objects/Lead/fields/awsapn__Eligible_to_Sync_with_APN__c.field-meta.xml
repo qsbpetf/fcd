@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>awsapn__Eligible_to_Sync_with_APN__c</fullName>
+    <deprecated>false</deprecated>
+    <formula>IF(
+	OR(
+		AND(
+			OR(LastModifiedDate  &gt;  awsapn__Last_APN_Sync_Date__c,LastModifiedDate = awsapn__Last_APN_Sync_Date__c),
+			awsapn__Sync_with_Partner_Central__c, 
+			NOT(ISNULL(awsapn__Last_APN_Sync_Date__c))
+		),
+		AND(ISNULL(awsapn__Last_APN_Sync_Date__c),awsapn__Sync_with_Partner_Central__c)
+	)
+	, true , false
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Has updates for AWS</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

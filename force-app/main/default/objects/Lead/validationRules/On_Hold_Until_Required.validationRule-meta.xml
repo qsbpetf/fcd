@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>On_Hold_Until_Required</fullName>
+    <active>true</active>
+    <description>On Hold Until is required when Lead Status is Held for Reapproach.</description>
+    <errorConditionFormula>(AND(
+ ISPICKVAL( Status , &quot;Held for Reapproach&quot;),
+ ISBLANK( On_Hold_Until__c )
+)) &amp;&amp; $Setup.rh2__PS_Settings__c.rh2__Run_Validation_Rule__c</errorConditionFormula>
+    <errorDisplayField>On_Hold_Until__c</errorDisplayField>
+    <errorMessage>Add On Hold Until date before changing status to Held for Reapproach.</errorMessage>
+</ValidationRule>

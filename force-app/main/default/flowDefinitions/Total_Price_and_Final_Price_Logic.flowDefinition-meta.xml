@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Not activated - Error  $Record.TotalPrice field contains a derived value that isn’t supported. In a scheduled or record-triggered flow, $Record doesn’t support some standard fields whose values are derived. Remove the $Record.TotalPrice field.
+Automation left in Process builder for now</description>
+    <masterLabel>Total Price and Final Price Logic</masterLabel>
+</FlowDefinition>

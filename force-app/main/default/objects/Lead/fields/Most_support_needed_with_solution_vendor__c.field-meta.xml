@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Most_support_needed_with_solution_vendor__c</fullName>
+    <inlineHelpText>With which solution vendor do you need most support?</inlineHelpText>
+    <label>Most support needed with solution vendor</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Most_support_needed_with_solution_vendor</valueSetName>
+    </valueSet>
+</CustomField>

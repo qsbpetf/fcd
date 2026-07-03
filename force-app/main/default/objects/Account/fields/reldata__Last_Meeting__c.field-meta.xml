@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>reldata__Last_Meeting__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The date of the most recent meeting between any person at this company and any of your coworkers</description>
+    <inlineHelpText>The date of the most recent meeting between any person at this company and any of your coworkers</inlineHelpText>
+    <label>LEGACY - Latest Meeting</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

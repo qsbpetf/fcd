@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Legitimate interest – prospect/lead</fullName>
+        <default>false</default>
+        <label>Legitimate interest – prospect/lead</label>
+    </customValue>
+    <customValue>
+        <fullName>Legitimate interest – existing customer</fullName>
+        <default>false</default>
+        <label>Legitimate interest – existing customer</label>
+    </customValue>
+    <customValue>
+        <fullName>Legitimate interest - other</fullName>
+        <default>false</default>
+        <label>Legitimate interest - other</label>
+    </customValue>
+    <customValue>
+        <fullName>Performance of a contract</fullName>
+        <default>false</default>
+        <label>Performance of a contract</label>
+    </customValue>
+    <customValue>
+        <fullName>Freely given consent from contact</fullName>
+        <default>false</default>
+        <label>Freely given consent from contact</label>
+    </customValue>
+    <customValue>
+        <fullName>Not applicable</fullName>
+        <default>false</default>
+        <label>Not applicable</label>
+    </customValue>
+    <masterLabel>Legal Basis for Processing Contact Data</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -9,5 +9,10 @@
     <columns>UPDATEDBY_USER</columns>
     <columns>LAST_UPDATE</columns>
     <filterScope>Everything</filterScope>
+    <filters>
+        <field>NAME</field>
+        <operation>startsWith</operation>
+        <value>Confluence</value>
+    </filters>
     <label>All</label>
 </ListView>

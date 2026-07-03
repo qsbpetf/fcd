@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Forensics_Lead__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This box is to be ticked if the lead has been created using the Lead Forensics Tool. Remember to add the lead to Lead Forensics Campaign.</description>
+    <inlineHelpText>Tick if LF tool has been used to create this lead</inlineHelpText>
+    <label>Lead Forensics Lead</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

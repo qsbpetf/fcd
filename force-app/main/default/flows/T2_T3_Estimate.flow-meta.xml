@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <environments>Default</environments>
+    <formulas>
+        <name>T2AmountEstimate</name>
+        <dataType>Currency</dataType>
+        <expression>IF(ISBLANK({!$Record.Estimate_Consulting_Revenue__c}) &amp;&amp; NOT(ISBLANK({!$Record.Estimate_Managed_Service_Revenue__c})),{!$Record.Estimate_Managed_Service_Revenue__c}, 
+IF(ISBLANK({!$Record.Estimate_Managed_Service_Revenue__c}) &amp;&amp; NOT(ISBLANK({!$Record.Estimate_Consulting_Revenue__c})),{!$Record.Estimate_Consulting_Revenue__c}, 
+
+{!$Record.Estimate_Consulting_Revenue__c} + {!$Record.Estimate_Managed_Service_Revenue__c}))</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>T2 &amp; T3 Estimate {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>T2 &amp; T3 Estimate</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_T2_AND_T3</name>
+        <label>Update T2 AND T3</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <inputAssignments>
+            <field>Total_Amount_T2__c</field>
+            <value>
+                <elementReference>T2AmountEstimate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Total_Amount_T3__c</field>
+            <value>
+                <elementReference>$Record.Estimate_Licensing_GP__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_T2_AND_T3</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true ) &amp;&amp;
+(ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.Account.CV_Subsidiary__c}, &quot;US&quot;)) &amp;&amp;
+{!$Record.Quota_Update_Allowed__c} = true &amp;&amp;
+(ISNULL ({!$Record.Total_Amount__c}) || {!$Record.Total_Amount__c} = 0)
+&amp;&amp;
+( ISNEW () ||
+ISCHANGED({!$Record.Estimate_Consulting_Revenue__c}) 
+|| ISCHANGED({!$Record.Estimate_Managed_Service_Revenue__c})
+|| ISCHANGED({!$Record.Estimate_Licensing_GP__c}))</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <description>Migrated from the Populate UserTrailmix External Id process using External Id is Null criteria.
+Updates External Id if null for UserTrailmixes.</description>
+    <environments>Default</environments>
+    <label>Populate UserTrailmix External Id</label>
+    <processType>AutoLaunchedFlow</processType>
+</Flow>

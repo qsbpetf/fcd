@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <description>When the Start Date of the project is changed, this flow launched the autolaunched flow &quot;Calculate T2 Amount + Roll Up from Opportunity&quot; on all opportunities linked to the project</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>X90daysago</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() -90</expression>
+    </formulas>
+    <interviewLabel>T2 Amount when Project Start Date is changed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>T2 Amount when Project Start Date is changed</label>
+    <loops>
+        <name>Loop_Through_Opps</name>
+        <label>Loop Through Opps</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <collectionReference>Get_Opportunities</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Calculate_T2_Amount_Roll_Up_from_Opportunity</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Opportunities</name>
+        <label>Get Opportunities</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Through_Opps</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Related_Project__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Quota_Update_Allowed__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Opportunities</targetReference>
+        </connector>
+        <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c}= true &amp;&amp;
+ISCHANGED({!$Record.Project_Start_Date_new__c}) &amp;&amp;
+(ISPICKVAL({!$Record.Opportunity_Name__r.Account.CV_Subsidiary__c}, &quot;UK&quot;) || ISPICKVAL({!$Record.Opportunity_Name__r.Account.CV_Subsidiary__c}, &quot;US&quot;))</filterFormula>
+        <object>Project__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <name>Calculate_T2_Amount_Roll_Up_from_Opportunity</name>
+        <label>Calculate T2 Amount + Roll Up from Opportunity</label>
+        <locationX>264</locationX>
+        <locationY>539</locationY>
+        <connector>
+            <targetReference>Loop_Through_Opps</targetReference>
+        </connector>
+        <flowName>Calculate_T2_Amount_Roll_Up_from_Opportunity</flowName>
+        <inputAssignments>
+            <name>OpportunityID</name>
+            <value>
+                <elementReference>Loop_Through_Opps.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ProjectId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+</Flow>

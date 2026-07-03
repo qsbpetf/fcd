@@ -35,6 +35,7 @@
         <members>CurrencyRateMarkup.CHF</members>
         <members>CurrencyRateMarkup.Default</members>
         <members>CurrencyRateMarkup.GBP</members>
+        <members>LogEntryDataMaskRule.MastercardCreditCardNumber</members>
         <members>LogEntryDataMaskRule.SocialSecurityNumber</members>
         <members>MakeWebhookOpportunityStageConfig.Cancelled_After_Invoice</members>
         <members>MakeWebhookOpportunityStageConfig.ClosedWonAwaitingApproval</members>
@@ -139,16 +140,31 @@
         <members>PpcProductToSalesforceMapping.Product_032</members>
         <members>PpcProductToSalesforceMapping.Product_033</members>
         <members>PpcProductToSalesforceMapping.Product_034</members>
+        <members>PpcProductToSalesforceMapping.Product_035</members>
+        <members>PpcProductToSalesforceMapping.Product_036</members>
+        <members>PpcProductToSalesforceMapping.Product_037</members>
+        <members>PpcProductToSalesforceMapping.Product_038</members>
+        <members>PpcProductToSalesforceMapping.Product_039</members>
+        <members>PpcProductToSalesforceMapping.Product_040</members>
+        <members>PpcProductToSalesforceMapping.Product_041</members>
+        <members>PpcProductToSalesforceMapping.Product_042</members>
+        <members>PpcProductToSalesforceMapping.Product_043</members>
+        <members>Quote_Default_Text.Quote_Default_English</members>
+        <members>Quote_Default_Text.Quote_Default_Finnish</members>
+        <members>Quote_Default_Text.Quote_Default_German</members>
         <name>CustomMetadata</name>
     </types>
     <types>
+        <members>Account</members>
         <members>ApiResponseCache__c</members>
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>AtlassianRegSubmission__c</members>
         <members>CurrencyRateMarkup__mdt</members>
         <members>DefaultOpportunityOwner__c</members>
+        <members>Exchange_Rate__c</members>
         <members>InvoiceGroup__c</members>
+        <members>Lead</members>
         <members>MakeWebhookOpportunityStageConfig__mdt</members>
         <members>MakeWebhookSettings__c</members>
         <members>OpportunityLineItem</members>
@@ -162,6 +178,9 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>Allow_Product2_Create</members>
+        <members>CanExecuteLogBatchPurger</members>
+        <members>CanModifyLoggerSettings</members>
         <members>Eficode_Office_CH</members>
         <members>Eficode_Office_DE</members>
         <members>Eficode_Office_DK</members>
@@ -173,6 +192,8 @@
         <members>Eficode_Office_UK</members>
         <members>Eficode_Office_US</members>
         <members>Enable_JSON_Converter</members>
+        <members>LinkedIn_Sales_Navigator_Visibility</members>
+        <members>See_Jira_Connector</members>
         <name>CustomPermission</name>
     </types>
     <types>
@@ -180,9 +201,13 @@
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>AtlassianRegSubmission__c</members>
+        <members>Atlassian_Partner_Accounts</members>
+        <members>Atlassian_Registration_Search</members>
         <members>Batch_Job_Monitor</members>
+        <members>Deal_Service_Registration</members>
         <members>InvoiceGroup__c</members>
         <members>PendingInvoice__c</members>
+        <members>PromotionCode__c</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -194,18 +219,565 @@
         <name>ExternalCredential</name>
     </types>
     <types>
+        <members>Deal_Service_Registration</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Account_Name_is_changed</members>
+        <members>Account_Update_Account_Currency</members>
+        <members>Account_Update_Account_Hierarchy_to_HubSpot</members>
+        <members>Account_Update_Account_Hierarchy_to_HubSpot_Scheduled</members>
+        <members>Account_Update_Customer_Cohort</members>
+        <members>Actions_when_account_name_is_changed_on_opportunity</members>
+        <members>Additional_Info_Netsuite</members>
+        <members>Additional_Info_Quote</members>
+        <members>Additional_Infos_updates</members>
+        <members>Additional_Infos_updates_1</members>
+        <members>Assign_Primary_Campaign_Source_based_on_Inbound_Campaign_Allocation</members>
+        <members>Assign_T2_Splits_at_Opportunity_Creation_and_change_of_T2_Amount</members>
+        <members>Assign_T3_Splits_at_Opportunity_Creation_and_change_of_T3_Amount</members>
+        <members>CV_Subsidiary</members>
+        <members>Calculate_Final_T3_Amount</members>
+        <members>Calculate_T2_Amount_Roll_Up_from_Opportunity</members>
+        <members>Calculate_T3_when_Deal_Rebate_value_is_changed</members>
+        <members>Calculate_T3_when_close_Date_is_changed</members>
+        <members>Calculate_Tiers</members>
+        <members>Case_MS_Sales_Support_Assignment</members>
+        <members>Case_Update_Creation</members>
+        <members>Case_Update_Creation_1</members>
+        <members>Case_Update_Creation_Edit</members>
+        <members>Case_Update_Creation_Edit_1</members>
+        <members>Change_opportunity_Stage_based_on_Renewal_Status</members>
+        <members>Check_1st_won_opp_for_existing_records</members>
+        <members>Contact_Role_Creation_Edit</members>
+        <members>Contact_Role_Creation_Edit_1</members>
+        <members>Contact_Update_Creation_Edit</members>
+        <members>Contact_Update_Creation_Edit_1</members>
+        <members>Copy_Exchange_Rate_fields_to_lock_rate_on_day_of_creation</members>
+        <members>Copy_Exchange_Rate_fields_to_lock_rate_on_day_of_creation_1</members>
+        <members>Copy_description</members>
+        <members>Cost_Price_Logic</members>
+        <members>Cost_Price_Opp_product_Selection</members>
+        <members>Cost_Price_Opp_product_Selection_Edit</members>
+        <members>Create_All_Splits_T1_T2_T3</members>
+        <members>Create_Opportunity_Record</members>
+        <members>Create_Order_from_Opportunity_1</members>
+        <members>Create_Tasks_for_KAM_Plan_2</members>
+        <members>Create_information_request_task</members>
+        <members>Create_task_Call_back_date_time_not_empty</members>
+        <members>Create_task_if</members>
+        <members>Created_date_2</members>
+        <members>Date_License_Opp_Reviewed_by_Owner</members>
+        <members>Date_Sent_To_Netsuite</members>
+        <members>Date_Stage_Changed_on_Creation</members>
+        <members>Default_Invoice_1_Contact_to_Main_Invoice_contact</members>
+        <members>Default_Invoice_1_Contact_to_Main_Invoice_contact_1</members>
+        <members>Default_Opportunity_Currency_to_Account_Currency</members>
+        <members>Default_Product_fields_Creation</members>
+        <members>Default_Product_specialist</members>
+        <members>Default_field_values_at_opportunity_creation</members>
+        <members>DeleteOppProduct</members>
+        <members>Delete_Opp_Splits_when_Opp_Team_Is_Deleted</members>
+        <members>Delete_Opportunity_Product</members>
+        <members>Delete_Split_0</members>
+        <members>Delete_Splits_At_Modification_of_the_opportunity</members>
+        <members>Delete_Splits_when_account_owner_is_changed</members>
+        <members>Delete_Tasks_from_KAM_Plan</members>
+        <members>Discount_on_quote_line_item</members>
+        <members>Editable_Cost_Price_Dollar</members>
+        <members>Editable_Unit_List_Price_In_USD</members>
+        <members>Email_Message</members>
+        <members>Emails_updates_Create</members>
+        <members>Emails_updates_Edit</members>
+        <members>Emails_updates_Edit_1</members>
+        <members>Event_Create_Opp_Contact_Role_from_Event_Who_Relation_Records</members>
+        <members>Exchange_Rate_Flow</members>
+        <members>Fill_the_first_lead_Status_Edit_Date</members>
+        <members>Flow_Fill_the_first_lead_Status_Edit_Date</members>
+        <members>Flow_Start_Date_unique</members>
+        <members>For_Licences_revenue_type_the_LIC_Editable_Cost_Price_in_USD_field_must_be_fille</members>
+        <members>Get_Daily_Exchange_Rate_Subflow</members>
+        <members>Get_Line_Items_Subflow</members>
+        <members>IT_Notifications</members>
+        <members>Identifying_default_values_for_MEDDPICC</members>
+        <members>Invoicing_Partner_End_User_Logic_Reverse</members>
+        <members>Invoicing_Partner_End_User_Logic_when_opportunity_is_closed_won</members>
+        <members>Is_first_opportunity_won</members>
+        <members>KAM_Plan_Calculate_Sales_Result</members>
+        <members>Latest_Next_Step_Today</members>
+        <members>Launch_Flow_from_tasks</members>
+        <members>Launch_Flow_from_tasks_1</members>
+        <members>Launch_Roll_Up_after_1_min_of_the_opp_being_created</members>
+        <members>Launch_Roll_Ups</members>
+        <members>Lead_Creation</members>
+        <members>Lead_Creation_1</members>
+        <members>Lead_Creation_migrated</members>
+        <members>Lead_Creation_or_Modification</members>
+        <members>Lead_Marked_as_Closed_Won</members>
+        <members>Lead_Owner_Changes_Notification</members>
+        <members>Lead_Status_change_date</members>
+        <members>Lead_Task_for_On_Hold_Date</members>
+        <members>Lead_Update_Lead_Currency</members>
+        <members>Licence_Renewal_Contact</members>
+        <members>Licence_Start_Date_and_End_Date</members>
+        <members>License_Deal_Reg_Status_Deal_Reg_Status_Internal</members>
+        <members>Link_Task_to_opp_upon_lead_conversion</members>
+        <members>Manager_Forecast_Field_Update</members>
+        <members>Mark_Contact_as_Quote_Contact</members>
+        <members>Mark_contact_as_technical_contact_when_added_to_an_opportunity</members>
+        <members>Microsoft_Partner_Role_Solution_Area_and_Solution_Play_Screen_Flow</members>
+        <members>New_Lead_alert_for_sales_team_member_WIP</members>
+        <members>Nov_2022_Cloud_Price_Rise_Deadline</members>
+        <members>Opportunity_Add_Price_Book</members>
+        <members>Opportunity_Auto_Renewal_Triggered</members>
+        <members>Opportunity_Close_MS_Sales_Support_case_on_Closed_Lost</members>
+        <members>Opportunity_Create_Services_in_Portfolio_Opp_Prods</members>
+        <members>Opportunity_Currency</members>
+        <members>Opportunity_Custom_Billing_Address</members>
+        <members>Opportunity_Finance_review_status_change</members>
+        <members>Opportunity_Lead_Source_to_Account_if_1st_Opp_Won</members>
+        <members>Opportunity_Product_Update_Revenue_type_picklist</members>
+        <members>Opportunity_Product_Update_existing_Opportunity_products</members>
+        <members>Opportunity_Quote_Default_Values</members>
+        <members>Opportunity_Stage_change_date_Edit_1</members>
+        <members>Opportunity_Type_Logic</members>
+        <members>Opportunity_Update_Closed_won_information_to_Account</members>
+        <members>Opportunity_Update_Closed_won_information_to_KAM_Plan_Test</members>
+        <members>Opportunity_Update_Opp_fields_for_UK_and_US</members>
+        <members>POP_Up_Custom_Validation</members>
+        <members>PVR_Rebate_Currency_Convert_Flow</members>
+        <members>Payment_Terms_Modification_From_Account</members>
+        <members>PrimaryContact</members>
+        <members>Primary_Campaign_Source_Automation</members>
+        <members>Product_Category_Logic</members>
+        <members>Product_Update_Family_Pillar</members>
+        <members>Product_familly</members>
+        <members>Product_for_renewal</members>
+        <members>Quote_Default_Field_at_creation</members>
+        <members>Quote_Expriration_date</members>
+        <members>Quote_Send_Quote_Reminder_Hosting_Flow</members>
+        <members>Quote_Send_Quote_Reminder_Hosting_and_Support_Flow</members>
+        <members>Quote_Send_Quote_Reminder_Licenses_Hosting_or_Support_Flow</members>
+        <members>Quote_Send_Quote_Reminder_Support_flow</members>
+        <members>Quote_Send_Quote_Reminder_TEST</members>
+        <members>Quote_Sync_Opp_Product_to_Quote_Product_when_Opp_Product_is_updated</members>
+        <members>Quote_Sync_Opp_Product_to_Quote_Product_when_Quote_Product_is_created</members>
+        <members>Quote_Sync_Quote_Product_to_Opp_Product_when_Quote_Product_is_updated</members>
+        <members>Quote_Synced_date_Today</members>
+        <members>Quote_Update_First_Last_Offer_Sent_Field</members>
+        <members>Quote_introduction_from_Oppo_to_Quote</members>
+        <members>Quote_updates_Creation</members>
+        <members>Roll_Up_Team_Members_Name_to_Opp</members>
+        <members>Roll_Up_Team_Members_Name_to_Opp_Roll_Up_Team_Members_Name_to_Opp_when_Opp_is_cr</members>
+        <members>Roll_Up_Team_Members_Name_to_Opp_when_Member_is_deleted</members>
+        <members>Roll_up_Number_of_task_on_opportunity_2</members>
+        <members>SE_Deals_Send_for_approval_notification</members>
+        <members>SE_Deals_Uncheck_Is_Approved</members>
+        <members>ScreenFlow_Add_to_T1_T2_T3_Splits</members>
+        <members>Send_Automatic_Purchasing_Email_Notification_when_Full_Licence_is_Sent</members>
+        <members>Send_Batch_Email</members>
+        <members>Send_Email_to_Account_Owner</members>
+        <members>Send_Notification_to_Slack_for_AI_offering_Product</members>
+        <members>Send_Proposal_Request</members>
+        <members>Send_Quote_Reminders</members>
+        <members>Send_Slack_Message_to_Scandinavia_Slack_Channel</members>
+        <members>Send_Slack_Notification_about_Sales_Support_Required</members>
+        <members>Send_Slack_Notification_to_ScandicDeals_Channel</members>
+        <members>Send_new_lead_notification</members>
+        <members>Sept_2021_Margin_Change_Chaser_V2</members>
+        <members>Set_Date_Changed_to_Closed_Won</members>
         <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
+        <members>Set_Payment_Terms_when_Opp_Product_is_added_or_edited</members>
+        <members>Set_Payment_Terms_when_Opp_Product_is_deleted</members>
+        <members>Set_Status_Last_Modified_Date</members>
         <members>Set_default_owner_on_imported_renewal_oppty</members>
+        <members>Set_the_Auto_Renewal_checkbox_to_true</members>
+        <members>Show_all_ordered_products_to_account_level</members>
+        <members>Slack_Send_MS_Support_ticket_notifications</members>
+        <members>Slack_Send_won_case_notifications</members>
+        <members>Slack_Won_Opportunity_notification</members>
+        <members>Stage_Updates</members>
+        <members>Stall_Opportunity_Records</members>
+        <members>Stalled_Opportunities</members>
+        <members>Standard_to_ACE_Opportunity_Sync</members>
+        <members>T1_Opp_No_when_account_is_changed</members>
+        <members>T1_Opp_Yes_from_Account</members>
+        <members>T1_Opp_Yes_from_Opportunity</members>
+        <members>T1_Start_date_updates_Parent_child_account_relationship</members>
+        <members>T1_T2_T3_Fix_200_Splits</members>
+        <members>T2_Amount_Calculation_Launch_Roll_Ups</members>
+        <members>T2_Amount_when_Project_Start_Date_is_changed</members>
+        <members>T2_Amount_when_Project_is_added_changed</members>
+        <members>T2_Override_set_to_false</members>
+        <members>T2_Roll_Up</members>
+        <members>T2_Roll_Up_Product_Deleted</members>
+        <members>T2_T3_Amounts_from_opportunity_when_Launch_Estimate_Flow_is_checked</members>
+        <members>T2_T3_Amounts_from_opportunity_when_Launch_Flow_is_checked_FOR_IMPORT</members>
+        <members>T2_T3_Daily_Fix_Calculation_Roll_Ups</members>
+        <members>T2_T3_Estimate</members>
+        <members>T2_T3_Launch_Roll_Ups_when_Product_is_deleted</members>
+        <members>T2_T3_Override_on_Opp_Recalculate</members>
+        <members>T2_T3_Roll_Ups_when_product_is_deleted</members>
+        <members>T2_T3_from_opportunity_when_Launch_Flow_is_checked</members>
+        <members>T3_Amounts_from_opportunity_when_Launch_Flow_is_checked</members>
+        <members>T3_Launch_Flow_when_Account_Parent_is_changed</members>
+        <members>T3_Override_set_to_false</members>
+        <members>T3_Roll_Up</members>
+        <members>T3_Roll_Up_Product_Deleted</members>
+        <members>TASK_Add_1_to_Nb_Of_Open_Task_on_related_Contact</members>
+        <members>TEST2_Discount_Create</members>
+        <members>TEST2_Discount_Update</members>
+        <members>Task_Create_Opp_Contact_Role_from_Task_Who_Relation_Records</members>
+        <members>Task_Creation_3_months_after_the_close_date_for_entities_with_subsidiary_CH</members>
+        <members>Task_Task_creation_2_weeks_later_the_close_date_for_entities_with_subsidiary_CH</members>
+        <members>Task_Update_Due_Date</members>
+        <members>Total_Buy_Price_calculation</members>
+        <members>Total_Buy_Price_calculation_2</members>
+        <members>Total_Price_and_Final_Price_Logic</members>
+        <members>US_ACCOUNT</members>
+        <members>Update_Account_Create</members>
+        <members>Update_Account_Create_and_Edit</members>
+        <members>Update_Account_Create_and_Edit_1</members>
+        <members>Update_Additionnal_infos_fields_ONE_OFF</members>
+        <members>Update_All_Open_tasks_when_owner_is_changed</members>
+        <members>Update_All_Team_members_and_role</members>
+        <members>Update_Auto_Renewal_Field</members>
+        <members>Update_Contact_from_email_address</members>
+        <members>Update_Contact_from_email_address_and_Account</members>
+        <members>Update_Currency_fields_for_Forecast</members>
+        <members>Update_Editable_List_Price_and_Cost_Price</members>
+        <members>Update_Lead_Status_after_Email_Creation</members>
+        <members>Update_Lead_Status_after_Event_Creation</members>
+        <members>Update_Lead_Status_after_Task_Creation</members>
+        <members>Update_Opp_Record_Manager_s_judgement</members>
+        <members>Update_Opportunity_AI_field</members>
+        <members>Update_Opportunity_Billing_Address_when_Account_s_Billing_address_information_is</members>
+        <members>Update_Opportunity_Billing_address_when_custom_billing_address_field_is_marked</members>
+        <members>Update_Opportunity_Product_Start_and_End_Date_Information_based_on_Opportunity_c</members>
+        <members>Update_Opportunity_Segment</members>
+        <members>Update_Pillar</members>
+        <members>Update_Product</members>
+        <members>Update_Product_Create_and_Edit</members>
+        <members>Update_QuoteLineItem_Create</members>
+        <members>Update_Quote_Create_and_Edit</members>
+        <members>Update_Related_Project_when_NetSuite_Project_Number_is_added</members>
+        <members>Update_Splits_when_owner_is_changed</members>
+        <members>Update_T1_Start_Date</members>
+        <members>Update_Task_Create_and_Edit</members>
+        <members>Update_Task_Creation</members>
+        <members>Update_Task_Creation_1</members>
+        <members>Updated_the_Opportunity_s_Billing_Address_Information</members>
+        <members>Weekly_Pipeline_Notification</members>
+        <members>X1st_Opportunity_Closed_Won</members>
+        <members>X1st_response_to_case</members>
+        <members>X8_Margin_for_Estimate_Licensing_Revenue</members>
+        <members>awsapn__APN_Synchronization_Failure_Notification</members>
+        <members>awsapn__Private_Offer_Lookup</members>
+        <members>awsapn__Sync_ACE_Opportunity_to_Partner_Central_API</members>
+        <members>awsapn__Unified_Standard_ACE_Sync</members>
+        <members>awsapn__Updating_Ace_opportunity_field_on_Sync_Log_Detail_Record</members>
+        <members>awsapn__Updating_Private_Offer_field_On_ACE_Opportunity</members>
+        <members>customer_satisfaction</members>
+        <members>net_promoter_score</members>
+        <members>trailheadapp__Assigned_Badge_Notification</members>
+        <members>trailheadapp__Assigned_Badge_Notification_1</members>
+        <members>trailheadapp__Assigned_Trailmix_Notification</members>
+        <members>trailheadapp__Populate_External_Id</members>
+        <members>trailheadapp__Populate_External_Id_1</members>
+        <members>trailheadapp__Populate_UserTrailmix_External_Id</members>
+        <members>trailheadapp__Populate_UserTrailmix_External_Id_1</members>
         <name>Flow</name>
     </types>
     <types>
+        <members>Account_Name_is_changed</members>
+        <members>Account_Update_Account_Currency</members>
+        <members>Account_Update_Account_Hierarchy_to_HubSpot</members>
+        <members>Account_Update_Account_Hierarchy_to_HubSpot_Scheduled</members>
+        <members>Account_Update_Customer_Cohort</members>
+        <members>Actions_when_account_name_is_changed_on_opportunity</members>
+        <members>Additional_Info_Netsuite</members>
+        <members>Additional_Info_Quote</members>
+        <members>Additional_Infos_updates</members>
+        <members>Additional_Infos_updates_1</members>
+        <members>Assign_Primary_Campaign_Source_based_on_Inbound_Campaign_Allocation</members>
+        <members>Assign_T2_Splits_at_Opportunity_Creation_and_change_of_T2_Amount</members>
+        <members>Assign_T3_Splits_at_Opportunity_Creation_and_change_of_T3_Amount</members>
+        <members>CV_Subsidiary</members>
+        <members>Calculate_Final_T3_Amount</members>
+        <members>Calculate_T2_Amount_Roll_Up_from_Opportunity</members>
+        <members>Calculate_T3_when_Deal_Rebate_value_is_changed</members>
+        <members>Calculate_T3_when_close_Date_is_changed</members>
+        <members>Calculate_Tiers</members>
+        <members>Case_MS_Sales_Support_Assignment</members>
+        <members>Case_Update_Creation</members>
+        <members>Case_Update_Creation_1</members>
+        <members>Case_Update_Creation_Edit</members>
+        <members>Case_Update_Creation_Edit_1</members>
+        <members>Change_opportunity_Stage_based_on_Renewal_Status</members>
+        <members>Check_1st_won_opp_for_existing_records</members>
+        <members>Contact_Role_Creation_Edit</members>
+        <members>Contact_Role_Creation_Edit_1</members>
+        <members>Contact_Update_Creation_Edit</members>
+        <members>Contact_Update_Creation_Edit_1</members>
+        <members>Copy_Exchange_Rate_fields_to_lock_rate_on_day_of_creation</members>
+        <members>Copy_Exchange_Rate_fields_to_lock_rate_on_day_of_creation_1</members>
+        <members>Copy_description</members>
+        <members>Cost_Price_Logic</members>
+        <members>Cost_Price_Opp_product_Selection</members>
+        <members>Cost_Price_Opp_product_Selection_Edit</members>
+        <members>Create_All_Splits_T1_T2_T3</members>
+        <members>Create_Opportunity_Record</members>
+        <members>Create_Order_from_Opportunity_1</members>
+        <members>Create_Tasks_for_KAM_Plan_2</members>
+        <members>Create_information_request_task</members>
+        <members>Create_task_Call_back_date_time_not_empty</members>
+        <members>Create_task_if</members>
+        <members>Created_date_2</members>
+        <members>Date_License_Opp_Reviewed_by_Owner</members>
+        <members>Date_Sent_To_Netsuite</members>
+        <members>Date_Stage_Changed_on_Creation</members>
+        <members>Default_Invoice_1_Contact_to_Main_Invoice_contact</members>
+        <members>Default_Invoice_1_Contact_to_Main_Invoice_contact_1</members>
+        <members>Default_Opportunity_Currency_to_Account_Currency</members>
+        <members>Default_Product_fields_Creation</members>
+        <members>Default_Product_specialist</members>
+        <members>Default_field_values_at_opportunity_creation</members>
+        <members>DeleteOppProduct</members>
+        <members>Delete_Opp_Splits_when_Opp_Team_Is_Deleted</members>
+        <members>Delete_Opportunity_Product</members>
+        <members>Delete_Split_0</members>
+        <members>Delete_Splits_At_Modification_of_the_opportunity</members>
+        <members>Delete_Splits_when_account_owner_is_changed</members>
+        <members>Delete_Tasks_from_KAM_Plan</members>
+        <members>Discount_on_quote_line_item</members>
+        <members>Editable_Cost_Price_Dollar</members>
+        <members>Editable_Unit_List_Price_In_USD</members>
+        <members>Email_Message</members>
+        <members>Emails_updates_Create</members>
+        <members>Emails_updates_Edit</members>
+        <members>Emails_updates_Edit_1</members>
+        <members>Event_Create_Opp_Contact_Role_from_Event_Who_Relation_Records</members>
+        <members>Exchange_Rate_Flow</members>
+        <members>Fill_the_first_lead_Status_Edit_Date</members>
+        <members>Flow_Fill_the_first_lead_Status_Edit_Date</members>
+        <members>Flow_Start_Date_unique</members>
+        <members>For_Licences_revenue_type_the_LIC_Editable_Cost_Price_in_USD_field_must_be_fille</members>
+        <members>Get_Daily_Exchange_Rate_Subflow</members>
+        <members>Get_Line_Items_Subflow</members>
+        <members>IT_Notifications</members>
+        <members>Identifying_default_values_for_MEDDPICC</members>
+        <members>Invoicing_Partner_End_User_Logic_Reverse</members>
+        <members>Invoicing_Partner_End_User_Logic_when_opportunity_is_closed_won</members>
+        <members>Is_first_opportunity_won</members>
+        <members>KAM_Plan_Calculate_Sales_Result</members>
+        <members>Latest_Next_Step_Today</members>
+        <members>Launch_Flow_from_tasks</members>
+        <members>Launch_Flow_from_tasks_1</members>
+        <members>Launch_Roll_Up_after_1_min_of_the_opp_being_created</members>
+        <members>Launch_Roll_Ups</members>
+        <members>Lead_Creation</members>
+        <members>Lead_Creation_1</members>
+        <members>Lead_Creation_migrated</members>
+        <members>Lead_Creation_or_Modification</members>
+        <members>Lead_Marked_as_Closed_Won</members>
+        <members>Lead_Owner_Changes_Notification</members>
+        <members>Lead_Status_change_date</members>
+        <members>Lead_Task_for_On_Hold_Date</members>
+        <members>Lead_Update_Lead_Currency</members>
+        <members>Licence_Renewal_Contact</members>
+        <members>Licence_Start_Date_and_End_Date</members>
+        <members>License_Deal_Reg_Status_Deal_Reg_Status_Internal</members>
+        <members>Link_Task_to_opp_upon_lead_conversion</members>
+        <members>Manager_Forecast_Field_Update</members>
+        <members>Mark_Contact_as_Quote_Contact</members>
+        <members>Mark_contact_as_technical_contact_when_added_to_an_opportunity</members>
+        <members>Microsoft_Partner_Role_Solution_Area_and_Solution_Play_Screen_Flow</members>
+        <members>New_Lead_alert_for_sales_team_member_WIP</members>
+        <members>Nov_2022_Cloud_Price_Rise_Deadline</members>
+        <members>Opportunity_Add_Price_Book</members>
+        <members>Opportunity_Auto_Renewal_Triggered</members>
+        <members>Opportunity_Close_MS_Sales_Support_case_on_Closed_Lost</members>
+        <members>Opportunity_Create_Services_in_Portfolio_Opp_Prods</members>
+        <members>Opportunity_Currency</members>
+        <members>Opportunity_Custom_Billing_Address</members>
+        <members>Opportunity_Finance_review_status_change</members>
+        <members>Opportunity_Lead_Source_to_Account_if_1st_Opp_Won</members>
+        <members>Opportunity_Product_Update_Revenue_type_picklist</members>
+        <members>Opportunity_Product_Update_existing_Opportunity_products</members>
+        <members>Opportunity_Quote_Default_Values</members>
+        <members>Opportunity_Stage_change_date_Edit_1</members>
+        <members>Opportunity_Type_Logic</members>
+        <members>Opportunity_Update_Closed_won_information_to_Account</members>
+        <members>Opportunity_Update_Closed_won_information_to_KAM_Plan_Test</members>
+        <members>Opportunity_Update_Opp_fields_for_UK_and_US</members>
+        <members>POP_Up_Custom_Validation</members>
+        <members>PVR_Rebate_Currency_Convert_Flow</members>
+        <members>Payment_Terms_Modification_From_Account</members>
+        <members>PrimaryContact</members>
+        <members>Primary_Campaign_Source_Automation</members>
+        <members>Product_Category_Logic</members>
+        <members>Product_Update_Family_Pillar</members>
+        <members>Product_familly</members>
+        <members>Product_for_renewal</members>
+        <members>Quote_Default_Field_at_creation</members>
+        <members>Quote_Expriration_date</members>
+        <members>Quote_Send_Quote_Reminder_Hosting_Flow</members>
+        <members>Quote_Send_Quote_Reminder_Hosting_and_Support_Flow</members>
+        <members>Quote_Send_Quote_Reminder_Licenses_Hosting_or_Support_Flow</members>
+        <members>Quote_Send_Quote_Reminder_Support_flow</members>
+        <members>Quote_Send_Quote_Reminder_TEST</members>
+        <members>Quote_Sync_Opp_Product_to_Quote_Product_when_Opp_Product_is_updated</members>
+        <members>Quote_Sync_Opp_Product_to_Quote_Product_when_Quote_Product_is_created</members>
+        <members>Quote_Sync_Quote_Product_to_Opp_Product_when_Quote_Product_is_updated</members>
+        <members>Quote_Synced_date_Today</members>
+        <members>Quote_Update_First_Last_Offer_Sent_Field</members>
+        <members>Quote_introduction_from_Oppo_to_Quote</members>
+        <members>Quote_updates_Creation</members>
+        <members>Roll_Up_Team_Members_Name_to_Opp</members>
+        <members>Roll_Up_Team_Members_Name_to_Opp_Roll_Up_Team_Members_Name_to_Opp_when_Opp_is_cr</members>
+        <members>Roll_Up_Team_Members_Name_to_Opp_when_Member_is_deleted</members>
+        <members>Roll_up_Number_of_task_on_opportunity_2</members>
+        <members>SE_Deals_Send_for_approval_notification</members>
+        <members>SE_Deals_Uncheck_Is_Approved</members>
+        <members>ScreenFlow_Add_to_T1_T2_T3_Splits</members>
+        <members>Send_Automatic_Purchasing_Email_Notification_when_Full_Licence_is_Sent</members>
+        <members>Send_Batch_Email</members>
+        <members>Send_Email_to_Account_Owner</members>
+        <members>Send_Notification_to_Slack_for_AI_offering_Product</members>
+        <members>Send_Proposal_Request</members>
+        <members>Send_Quote_Reminders</members>
+        <members>Send_Slack_Message_to_Scandinavia_Slack_Channel</members>
+        <members>Send_Slack_Notification_about_Sales_Support_Required</members>
+        <members>Send_Slack_Notification_to_ScandicDeals_Channel</members>
+        <members>Send_new_lead_notification</members>
+        <members>Sept_2021_Margin_Change_Chaser_V2</members>
+        <members>Set_Date_Changed_to_Closed_Won</members>
         <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
+        <members>Set_Payment_Terms_when_Opp_Product_is_added_or_edited</members>
+        <members>Set_Payment_Terms_when_Opp_Product_is_deleted</members>
+        <members>Set_Status_Last_Modified_Date</members>
+        <members>Set_default_owner_on_imported_renewal_oppty</members>
+        <members>Set_the_Auto_Renewal_checkbox_to_true</members>
+        <members>Show_all_ordered_products_to_account_level</members>
+        <members>Slack_Send_MS_Support_ticket_notifications</members>
+        <members>Slack_Send_won_case_notifications</members>
+        <members>Slack_Won_Opportunity_notification</members>
+        <members>Stage_Updates</members>
+        <members>Stall_Opportunity_Records</members>
+        <members>Stalled_Opportunities</members>
+        <members>Standard_to_ACE_Opportunity_Sync</members>
+        <members>T1_Opp_No_when_account_is_changed</members>
+        <members>T1_Opp_Yes_from_Account</members>
+        <members>T1_Opp_Yes_from_Opportunity</members>
+        <members>T1_Start_date_updates_Parent_child_account_relationship</members>
+        <members>T1_T2_T3_Fix_200_Splits</members>
+        <members>T2_Amount_Calculation_Launch_Roll_Ups</members>
+        <members>T2_Amount_when_Project_Start_Date_is_changed</members>
+        <members>T2_Amount_when_Project_is_added_changed</members>
+        <members>T2_Override_set_to_false</members>
+        <members>T2_Roll_Up</members>
+        <members>T2_Roll_Up_Product_Deleted</members>
+        <members>T2_T3_Amounts_from_opportunity_when_Launch_Estimate_Flow_is_checked</members>
+        <members>T2_T3_Amounts_from_opportunity_when_Launch_Flow_is_checked_FOR_IMPORT</members>
+        <members>T2_T3_Daily_Fix_Calculation_Roll_Ups</members>
+        <members>T2_T3_Estimate</members>
+        <members>T2_T3_Launch_Roll_Ups_when_Product_is_deleted</members>
+        <members>T2_T3_Override_on_Opp_Recalculate</members>
+        <members>T2_T3_Roll_Ups_when_product_is_deleted</members>
+        <members>T2_T3_from_opportunity_when_Launch_Flow_is_checked</members>
+        <members>T3_Amounts_from_opportunity_when_Launch_Flow_is_checked</members>
+        <members>T3_Launch_Flow_when_Account_Parent_is_changed</members>
+        <members>T3_Override_set_to_false</members>
+        <members>T3_Roll_Up</members>
+        <members>T3_Roll_Up_Product_Deleted</members>
+        <members>TASK_Add_1_to_Nb_Of_Open_Task_on_related_Contact</members>
+        <members>TEST2_Discount_Create</members>
+        <members>TEST2_Discount_Update</members>
+        <members>Task_Create_Opp_Contact_Role_from_Task_Who_Relation_Records</members>
+        <members>Task_Creation_3_months_after_the_close_date_for_entities_with_subsidiary_CH</members>
+        <members>Task_Task_creation_2_weeks_later_the_close_date_for_entities_with_subsidiary_CH</members>
+        <members>Task_Update_Due_Date</members>
+        <members>Total_Buy_Price_calculation</members>
+        <members>Total_Buy_Price_calculation_2</members>
+        <members>Total_Price_and_Final_Price_Logic</members>
+        <members>US_ACCOUNT</members>
+        <members>Update_Account_Create</members>
+        <members>Update_Account_Create_and_Edit</members>
+        <members>Update_Account_Create_and_Edit_1</members>
+        <members>Update_Additionnal_infos_fields_ONE_OFF</members>
+        <members>Update_All_Open_tasks_when_owner_is_changed</members>
+        <members>Update_All_Team_members_and_role</members>
+        <members>Update_Auto_Renewal_Field</members>
+        <members>Update_Contact_from_email_address</members>
+        <members>Update_Contact_from_email_address_and_Account</members>
+        <members>Update_Currency_fields_for_Forecast</members>
+        <members>Update_Editable_List_Price_and_Cost_Price</members>
+        <members>Update_Lead_Status_after_Email_Creation</members>
+        <members>Update_Lead_Status_after_Event_Creation</members>
+        <members>Update_Lead_Status_after_Task_Creation</members>
+        <members>Update_Opp_Record_Manager_s_judgement</members>
+        <members>Update_Opportunity_AI_field</members>
+        <members>Update_Opportunity_Billing_Address_when_Account_s_Billing_address_information_is</members>
+        <members>Update_Opportunity_Billing_address_when_custom_billing_address_field_is_marked</members>
+        <members>Update_Opportunity_Product_Start_and_End_Date_Information_based_on_Opportunity_c</members>
+        <members>Update_Opportunity_Segment</members>
+        <members>Update_Pillar</members>
+        <members>Update_Product</members>
+        <members>Update_Product_Create_and_Edit</members>
+        <members>Update_QuoteLineItem_Create</members>
+        <members>Update_Quote_Create_and_Edit</members>
+        <members>Update_Related_Project_when_NetSuite_Project_Number_is_added</members>
+        <members>Update_Splits_when_owner_is_changed</members>
+        <members>Update_T1_Start_Date</members>
+        <members>Update_Task_Create_and_Edit</members>
+        <members>Update_Task_Creation</members>
+        <members>Update_Task_Creation_1</members>
+        <members>Updated_the_Opportunity_s_Billing_Address_Information</members>
+        <members>Weekly_Pipeline_Notification</members>
+        <members>X1st_Opportunity_Closed_Won</members>
+        <members>X1st_response_to_case</members>
+        <members>X8_Margin_for_Estimate_Licensing_Revenue</members>
+        <members>customer_satisfaction</members>
+        <members>net_promoter_score</members>
         <name>FlowDefinition</name>
     </types>
     <types>
+        <members>Business_Unit</members>
+        <members>Countries</members>
+        <members>Country</members>
+        <members>Deal_Type</members>
+        <members>Hot_Lead</members>
+        <members>How_happy_are_you_with_current_solution</members>
+        <members>How_mature_are_your_Agile_practices</members>
+        <members>How_mature_are_your_DevOps_practices</members>
+        <members>Lead_Type2</members>
+        <members>Legal_Basis_for_Processing_Contact_Data</members>
+        <members>LoggingLevel</members>
+        <members>Most_support_needed_with_solution_vendor</members>
+        <members>Payment_Terms</members>
+        <members>Payment_Terms_No_Default</members>
+        <members>Pillar</members>
+        <members>Potential_Services_in_Portfolio</members>
+        <members>Quote_Language_Values</members>
+        <members>Renewal_Call_Made</members>
+        <members>What_challenge_do_you_want_to_solve</members>
+        <members>What_is_the_status_of_your_business_case</members>
+        <members>What_is_your_project_schedule</members>
+        <members>What_is_your_role_in_the_company</members>
+        <name>GlobalValueSet</name>
+    </types>
+    <types>
+        <members>AtlassianOffering__c-Atlassian Offering Layout</members>
+        <members>AtlassianProduct__c-Atlassian Product Layout</members>
         <members>AtlassianRegSubmission__c-Atlassian Reg Submission Layout</members>
         <members>DefaultOpportunityOwner__c-Default Opportunity Owner Layout</members>
         <members>InvoiceGroup__c-Invoice Group Layout</members>
+        <members>MakeWebhookOpportunityStageConfig__mdt-Make Webhook Opportunity Stage Config Layout</members>
+        <members>PPC_TransactionAccount__mdt-PPC Transaction Account Layout</members>
+        <members>PendingInvoice__c-Pending Invoice Layout</members>
+        <members>PortalProductToSalesforceMapping__mdt-Portal Product To Salesforce Mapping Layout</members>
+        <members>PpcProductToSalesforceMapping__mdt-PPC Product To Salesforce Mapping Layout</members>
+        <members>PromotionCode__c-Promotion Code Layout</members>
         <name>Layout</name>
     </types>
     <types>
@@ -247,6 +819,87 @@
     <types>
         <members>*</members>
         <name>StaticResource</name>
+    </types>
+    <types>
+        <members>Field_Trip__Object_Analysis__c.Field_Trip__Send_Processing_Complete_Notification2</members>
+        <members>Lead.Lead_Owner_Change_Notification</members>
+        <members>Lead.New_Lead_Assignment_alert_for_Sales_Rep</members>
+        <members>Lead.New_Lead_alert_for_sales_team_member</members>
+        <members>Lead.New_lead_created_to_James_Cole</members>
+        <members>Opportunity.Automatic_Purchasing_Email_Notification</members>
+        <members>Opportunity.Engagement_Notification_Email_Alert</members>
+        <members>Opportunity.New_IT_Notifications</members>
+        <members>Opportunity.On_Demand_Notification_Email_Alert</members>
+        <members>Opportunity.Opportunity_Approval_Approved</members>
+        <members>Opportunity.Opportunity_Approval_Notification_User</members>
+        <members>Opportunity.Opportunity_Approval_Rejected</members>
+        <members>Opportunity.Upgrade_Notification_Email_Alert</members>
+        <members>OpportunityLineItem.Closed_won_Support_Email_Alert</members>
+        <members>OpportunityLineItem.New_Support_Contract_Alert_Email_internal</members>
+        <members>Quote.March_2022_EOL_Chaser</members>
+        <members>Quote.March_2022_EOL_Chaser_Renewals</members>
+        <members>Quote.Quotes_for_Sept_2021_disc_change_chaser</members>
+        <members>Quote.Reminders_for_quotes_for_open_renewals</members>
+        <members>Quote.Reminders_for_quotes_for_open_renewals_Hosting</members>
+        <members>Quote.Reminders_for_quotes_for_open_renewals_Hosting_Support</members>
+        <members>Quote.Reminders_for_quotes_for_open_renewals_Licenses_Hosting_Support</members>
+        <members>Quote.Reminders_for_quotes_for_open_renewals_Support</members>
+        <members>Quote.X11112022_Cloud_price_rise_deadline</members>
+        <members>Quote.X15_10_7_3_1_days_before_quote_reminder</members>
+        <members>Quote.X20_days_before_quote_reminder</members>
+        <members>Quote.X30_days_45_days_55_days_after_quote_reminder</members>
+        <members>Quote.X5_days_10_days_15_days_20_days_25_days_after_quote_reminder</members>
+        <members>Quote.X75_days_60_days_45_days_30_days_quote_reminder</members>
+        <name>WorkflowAlert</name>
+    </types>
+    <types>
+        <members>Buying_Exchange_Rate__c.Start_Date_unique</members>
+        <members>DOZISF__ZoomInfo__c.DOZISF__ZoomInfo_Set_Company_Record_Type</members>
+        <members>DOZISF__ZoomInfo__c.DOZISF__ZoomInfo_Set_Contact_Record_Type</members>
+        <members>Lead.Converted_date</members>
+        <members>Lead.Fill_First_Lead_Status_Edit_with_Now</members>
+        <members>Opportunity.Copy_description</members>
+        <members>Opportunity.Update_Is_Approved</members>
+        <members>OpportunityLineItem.Calculate_Editable_Cost_Price</members>
+        <members>OpportunityLineItem.Calculate_Unit_List_Price</members>
+        <members>OpportunityLineItem.Product_familly_from_product</members>
+        <name>WorkflowFieldUpdate</name>
+    </types>
+    <types>
+        <members>Buying_Exchange_Rate__c.Start Date unique</members>
+        <members>DOZISF__ZoomInfo__c.DOZISF__ZoomInfo Company Created</members>
+        <members>DOZISF__ZoomInfo__c.DOZISF__ZoomInfo Contact Created</members>
+        <members>Field_Trip__Object_Analysis__c.Field_Trip__Processing Complete</members>
+        <members>Lead.Fill the first lead Status Edit Date</members>
+        <members>Opportunity.Copy description</members>
+        <members>Opportunity.IT Support Opportunity Alert</members>
+        <members>Opportunity.IT Total Support Opportunity Alert</members>
+        <members>Opportunity.IT Upgrade Opportunity Alert</members>
+        <members>OpportunityLineItem.Editable Cost Price Dollar</members>
+        <members>OpportunityLineItem.Editable Unit List Price In USD</members>
+        <members>OpportunityLineItem.Product familly</members>
+        <name>WorkflowRule</name>
+    </types>
+    <types>
+        <members>Quote.X10_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X10_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X15_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X15_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X1_day_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X20_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X20_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X25_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X30_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X30_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X3_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X45_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X45_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X55_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X5_days_after_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X60_days_before_renewal_date_quote_reminder_sent</members>
+        <members>Quote.X75_days_before_renewal_date_quote_reminder</members>
+        <members>Quote.X7_days_before_renewal_date_quote_reminder_sent</members>
+        <name>WorkflowTask</name>
     </types>
     <version>61.0</version>
 </Package>

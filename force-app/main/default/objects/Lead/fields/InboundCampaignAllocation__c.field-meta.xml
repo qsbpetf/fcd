@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InboundCampaignAllocation__c</fullName>
+    <description>If you&apos;re adding or amending picklist values please let Joe C know as this will impact existing automation!!!!!!!!!!</description>
+    <label>Original Source</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Organic search</fullName>
+                <default>false</default>
+                <label>Organic search</label>
+            </value>
+            <value>
+                <fullName>Paid search</fullName>
+                <default>false</default>
+                <label>Paid search</label>
+            </value>
+            <value>
+                <fullName>Direct traffic</fullName>
+                <default>false</default>
+                <label>Direct traffic</label>
+            </value>
+            <value>
+                <fullName>Referrals</fullName>
+                <default>false</default>
+                <label>Referrals</label>
+            </value>
+            <value>
+                <fullName>Email marketing</fullName>
+                <default>false</default>
+                <label>Email marketing</label>
+            </value>
+            <value>
+                <fullName>Social Media</fullName>
+                <default>false</default>
+                <label>Social media</label>
+            </value>
+            <value>
+                <fullName>Other campaigns</fullName>
+                <default>false</default>
+                <label>Other campaigns</label>
+            </value>
+            <value>
+                <fullName>Offline sources</fullName>
+                <default>false</default>
+                <label>Offline sources</label>
+            </value>
+            <value>
+                <fullName>Paid social</fullName>
+                <default>false</default>
+                <label>Paid social</label>
+            </value>
+            <value>
+                <fullName>Organic Social</fullName>
+                <default>false</default>
+                <label>Organic Social</label>
+            </value>
+            <value>
+                <fullName>Bus Dev Agency</fullName>
+                <default>false</default>
+                <label>Bus Dev Agency</label>
+            </value>
+            <value>
+                <fullName>AI Referrals</fullName>
+                <default>false</default>
+                <label>AI Referrals</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

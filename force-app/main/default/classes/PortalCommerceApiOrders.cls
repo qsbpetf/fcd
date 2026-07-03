@@ -29,8 +29,8 @@ public with sharing class PortalCommerceApiOrders {
         }
         OrderInfo theOrder = (OrderInfo) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"quoteNumber"')
-                .replaceAll('"currency"', '"isoCurrency"'),
+                .replace('"number"', '"quoteNumber"')
+                .replace('"currency"', '"isoCurrency"'),
             OrderInfo.class);
         System.debug('QUOTE = ' + response.getBody());
         return theOrder;
@@ -63,8 +63,8 @@ public with sharing class PortalCommerceApiOrders {
         }
         OrderInfo theOrder = (OrderInfo) JSON.deserialize(
             response.getBody()
-                .replaceAll('"number"', '"quoteNumber"')
-                .replaceAll('"currency"', '"isoCurrency"'),
+                .replace('"number"', '"quoteNumber"')
+                .replace('"currency"', '"isoCurrency"'),
             OrderInfo.class);
         System.debug('QUOTE = ' + response.getBody());
         return theOrder;

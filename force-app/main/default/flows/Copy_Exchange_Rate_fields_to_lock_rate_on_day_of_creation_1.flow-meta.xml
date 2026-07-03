@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <customErrors>
+        <name>ErrorMessageSEN</name>
+        <label>SEN</label>
+        <locationX>440</locationX>
+        <locationY>647</locationY>
+        <customErrorMessages>
+            <errorMessage>You must add an SEN value to save this record</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Check_Error_Message</name>
+        <label>Check Error Message</label>
+        <locationX>572</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SEN</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.FaultMessage</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>You must add an SEN value to save this record</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ErrorMessageSEN</targetReference>
+            </connector>
+            <label>SEN</label>
+        </rules>
+    </decisions>
+    <description>Copy the 2 buying exchange rates fields into new fields holing the values of the rate on the day the opportunity product has been created - These new fields will be used to calculate the USD cost price when pricing type = manual pricing</description>
+    <environments>Default</environments>
+    <interviewLabel>Copy &quot;Exchange Rate fields&quot; to lock rate on day of creation_1 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Copy &quot;Exchange Rate fields&quot; to lock rate on day of creation_1</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>myRule_1_A1</name>
+        <label>Update USD TO GBP</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>myRule_1_A2</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Buying_ExchangeRate_USDtoGBP_on_creation__c</field>
+            <value>
+                <elementReference>$Record.Buying_Exchange_Rate_from_USD_to_GBP__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>myRule_1_A2</name>
+        <label>Update USD TO EUR</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <faultConnector>
+            <targetReference>Check_Error_Message</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Buying_ExchangeRate_USDtoEUR_on_creation__c</field>
+            <value>
+                <elementReference>$Record.Buying_Exchange_Rate_from_USD_to_EUR__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>myRule_1_A1</targetReference>
+        </connector>
+        <filterFormula>({!$Setup.AutomationSettings__c.Automation_Enabled__c} = true ||
+{!$Setup.AutomationSettings__c.Automation_Enabled_for_Import__c} = true )</filterFormula>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Webinar</fullName>
+        <default>false</default>
+        <label>Webinar</label>
+    </customValue>
+    <customValue>
+        <fullName>Whitepaper</fullName>
+        <default>false</default>
+        <label>Whitepaper</label>
+    </customValue>
+    <customValue>
+        <fullName>Online Event</fullName>
+        <default>false</default>
+        <label>Online Event</label>
+    </customValue>
+    <customValue>
+        <fullName>Physical Event</fullName>
+        <default>false</default>
+        <label>Physical Event</label>
+    </customValue>
+    <customValue>
+        <fullName>Web Enquiry</fullName>
+        <default>false</default>
+        <label>Web Enquiry</label>
+    </customValue>
+    <customValue>
+        <fullName>Nurture Response</fullName>
+        <default>false</default>
+        <label>Nurture Response</label>
+    </customValue>
+    <customValue>
+        <fullName>Prospecting</fullName>
+        <default>false</default>
+        <label>Prospecting</label>
+    </customValue>
+    <customValue>
+        <fullName>Telephone Inbound</fullName>
+        <default>false</default>
+        <label>Telephone Inbound</label>
+    </customValue>
+    <customValue>
+        <fullName>Bus Dev Agency</fullName>
+        <default>false</default>
+        <label>Bus Dev Agency</label>
+    </customValue>
+    <customValue>
+        <fullName>Newsletter</fullName>
+        <default>false</default>
+        <label>Newsletter</label>
+    </customValue>
+    <customValue>
+        <fullName>Live Chat</fullName>
+        <default>false</default>
+        <label>Live Chat</label>
+    </customValue>
+    <customValue>
+        <fullName>Atlassian Lead Referral</fullName>
+        <default>false</default>
+        <label>Atlassian Lead Referral</label>
+    </customValue>
+    <customValue>
+        <fullName>Partners</fullName>
+        <default>false</default>
+        <label>Partners</label>
+    </customValue>
+    <customValue>
+        <fullName>Pass Throughs</fullName>
+        <default>false</default>
+        <label>Pass Throughs</label>
+    </customValue>
+    <customValue>
+        <fullName>NA</fullName>
+        <default>true</default>
+        <label>NA</label>
+    </customValue>
+    <masterLabel>Lead Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

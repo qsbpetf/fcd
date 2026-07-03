@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Area_of_Interest__c</fullName>
+    <label>Nature of Enquiry</label>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>General enquiry</fullName>
+                <default>false</default>
+                <label>General enquiry</label>
+            </value>
+            <value>
+                <fullName>Arrange a call back</fullName>
+                <default>false</default>
+                <label>Arrange a call back</label>
+            </value>
+            <value>
+                <fullName>Request information</fullName>
+                <default>false</default>
+                <label>Request information</label>
+            </value>
+            <value>
+                <fullName>Support</fullName>
+                <default>false</default>
+                <label>Support</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Book Training</fullName>
+                <default>false</default>
+                <label>Book Training</label>
+            </value>
+            <value>
+                <fullName>Subscribed to updates</fullName>
+                <default>false</default>
+                <label>Subscribed to updates</label>
+            </value>
+            <value>
+                <fullName>Downloaded white paper</fullName>
+                <default>false</default>
+                <label>Downloaded white paper</label>
+            </value>
+            <value>
+                <fullName>Additional info added by user</fullName>
+                <default>false</default>
+                <label>Additional info added by user</label>
+            </value>
+            <value>
+                <fullName>Arrange a call back time</fullName>
+                <default>false</default>
+                <label>Arrange a call back time</label>
+            </value>
+            <value>
+                <fullName>Viewed Webinar</fullName>
+                <default>false</default>
+                <label>Viewed Webinar</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
