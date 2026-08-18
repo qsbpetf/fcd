@@ -39,6 +39,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
 
     @track quoteUrl;  // Typical URL =
     @track matchingPromoCodes = [];
+    @track orderPreviewWarning = '';
 
     isLoading = false;
     importDisabled = true;
@@ -126,6 +127,7 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         };
         this.quote = { };
         this.entitlementIds = { };
+        this.orderPreviewWarning = '';
 
         this.isLoading = true;
         this.conversionResult = {
@@ -172,21 +174,13 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     })
                         .then(order => {
                             console.log('order OPEN', JSON.stringify(order));
-                            this.parseOrderData(order);
+                            this.handleOrderPreviewResult(order);
                             this.isLoading = false;
                         })
                         .catch(error => {
-                            console.error('error', error);
+                            console.error('order preview error', error);
+                            this.handleOrderPreviewFailure(error);
                             this.isLoading = false;
-                            this.quoteResults = {
-                                error: JSON.stringify(error),
-                                data: [],
-                                nextId: null,
-                                missingAccountId: true
-                            };
-                            if (error.status && error.status === 500) {
-                                this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
-                            }
                         });
                 } else if (this.quote.data[0].status === 'ACCEPTED') {
                     // -----------------
@@ -202,20 +196,13 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
                     })
                         .then(order => {
                             console.log('order ACCEPTED', JSON.stringify(order));
-                            this.parseOrderData(order);
+                            this.handleOrderPreviewResult(order);
                             this.isLoading = false;
                         })
                         .catch(error => {
+                            console.error('order fetch error', error);
+                            this.handleOrderPreviewFailure(error);
                             this.isLoading = false;
-                            this.quoteResults = {
-                                error: JSON.stringify(error),
-                                data: [],
-                                nextId: null,
-                                missingAccountId: true
-                            };
-                            if (error.status && error.status === 500) {
-                                this.quoteResults.error = error.body.exceptionType + ': ' + error.body.message;
-                            }
                         });
                 }
             })
@@ -234,17 +221,51 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
             });
     }
 
-    parseOrderData(order) {
-        if (order.missingAccountId) {
-            this.quote = {
-                error: JSON.stringify(order),
-                data: [],
-                nextId: null,
-                missingAccountId: true
-            };
-            if (order.status && order.status === 500) {
-                this.quote.error = order.body.exceptionType + ': ' + order.body.message;
+    handleOrderPreviewResult(order) {
+        if (order?.missingAccountId || order?.error) {
+            this.handleOrderPreviewFailure(order);
+            return;
+        }
+        this.parseOrderData(order);
+    }
+
+    handleOrderPreviewFailure(error) {
+        const warning = this.formatOrderPreviewError(error);
+        this.orderPreviewWarning = warning;
+        console.warn('Order preview unavailable:', warning);
+        this.dispatchEvent(new ShowToastEvent({
+            title: 'Order preview unavailable',
+            message: warning,
+            variant: 'warning',
+            mode: 'sticky'
+        }));
+    }
+
+    formatOrderPreviewError(error) {
+        const rawError = typeof error?.error === 'string' ? error.error : JSON.stringify(error);
+        try {
+            const parsed = JSON.parse(rawError);
+            if (parsed.detail && parsed.detail.includes('Promotions are not applicable')) {
+                return 'This quote has promotions that Atlassian cannot validate in order preview. The quote can still be imported, but line item Type may default to Renewal.';
             }
+            if (parsed.detail) {
+                return parsed.detail;
+            }
+            if (parsed.title) {
+                return parsed.title;
+            }
+        } catch (e) {
+            // Fall through to raw error message.
+        }
+        if (error?.body?.message) {
+            return error.body.exceptionType + ': ' + error.body.message;
+        }
+        return rawError;
+    }
+
+    parseOrderData(order) {
+        if (!order?.items?.length) {
+            return;
         }
 
         let orderItems = order.items.map(item => {
@@ -268,7 +289,10 @@ export default class PartnerPortalApiQuoteImporter extends LightningElement {
         console.log('orderItemsMap', orderItemsMap);
 
         this.quote.data[0].upcomingBills.lines.forEach(item => {
-            item.salesType = orderItemsMap[item.quoteLineId].salesType;
+            const orderItem = orderItemsMap[item.quoteLineId];
+            if (orderItem) {
+                item.salesType = orderItem.salesType;
+            }
         });
 
         console.log('this.quote.data[0]', this.quote.data[0]);
