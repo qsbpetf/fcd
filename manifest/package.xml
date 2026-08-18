@@ -803,6 +803,7 @@
         <name>NamedCredential</name>
     </types>
     <types>
+        <members>Atlassian_Deal_Reg_Access</members>
         <members>Atlassian_PPC_Access</members>
         <members>Atlassian_PPC_All_Offices</members>
         <members>Atlassian_PPC_Finnish_Office</members>
