@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enabled__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>When checked, the scheduled health-check job probes each Atlassian PPC named credential. Uncheck to pause scheduled probes without unscheduling the Apex job. Manual Probe Now still runs.</description>
+    <inlineHelpText>Uncheck to pause scheduled PPC credential health checks. Manual Probe Now still runs.</inlineHelpText>
+    <label>Enabled</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

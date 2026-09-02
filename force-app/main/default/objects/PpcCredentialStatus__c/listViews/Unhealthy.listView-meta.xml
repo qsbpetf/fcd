@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unhealthy</fullName>
+    <booleanFilter>1 OR 2</booleanFilter>
+    <columns>NAME</columns>
+    <columns>CV_Subsidiary__c</columns>
+    <columns>NamedCredentialName__c</columns>
+    <columns>Status__c</columns>
+    <columns>HttpStatusCode__c</columns>
+    <columns>LastChecked__c</columns>
+    <columns>LastFailure__c</columns>
+    <columns>ConsecutiveFailures__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Unhealthy</value>
+    </filters>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Other_Error</value>
+    </filters>
+    <label>Unhealthy</label>
+</ListView>

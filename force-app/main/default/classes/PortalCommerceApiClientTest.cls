@@ -426,4 +426,102 @@ private class PortalCommerceApiClientTest {
             System.assertEquals('Named Credential does not exist for the office: MISSING', e.getMessage(), 'Wrong exception message');
         }
     }
+
+    @IsTest
+    static void testProbeOfficeHealthy() {
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addOkResponse(PortalCommerceApiClient.INVOICE_GROUPS_ENDPOINT, '{"data":[]}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        PortalCommerceApiClient.ProbeResult result = instance.probeOffice('FI');
+        Test.stopTest();
+
+        System.assertEquals(PortalCommerceApiClient.STATUS_HEALTHY, result.status, 'Wrong probe status');
+        System.assertEquals(200, result.statusCode, 'Wrong status code');
+        System.assertEquals('Eficode_Office_FI', result.namedCredentialName, 'Wrong named credential');
+        System.assertEquals(1, mock.getRequests().size(), 'Wrong number of requests');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('invoice-groups'), 'Wrong endpoint');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('page-size=1'), 'Wrong page size');
+        System.assert(mock.getRequests()[0].getEndpoint().containsIgnoreCase('callout:Eficode_Office_FI'), 'Wrong office');
+        System.assertEquals('Bearer {!$Credential.Password}', mock.getRequests()[0].getHeader('Authorization'), 'Wrong auth header');
+        System.assertEquals('{!$Credential.Username}', mock.getRequests()[0].getHeader('X-transaction-account'), 'Wrong transaction account header');
+        System.assertEquals(null, result.errorMessage, 'Healthy probe should not store a body');
+    }
+
+    @IsTest
+    static void testProbeOfficeUnhealthy400() {
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addErrorResponse(PortalCommerceApiClient.INVOICE_GROUPS_ENDPOINT, 400, '{"error":"bad request"}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        PortalCommerceApiClient.ProbeResult result = instance.probeOffice('FI');
+        Test.stopTest();
+
+        System.assertEquals(PortalCommerceApiClient.STATUS_UNHEALTHY, result.status, '400 should be Unhealthy');
+        System.assertEquals(400, result.statusCode, 'Wrong status code');
+        System.assertEquals('{"error":"bad request"}', result.errorMessage, 'Wrong error body');
+    }
+
+    @IsTest
+    static void testProbeOfficeOtherError500() {
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        mock.addErrorResponse(PortalCommerceApiClient.INVOICE_GROUPS_ENDPOINT, 500, '{"error":"server"}');
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        PortalCommerceApiClient.ProbeResult result = instance.probeOffice('FI');
+        Test.stopTest();
+
+        System.assertEquals(PortalCommerceApiClient.STATUS_OTHER_ERROR, result.status, '500 should be Other Error');
+        System.assertEquals(500, result.statusCode, 'Wrong status code');
+    }
+
+    @IsTest
+    static void testProbeOfficeMissingNamedCredential() {
+        PortalCommerceApiClient instance = PortalCommerceApiClient.getInstance();
+        GeneralHttpCalloutMock mock = new GeneralHttpCalloutMock();
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        Test.startTest();
+        PortalCommerceApiClient.ProbeResult result = instance.probeOffice('MISSING');
+        Test.stopTest();
+
+        System.assertEquals(PortalCommerceApiClient.STATUS_OTHER_ERROR, result.status, 'Missing credential should be Other Error');
+        System.assertEquals(0, result.statusCode, 'Missing credential should not have an HTTP status');
+        System.assertEquals(0, mock.getRequests().size(), 'Should not call out when named credential is missing');
+        System.assert(result.errorMessage.contains('Named Credential does not exist'), 'Wrong error message');
+    }
+
+    @IsTest
+    static void testMapProbeStatus() {
+        System.assertEquals(PortalCommerceApiClient.STATUS_HEALTHY, PortalCommerceApiClient.mapProbeStatus(200));
+        System.assertEquals(PortalCommerceApiClient.STATUS_HEALTHY, PortalCommerceApiClient.mapProbeStatus(201));
+        System.assertEquals(PortalCommerceApiClient.STATUS_UNHEALTHY, PortalCommerceApiClient.mapProbeStatus(400));
+        System.assertEquals(PortalCommerceApiClient.STATUS_UNHEALTHY, PortalCommerceApiClient.mapProbeStatus(401));
+        System.assertEquals(PortalCommerceApiClient.STATUS_UNHEALTHY, PortalCommerceApiClient.mapProbeStatus(403));
+        System.assertEquals(PortalCommerceApiClient.STATUS_OTHER_ERROR, PortalCommerceApiClient.mapProbeStatus(500));
+        System.assertEquals(PortalCommerceApiClient.STATUS_OTHER_ERROR, PortalCommerceApiClient.mapProbeStatus(0));
+        System.assertEquals(PortalCommerceApiClient.STATUS_OTHER_ERROR, PortalCommerceApiClient.mapProbeStatus(null));
+    }
+
+    @IsTest
+    static void testTruncateProbeBody() {
+        System.assertEquals(null, PortalCommerceApiClient.truncateProbeBody(null));
+        System.assertEquals('short', PortalCommerceApiClient.truncateProbeBody('short'));
+        String longBody = 'x'.leftPad(5000, 'x');
+        String truncated = PortalCommerceApiClient.truncateProbeBody(longBody);
+        System.assertEquals(4000, truncated.length(), 'Body should be truncated to 4000 chars');
+    }
+
+    @IsTest
+    static void testGetNamedCredentialDeveloperName() {
+        System.assertEquals('Eficode_Office_FI', PortalCommerceApiAccessMgmt.getNamedCredentialDeveloperName('FI'));
+        System.assertEquals('Eficode_Office_JODOCUS', PortalCommerceApiAccessMgmt.getNamedCredentialDeveloperName('Jodocus GmbH'));
+        System.assertEquals(null, PortalCommerceApiAccessMgmt.getNamedCredentialDeveloperName('MISSING'));
+    }
 }

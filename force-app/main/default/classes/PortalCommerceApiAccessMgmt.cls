@@ -69,10 +69,24 @@ public with sharing class PortalCommerceApiAccessMgmt {
      * @return True if the named credential exists, false otherwise
      */
     public static Boolean namedCredentialExists(String office) {
-
-        String name = 'Eficode_Office_' + translateApiNameToNamedCredential(office);
+        String name = getNamedCredentialDeveloperName(office);
+        if (String.isBlank(name)) {
+            return false;
+        }
         List<NamedCredential> creds = new List<NamedCredential>([SELECT Id FROM NamedCredential WHERE DeveloperName = :name]);
         return creds.size() > 0;
+    }
+
+    /**
+     * Returns the named credential developer name for an office locator or subsidiary API name,
+     * e.g. FI or Jodocus GmbH → Eficode_Office_FI / Eficode_Office_JODOCUS.
+     */
+    public static String getNamedCredentialDeveloperName(String office) {
+        String officeLocator = translateApiNameToNamedCredential(office);
+        if (String.isBlank(officeLocator)) {
+            return null;
+        }
+        return OFFICE_CUSTOM_PERMISSION_PREFIX + officeLocator;
     }
 
     public static String getOfficeTransactionAccountId(String office) {

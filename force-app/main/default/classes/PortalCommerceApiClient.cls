@@ -25,6 +25,13 @@ public with sharing class PortalCommerceApiClient {
     @TestVisible static private final String ENTITLEMENT_DETAILS_ENDPOINT = '/v2/entitlements/{{ENTITLEMENT_ID}}/details';
     @TestVisible static private final String ENTITLEMENT_PARTNER_INFO_ENDPOINT = '/v1/entitlements/{{ENTITLEMENT_ID}}/partner-acquisition-info';
     @TestVisible static private final String OFFERINGS_ENDPOINT = '/v2/products/{{PRODUCT_ID}}/offerings';
+    @TestVisible static private final Integer PROBE_TIMEOUT_MS = 10000;
+    @TestVisible static private final Integer PROBE_ERROR_BODY_MAX_LENGTH = 4000;
+
+    public static final String STATUS_HEALTHY = 'Healthy';
+    public static final String STATUS_UNHEALTHY = 'Unhealthy';
+    public static final String STATUS_OTHER_ERROR = 'Other_Error';
+    public static final String STATUS_UNKNOWN = 'Unknown';
 
     @TestVisible private Map<String, String> namedCredentials = new Map<String, String> { };
 
@@ -133,6 +140,78 @@ public with sharing class PortalCommerceApiClient {
         req.setEndpoint(generateEndpoint(office, INVOICE_GROUPS_ENDPOINT, pageSize, nextId, null));
         req.setMethod('GET');
         return new Http().send(req);
+    }
+
+    /**
+     * Lightweight health probe for a named credential. Uses GET /v2/invoice-groups?page-size=1
+     * with the transaction-account header. Skips user office-permission checks and uses a short timeout.
+     * 4xx/5xx are returned as results rather than thrown.
+     */
+    public ProbeResult probeOffice(String office) {
+        ProbeResult result = new ProbeResult();
+        result.office = office;
+        Long started = System.currentTimeMillis();
+        try {
+            String namedCredentialName = PortalCommerceApiAccessMgmt.getNamedCredentialDeveloperName(office);
+            result.namedCredentialName = namedCredentialName;
+            if (String.isBlank(namedCredentialName) || !PortalCommerceApiAccessMgmt.namedCredentialExists(office)) {
+                result.statusCode = 0;
+                result.status = STATUS_OTHER_ERROR;
+                result.errorMessage = 'Named Credential does not exist for the office: ' + office;
+                return result;
+            }
+
+            HttpRequest req = createRequestHeader(true);
+            req.setTimeout(PROBE_TIMEOUT_MS);
+            req.setMethod('GET');
+            req.setEndpoint(
+                COMMERCE_API.replace('{{NAMED_CREDENTIAL}}', namedCredentialName)
+                    + INVOICE_GROUPS_ENDPOINT
+                    + '?page-size=1'
+            );
+
+            HttpResponse res = new Http().send(req);
+            result.statusCode = res.getStatusCode();
+            result.status = mapProbeStatus(res.getStatusCode());
+            if (result.status != STATUS_HEALTHY) {
+                result.errorMessage = truncateProbeBody(res.getBody());
+            }
+        } catch (Exception e) {
+            result.statusCode = 0;
+            result.status = STATUS_OTHER_ERROR;
+            result.errorMessage = e.getMessage();
+        } finally {
+            result.responseTimeMs = System.currentTimeMillis() - started;
+        }
+        return result;
+    }
+
+    @TestVisible
+    static String mapProbeStatus(Integer statusCode) {
+        if (statusCode != null && statusCode >= 200 && statusCode < 300) {
+            return STATUS_HEALTHY;
+        }
+        if (statusCode != null && statusCode >= 400 && statusCode < 500) {
+            return STATUS_UNHEALTHY;
+        }
+        return STATUS_OTHER_ERROR;
+    }
+
+    @TestVisible
+    static String truncateProbeBody(String body) {
+        if (String.isBlank(body)) {
+            return body;
+        }
+        return body.length() > PROBE_ERROR_BODY_MAX_LENGTH ? body.left(PROBE_ERROR_BODY_MAX_LENGTH) : body;
+    }
+
+    public class ProbeResult {
+        public String office;
+        public String namedCredentialName;
+        public Integer statusCode;
+        public String status;
+        public String errorMessage;
+        public Long responseTimeMs;
     }
 
     public HttpResponse getEntitlementDisplayInfo(String office, String entitlementId) {

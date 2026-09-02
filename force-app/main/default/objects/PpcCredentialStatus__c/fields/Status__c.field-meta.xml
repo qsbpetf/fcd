@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>Health of the named credential. Healthy = HTTP 2xx, Unhealthy = HTTP 4xx, Other Error = 5xx / timeout / exception, Unknown = never probed. Flow should trigger when this field changes.</description>
+    <inlineHelpText>Healthy = 2xx, Unhealthy = 4xx, Other Error = 5xx or no response.</inlineHelpText>
+    <label>Status</label>
+    <required>true</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Unknown</fullName>
+                <default>true</default>
+                <label>Unknown</label>
+            </value>
+            <value>
+                <fullName>Healthy</fullName>
+                <default>false</default>
+                <label>Healthy</label>
+            </value>
+            <value>
+                <fullName>Unhealthy</fullName>
+                <default>false</default>
+                <label>Unhealthy</label>
+            </value>
+            <value>
+                <fullName>Other_Error</fullName>
+                <default>false</default>
+                <label>Other Error</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

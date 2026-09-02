@@ -191,9 +191,11 @@
         <members>MakeWebhookSettings__c</members>
         <members>OpportunityLineItem</members>
         <members>OpportunityLineItemColumnConfig__mdt</members>
+        <members>PPC_HealthCheckSettings__c</members>
         <members>PPC_InvoiceAutoImportSettings__c</members>
         <members>PPC_TransactionAccount__mdt</members>
         <members>PendingInvoice__c</members>
+        <members>PpcCredentialStatus__c</members>
         <members>PortalProductToSalesforceMapping__mdt</members>
         <members>PpcProductToSalesforceMapping__mdt</members>
         <members>PromotionCode__c</members>
@@ -229,6 +231,7 @@
         <members>Deal_Service_Registration</members>
         <members>InvoiceGroup__c</members>
         <members>PendingInvoice__c</members>
+        <members>PpcCredentialStatus__c</members>
         <members>PromotionCode__c</members>
         <name>CustomTab</name>
     </types>
@@ -797,6 +800,7 @@
         <members>MakeWebhookOpportunityStageConfig__mdt-Make Webhook Opportunity Stage Config Layout</members>
         <members>PPC_TransactionAccount__mdt-PPC Transaction Account Layout</members>
         <members>PendingInvoice__c-Pending Invoice Layout</members>
+        <members>PpcCredentialStatus__c-PPC Credential Status Layout</members>
         <members>PortalProductToSalesforceMapping__mdt-Portal Product To Salesforce Mapping Layout</members>
         <members>PpcProductToSalesforceMapping__mdt-PPC Product To Salesforce Mapping Layout</members>
         <members>PromotionCode__c-Promotion Code Layout</members>

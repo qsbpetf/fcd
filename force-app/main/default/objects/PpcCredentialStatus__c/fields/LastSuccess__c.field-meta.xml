@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastSuccess__c</fullName>
+    <description>When this named credential last returned HTTP 2xx.</description>
+    <inlineHelpText>Date and time of the last successful (2xx) probe.</inlineHelpText>
+    <label>Last Success</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>
