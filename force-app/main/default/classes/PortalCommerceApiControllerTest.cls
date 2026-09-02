@@ -181,6 +181,68 @@ private class PortalCommerceApiControllerTest {
     }
 
     @IsTest
+    private static void testGetInvoicesPageSuccessful() {
+        PortalCommerceApiInvoices.InvoiceList invoicesToReturn = new PortalCommerceApiInvoices.InvoiceList();
+        PortalCommerceApiInvoices.InvoiceInfo invoice = new PortalCommerceApiInvoices.InvoiceInfo();
+        invoice.invoiceNumber = '123';
+        invoice.id = '123456';
+        invoice.items = new List<PortalCommerceApiInvoices.InvoiceItem>();
+        invoicesToReturn.data.add(invoice);
+        invoicesToReturn.nextId = 'next-invoice-id';
+
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        InvoiceGroup__c invoiceGroup = TestDataFactory.getInvoiceGroup(acc.Id);
+        insert invoiceGroup;
+
+        mockServiceInv
+            .when('getInvoices')
+            .thenReturn(invoicesToReturn);
+
+        Test.startTest();
+        PortalCommerceApiController.InvoicePageResult page = PortalCommerceApiController.getInvoicesPage(acc.Id, 0, null);
+        Test.stopTest();
+
+        System.assertEquals(1, page.data.size(), 'Should have one invoice');
+        System.assertEquals(true, page.hasMore, 'Should have more invoices');
+        System.assertEquals('next-invoice-id', page.nextId, 'Wrong nextId');
+        System.assertEquals(0, page.invoiceGroupIndex, 'Should stay on first invoice group');
+        System.assertEquals('FI', page.data[0].office, 'Office should be set');
+    }
+
+    @IsTest
+    private static void testGetInvoicesPageHandlesCalloutSizeLimit() {
+        Account acc = TestDataFactory.getAccount('Sweden', 'USD');
+        acc.CV_Subsidiary__c = 'FI';
+        insert acc;
+        InvoiceGroup__c invoiceGroup = TestDataFactory.getInvoiceGroup(acc.Id);
+        insert invoiceGroup;
+
+        PortalCommerceApiInvoices.InvoiceList sizeError = new PortalCommerceApiInvoices.InvoiceList();
+        sizeError.error = 'Exceeded max size limit of 6000000';
+        sizeError.missingAccountId = true;
+
+        mockServiceInv
+            .when('getInvoices')
+            .thenReturn(sizeError);
+
+        Test.startTest();
+        PortalCommerceApiController.InvoicePageResult page = PortalCommerceApiController.getInvoicesPage(
+            acc.Id,
+            0,
+            'dbbee9f7-8e25-4707-a577-8b245139da33'
+        );
+        Test.stopTest();
+
+        System.assertEquals(false, page.hasMore, 'Should stop pagination after oversized invoice');
+        System.assertEquals(false, page.missingAccountId, 'Should not treat as missing account');
+        System.assertEquals(1, page.data.size(), 'Should include placeholder invoice');
+        System.assertEquals(true, page.data[0].tooLargeToLoad, 'Should flag invoice as too large');
+        System.assertEquals('dbbee9f7-8e25-4707-a577-8b245139da33', page.data[0].id, 'Wrong invoice id');
+    }
+
+    @IsTest
     static void testGetPaidInvoicesSuccessful() {
         PortalCommerceApiInvoices.InvoiceList invoicesToReturn = new PortalCommerceApiInvoices.InvoiceList();
         PortalCommerceApiInvoices.InvoiceInfo invoice = new PortalCommerceApiInvoices.InvoiceInfo();

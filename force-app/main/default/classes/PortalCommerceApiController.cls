@@ -9,6 +9,8 @@ public with sharing class PortalCommerceApiController {
     @TestVisible static private PortalCommerceApiInvoices apiInvoices = PortalCommerceApiInvoices.getInstance();
     @TestVisible static private PortalCommerceApiOrders apiOrders = PortalCommerceApiOrders.getInstance();
     @TestVisible static private Integer INVOICE_PAGE_SIZE = 4;
+    @TestVisible static private Integer INVOICE_VIEWER_PAGE_SIZE = 1;
+    @TestVisible static private Integer INVOICE_VIEWER_MAX_LINE_ITEMS = 50;
 
     public static void setApiQuotes(PortalCommerceApiQuotes api) {
         apiQuotes = api;
@@ -69,8 +71,8 @@ public with sharing class PortalCommerceApiController {
             }
             do {
                 System.debug('### Fetching invoices for invoice group: ' + invoiceGroup.Name + ' (' + invoiceGroup.AtlassianInvoiceGroupId__c + ')');
-                PortalCommerceApiInvoices.InvoiceList invoices = apiInvoices.getInvoices(acc.CV_Subsidiary__c, invoiceGroup.AtlassianInvoiceGroupId__c, 50, nextId);
-                System.debug('### Fetched ' + invoices.data.size() + ' invoices of max 50. nextId = ' + invoices.nextId);
+                PortalCommerceApiInvoices.InvoiceList invoices = apiInvoices.getInvoices(acc.CV_Subsidiary__c, invoiceGroup.AtlassianInvoiceGroupId__c, INVOICE_VIEWER_PAGE_SIZE, nextId);
+                System.debug('### Fetched ' + invoices.data.size() + ' invoices of max ' + INVOICE_VIEWER_PAGE_SIZE + '. nextId = ' + invoices.nextId);
                 allInvoices.add(invoices);
                 nextId = invoices.nextId;
                 calloutsLeft--;
@@ -79,6 +81,100 @@ public with sharing class PortalCommerceApiController {
         System.debug('### OUT: Callouts left: ' + calloutsLeft);
         prepareInvoicesForDisplay(allInvoices, acc.CV_Subsidiary__c);
         return allInvoices;
+    }
+
+    @AuraEnabled
+    static public InvoicePageResult getInvoicesPage(String accountId, Integer invoiceGroupIndex, String nextId) {
+        InvoicePageResult result = new InvoicePageResult();
+        Integer groupIndex = invoiceGroupIndex == null ? 0 : invoiceGroupIndex;
+        String currentNextId = nextId;
+
+        Account acc = [SELECT Id, CV_Subsidiary__c FROM Account WHERE Id = :accountId];
+        List<InvoiceGroup__c> invoiceGroups = new List<InvoiceGroup__c>([
+            SELECT Id, Name, AtlassianInvoiceGroupId__c
+            FROM InvoiceGroup__c
+            WHERE Account__c = :accountId
+            AND Active__c = TRUE
+            ORDER BY CreatedAt__c DESC
+        ]);
+
+        if (invoiceGroups.isEmpty()) {
+            result.error = 'No active invoice groups found';
+            result.missingAccountId = true;
+            return result;
+        }
+
+        if (groupIndex >= invoiceGroups.size()) {
+            result.invoiceGroupIndex = groupIndex;
+            return result;
+        }
+
+        Integer pagesFetched = 0;
+        Integer maxPagesPerRequest = Math.min(10, Limits.getLimitCallouts() - Limits.getCallouts() - 2);
+
+        while (groupIndex < invoiceGroups.size() && pagesFetched < maxPagesPerRequest) {
+            InvoiceGroup__c invoiceGroup = invoiceGroups[groupIndex];
+            PortalCommerceApiInvoices.InvoiceList invoices;
+            try {
+                invoices = apiInvoices.getInvoices(
+                    acc.CV_Subsidiary__c,
+                    invoiceGroup.AtlassianInvoiceGroupId__c,
+                    INVOICE_VIEWER_PAGE_SIZE,
+                    currentNextId
+                );
+            } catch (System.CalloutException ex) {
+                invoices = new PortalCommerceApiInvoices.InvoiceList();
+                invoices.error = ex.getMessage();
+                invoices.missingAccountId = true;
+            }
+
+            if (invoices == null || invoices.missingAccountId == true) {
+                if (invoices != null && isCalloutSizeLimitError(invoices.error)) {
+                    return buildOversizedInvoiceResult(result, currentNextId, acc.CV_Subsidiary__c, groupIndex);
+                }
+                result.error = invoices == null ? 'No response from invoice API' : invoices.error;
+                result.missingAccountId = true;
+                result.invoiceGroupIndex = groupIndex;
+                return result;
+            }
+
+            if (invoices.data == null) {
+                invoices.data = new List<PortalCommerceApiInvoices.InvoiceInfo>();
+            }
+
+            pagesFetched++;
+
+            if (!invoices.data.isEmpty()) {
+                prepareInvoicesForDisplay(new List<PortalCommerceApiInvoices.InvoiceList>{ invoices }, acc.CV_Subsidiary__c);
+                trimInvoicesForViewer(invoices.data);
+                result.data = invoices.data;
+                result.nextId = invoices.nextId;
+
+                if (invoices.nextId != null) {
+                    result.hasMore = true;
+                    result.invoiceGroupIndex = groupIndex;
+                } else if (groupIndex + 1 < invoiceGroups.size()) {
+                    result.hasMore = true;
+                    result.nextId = null;
+                    result.invoiceGroupIndex = groupIndex + 1;
+                } else {
+                    result.invoiceGroupIndex = groupIndex;
+                }
+                return result;
+            }
+
+            if (invoices.nextId != null) {
+                currentNextId = invoices.nextId;
+            } else {
+                groupIndex++;
+                currentNextId = null;
+            }
+        }
+
+        result.invoiceGroupIndex = groupIndex;
+        result.nextId = currentNextId;
+        result.hasMore = currentNextId != null || groupIndex < invoiceGroups.size();
+        return result;
     }
 
     @AuraEnabled
@@ -120,10 +216,60 @@ public with sharing class PortalCommerceApiController {
 
     static private void prepareInvoicesForDisplay(List<PortalCommerceApiInvoices.InvoiceList> allInvoices, String office) {
         for (PortalCommerceApiInvoices.InvoiceList invoices : allInvoices) {
+            if (invoices.data == null) {
+                continue;
+            }
             for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices.data) {
                 invoice.office = office;
             }
         }
+    }
+
+    static private void trimInvoicesForViewer(List<PortalCommerceApiInvoices.InvoiceInfo> invoices) {
+        for (PortalCommerceApiInvoices.InvoiceInfo invoice : invoices) {
+            if (invoice.items == null) {
+                invoice.items = new List<PortalCommerceApiInvoices.InvoiceItem>();
+                continue;
+            }
+            if (invoice.items.size() > INVOICE_VIEWER_MAX_LINE_ITEMS) {
+                invoice.totalItemCount = invoice.items.size();
+                invoice.itemsTruncated = true;
+                List<PortalCommerceApiInvoices.InvoiceItem> trimmed = new List<PortalCommerceApiInvoices.InvoiceItem>();
+                for (Integer i = 0; i < INVOICE_VIEWER_MAX_LINE_ITEMS; i++) {
+                    trimmed.add(invoice.items[i]);
+                }
+                invoice.items = trimmed;
+            }
+        }
+    }
+
+    static private Boolean isCalloutSizeLimitError(String error) {
+        return error != null && error.contains('6000000');
+    }
+
+    static private InvoicePageResult buildOversizedInvoiceResult(
+        InvoicePageResult result,
+        String invoiceId,
+        String office,
+        Integer groupIndex
+    ) {
+        result.invoiceGroupIndex = groupIndex;
+        result.hasMore = false;
+        result.nextId = null;
+        result.missingAccountId = false;
+        if (String.isNotBlank(invoiceId)) {
+            PortalCommerceApiInvoices.InvoiceInfo placeholder = new PortalCommerceApiInvoices.InvoiceInfo();
+            placeholder.id = invoiceId;
+            placeholder.invoiceNumber = 'Too large to load';
+            placeholder.status = 'N/A';
+            placeholder.office = office;
+            placeholder.items = new List<PortalCommerceApiInvoices.InvoiceItem>();
+            placeholder.tooLargeToLoad = true;
+            placeholder.loadError = 'This invoice exceeds the Salesforce 6 MB API response limit. Use Preview or the Atlassian Partner Portal to view it.';
+            result.data = new List<PortalCommerceApiInvoices.InvoiceInfo>{ placeholder };
+        }
+        result.error = 'One or more invoices exceed the Salesforce 6 MB API response limit and could not be loaded in full.';
+        return result;
     }
 
     @AuraEnabled
@@ -188,5 +334,20 @@ public with sharing class PortalCommerceApiController {
     @AuraEnabled
     static public String getInvoicePdfStatic(String office, String invoiceId) {
         return apiInvoices.getInvoicePdf(office, invoiceId);
+    }
+
+    public class InvoicePageResult {
+        @AuraEnabled public List<PortalCommerceApiInvoices.InvoiceInfo> data { get; set; }
+        @AuraEnabled public String nextId { get; set; }
+        @AuraEnabled public Integer invoiceGroupIndex { get; set; }
+        @AuraEnabled public Boolean hasMore { get; set; }
+        @AuraEnabled public String error { get; set; }
+        @AuraEnabled public Boolean missingAccountId { get; set; }
+
+        public InvoicePageResult() {
+            data = new List<PortalCommerceApiInvoices.InvoiceInfo>();
+            hasMore = false;
+            missingAccountId = false;
+        }
     }
 }

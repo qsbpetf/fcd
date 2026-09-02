@@ -24,7 +24,7 @@ export function formatPricebookEntries(pricebookEntries) {
     "Product2.Name": pricebookEntry?.Product2?.Name,
     "Product2.Revenue_Type__c": pricebookEntry?.Product2?.Revenue_Type__c,
     "Product2.Family": pricebookEntry?.Product2?.Family,
-    "Product2.Business_Area__c": pricebookEntry?.Product2?.Business_Area__c,
+    "Product2.Solution_Areas__c": pricebookEntry?.Product2?.Solution_Areas__c,
     "Product2.Unit_of_Measure__c": pricebookEntry?.Product2?.Unit_of_Measure__c
   }));
 }

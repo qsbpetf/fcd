@@ -10,5 +10,5 @@ global with sharing class SiteLoginController {
         return Site.login(username, password, startUrl);
     }
     
-   	global SiteLoginController () {}
+    global SiteLoginController () {}
 }

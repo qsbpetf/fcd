@@ -1,6 +1,8 @@
 import { LightningElement, api, wire } from 'lwc';
 import getActiveProducts from '@salesforce/apex/AccountActiveProductsController.getActiveProducts';
 
+const PREVIEW_SIZE = 10;
+
 const COLUMNS = [
     {
         label: 'Product Name',
@@ -65,17 +67,20 @@ export default class AccountActiveProducts extends LightningElement {
     @api recordId;
 
     products = [];
+    totalCount = 0;
+    limitSize = PREVIEW_SIZE;
     error;
     isLoading = true;
     columns = COLUMNS;
     sortedBy = 'License_end_date__c';
     sortedDirection = 'desc';
 
-    @wire(getActiveProducts, { accountId: '$recordId' })
+    @wire(getActiveProducts, { accountId: '$recordId', limitSize: '$limitSize' })
     wiredProducts({ error, data }) {
         this.isLoading = false;
         if (data) {
-            this.products = data.map(item => ({
+            this.totalCount = data.totalCount;
+            this.products = data.records.map(item => ({
                 ...item,
                 id: item.Id,
                 productName: item.Product2 ? item.Product2.Name : '',
@@ -88,6 +93,7 @@ export default class AccountActiveProducts extends LightningElement {
         } else if (error) {
             this.error = error;
             this.products = [];
+            this.totalCount = 0;
         }
     }
 
@@ -97,6 +103,31 @@ export default class AccountActiveProducts extends LightningElement {
 
     get productCount() {
         return this.products ? this.products.length : 0;
+    }
+
+    get cardTitle() {
+        return this.totalCount > 0
+            ? `Active Products (${this.totalCount})`
+            : 'Active Products';
+    }
+
+    get showViewAll() {
+        return this.limitSize !== null && this.totalCount > PREVIEW_SIZE;
+    }
+
+    get viewAllLabel() {
+        return `View All (${this.totalCount})`;
+    }
+
+    get showingLabel() {
+        return this.showViewAll
+            ? `Showing ${this.productCount} of ${this.totalCount} active product(s)`
+            : `Showing ${this.productCount} active product(s)`;
+    }
+
+    handleViewAll() {
+        this.isLoading = true;
+        this.limitSize = null; // wire yeniden tetiklenir, tüm liste gelir
     }
 
     handleSort(event) {

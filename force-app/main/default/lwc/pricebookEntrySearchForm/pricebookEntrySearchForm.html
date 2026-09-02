@@ -2,8 +2,8 @@
   @description       : 
   @author            : tatu.lappetelainen@ceili.fi
   @group             : 
-  @last modified on  : 03-07-2024
-  @last modified by  : tatu.lappetelainen@ceili.fi
+  @last modified on  : 30-07-2026
+  @last modified by  : furkan.kokturk@eficode.com
 -->
 <template>
   <div class="eu-text-filter-container">
@@ -30,11 +30,11 @@
       onchange={handleProductFamilyChange}
     ></lightning-select>
     <lightning-select
-      name="businessArea"
-      label="Business Area"
-      value={businessArea}
-      options={computedBusinessAreas}
-      onchange={handleBusinessAreaChange}
+      name="solutionArea"
+      label="Solution Area"
+      value={solutionArea}
+      options={computedSolutionAreas}
+      onchange={handleSolutionAreaChange}
     ></lightning-select>
   </div>
   <div class="eu-actions-container">

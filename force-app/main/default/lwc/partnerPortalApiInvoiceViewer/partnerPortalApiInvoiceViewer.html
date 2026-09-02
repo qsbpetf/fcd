@@ -11,7 +11,14 @@
             <h2 class="slds-text-color_error">{invoiceResults.error}</h2>
         </template>
 
+        <template if:true={invoiceResults.error}>
+            <template if:false={invoiceResults.missingAccountId}>
+                <h2 class="slds-text-color_error slds-m-bottom_small">{invoiceResults.error}</h2>
+            </template>
+        </template>
+
         <template if:false={invoiceResults.missingAccountId}>
+            <template if:true={hasInvoiceData}>
             <div class="conv-result">
                 <h1>Invoices found through API</h1>
                 <div class="rounded-rect">
@@ -33,7 +40,7 @@
                         </thead>
                         <tbody>
                             <template for:each={invoiceResults.data} for:item="inv">
-                                <tr key={inv.id} class="tr-yellow">
+                                <tr key={inv.id} class={inv.rowClass}>
                                     <td>{inv.id}</td>
                                     <td>{inv.invoiceNumber}</td>
                                     <td>{inv.paymentMethodObj.type}</td>
@@ -50,11 +57,16 @@
                                                 onclick={handlePreview}
                                                 variant="neutral"
                                                 data-id={inv.id}
+                                                data-office={inv.office}
                                         ></lightning-button>
                                     </td>
                                 </tr>
                                 <tr key={inv.invoiceNumber}>
                                     <td colspan=100>
+                                        <template if:true={inv.tooLargeToLoad}>
+                                            <p class="slds-text-color_error slds-p-around_small">{inv.loadError}</p>
+                                        </template>
+                                        <template if:false={inv.tooLargeToLoad}>
                                         <table class="table-green">
                                             <thead>
                                                 <tr>
@@ -99,6 +111,10 @@
                                                 </template>
                                             </tbody>
                                         </table>
+                                        <template if:true={inv.truncationMessage}>
+                                            <p class="slds-text-color_weak slds-p-around_x-small">{inv.truncationMessage}</p>
+                                        </template>
+                                        </template>
                                     </td>
                                 </tr>
                             </template>
@@ -106,6 +122,17 @@
                     </table>
                 </div>
             </div>
+            </template>
+            <template if:true={showLoadMore}>
+                <div class="slds-m-top_medium slds-text-align_center">
+                    <lightning-button
+                        label="Load more invoices"
+                        onclick={handleLoadMore}
+                        variant="neutral"
+                        disabled={isLoadingMore}
+                    ></lightning-button>
+                </div>
+            </template>
         </template>
     </lightning-card>
 </template>

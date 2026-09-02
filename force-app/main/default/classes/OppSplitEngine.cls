@@ -18,7 +18,7 @@ public without sharing class OppSplitEngine {
             SELECT Id, OwnerId, AccountId, T1_Opp__c, Total_Amount_T2__c, Total_Amount_T3__c,
                    CloseDate, Run_Splits_Flow__c, Net_Revenue_Forecast__c,
                    Estimate_Managed_Service_Revenue__c, Estimate_Licensing_Revenue__c,
-                   T3_From_Products__c, Quota_Update_Allowed__c,
+                   T3_From_Products__c, Quota_Update_Allowed__c, Second_opp_owner__c,
                    Account.OwnerId, Account.T1_Start_Date__c
             FROM Opportunity
             WHERE Id IN :allCandidateIds
@@ -180,7 +180,11 @@ public without sharing class OppSplitEngine {
 
             // A. Stale Owner Cleanup
             Id accOwnerId = populated != null && populated.Account != null ? populated.Account.OwnerId : null;
-            if (s.SplitOwnerId != current.OwnerId && (accOwnerId == null || s.SplitOwnerId != accOwnerId)) {
+            Id secondOppOwnerId = populated != null ? populated.Second_opp_owner__c : null;
+            Boolean isKnownOwner = s.SplitOwnerId == current.OwnerId
+                || (accOwnerId != null && s.SplitOwnerId == accOwnerId)
+                || (secondOppOwnerId != null && s.SplitOwnerId == secondOppOwnerId);
+            if (!isKnownOwner) {
                 cs.toDelete.add(s);
                 continue;
             }

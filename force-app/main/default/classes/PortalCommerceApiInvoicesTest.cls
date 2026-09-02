@@ -70,6 +70,43 @@ private class PortalCommerceApiInvoicesTest {
     }
 
     @IsTest
+    static void testGetInvoicesNormalizesNullFieldsAfterDeserialize() {
+        HttpResponse response = new HttpResponse();
+        response.setStatusCode(200);
+        response.setStatus('OK');
+        response.setBody('{"data":[{"id":"123456","number":"123"}],"nextId":"next-invoice-id"}');
+
+        mockService
+            .when('getInvoices')
+            .thenReturn(response);
+
+        Test.startTest();
+        PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
+        PortalCommerceApiInvoices.InvoiceList invoices = instance.getInvoices('FI', 'INV_GRP', 1, null);
+        Test.stopTest();
+
+        System.assertNotEquals(null, invoices, 'Invoices should not be null');
+        System.assertEquals(false, invoices.missingAccountId, 'missingAccountId should default to false');
+        System.assertEquals(1, invoices.data.size(), 'Should have one invoice');
+        System.assertEquals('next-invoice-id', invoices.nextId, 'Wrong nextId');
+    }
+
+    @IsTest
+    static void testGetInvoicesCalloutException() {
+        mockService
+            .when('getInvoices')
+            .thenThrow(new System.CalloutException('Exceeded max size limit of 6000000'));
+
+        Test.startTest();
+        PortalCommerceApiInvoices instance = PortalCommerceApiInvoices.getInstance();
+        PortalCommerceApiInvoices.InvoiceList invoices = instance.getInvoices('FI', 'INV_GRP', 1, null);
+        Test.stopTest();
+
+        System.assertEquals(true, invoices.missingAccountId, 'Should flag error');
+        System.assert(invoices.error.contains('6000000'), 'Should contain callout error message');
+    }
+
+    @IsTest
     static void testGetInvoicesStaticSuccessful() {
         HttpResponse response = new HttpResponse();
         response.setStatusCode(200);

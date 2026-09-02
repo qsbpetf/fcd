@@ -50,6 +50,10 @@ h2 {
     background-color: #FFFFD0; /* Yellow */
 }
 
+.tr-error {
+    background-color: #ffd6d6;
+}
+
 .number {
     text-align: right;
     width: 60px;

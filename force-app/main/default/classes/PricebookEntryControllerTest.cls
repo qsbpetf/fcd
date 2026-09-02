@@ -1,26 +1,24 @@
 /**
- * This class contains unit tests for validating the behavior of Apex classes
- * and triggers.
- *
- * Unit tests are class methods that verify whether a particular piece
- * of code is working properly. Unit test methods take no arguments,
- * commit no data to the database, and are flagged with the testMethod
- * keyword in the method definition.
- *
- * All test methods in an org are executed whenever Apex code is deployed
- * to a production org to confirm correctness, ensure code
- * coverage, and prevent regressions. All Apex classes are
- * required to have at least 75% code coverage in order to be deployed
- * to a production org. In addition, all triggers must have some code coverage.
- *
- * The @isTest class annotation indicates this class only contains test
- * methods. Classes defined with the @isTest annotation do not count against
- * the org size limit for all Apex scripts.
- *
- * See the Apex Language Reference for more information about Testing and Code Coverage.
+ * Unit tests for PricebookEntryController used by the
+ * Add Opportunity Products product search (pricebookEntrySearchForm LWC).
  */
 @isTest
 private class PricebookEntryControllerTest {
+  /**
+   * Returns the first active picklist value of Product2.Solution_Areas__c
+   * so the test does not depend on hardcoded picklist configuration.
+   */
+  private static String getFirstSolutionAreaValue() {
+    List<Schema.PicklistEntry> entries = Product2.Solution_Areas__c.getDescribe()
+      .getPicklistValues();
+    for (Schema.PicklistEntry entry : entries) {
+      if (entry.isActive()) {
+        return entry.getValue();
+      }
+    }
+    return null;
+  }
+
   @isTest
   static void getPricebookEntriesByWildcardTest() {
     ID opportunityId = [SELECT Id FROM Opportunity LIMIT 1].Id;
@@ -88,7 +86,14 @@ private class PricebookEntryControllerTest {
   }
 
   @isTest
-  static void getPricebookEntriesByBusinessAreaTest() {
+  static void getPricebookEntriesBySolutionAreaTest() {
+    String solutionAreaValue = getFirstSolutionAreaValue();
+    System.assertNotEquals(
+      null,
+      solutionAreaValue,
+      'Product2.Solution_Areas__c has no active picklist values. Add at least one value before running this test.'
+    );
+
     ID opportunityId = [SELECT Id FROM Opportunity LIMIT 1].Id;
     Map<String, Object> result = PricebookEntryController.getPricebookEntries(
       opportunityId,
@@ -99,7 +104,7 @@ private class PricebookEntryControllerTest {
       '',
       '',
       '',
-      'Atlassian'
+      solutionAreaValue
     );
     List<PricebookEntry> pbes = (List<PricebookEntry>) result.get('pbes');
     System.assertEquals(
@@ -135,7 +140,7 @@ private class PricebookEntryControllerTest {
     Product2 p4 = new Product2();
     p4.Name = 'Test Product4';
     p4.IsActive = true;
-    p4.Business_Area__c = 'Atlassian';
+    p4.Solution_Areas__c = getFirstSolutionAreaValue();
     p4.Unlimited_Users__c = true;
     insert p4;
 

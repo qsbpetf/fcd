@@ -42,8 +42,8 @@ public class CommunitiesSelfRegController {
         u.FirstName = firstName;
         u.LastName = lastName;
         u.CommunityNickname = communityNickname;
-		u.ProfileId = profileId;
-		
+        u.ProfileId = profileId;
+        
         String userId;
 
         try {

@@ -1,5 +1,5 @@
 <template>
-    <lightning-card title="Active Products" icon-name="standard:product">
+    <lightning-card title={cardTitle} icon-name="standard:product">
 
         <!-- Loading Spinner -->
         <template if:true={isLoading}>
@@ -22,7 +22,7 @@
         <template if:true={hasProducts}>
             <div class="slds-p-around_medium">
                 <div class="slds-m-bottom_small slds-text-body_small slds-text-color_weak">
-                    Showing {productCount} active product(s)
+                    {showingLabel}
                 </div>
                 <lightning-datatable
                     key-field="id"
@@ -36,6 +36,17 @@
                     onsort={handleSort}
                 >
                 </lightning-datatable>
+
+                <!-- View All footer (standart related list davranışı) -->
+                <template if:true={showViewAll}>
+                    <div class="slds-align_absolute-center slds-p-top_small slds-border_top slds-m-top_small">
+                        <lightning-button
+                            variant="base"
+                            label={viewAllLabel}
+                            onclick={handleViewAll}>
+                        </lightning-button>
+                    </div>
+                </template>
             </div>
         </template>
 

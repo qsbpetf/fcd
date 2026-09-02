@@ -2,8 +2,8 @@
  * @description       :
  * @author            : tatu.lappetelainen@ceili.fi
  * @group             :
- * @last modified on  : 03-07-2024
- * @last modified by  : tatu.lappetelainen@ceili.fi
+ * @last modified on  : 30-07-2026
+ * @last modified by  : furkan.kokturk@eficode.com
  **/
 public with sharing class PricebookEntryController {
   public PricebookEntryController() {
@@ -19,7 +19,7 @@ public with sharing class PricebookEntryController {
     String wildcard,
     String revenueType,
     String productFamily,
-    String businessArea
+    String solutionArea
   ) {
     Map<String, Object> result = new Map<String, Object>();
     try {
@@ -65,16 +65,16 @@ public with sharing class PricebookEntryController {
         : '%' + String.escapeSingleQuotes(wildcard) + '%';
       String revenueTypeParam = String.escapeSingleQuotes(revenueType);
       String productFamilyParam = String.escapeSingleQuotes(productFamily);
-      String businessAreaParam = String.escapeSingleQuotes(businessArea);
+      String solutionAreaParam = String.escapeSingleQuotes(solutionArea);
 
-      String pbesQuery = 'SELECT Id, UnitPrice, Product2.Name, Product2.Unit_of_Measure__c, Product2.Revenue_Type__c, Product2.Family, Product2.Business_Area__c FROM PricebookEntry';
+      String pbesQuery = 'SELECT Id, UnitPrice, Product2.Name, Product2.Unit_of_Measure__c, Product2.Revenue_Type__c, Product2.Family, Product2.Solution_Areas__c FROM PricebookEntry';
       pbesQuery += createWhereClause(
         pricebookIdParam,
         currencyIsoCodeParam,
         wildcardParam,
         revenueTypeParam,
         productFamilyParam,
-        businessAreaParam
+        solutionAreaParam
       );
       pbesQuery += createOrderByClause(sortByParam, sortDirectionParam);
       pbesQuery += createLimitClause(startParam, pageSizeParam);
@@ -89,7 +89,7 @@ public with sharing class PricebookEntryController {
         wildcardParam,
         revenueTypeParam,
         productFamilyParam,
-        businessAreaParam
+        solutionAreaParam
       );
       System.debug('countQuery: ' + countQuery);
       Integer count = Database.countQuery(countQuery);
@@ -143,7 +143,7 @@ public with sharing class PricebookEntryController {
     String wildcardParam,
     String revenueTypeParam,
     String productFamilyParam,
-    String businessAreaParam
+    String solutionAreaParam
   ) {
     String whereClause = ' WHERE Pricebook2Id = :pricebookIdParam AND CurrencyIsoCode = :currencyIsoCodeParam AND IsActive = true AND Product2.IsActive = true';
 
@@ -156,8 +156,8 @@ public with sharing class PricebookEntryController {
     if (!String.isBlank(productFamilyParam)) {
       whereClause += ' AND Product2.Family = :productFamilyParam';
     }
-    if (!String.isBlank(businessAreaParam)) {
-      whereClause += ' AND Product2.Business_Area__c = :businessAreaParam';
+    if (!String.isBlank(solutionAreaParam)) {
+      whereClause += ' AND Product2.Solution_Areas__c = :solutionAreaParam';
     }
 
     return whereClause;

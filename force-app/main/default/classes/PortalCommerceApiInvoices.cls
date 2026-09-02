@@ -20,7 +20,15 @@ public with sharing class PortalCommerceApiInvoices
     }
 
     public InvoiceList getInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId) {
-        HttpResponse response = client.getInvoices(office, invoiceGroupId, pageSize, nextId);
+        HttpResponse response;
+        try {
+            response = client.getInvoices(office, invoiceGroupId, pageSize, nextId);
+        } catch (System.CalloutException ex) {
+            InvoiceList invoices = new InvoiceList();
+            invoices.error = ex.getMessage();
+            invoices.missingAccountId = true;
+            return invoices;
+        }
         if (response.getStatusCode() != 200) {
             InvoiceList invoices = new InvoiceList();
             invoices.error = response.getBody();
@@ -33,7 +41,20 @@ public with sharing class PortalCommerceApiInvoices
                 .replace('"currency"', '"isoCurrency"')
                 .replace('"Entitlement Display Info"', '"EntitlementDisplayInfos"'),
             InvoiceList.class);
+        normalizeInvoiceList(products);
         return products;
+    }
+
+    private static void normalizeInvoiceList(InvoiceList invoices) {
+        if (invoices == null) {
+            return;
+        }
+        if (invoices.data == null) {
+            invoices.data = new List<InvoiceInfo>();
+        }
+        if (invoices.missingAccountId == null) {
+            invoices.missingAccountId = false;
+        }
     }
 
     public InvoiceList getPaidInvoices(String office, String invoiceGroupId, Integer pageSize, String nextId, Integer lastNdays) {
@@ -143,6 +164,10 @@ public with sharing class PortalCommerceApiInvoices
         @AuraEnabled public List<InvoiceItem> items;
         @AuraEnabled public PaymentMethodObjType paymentMethodObj;
         @AuraEnabled public String office;
+        @AuraEnabled public Boolean itemsTruncated;
+        @AuraEnabled public Integer totalItemCount;
+        @AuraEnabled public Boolean tooLargeToLoad;
+        @AuraEnabled public String loadError;
     }
 
     public class InvoiceItem {

@@ -2,8 +2,8 @@
  * @description       :
  * @author            : tatu.lappetelainen@ceili.fi
  * @group             :
- * @last modified on  : 01-08-2024
- * @last modified by  : tatu.lappetelainen@ceili.fi
+ * @last modified on  : 30-07-2026
+ * @last modified by  : furkan.kokturk@eficode.com
  **/
 public with sharing class ProductController {
   @AuraEnabled(cacheable=true)
@@ -54,14 +54,15 @@ public with sharing class ProductController {
     return picklistValues;
   }
 
+  // Solution Area picklist replaces Business Area filter
   @AuraEnabled(cacheable=true)
-  public static List<Map<String, String>> getBusinessAreaPicklistValues() {
+  public static List<Map<String, String>> getSolutionAreaPicklistValues() {
     List<Map<String, String>> picklistValues = new List<Map<String, String>>();
     try {
       Schema.SObjectType ot = Schema.getGlobalDescribe().get('Product2');
       Schema.DescribeSObjectResult dsr = ot.getDescribe();
       Schema.DescribeFieldResult dfr = dsr.fields.getMap()
-        .get('Business_Area__c')
+        .get('Solution_Areas__c')
         .getDescribe();
       List<Schema.PicklistEntry> ple = dfr.getPicklistValues();
       for (Schema.PicklistEntry pickListVal : ple) {

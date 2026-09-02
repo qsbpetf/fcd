@@ -1,12 +1,10 @@
 import { LightningElement, api, wire, track } from "lwc";
 import { getRecord, getFieldValue } from "lightning/uiRecordApi";
-
 import CurrencyIsoCode from "@salesforce/schema/Opportunity.CurrencyIsoCode";
 import getPricebookEntries from "@salesforce/apex/PricebookEntryController.getPricebookEntries";
 import getRevenueTypePicklistValues from "@salesforce/apex/ProductController.getRevenueTypePicklistValues";
 import getProductFamilyPicklistValues from "@salesforce/apex/ProductController.getProductFamilyPicklistValues";
-import getBusinessAreaPicklistValues from "@salesforce/apex/ProductController.getBusinessAreaPicklistValues";
-
+import getSolutionAreaPicklistValues from "@salesforce/apex/ProductController.getSolutionAreaPicklistValues";
 import { formatPricebookEntries } from "c/formatUtils";
 
 export default class OpportunitySearchProductsForm extends LightningElement {
@@ -17,7 +15,7 @@ export default class OpportunitySearchProductsForm extends LightningElement {
   @track pricebookEntries = [];
   @track revenueTypes = [];
   @track productFamilies = [];
-  @track businessAreas = [];
+  @track solutionAreas = [];
   @track opportunity = {};
 
   start = 0;
@@ -29,7 +27,7 @@ export default class OpportunitySearchProductsForm extends LightningElement {
   wildcardTimeout = undefined;
   revenueType = "";
   productFamily = "";
-  businessArea = "";
+  solutionArea = "";
 
   @wire(getRecord, {
     recordId: "$opportunityId",
@@ -69,12 +67,12 @@ export default class OpportunitySearchProductsForm extends LightningElement {
     }
   }
 
-  @wire(getBusinessAreaPicklistValues) getBusinessAreaPicklistValuesWire({
+  @wire(getSolutionAreaPicklistValues) getSolutionAreaPicklistValuesWire({
     data,
     error
   }) {
     if (data) {
-      this.businessAreas = data;
+      this.solutionAreas = data;
     } else if (error) {
       console.error(error);
     }
@@ -95,7 +93,7 @@ export default class OpportunitySearchProductsForm extends LightningElement {
       wildcard: this.wildcard,
       revenueType: this.revenueType,
       productFamily: this.productFamily,
-      businessArea: this.businessArea
+      solutionArea: this.solutionArea
     });
     this.count = count;
     this.pricebookEntries = formatPricebookEntries(pbes);
@@ -123,8 +121,8 @@ export default class OpportunitySearchProductsForm extends LightningElement {
     this.handlePricebookEntriesGet();
   }
 
-  handleBusinessAreaChange(event) {
-    this.businessArea = event.target.value;
+  handleSolutionAreaChange(event) {
+    this.solutionArea = event.target.value;
     this.start = 0;
     this.handlePricebookEntriesGet();
   }
@@ -141,7 +139,7 @@ export default class OpportunitySearchProductsForm extends LightningElement {
     this.wildcard = "";
     this.revenueType = "";
     this.productFamily = "";
-    this.businessArea = "";
+    this.solutionArea = "";
     this.handlePricebookEntriesGet();
   }
 
@@ -198,7 +196,7 @@ export default class OpportunitySearchProductsForm extends LightningElement {
       wildcard: this.wildcard,
       revenueType: this.revenueType,
       productFamily: this.productFamily,
-      businessArea: this.businessArea
+      solutionArea: this.solutionArea
     });
     this.count = count;
     this.pricebookEntries = [...this.pricebookEntries]?.concat(
@@ -251,8 +249,8 @@ export default class OpportunitySearchProductsForm extends LightningElement {
         sortable: true
       },
       {
-        label: "Business Area",
-        fieldName: "Product2.Business_Area__c",
+        label: "Solution Area",
+        fieldName: "Product2.Solution_Areas__c",
         type: "text",
         initialWidth: 140,
         sortable: true
@@ -304,7 +302,7 @@ export default class OpportunitySearchProductsForm extends LightningElement {
     return [{ label: "--None--", value: "" }, ...this.productFamilies];
   }
 
-  get computedBusinessAreas() {
-    return [{ label: "--None--", value: "" }, ...this.businessAreas];
+  get computedSolutionAreas() {
+    return [{ label: "--None--", value: "" }, ...this.solutionAreas];
   }
 }

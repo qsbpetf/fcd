@@ -46,19 +46,21 @@ public class TestDataFactory {
         String uniqueSuffix = String.valueOf(System.currentTimeMillis()).right(5);
         String uniqueUsername = email.substringBefore('@') + uniqueSuffix + '@testorg.com';
         String alias = (aliasBase + uniqueSuffix).left(8);
-        SObject userRecord = Schema.getGlobalDescribe().get('User').newSObject();
-        userRecord.put('ProfileId', [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1].Id);
-        userRecord.put('LastName', lastName);
-        userRecord.put('Email', email);
-        userRecord.put('Username', uniqueUsername);
-        userRecord.put('Alias', alias);
-        userRecord.put('CommunityNickname', (aliasBase + uniqueSuffix).left(40));
-        userRecord.put('TimeZoneSidKey', 'America/Los_Angeles');
-        userRecord.put('LocaleSidKey', 'en_US');
-        userRecord.put('EmailEncodingKey', 'UTF-8');
-        userRecord.put('LanguageLocaleKey', 'en_US');
-        return (User) userRecord;
+
+        return new User(
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1].Id,
+            LastName = lastName,
+            Email = email,
+            Username = uniqueUsername,
+            Alias = alias,
+            CommunityNickname = (aliasBase + uniqueSuffix).left(40),
+            TimeZoneSidKey = 'America/Los_Angeles',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US'
+        );
     }
+
 
     public static Account getAccount(String billingCountry, String curr){
         Account acc = new Account(Name='Test Acc', BillingCountry=billingCountry, CurrencyIsoCode=curr);
