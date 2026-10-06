@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Finland</fullName>
+    <columns>NAME</columns>
+    <columns>Start_Date__c</columns>
+    <columns>CURRENCY_ISO_CODE</columns>
+    <columns>Exchange_Rate_from_USD_to_X__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Exchange_Rate_from_USD_to_X__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>CURRENCY_ISO_CODE</field>
+        <operation>equals</operation>
+        <value>EUR</value>
+    </filters>
+    <label>Finland</label>
+    <sharedTo>
+        <role>EFI_GLOBAL_FINAN</role>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,85 @@
+<template>
+    <lightning-modal-header label={headerLabel}></lightning-modal-header>
+
+    <lightning-modal-body>
+        <template lwc:if={loading}>
+            <div class="slds-align_absolute-center slds-p-vertical_large">
+                <lightning-spinner alternative-text="Checking" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:if={showStagePicker}>
+            <lightning-combobox
+                label="Move to stage"
+                value={targetStage}
+                options={stageOptions}
+                onchange={handleStageChange}
+                class="slds-m-bottom_medium">
+            </lightning-combobox>
+        </template>
+
+        <!-- Everything already filled in -->
+        <template lwc:if={isReady}>
+            <div class="slds-box slds-theme_shade slds-text-align_center slds-p-vertical_large">
+                <lightning-icon icon-name="utility:success" variant="success" size="small"></lightning-icon>
+                <p class="slds-m-top_x-small">{readyText}</p>
+            </div>
+        </template>
+
+        <!-- Step 1: what is missing, do you want to fill it now -->
+        <template lwc:if={showPrompt}>
+            <p class="slds-m-bottom_small">{promptText}</p>
+            <ul class="slds-list_vertical slds-has-dividers_bottom-space">
+                <template for:each={fieldsToFill} for:item="field">
+                    <li key={field.apiName} class="slds-item">
+                        <lightning-icon icon-name="utility:error" variant="error" size="xx-small"
+                            class="slds-m-right_x-small"></lightning-icon>
+                        {field.label}
+                    </li>
+                </template>
+            </ul>
+            <template lwc:if={guidance}>
+                <p class="slds-text-color_weak slds-m-top_small">{guidance}</p>
+            </template>
+        </template>
+
+        <!-- Step 2: only the missing fields, nothing else -->
+        <template lwc:if={showForm}>
+            <lightning-record-edit-form
+                object-api-name="Opportunity"
+                record-id={recordId}
+                onsuccess={handleFormSuccess}
+                onerror={handleFormError}>
+                <template for:each={fieldsToFill} for:item="field">
+                    <lightning-input-field
+                        key={field.apiName}
+                        field-name={field.apiName}
+                        required
+                        data-field={field.apiName}>
+                    </lightning-input-field>
+                </template>
+            </lightning-record-edit-form>
+            <template lwc:if={errorMessage}>
+                <div class="slds-text-color_error slds-m-top_small" role="alert">{errorMessage}</div>
+            </template>
+        </template>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <template lwc:if={showPrompt}>
+            <lightning-button label={declineLabel} onclick={handleDecline}
+                class="slds-m-right_x-small"></lightning-button>
+            <lightning-button label="Fill in the fields" variant="brand"
+                onclick={handleAccept}></lightning-button>
+        </template>
+        <template lwc:if={showForm}>
+            <lightning-button label="Back" onclick={handleBack}
+                class="slds-m-right_x-small"></lightning-button>
+            <lightning-button label={saveLabel} variant="brand" onclick={handleSave}
+                disabled={saving}></lightning-button>
+        </template>
+        <template lwc:if={isReady}>
+            <lightning-button label="Close" variant="brand" onclick={handleAdvanceOnly}></lightning-button>
+        </template>
+    </lightning-modal-footer>
+</template>

@@ -38,6 +38,46 @@
         <template>unfiled$public/OnDemand_Visual_Template</template>
     </alerts>
     <alerts>
+        <fullName>Opp_Created_Notify_Account_Owner</fullName>
+        <description>Opp Created - Notify Account Owner</description>
+        <protected>false</protected>
+        <recipients>
+            <type>accountOwner</type>
+        </recipients>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>unfiled$public/Opp_Created_Notification</template>
+    </alerts>
+    <alerts>
+        <fullName>Opp_Lost_Notify_Account_Owner</fullName>
+        <description>Opp Lost - Notify Account Owner</description>
+        <protected>false</protected>
+        <recipients>
+            <type>accountOwner</type>
+        </recipients>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>unfiled$public/Opp_Lost_Account_Owner_Notification</template>
+    </alerts>
+    <alerts>
+        <fullName>Opp_Won_Notify_Account_Owner</fullName>
+        <description>Opp Won Notify Account Owner</description>
+        <protected>false</protected>
+        <recipients>
+            <type>accountOwner</type>
+        </recipients>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>unfiled$public/Opp_Won_Account_Owner_Notification</template>
+    </alerts>
+    <alerts>
+        <fullName>Opp_Won_Notify_Account_Owner_v2</fullName>
+        <description>Opp Won - Notify Account Owner v2</description>
+        <protected>false</protected>
+        <recipients>
+            <type>accountOwner</type>
+        </recipients>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>unfiled$public/Opp_Won_Account_Owner_Notification</template>
+    </alerts>
+    <alerts>
         <fullName>Opportunity_Approval_Approved</fullName>
         <description>Opportunity Approval - Approved</description>
         <protected>false</protected>

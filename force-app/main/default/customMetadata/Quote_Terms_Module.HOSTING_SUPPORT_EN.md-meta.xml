@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Hosting Support En</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Applies_When__c</field>
+        <value xsi:type="xsd:string">Has_Group</value>
+    </values>
+    <values>
+        <field>Body__c</field>
+        <value xsi:type="xsd:string">&lt;p&gt;This quotation is subject to the Agreement referenced in the Bespoke Quote Terms section. Where this section is blank or where licences for Third Party Software is included in the quotation, the following terms and conditions apply - either being incorporated into any Agreements within the Bespoke Quote Terms or, where this section is blank, exclusively.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Terms and Conditions&lt;/b&gt;&lt;br/&gt;This quotation is provided subject to the &lt;a href=&quot;#TODO-eficode-services-agreement&quot;&gt;Eficode Services Agreement&lt;/a&gt; (the “Agreement”). The Agreement applies to this quotation and any subsequent order notwithstanding anything to the contrary contained in or incorporated into any document from, including a purchase order, or oral statement made by you, the customer. No variation or amendment to these Terms and Conditions or the Agreement shall be of any effect unless expressly agreed, in writing, by a person authorised to sign on behalf of Eficode. By accepting this quotation, you confirm that you have read and you accept these Terms and Conditions and the Agreement and that you are authorised to enter into a contract on behalf of the customer.&lt;/p&gt;&lt;table style=&quot;width:100%&quot;&gt;&lt;tr&gt;&lt;td style=&quot;width:50%;vertical-align:top&quot;&gt;&lt;b&gt;Signed for and on behalf of Customer:&lt;/b&gt;&lt;br/&gt;Name:&lt;br/&gt;Title:&lt;br/&gt;Date Signed:&lt;br/&gt;Signature:&lt;/td&gt;&lt;td style=&quot;width:50%;vertical-align:top&quot;&gt;&lt;b&gt;Signed for and on behalf of Eficode:&lt;/b&gt;&lt;br/&gt;Name: Simon Lipscombe&lt;br/&gt;Title: Legal Counsel&lt;br/&gt;Date Signed: See &quot;Created Date&quot;&lt;br/&gt;Signature: Simon Lipscombe&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</value>
+    </values>
+    <values>
+        <field>Condition_Value__c</field>
+        <value xsi:type="xsd:string">Hosting_Support</value>
+    </values>
+    <values>
+        <field>Exclude_Groups__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Language__c</field>
+        <value xsi:type="xsd:string">English</value>
+    </values>
+    <values>
+        <field>Module_Code__c</field>
+        <value xsi:type="xsd:string">HOSTING_SUPPORT</value>
+    </values>
+    <values>
+        <field>Offer_Type__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Placement__c</field>
+        <value xsi:type="xsd:string">Terms</value>
+    </values>
+    <values>
+        <field>Region_Variants__c</field>
+        <value xsi:type="xsd:string">ALL</value>
+    </values>
+    <values>
+        <field>Section_Title__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">160.0</value>
+    </values>
+</CustomMetadata>

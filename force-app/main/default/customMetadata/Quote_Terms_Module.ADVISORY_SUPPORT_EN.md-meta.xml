@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Advisory Support En</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Applies_When__c</field>
+        <value xsi:type="xsd:string">Has_Group</value>
+    </values>
+    <values>
+        <field>Body__c</field>
+        <value xsi:type="xsd:string">&lt;p&gt;This quotation for Eficode Advisory and Support is provided subject to Eficode Advisory and Support Service Terms which can be found &lt;a href=&quot;https://www.eficode.com/hubfs/Eficode%20Advisory%20and%20Support%20Terms%20and%20Conditions.pdf&quot;&gt;here&lt;/a&gt;. Processing of personal data in Eficode Advisory and Support is governed by Data Processing Addendum, which can be found &lt;a href=&quot;https://www.eficode.com/hubfs/Data%20Processing%20Addendum%20for%20Eficode%20Advisory%20and%20Support.pdf&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</value>
+    </values>
+    <values>
+        <field>Condition_Value__c</field>
+        <value xsi:type="xsd:string">Advisory_Support</value>
+    </values>
+    <values>
+        <field>Exclude_Groups__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Language__c</field>
+        <value xsi:type="xsd:string">English</value>
+    </values>
+    <values>
+        <field>Module_Code__c</field>
+        <value xsi:type="xsd:string">ADVISORY_SUPPORT</value>
+    </values>
+    <values>
+        <field>Offer_Type__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Placement__c</field>
+        <value xsi:type="xsd:string">Terms</value>
+    </values>
+    <values>
+        <field>Region_Variants__c</field>
+        <value xsi:type="xsd:string">ALL</value>
+    </values>
+    <values>
+        <field>Section_Title__c</field>
+        <value xsi:type="xsd:string">Eficode Advisory and Support</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">150.0</value>
+    </values>
+</CustomMetadata>

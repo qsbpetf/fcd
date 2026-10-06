@@ -1,0 +1,192 @@
+<apex:page controller="QuotePdfController" renderAs="{!renderAs}" showHeader="false" sidebar="false"
+           standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>{!quoteRec.QuoteNumber} – {!quoteRec.Name}</title>
+<style type="text/css">
+    @page {
+        size: A4;
+        margin: 18mm 16mm 24mm 16mm;
+        @bottom-left  { content: element(pdfFooter); }
+        @bottom-right { content: "{!JSENCODE(labels['page'])} " counter(page) " / " counter(pages);
+                        font-family: 'Arial Unicode MS', sans-serif; font-size: 7.5pt; color: #6B7385; }
+    }
+    body   { font-family: 'Arial Unicode MS', Arial, sans-serif; font-size: 9pt; color: #1F2A44; line-height: 1.4; }
+    .pdf-footer { position: running(pdfFooter); font-size: 7.5pt; color: #6B7385; width: 150mm; }
+
+    table  { border-collapse: collapse; width: 100%; }
+    td, th { vertical-align: top; }
+    h2     { font-size: 10.5pt; margin: 16px 0 6px 0; padding-bottom: 3px; border-bottom: 1.5px solid #1F2A44; }
+    h3     { font-size: 9.5pt; margin: 12px 0 4px 0; }
+    p      { margin: 0 0 6px 0; }
+    a      { color: #1F4FA8; }
+
+    .head td        { padding: 0; }
+    .logo           { height: 34px; }
+    .entity-name    { font-size: 13pt; font-weight: bold; }
+    .offer-title    { font-size: 20pt; font-weight: bold; text-align: right; }
+    .offer-type     { text-align: right; font-size: 9pt; margin-top: 2px; }
+    .offer-type span{ padding: 2px 8px; border: 1px solid #1F2A44; }
+    .offer-type .binding { background: #1F2A44; color: #FFFFFF; }
+
+    .intro          { margin-top: 14px; }
+    .kv td          { padding: 2px 8px 2px 0; }
+    .kv .k          { color: #6B7385; width: 22%; }
+    .kv .v          { width: 28%; }
+
+    .lines th       { text-align: left; font-size: 8pt; color: #6B7385; font-weight: normal;
+                      border-bottom: 1px solid #C9CED8; padding: 4px 4px; }
+    .lines td       { border-bottom: 1px solid #E6E8EE; padding: 5px 4px; }
+    .num            { text-align: right; white-space: nowrap; }
+    .sub            { color: #6B7385; font-size: 8pt; }
+
+    .totals         { width: 45%; margin-left: 55%; margin-top: 6px; }
+    .totals td      { padding: 3px 4px; }
+    .totals .grand td { font-weight: bold; border-top: 1.5px solid #1F2A44; font-size: 10pt; }
+
+    .accept td      { padding: 10px 8px 2px 0; width: 50%; }
+    .line           { border-bottom: 1px solid #1F2A44; height: 18px; }
+
+    .terms          { page-break-before: always; }
+    .terms ul       { margin: 2px 0 8px 0; padding-left: 14px; }
+    .terms p        { margin: 0 0 6px 0; }
+    .terms table td { vertical-align: top; padding: 4px 8px 4px 0; }
+    .terms li       { margin-bottom: 2px; }
+
+    .watermark      { position: fixed; top: 120mm; left: 0; width: 100%; text-align: center;
+                      font-size: 64pt; font-weight: bold; color: #E4E4E4; z-index: -1; }
+    .notice         { page-break-inside: avoid; }
+    .promo          { page-break-inside: avoid; border: 1.5px solid #1F2A44; padding: 10px 12px; margin-top: 14px; }
+    .promo-title    { font-weight: bold; font-size: 10.5pt; margin-bottom: 4px; }
+
+    @media screen {
+        body        { max-width: 190mm; margin: 20px auto; }
+        .pdf-footer { border-bottom: 1px dashed #C9CED8; padding-bottom: 6px; margin-bottom: 16px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Module B: subsidiary details, repeated on every page -->
+<div class="pdf-footer">{!footerText}</div>
+
+<apex:outputPanel layout="block" styleClass="watermark" rendered="{!NOT(ISBLANK(watermarkText))}">{!watermarkText}</apex:outputPanel>
+
+<!-- Basic: logo, subsidiary, offer type -->
+<table class="head">
+    <tr>
+        <td style="width:55%;">
+            <apex:image url="{!logoUrl}" styleClass="logo" rendered="{!NOT(ISBLANK(logoUrl))}"/>
+            <apex:outputPanel rendered="{!ISBLANK(logoUrl)}"><div class="entity-name">{!variant.Legal_Entity_Name__c}</div></apex:outputPanel>
+        </td>
+        <td style="width:45%;">
+            <div class="offer-title">{!offerTitle}</div>
+            <div class="offer-type"><span class="{!IF(isBinding, 'binding', '')}">{!offerSubtitle}</span></div>
+        </td>
+    </tr>
+</table>
+
+<div class="intro"><apex:outputText value="{!introHtml}" escape="false"/></div>
+
+<!-- SF basic info -->
+<h2>{!labels['basicInfo']}</h2>
+<table class="kv">
+    <tr><td class="k">{!labels['quoteNumber']}</td><td class="v">{!quoteRec.QuoteNumber}</td>
+        <td class="k">{!labels['createdDate']}</td><td class="v">{!createdDateText}</td></tr>
+    <tr><td class="k">{!labels['quoteName']}</td><td class="v">{!quoteRec.Name}</td>
+        <td class="k">{!labels['expirationDate']}</td><td class="v">{!expirationDateText}</td></tr>
+    <tr><td class="k">{!labels['paymentTerms']}</td><td class="v">{!paymentTerms}</td><td></td><td></td></tr>
+</table>
+
+<h2>{!labels['customerDetails']}</h2>
+<table class="kv">
+    <tr><td class="k">{!labels['companyName']}</td><td class="v">{!accountName}</td>
+        <td class="k">{!labels['invoiceContact']}</td><td class="v">{!invoiceContact}</td></tr>
+    <tr><td class="k">{!labels['vatTaxId']}</td><td class="v">{!customerVat}</td>
+        <td class="k">{!labels['contactName']}</td><td class="v">{!quoteRec.Contact.Name}</td></tr>
+    <tr><td class="k">{!labels['billingAddress']}</td><td class="v">{!billingAddress}</td>
+        <td class="k">{!labels['shippingAddress']}</td><td class="v">{!shippingAddress}</td></tr>
+</table>
+
+<!-- Products & pricing -->
+<h2>{!labels['productLines']}</h2>
+<table class="lines">
+    <thead>
+        <tr>
+            <th style="width:30%;">{!labels['product']}</th>
+            <th class="num">{!labels['quantity']}</th>
+            <apex:variable var="uomHead" value="" rendered="{!hasUnitOfMeasure}"><th>{!labels['unitOfMeasure']}</th></apex:variable>
+            <th class="num">{!labels['unitPrice']}</th>
+            <apex:variable var="discHead" value="" rendered="{!showDiscount}"><th class="num">{!labels['discount']}</th></apex:variable>
+            <th class="num">{!labels['salesPrice']}</th>
+            <th class="num">{!labels['start']}</th>
+            <apex:variable var="showEndHead" value="" rendered="{!hasEndDates}"><th class="num">{!labels['end']}</th></apex:variable>
+        </tr>
+    </thead>
+    <tbody>
+        <apex:repeat value="{!lines}" var="l">
+            <tr>
+                <td>{!l.product}<apex:outputPanel rendered="{!NOT(ISBLANK(l.info))}"><div class="sub">{!l.info}</div></apex:outputPanel></td>
+                <td class="num">{!l.quantity}</td>
+                <apex:variable var="uomCell" value="" rendered="{!hasUnitOfMeasure}"><td>{!l.unitOfMeasure}</td></apex:variable>
+                <td class="num">{!l.unitPrice}</td>
+                <apex:variable var="discCell" value="" rendered="{!showDiscount}"><td class="num">{!l.discount}</td></apex:variable>
+                <td class="num">{!l.salesPrice}</td>
+                <td class="num">{!l.startDate}</td>
+                <apex:variable var="showEndCell" value="" rendered="{!hasEndDates}"><td class="num">{!l.endDate}</td></apex:variable>
+            </tr>
+        </apex:repeat>
+    </tbody>
+</table>
+<table class="totals">
+    <apex:variable var="discTotals" value="" rendered="{!showDiscount}">
+        <tr><td>{!labels['totalListPrice']}</td><td class="num">{!totalListText}</td></tr>
+        <tr><td>{!labels['totalDiscount']}</td><td class="num">{!totalDiscountText}</td></tr>
+    </apex:variable>
+    <tr class="grand"><td>{!IF(showDiscount, labels['totalSalesPrice'], labels['total'])}</td><td class="num">{!totalSalesText}</td></tr>
+</table>
+
+<!-- Product-driven notices, e.g. Atlassian technical contact -->
+<apex:repeat value="{!noticeModules}" var="n">
+    <div class="notice">
+        <apex:outputPanel rendered="{!NOT(ISBLANK(n.title))}"><h2>{!n.title}</h2></apex:outputPanel>
+        <apex:outputText value="{!n.body}" escape="false"/>
+    </div>
+</apex:repeat>
+
+<!-- PO & e-signature: only for binding quotes (Module A1) -->
+<apex:outputPanel layout="block" rendered="{!isBinding}" style="page-break-inside: avoid;">
+    <h2>{!labels['orderAcceptance']}</h2>
+    <table class="accept">
+        <tr><td>{!labels['name']}<div class="line">{!contactName}</div></td><td>{!labels['date']}<div class="line"></div></td></tr>
+        <tr><td>{!labels['jobTitle']}<div class="line"></div></td><td>{!labels['signature']}<div class="line"></div></td></tr>
+        <tr><td>{!labels['poNumber']}<div class="line"></div></td><td>{!labels['vatTaxId']}<div class="line"></div></td></tr>
+    </table>
+</apex:outputPanel>
+
+<!-- Basic #2: Eficode details -->
+<h2>{!labels['eficodeDetails']}</h2>
+<table class="kv">
+    <tr><td class="k">{!labels['preparedBy']}</td><td class="v">{!quoteRec.CreatedBy.Name}</td>
+        <td class="k">{!labels['email']}</td><td class="v">{!quoteRec.CreatedBy.Email}</td></tr>
+    <tr><td class="k">{!labels['issuedBy']}</td><td class="v" colspan="3">{!entityDetails}</td></tr>
+</table>
+
+<!-- Terms & conditions: assembled from the products on the quote -->
+<div class="terms">
+    <h2>{!labels['termsConditions']}</h2>
+    <apex:outputText value="{!termsHtml}" escape="false"/>
+</div>
+
+<!-- Product-driven promotion boxes ("Have you considered ...") -->
+<apex:repeat value="{!promoModules}" var="p">
+    <div class="promo">
+        <apex:outputPanel rendered="{!NOT(ISBLANK(p.title))}"><div class="promo-title">{!p.title}</div></apex:outputPanel>
+        <apex:outputText value="{!p.body}" escape="false"/>
+    </div>
+</apex:repeat>
+
+</body>
+</html>
+</apex:page>

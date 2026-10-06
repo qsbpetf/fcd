@@ -1,0 +1,19 @@
+.spinner-holder { position: relative; min-height: 6rem; }
+.summary { border: 1px solid #dddbda; border-radius: 0.25rem; }
+.summary-row { display: flex; gap: 1rem; padding: 0.5rem 0.75rem; border-bottom: 1px solid #f3f2f2; }
+.summary-row:last-child { border-bottom: none; }
+.summary-label { flex: 0 0 7rem; color: #5c5c5c; }
+.summary-value { flex: 1; }
+.hint { display: block; color: #5c5c5c; font-size: 0.75rem; }
+.offer-badge { display: inline-block; padding: 0 0.5rem; border: 1px solid #1f2a44; border-radius: 0.25rem; font-weight: 600; }
+.offer-badge_binding { background: #1f2a44; color: #fff; }
+.section-title { margin: 1rem 0 0.25rem; font-weight: 600; }
+.rows { margin: 0; padding: 0; list-style: none; }
+.row, .product-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.375rem 0; border-bottom: 1px solid #f3f2f2; }
+.product-row_unmapped .group { color: #ba0517; }
+.row-meta { text-align: right; }
+.group { font-weight: 600; }
+.fallback { margin-left: 0.5rem; font-size: 0.75rem; color: #8c4b02; }
+.locked { color: #5c5c5c; }
+.warnings { background: #fef7e5; border-radius: 0.25rem; padding: 0.5rem 0.75rem; }
+.warning-item { margin: 0.125rem 0; }

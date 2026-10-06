@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
+    <decisions>
+        <description>Only writes when the snapshot is genuinely stale. The previous NotEqualTo comparison never converged: Net_Revenue_Forecast__c has scale 0 while Net_Revenue__c has scale 2, so as soon as the amount had cents the two values could never become equal, the flow updated $Record on every save and each of those updates re-ran the whole Opportunity trigger and flow stack. //Furkan 09/2026</description>
+        <name>Was_Value_Changed</name>
+        <label>Was Value Changed</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Value_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>forForecastOutOfDate</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Net_Revenue</targetReference>
+            </connector>
+            <label>Value Changed</label>
+        </rules>
+    </decisions>
+    <description>Snapshots the Net Revenue formula into the trackable Net Revenue (Forecast) currency field. //Furkan 09/2026</description>
     <environments>Default</environments>
+    <formulas>
+        <description>True only when the stored forecast differs from the live formula by at least 1. The tolerance absorbs the scale 0 vs scale 2 rounding difference between the two fields, which is what stopped the old NotEqualTo check from ever settling. //Furkan 09/2026</description>
+        <name>forForecastOutOfDate</name>
+        <dataType>Boolean</dataType>
+        <expression>ABS(BLANKVALUE({!$Record.Net_Revenue_Forecast__c}, 0) - BLANKVALUE({!$Record.Net_Revenue__c}, 0)) &gt;= 1</expression>
+    </formulas>
     <interviewLabel>Update Currency fields for Forecast {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update Currency fields for Forecast</label>
     <processMetadataValues>
@@ -24,10 +54,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Update_Records_1</name>
-        <label>Update Records 1</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
+        <name>Update_Net_Revenue</name>
+        <label>Update Net Revenue</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
         <inputAssignments>
             <field>Net_Revenue_Forecast__c</field>
             <value>
@@ -37,15 +67,15 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_Records_1</targetReference>
+            <targetReference>Was_Value_Changed</targetReference>
         </connector>
         <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = true</filterFormula>
         <object>Opportunity</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
 </Flow>

@@ -57,7 +57,17 @@ public without sharing class OppSplitEngine {
             // 1. Admin Repair — runs even for closed opportunities when triggered via Run_Splits_Flow__c
             if (opp.Run_Splits_Flow__c == true && (old == null || old.Run_Splits_Flow__c != true)) {
                 processAdminRepair(opp, populated, existingKeys, cs, typeIds);
-                cs.oppsToUpdate.put(opp.Id, new Opportunity(Id = opp.Id, Run_Splits_Flow__c = false));
+                cs.queueOppFieldUpdate(opp.Id, 'Run_Splits_Flow__c', false);
+            }
+
+            // 1.5 T1 Eligibility Reconciliation — always runs, even on closed opportunities and
+            // regardless of which field changed, as long as Quota_Update_Allowed__c permits split
+            // automation for this Opportunity at all. Catches the race condition where CloseDate/Amount
+            // become T1-eligible via an async rollup that lands AFTER the opportunity already closed,
+            // which neither the normal creation pass (blocked by isClosed) nor Run_Splits_Flow__c admin
+            // repair (only recreates splits when T1_Opp__c is already 'Yes') can otherwise reach.
+            if (opp.Quota_Update_Allowed__c == true) {
+                reconcileT1Eligibility(opp, populated, existingKeys, cs, typeIds.get('T1'));
             }
 
             // 2. T1/T2/T3 Assignments
@@ -115,7 +125,26 @@ public without sharing class OppSplitEngine {
         Date t1Start = populated.Account != null ? populated.Account.T1_Start_Date__c : null;
         if (t1Start != null && opp.CloseDate >= t1Start) {
             addStandardSplitsLocally(opp, populated, existingKeys, cs, typeId);
-            if (opp.T1_Opp__c != 'Yes') cs.oppsToUpdate.put(opp.Id, new Opportunity(Id = opp.Id, T1_Opp__c = 'Yes'));
+            if (opp.T1_Opp__c != 'Yes') cs.queueOppFieldUpdate(opp.Id, 'T1_Opp__c', 'Yes');
+        }
+    }
+
+    // Independent of isClosed and of the normal field-change qualifying conditions: directly
+    // re-derives T1 eligibility from CloseDate vs Account.T1_Start_Date__c AND actual qualifying
+    // revenue on every save, so that an Opportunity which becomes eligible (e.g. via a rollup
+    // landing after the opp already closed) still gets its T1 split created and its flag set,
+    // instead of being permanently stuck. Mirrors the same revenue check used for a qualifying
+    // insert in t1IsQualifying() — a Close Date within the window is not enough on its own.
+    private static void reconcileT1Eligibility(Opportunity opp, Opportunity populated, Set<String> existingKeys, SplitDmlBuffer cs, Id typeId) {
+        Date t1Start = populated.Account != null ? populated.Account.T1_Start_Date__c : null;
+        Boolean hasRevenue = (opp.Amount != null && opp.Amount != 0) ||
+                             (opp.Net_Revenue_Forecast__c != null && opp.Net_Revenue_Forecast__c != 0) ||
+                             (opp.Estimate_Licensing_Revenue__c != null && opp.Estimate_Licensing_Revenue__c != 0);
+        Boolean eligible = t1Start != null && opp.CloseDate != null && opp.CloseDate >= t1Start && hasRevenue;
+
+        if (eligible && opp.T1_Opp__c != 'Yes') {
+            addStandardSplitsLocally(opp, populated, existingKeys, cs, typeId);
+            cs.queueOppFieldUpdate(opp.Id, 'T1_Opp__c', 'Yes');
         }
     }
 
@@ -138,7 +167,7 @@ public without sharing class OppSplitEngine {
     private static void processT1WindowGateStatus(Opportunity opp, Opportunity populated, SplitDmlBuffer cs) {
         Date t1Start = populated.Account != null ? populated.Account.T1_Start_Date__c : null;
         if ((t1Start == null || opp.CloseDate < t1Start) && opp.T1_Opp__c == 'Yes') {
-            cs.oppsToUpdate.put(opp.Id, new Opportunity(Id = opp.Id, T1_Opp__c = 'No'));
+            cs.queueOppFieldUpdate(opp.Id, 'T1_Opp__c', 'No');
         }
     }
 
@@ -175,6 +204,9 @@ public without sharing class OppSplitEngine {
             Opportunity current = newOppsMap.get(s.OpportunityId);
             if (current == null) continue;
             if (current.Quota_Update_Allowed__c != true) continue;
+            // Closed opportunities are fully excluded from all split automation,
+            // including deletions (previously only the creation pass checked this).
+            if (OppSplitService.isClosed(current)) continue;
             Opportunity populated = oppMap.get(s.OpportunityId);
             Opportunity old = oldMap != null ? oldMap.get(s.OpportunityId) : null;
 
@@ -271,5 +303,18 @@ public without sharing class OppSplitEngine {
         final List<OpportunitySplit> toDelete = new List<OpportunitySplit>();
         final List<OpportunitySplit> toUpdate = new List<OpportunitySplit>();
         final Map<Id, Opportunity> oppsToUpdate = new Map<Id, Opportunity>();
+
+        // Merges a single field update into the pending Opportunity update for this Id,
+        // instead of overwriting any fields already queued by a previous step in the same
+        // execute() call (e.g. admin repair's Run_Splits_Flow__c reset + T1_Opp__c flag set
+        // both need to survive on the same record).
+        void queueOppFieldUpdate(Id oppId, String fieldApiName, Object value) {
+            Opportunity pending = oppsToUpdate.get(oppId);
+            if (pending == null) {
+                pending = new Opportunity(Id = oppId);
+                oppsToUpdate.put(oppId, pending);
+            }
+            pending.put(fieldApiName, value);
+        }
     }
 }

@@ -1,0 +1,108 @@
+<template>
+    <lightning-quick-action-panel header="Offer PDF and terms">
+        <template lwc:if={isLoading}>
+            <div class="spinner-holder"><lightning-spinner alternative-text="Checking quote rules" size="small"></lightning-spinner></div>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">{errorMessage}</div>
+        </template>
+
+        <template lwc:if={resolution}>
+            <div class="summary">
+                <div class="summary-row">
+                    <span class="summary-label">Offer type</span>
+                    <span class="summary-value">
+                        <span class={offerBadgeClass}>{resolution.offerType}</span>
+                        <span class="hint">{resolution.offerTypeReason}</span>
+                    </span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Variant</span>
+                    <span class="summary-value">{resolution.variantLabel}<span class="hint">Issued by {resolution.issuingEntity} · {resolution.language}</span></span>
+                </div>
+            </div>
+
+            <template lwc:if={resolution.termsLocked}>
+                <p class="locked slds-m-top_small">
+                    <lightning-icon icon-name="utility:lock" size="xx-small" class="slds-m-right_x-small"></lightning-icon>
+                    Terms are locked on this quote, so product changes don't update them. "Update terms on quote" overwrites the manual text.
+                </p>
+            </template>
+
+            <h3 class="section-title">Products and the terms they bring</h3>
+            <template lwc:if={hasProducts}>
+                <ul class="rows">
+                    <template for:each={productRows} for:item="p">
+                        <li key={p.key} class={p.rowClass}>
+                            <span class="row-name">{p.productName}</span>
+                            <span class="row-meta"><span class="group">{p.groupLabel}</span><span class="hint">{p.source}</span></span>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <template lwc:else>
+                <p class="hint">Add products to the quote – each product adds its own terms.</p>
+            </template>
+
+            <h3 class="section-title">Terms sections</h3>
+            <ul class="rows">
+                <template for:each={sectionRows} for:item="m">
+                    <li key={m.key} class="row">
+                        <span class="row-name">{m.name}<template lwc:if={m.fallback}><span class="fallback">English text</span></template></span>
+                        <span class="row-meta hint">{m.because}</span>
+                    </li>
+                </template>
+            </ul>
+
+            <template lwc:if={hasBullets}>
+                <h3 class="section-title">Additional terms (each listed once)</h3>
+                <ul class="rows">
+                    <template for:each={bulletRows} for:item="m">
+                        <li key={m.key} class="row">
+                            <span class="row-name">{m.name}<template lwc:if={m.fallback}><span class="fallback">English text</span></template></span>
+                            <span class="row-meta hint">{m.because}</span>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <template lwc:if={hasExtras}>
+                <h3 class="section-title">Notes and offers</h3>
+                <ul class="rows">
+                    <template for:each={extraRows} for:item="m">
+                        <li key={m.key} class="row">
+                            <span class="row-name">{m.name}</span>
+                            <span class="row-meta hint">{m.because}</span>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <template lwc:if={hasWarnings}>
+                <div class="warnings slds-m-top_small">
+                    <template for:each={resolution.warnings} for:item="w">
+                        <p key={w} class="warning-item">
+                            <lightning-icon icon-name="utility:warning" size="xx-small" variant="warning" class="slds-m-right_x-small"></lightning-icon>{w}
+                        </p>
+                    </template>
+                </div>
+            </template>
+
+            <lightning-combobox class="slds-m-top_small" label="PDF language" value={languageOverride}
+                options={languageOptions} onchange={handleLanguageChange}
+                field-level-help="Changes the language of this preview and PDF only.">
+            </lightning-combobox>
+        </template>
+
+        <div slot="footer">
+            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+            <lightning-button class="slds-m-left_x-small" label="Update terms on quote" icon-name="utility:refresh"
+                onclick={handleRegenerate} disabled={actionsDisabled}></lightning-button>
+            <lightning-button class="slds-m-left_x-small" label="Preview PDF" icon-name="utility:preview"
+                onclick={handlePreview} disabled={actionsDisabled}></lightning-button>
+            <lightning-button class="slds-m-left_x-small" variant="brand" label="Save PDF to quote"
+                onclick={handleSave} disabled={actionsDisabled}></lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+</template>

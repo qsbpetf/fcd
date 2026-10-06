@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>License_Instructions__c</fullName>
+    <description>Free-text instructions from the Account Manager for the License Ops team, used when preparing renewal quotes. Typical content: invoicing partner, agreed discounts, ELA terms, payment terms, or a link to a Confluence page for complex customers. Requested by the License team</description>
+    <inlineHelpText>Instructions for License Ops when quoting for this customer — e.g., invoicing partner, agreed discount, ELA or other special handling. For complex customers, add a link to the relevant Confluence page instead of full details here. Keep it current; License Ops relies on this at quoting time.</inlineHelpText>
+    <label>License Instructions</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

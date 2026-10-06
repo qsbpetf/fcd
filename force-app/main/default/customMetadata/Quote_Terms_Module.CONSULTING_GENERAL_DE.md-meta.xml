@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Consulting General De</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Applies_When__c</field>
+        <value xsi:type="xsd:string">Has_Group</value>
+    </values>
+    <values>
+        <field>Body__c</field>
+        <value xsi:type="xsd:string">&lt;p&gt;Für Beratungsleistungen gelten stets gesonderte Vereinbarungen, die zwischen Eficode und dem Kunden ausgehandelt werden. Für dieses unverbindliche Angebot für Beratungsleistungen gelten die Allgemeinen Geschäftsbedingungen für die Beratung von Eficode, die unter &lt;a href=&quot;https://www.eficode.com/consulting-general-terms&quot;&gt;https://www.eficode.com/consulting-general-terms&lt;/a&gt; abrufbar sind. Diese Bedingungen gelten für dieses Angebot und alle nachfolgenden Bestellungen in der Art und Weise und in der Rangfolge für die Vereinbarung, wie sie in der Rahmenvereinbarung oder einer anderen relevanten Vereinbarung zwischen den Parteien angegeben ist. Änderungen oder Ergänzungen der Allgemeinen Geschäftsbedingungen haben keine Wirkung, es sei denn, sie werden ausdrücklich in einer Abweichungsform vereinbart, die als integraler Bestandteil der Vereinbarung zwischen den Parteien beizufügen ist. Sie bestätigen hiermit, dass Sie die Allgemeinen Geschäftsbedingungen gelesen haben und erkennen an, dass zukünftige Vereinbarungen diesen Allgemeinen Geschäftsbedingungen unterliegen.&lt;/p&gt;</value>
+    </values>
+    <values>
+        <field>Condition_Value__c</field>
+        <value xsi:type="xsd:string">Consulting</value>
+    </values>
+    <values>
+        <field>Exclude_Groups__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Language__c</field>
+        <value xsi:type="xsd:string">German</value>
+    </values>
+    <values>
+        <field>Module_Code__c</field>
+        <value xsi:type="xsd:string">CONSULTING_GENERAL</value>
+    </values>
+    <values>
+        <field>Offer_Type__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Placement__c</field>
+        <value xsi:type="xsd:string">Terms</value>
+    </values>
+    <values>
+        <field>Region_Variants__c</field>
+        <value xsi:type="xsd:string">ALL</value>
+    </values>
+    <values>
+        <field>Section_Title__c</field>
+        <value xsi:type="xsd:string">Allgemeine Geschäftsbedingungen für Beratungsleistungen</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">110.0</value>
+    </values>
+</CustomMetadata>

@@ -381,6 +381,45 @@ private class OppSplitE2ETest {
             'Run_Splits_Flow__c should be automatically unchecked after repair on a closed opportunity.');
     }
 
+    // Scenario 9 — Closed opportunity: zeroing an amount must NOT delete the existing split
+    // (regression test for the bug where the deletion pass ignored IsClosed while the
+    // creation pass respected it, causing splits to be deleted-but-not-recreated on closed opps)
+    @IsTest
+    static void update_closedOppAmountZeroed_doesNotDeleteExistingSplit() {
+        Id t2TypeId = getSplitTypeId('T2');
+
+        Account acc   = getAccount();
+        Id oppOwnerId = getOppOwnerId();
+
+        enableAutomation();
+
+        Opportunity opp = buildOpp(acc.Id, oppOwnerId);
+        opp.Estimate_Managed_Service_Revenue__c = 500;
+        opp.Total_Amount_T2__c                  = 550000;
+        insert opp;
+
+        System.assertNotEquals(0, countSplits(opp.Id, t2TypeId),
+            'T2 split should exist before the opportunity is closed.');
+
+        resetBetweenActions();
+
+        // Close the opportunity first (separate update, mirroring the real-world timeline).
+        opp.StageName = 'Closed Won';
+        update opp;
+
+        resetBetweenActions();
+
+        // Now zero out the T2 amount while the opp is already closed — this used to delete
+        // the split via the deletion pass even though the opp was closed.
+        opp.Total_Amount_T2__c = 0;
+        Test.startTest();
+        update opp;
+        Test.stopTest();
+
+        System.assertNotEquals(0, countSplits(opp.Id, t2TypeId),
+            'T2 split should NOT be deleted when the amount is zeroed out on an already-closed opportunity.');
+    }
+
     // Scenario 7 — Automation disabled: no splits created on insert
     @IsTest
     static void insert_automationDisabled_noSplitsCreated() {

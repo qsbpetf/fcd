@@ -2,71 +2,6 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>60.0</apiVersion>
     <assignments>
-        <name>Add_varOpportunityProduct_to_list</name>
-        <label>Add varOpportunityProduct to list</label>
-        <locationX>264</locationX>
-        <locationY>1187</locationY>
-        <assignmentItems>
-            <assignToReference>varOpportunityProductsToCreate</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>varOpportunityProduct</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop_Opportunity_Products</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_new_varOpportunityProduct_values</name>
-        <label>Assign new varOpportunityProduct values</label>
-        <locationX>264</locationX>
-        <locationY>1079</locationY>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.OpportunityId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Copy_Values_to_Renewed_Opportunity.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.License_Start_date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>forOpportunityProductStartDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.License_end_date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>forOpportunityProductEndDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.Renewal__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Renewal (CV Owned)</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.Id</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.TotalPrice</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varOpportunityProduct.AtlassianOffering__c</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_varOpportunityProduct_to_list</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <description>Used for calculating the (possible) running number for renewal opportunity. Need separate variable due to flow limitations //Ceili/JussiK/09.04.2024</description>
         <name>Assign_OpportunityNameReversed</name>
         <label>Assign OpportunityNameReversed</label>
@@ -84,8 +19,9 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_varOpportunityProduct</name>
-        <label>Assign varOpportunityProduct</label>
+        <description>Builds one renewal product per iteration: copies the source line, clears the fields that must not be cloned, points it at the renewal Opportunity, shifts the licence period by one year and adds it to the collection inserted after the loop. Replaces the three separate elements (Assign varOpportunityProduct, Assign new varOpportunityProduct values, Add varOpportunityProduct to list) that used to run per product. //Furkan 09/2026</description>
+        <name>Build_Renewal_Product</name>
+        <label>Build Renewal Product</label>
         <locationX>264</locationX>
         <locationY>971</locationY>
         <assignmentItems>
@@ -95,11 +31,58 @@
                 <elementReference>Loop_Opportunity_Products</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.Id</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.TotalPrice</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.AtlassianOffering__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.OpportunityId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Copy_Values_to_Renewed_Opportunity.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.License_Start_date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Opportunity_Products.License_end_date__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.License_end_date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>forOpportunityProductEndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProduct.Renewal__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Renewal (CV Owned)</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOpportunityProductsToCreate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varOpportunityProduct</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Assign_new_varOpportunityProduct_values</targetReference>
+            <targetReference>Loop_Opportunity_Products</targetReference>
         </connector>
     </assignments>
-    <description>Triggered flow that creates a clone of a won Opportunity when Auto-Renewal conditions are met / Update: Stage: Evaluate with a probability=75% Monthly Cloud=true. Emma 3/3</description>
+    <description>Triggered flow that creates a clone of a won Opportunity when Auto-Renewal conditions are met / Update: Stage: Evaluate with a probability=75% Monthly Cloud=true. Emma 3/3 / Performance pass 09/2026: three per-product assignments merged into one, the source Opportunity is stamped through $Record instead of a filtered update, and the product insert has a fault path. //Furkan</description>
     <environments>Default</environments>
     <formulas>
         <description>We need to find the position where the number begins on the reversed opportunity name. We can then substract that number to create space for the next number on the new opportunity. //Ceili/JussiK/09.04.2024</description>
@@ -121,14 +104,10 @@
         <expression>REVERSE({!$Record.Name})</expression>
     </formulas>
     <formulas>
+        <description>Renewal licence period ends one year after it starts. ADDMONTHS replaces DATE(YEAR + 1, MONTH, DAY), which returned null when the start date was 29 February. //Furkan 09/2026</description>
         <name>forOpportunityProductEndDate</name>
         <dataType>Date</dataType>
-        <expression>DATE(YEAR({!forOpportunityProductStartDate}) + 1, MONTH({!forOpportunityProductStartDate}), DAY({!forOpportunityProductStartDate}))</expression>
-    </formulas>
-    <formulas>
-        <name>forOpportunityProductStartDate</name>
-        <dataType>Date</dataType>
-        <expression>IF(!ISBLANK({!Loop_Opportunity_Products.License_end_date__c}), {!Loop_Opportunity_Products.License_end_date__c}, null)</expression>
+        <expression>ADDMONTHS({!Loop_Opportunity_Products.License_end_date__c}, 12)</expression>
     </formulas>
     <formulas>
         <description>Adds + 1 to the number of the current Opportunity. As the name is reversed in the variable, first we need to reverse it back to the original so that the value will be correct //Ceili/JussiK/09.04.2024</description>
@@ -147,7 +126,7 @@
         <collectionReference>Get_Related_Opportunity_Products</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Assign_varOpportunityProduct</targetReference>
+            <targetReference>Build_Renewal_Product</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Create_Opportunity_Products</targetReference>
@@ -173,6 +152,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <description>Single bulk insert for all renewal products. The fault path is handled so that a product-level failure (or an empty collection when the source Opportunity has no dated licence lines) cannot roll back the user&apos;s Closed Won save. The renewal Opportunity is still created and still linked. //Furkan 09/2026</description>
         <name>Create_Opportunity_Products</name>
         <label>Create Opportunity Products</label>
         <locationX>176</locationX>
@@ -180,6 +160,9 @@
         <connector>
             <targetReference>Update_Renewal_Opportunity_Field_with_Main_Opportunity</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Update_Renewal_Opportunity_Field_with_Main_Opportunity</targetReference>
+        </faultConnector>
         <inputReference>varOpportunityProductsToCreate</inputReference>
     </recordCreates>
     <recordCreates>
@@ -252,33 +235,23 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <description>Stamps the renewal link straight onto $Record. The filter-based version re-queried the triggering Opportunity that the flow already had in memory, spending a SOQL query for nothing. //Furkan 09/2026</description>
         <name>Update_Renewal_Opportunity_Field_with_Main_Opportunity</name>
         <label>Update Renewal Opportunity Field with Main Opportunity</label>
         <locationX>176</locationX>
         <locationY>1487</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <field>Renewal_Opportunity__c</field>
             <value>
                 <elementReference>Copy_Values_to_Renewed_Opportunity.Id</elementReference>
             </value>
         </inputAssignments>
-        <object>Opportunity</object>
+        <inputReference>$Record</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>Get_Opportunity_Product</targetReference>
-        </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterFormula>{!$Setup.AutomationSettings__c.Automation_Enabled__c} = True &amp;&amp;
 {!$Record.Auto_Renewal__c} = true &amp;&amp;
@@ -286,6 +259,12 @@ ISBLANK({!$Record.Renewal_Opportunity__c})&amp;&amp;
 ISPICKVAL({!$Record.StageName}, &quot;Closed won - awaiting approval&quot;)</filterFormula>
         <object>Opportunity</object>
         <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>Get_Opportunity_Product</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
@@ -511,6 +490,27 @@ ISPICKVAL({!$Record.StageName}, &quot;Closed won - awaiting approval&quot;)</fil
                 <transformType>Map</transformType>
                 <value>
                     <elementReference>$Record.OwnerId</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Contact_Roles_Contact_18_ID__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.Contact_Roles_Contact_18_ID__c</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>ContactId</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.ContactId</elementReference>
+                </value>
+            </transformValueActions>
+            <transformValueActions>
+                <outputFieldApiName>Invoicing_Partner__c</outputFieldApiName>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>$Record.Invoicing_Partner__c</elementReference>
                 </value>
             </transformValueActions>
         </transformValues>

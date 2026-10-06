@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Template Item</label>
+    <protected>false</protected>
+    <values>
+        <field>bmpyrckt__Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Detail_Field__c</field>
+        <value xsi:type="xsd:string">Name</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Drilldown_Id_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>bmpyrckt__Fallback_Tooltip_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>bmpyrckt__Icon_Background_Colour__c</field>
+        <value xsi:type="xsd:string">#f2cf5b</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Icon__c</field>
+        <value xsi:type="xsd:string">/img/icon/product_required24.png</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Inclusion_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>bmpyrckt__Object_Name__c</field>
+        <value xsi:type="xsd:string">ceili__KAMtemplateItem__c</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Parent_Object__c</field>
+        <value xsi:type="xsd:string">ceili__KAMtemplate__c</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Position_Date_Field__c</field>
+        <value xsi:type="xsd:string">ceili__Due__c</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Relationship_Name__c</field>
+        <value xsi:type="xsd:string">ceili__Asiakashoitomallin_toimet__r</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Sequence__c</field>
+        <value xsi:type="xsd:double">50.0</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Test__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>bmpyrckt__Tooltip_Id_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>bmpyrckt__Tooltip_Object_Name__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>bmpyrckt__Type_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

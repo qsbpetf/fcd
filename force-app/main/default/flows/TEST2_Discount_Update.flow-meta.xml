@@ -225,7 +225,7 @@
             <label>Copy 1 of Yes</label>
         </rules>
     </decisions>
-    <description>Version built with Alex King</description>
+    <description>After-save flow on OLI update for UK/US subsidiaries. Recalculates Recommended Discount and Discount when Product Family, Partner Discount or Renewal changes on Atlassian license lines not sent to NetSuite. Zeroes on negative margin without sign-off.</description>
     <environments>Default</environments>
     <formulas>
         <name>ISNEW</name>
@@ -372,8 +372,8 @@ IF({!$Record.Partner_Discount_Formula__c} &gt; 25, {!LockRecommendedDiscount} ,
 {!LockRecommendedDiscount} * ({!$Record.Partner_Discount_Formula__c} / 25)))</expression>
         <scale>2</scale>
     </formulas>
-    <interviewLabel>TEST2_Discount Update {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>TEST2_Discount Update -Alex King</label>
+    <interviewLabel>OLI Discount Update - UK/US {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>OLI Discount Update - UK/US</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -551,7 +551,7 @@ IF({!$Record.Partner_Discount_Formula__c} &gt; 25, {!LockRecommendedDiscount} ,
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>LockRecommendedDiscount</name>
         <dataType>Number</dataType>

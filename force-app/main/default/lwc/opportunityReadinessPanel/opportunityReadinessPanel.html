@@ -1,0 +1,60 @@
+<template>
+    <lightning-card title="Close readiness" icon-name="standard:opportunity">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template lwc:if={loading}>
+                <lightning-spinner alternative-text="Checking" size="small"></lightning-spinner>
+            </template>
+
+            <template lwc:if={showContent}>
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">
+                    Needed to reach {targetStage}
+                </p>
+                <lightning-progress-bar value={percentComplete} size="large"
+                    variant={progressVariant}></lightning-progress-bar>
+                <p class={progressTextClass}>
+                    {filledCount} of {totalCount} required fields filled in
+                </p>
+
+                <template lwc:if={isReady}>
+                    <div class="slds-text-color_success">
+                        <lightning-icon icon-name="utility:success" variant="success"
+                            size="xx-small" class="slds-m-right_x-small"></lightning-icon>
+                        Nothing missing for {targetStage}.
+                    </div>
+                </template>
+
+                <template lwc:if={hasGaps}>
+                    <div class="slds-box slds-box_x-small slds-theme_error slds-m-bottom_small"
+                        role="alert">
+                        <lightning-icon icon-name="utility:warning" variant="inverse"
+                            size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                        {warningText}
+                    </div>
+                    <ul class="slds-has-dividers_bottom-space">
+                        <template for:each={fieldsToFill} for:item="field">
+                            <li key={field.apiName} class="slds-item slds-grid slds-grid_align-spread">
+                                <span>
+                                    <lightning-icon icon-name="utility:error" variant="error"
+                                        size="xx-small" class="slds-m-right_x-small"></lightning-icon>
+                                    {field.label}
+                                </span>
+                            </li>
+                        </template>
+                    </ul>
+                    <lightning-button class="slds-m-top_small" variant="brand"
+                        label="Fill in missing fields" onclick={handleButtonClick}></lightning-button>
+                </template>
+            </template>
+
+            <template lwc:if={showOutOfScope}>
+                <p class="slds-text-color_weak">
+                    No NetSuite project fields are required for this opportunity.
+                </p>
+            </template>
+
+            <template lwc:if={errorMessage}>
+                <div class="slds-text-color_error" role="alert">{errorMessage}</div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

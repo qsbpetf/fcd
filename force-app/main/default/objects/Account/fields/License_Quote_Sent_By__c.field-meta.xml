@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>License_Quote_Sent_By__c</fullName>
+    <description>Indicates how License Ops should proceed when a renewal is identified for this account: quote the customer directly or align with the Account Manager / LRGM before quoting. Maintained by the Account Manager. Requested by the License team to streamline the renewals process</description>
+    <inlineHelpText>Who talks to the customer about license quotes &quot;AM / LRGM&quot;: The Account Manager or LRGM sends the quote and talks to the customer. Ops prepares the quote and helps. &quot;License Ops&quot;: Ops sends the quote and talks to the customer. In both cases, Ops does not own the account and does not make commercial decisions. If the customer asks about discounts or any other commercial topic, the AM or LRGM takes over the conversation.</inlineHelpText>
+    <label>License Quote Sent By</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AM/LRGM</fullName>
+                <default>true</default>
+                <label>AM/LRGM</label>
+            </value>
+            <value>
+                <fullName>License Operations</fullName>
+                <default>false</default>
+                <label>License Operations</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

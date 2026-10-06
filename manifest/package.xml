@@ -37,6 +37,45 @@
         <members>CurrencyRateMarkup.GBP</members>
         <members>LogEntryDataMaskRule.MastercardCreditCardNumber</members>
         <members>LogEntryDataMaskRule.SocialSecurityNumber</members>
+        <members>LogEntryDataMaskRule.VisaCreditCardNumber</members>
+        <members>LogStatus.Done</members>
+        <members>LogStatus.Ignored</members>
+        <members>LogStatus.In_Progress</members>
+        <members>LogStatus.New</members>
+        <members>LogStatus.On_Hold</members>
+        <members>LoggerParameter.CallStatusApi</members>
+        <members>LoggerParameter.DefaultLogEntryRelatedListFieldSet</members>
+        <members>LoggerParameter.EnableLogEntryEventStream</members>
+        <members>LoggerParameter.EnableLoggerSystemMessages</members>
+        <members>LoggerParameter.EnableStackTraceParsing</members>
+        <members>LoggerParameter.EnableTagging</members>
+        <members>LoggerParameter.LogEntryEventStreamDisplayFields</members>
+        <members>LoggerParameter.NormalizeScenarioData</members>
+        <members>LoggerParameter.NormalizeTagData</members>
+        <members>LoggerParameter.PlatformCachePartitionName</members>
+        <members>LoggerParameter.QueryApexClassData</members>
+        <members>LoggerParameter.QueryAuthSessionData</members>
+        <members>LoggerParameter.QueryAuthSessionDataSynchronously</members>
+        <members>LoggerParameter.QueryFlowDefinitionViewData</members>
+        <members>LoggerParameter.QueryNetworkData</members>
+        <members>LoggerParameter.QueryNetworkDataSynchronously</members>
+        <members>LoggerParameter.QueryOrganizationData</members>
+        <members>LoggerParameter.QueryOrganizationDataSynchronously</members>
+        <members>LoggerParameter.QueryRelatedRecordData</members>
+        <members>LoggerParameter.QueryUserData</members>
+        <members>LoggerParameter.QueryUserDataSynchronously</members>
+        <members>LoggerParameter.SendErrorEmailNotifications</members>
+        <members>LoggerParameter.StoreHttpResponseHeaderValues</members>
+        <members>LoggerParameter.SystemDebugMessageFormat</members>
+        <members>LoggerParameter.UseFirstSpecifiedScenario</members>
+        <members>LoggerParameter.UsePlatformCache</members>
+        <members>LoggerParameter.UseTopicsForTags</members>
+        <members>LoggerSObjectHandler.LogEntryEventHandler</members>
+        <members>LoggerSObjectHandler.LogEntryHandler</members>
+        <members>LoggerSObjectHandler.LogEntryTagHandler</members>
+        <members>LoggerSObjectHandler.LogHandler</members>
+        <members>LoggerSObjectHandler.LoggerScenarioHandler</members>
+        <members>LoggerSObjectHandler.LoggerTagHandler</members>
         <members>MakeWebhookOpportunityStageConfig.Cancelled_After_Invoice</members>
         <members>MakeWebhookOpportunityStageConfig.ClosedWonAwaitingApproval</members>
         <members>MakeWebhookOpportunityStageConfig.Closed_Lost</members>
@@ -65,6 +104,14 @@
         <members>OpportunityLineItemColumnConfig.UnitPrice</members>
         <members>OpportunityLineItemColumnConfig.UnusualDiscountReviewed</members>
         <members>OpportunityLineItemColumnConfig.UserCount</members>
+        <members>Opportunity_Readiness_Rule.Consulting_Awaiting_NonUKUS</members>
+        <members>Opportunity_Readiness_Rule.Consulting_Awaiting_UKUS</members>
+        <members>Opportunity_Readiness_Rule.Consulting_Order_NonUKUS</members>
+        <members>Opportunity_Readiness_Rule.Consulting_Order_UKUS</members>
+        <members>Opportunity_Readiness_Rule.MS_Awaiting_NonUKUS</members>
+        <members>Opportunity_Readiness_Rule.MS_Awaiting_UKUS</members>
+        <members>Opportunity_Readiness_Rule.MS_Order_NonUKUS</members>
+        <members>Opportunity_Readiness_Rule.MS_Order_UKUS</members>
         <members>PPC_TransactionAccount.CH</members>
         <members>PPC_TransactionAccount.DE</members>
         <members>PPC_TransactionAccount.DK</members>
@@ -174,6 +221,98 @@
         <members>Quote_Default_Text.Quote_Default_English</members>
         <members>Quote_Default_Text.Quote_Default_Finnish</members>
         <members>Quote_Default_Text.Quote_Default_German</members>
+        <members>Quote_Product_Family_Map.F_CON_ClearHub</members>
+        <members>Quote_Product_Family_Map.F_CON_Consulting</members>
+        <members>Quote_Product_Family_Map.F_CON_Consulting_NS</members>
+        <members>Quote_Product_Family_Map.F_CON_FTC</members>
+        <members>Quote_Product_Family_Map.F_CON_GitLab</members>
+        <members>Quote_Product_Family_Map.F_CON_Training</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Cloud_Apps</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Cloud_Core</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Data_Center_Apps</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Data_Center_Core</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_ELA</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Jira_Align</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Server_Core</members>
+        <members>Quote_Product_Family_Map.F_LIC_Atlassian_Services</members>
+        <members>Quote_Product_Family_Map.F_LIC_GitHub</members>
+        <members>Quote_Product_Family_Map.F_LIC_GitLab</members>
+        <members>Quote_Product_Family_Map.F_LIC_Non_Strategic_Vendors</members>
+        <members>Quote_Product_Family_Map.F_LIC_Other_Strategic_Vendors</members>
+        <members>Quote_Product_Family_Map.F_MS_Application_Support</members>
+        <members>Quote_Product_Family_Map.F_MS_Hosting</members>
+        <members>Quote_Product_Family_Map.F_MS_Root</members>
+        <members>Quote_Product_Family_Map.F_MS_Total_Support</members>
+        <members>Quote_Template_Variant.Anglosphere</members>
+        <members>Quote_Template_Variant.Global</members>
+        <members>Quote_Template_Variant.Jodocus</members>
+        <members>Quote_Template_Variant.Rest_of_World</members>
+        <members>Quote_Template_Variant.Switzerland</members>
+        <members>Quote_Terms_Group.Advisory_Support</members>
+        <members>Quote_Terms_Group.Atlassian_License</members>
+        <members>Quote_Terms_Group.Azure_GitHub_CSP</members>
+        <members>Quote_Terms_Group.Consulting</members>
+        <members>Quote_Terms_Group.GitLab_License</members>
+        <members>Quote_Terms_Group.Hosting_Support</members>
+        <members>Quote_Terms_Group.Managed_Services</members>
+        <members>Quote_Terms_Group.Other_License</members>
+        <members>Quote_Terms_Module.ADMIN_FEE_EN</members>
+        <members>Quote_Terms_Module.ADMIN_FEE_UK_EN</members>
+        <members>Quote_Terms_Module.ADVISORY_SUPPORT_EN</members>
+        <members>Quote_Terms_Module.AMEND_PRICING_AGR_EN</members>
+        <members>Quote_Terms_Module.AMEND_PRICING_CH_DE</members>
+        <members>Quote_Terms_Module.AMEND_PRICING_DE</members>
+        <members>Quote_Terms_Module.AMEND_PRICING_ORDER_EN</members>
+        <members>Quote_Terms_Module.ATLASSIAN_MONTHLY_DE</members>
+        <members>Quote_Terms_Module.ATLASSIAN_MONTHLY_EN</members>
+        <members>Quote_Terms_Module.AZURE_GITHUB_CSP_EN</members>
+        <members>Quote_Terms_Module.AZURE_RECOMMENDS_EN</members>
+        <members>Quote_Terms_Module.CH_ATLASSIAN_SERVICES_DE</members>
+        <members>Quote_Terms_Module.CH_FEEDBACK_DE</members>
+        <members>Quote_Terms_Module.CLOSING_EN</members>
+        <members>Quote_Terms_Module.CONSULTING_GENERAL_DE</members>
+        <members>Quote_Terms_Module.CONSULTING_GENERAL_EN</members>
+        <members>Quote_Terms_Module.CSP_ACCEPTANCE_EN</members>
+        <members>Quote_Terms_Module.DISCOUNT_ATLASSIAN_EN</members>
+        <members>Quote_Terms_Module.DISCOUNT_GITLAB_EN</members>
+        <members>Quote_Terms_Module.DISCOUNT_OTHER_EN</members>
+        <members>Quote_Terms_Module.GITLAB_FLOWTHROUGH_EN</members>
+        <members>Quote_Terms_Module.GREETING_CH_DE</members>
+        <members>Quote_Terms_Module.GREETING_DE</members>
+        <members>Quote_Terms_Module.GREETING_EN</members>
+        <members>Quote_Terms_Module.HOSTING_SUPPORT_EN</members>
+        <members>Quote_Terms_Module.INDICATIVE_DATES_DE</members>
+        <members>Quote_Terms_Module.INDICATIVE_DATES_EN</members>
+        <members>Quote_Terms_Module.INTRO_BINDING_DE</members>
+        <members>Quote_Terms_Module.INTRO_BINDING_EN</members>
+        <members>Quote_Terms_Module.INTRO_NONBINDING_DE</members>
+        <members>Quote_Terms_Module.INTRO_NONBINDING_EN</members>
+        <members>Quote_Terms_Module.INTRO_NONBINDING_JOD_EN</members>
+        <members>Quote_Terms_Module.LICENSE_BIND_EN</members>
+        <members>Quote_Terms_Module.LICENSE_CH_DE</members>
+        <members>Quote_Terms_Module.LICENSE_DE</members>
+        <members>Quote_Terms_Module.LICENSE_GLOBAL_EN</members>
+        <members>Quote_Terms_Module.LICENSE_NB_JOD_EN</members>
+        <members>Quote_Terms_Module.LICENSE_NB_ROW_EN</members>
+        <members>Quote_Terms_Module.LICENSE_UK_EN</members>
+        <members>Quote_Terms_Module.MANAGED_SERVICES_DE</members>
+        <members>Quote_Terms_Module.MANAGED_SERVICES_EN</members>
+        <members>Quote_Terms_Module.NULL_VOID_BINDING_EN</members>
+        <members>Quote_Terms_Module.NULL_VOID_GITLAB_EN</members>
+        <members>Quote_Terms_Module.PROMO_CONSULTING_EN</members>
+        <members>Quote_Terms_Module.PROMO_MANAGED_ATLASSIAN_EN</members>
+        <members>Quote_Terms_Module.SERVICES_UK_EN</members>
+        <members>Quote_Terms_Module.TAX_VAT_DE</members>
+        <members>Quote_Terms_Module.TAX_VAT_EN</members>
+        <members>Quote_Terms_Module.TECH_CONTACT_CH_DE</members>
+        <members>Quote_Terms_Module.TECH_CONTACT_DE</members>
+        <members>Quote_Terms_Module.TECH_CONTACT_EN</members>
+        <members>Quote_Terms_Module.TECH_CONTACT_ROW_EN</members>
+        <members>Quote_Terms_Module.US_NEXUS_EN</members>
+        <members>Quote_Terms_Module.US_SALES_TAX_EN</members>
+        <members>bmpyrckt__Timeline_Configuration.KAMopportunities</members>
+        <members>bmpyrckt__Timeline_Configuration.KAMplanTask</members>
+        <members>bmpyrckt__Timeline_Configuration.Template_Item</members>
         <name>CustomMetadata</name>
     </types>
     <types>
@@ -182,10 +321,14 @@
         <members>AtlassianOffering__c</members>
         <members>AtlassianProduct__c</members>
         <members>AtlassianRegSubmission__c</members>
+        <members>Buying_Exchange_Rate__c</members>
         <members>CurrencyRateMarkup__mdt</members>
         <members>DefaultOpportunityOwner__c</members>
         <members>Exchange_Rate__c</members>
         <members>InvoiceGroup__c</members>
+        <members>KAMplan__c</members>
+        <members>KAMtemplateItem__c</members>
+        <members>KAMtemplate__c</members>
         <members>Lead</members>
         <members>MakeWebhookOpportunityStageConfig__mdt</members>
         <members>MakeWebhookSettings__c</members>
@@ -195,8 +338,8 @@
         <members>PPC_InvoiceAutoImportSettings__c</members>
         <members>PPC_TransactionAccount__mdt</members>
         <members>PendingInvoice__c</members>
-        <members>PpcCredentialStatus__c</members>
         <members>PortalProductToSalesforceMapping__mdt</members>
+        <members>PpcCredentialStatus__c</members>
         <members>PpcProductToSalesforceMapping__mdt</members>
         <members>PromotionCode__c</members>
         <name>CustomObject</name>
@@ -228,6 +371,7 @@
         <members>Atlassian_Partner_Accounts</members>
         <members>Atlassian_Registration_Search</members>
         <members>Batch_Job_Monitor</members>
+        <members>Buying_Exchange_Rate__c</members>
         <members>Deal_Service_Registration</members>
         <members>InvoiceGroup__c</members>
         <members>PendingInvoice__c</members>
@@ -248,7 +392,11 @@
         <name>FlexiPage</name>
     </types>
     <types>
+        <members>Account_Daily_Status_Maintenance</members>
+        <members>Account_Hierarchy_Sync_Parent_Status</members>
         <members>Account_Name_is_changed</members>
+        <members>Account_Sub_Account_Created_Notification</members>
+        <members>Account_Type_Set_to_Customer</members>
         <members>Account_Update_Account_Currency</members>
         <members>Account_Update_Account_Hierarchy_to_HubSpot</members>
         <members>Account_Update_Account_Hierarchy_to_HubSpot_Scheduled</members>
@@ -274,6 +422,7 @@
         <members>Case_Update_Creation_Edit_1</members>
         <members>Change_opportunity_Stage_based_on_Renewal_Status</members>
         <members>Check_1st_won_opp_for_existing_records</members>
+        <members>Contact_Owner_Notification</members>
         <members>Contact_Role_Creation_Edit</members>
         <members>Contact_Role_Creation_Edit_1</members>
         <members>Contact_Update_Creation_Edit</members>
@@ -311,6 +460,7 @@
         <members>Discount_on_quote_line_item</members>
         <members>Editable_Cost_Price_Dollar</members>
         <members>Editable_Unit_List_Price_In_USD</members>
+        <members>EmailMessage_Reopen_Closed_Case</members>
         <members>Email_Message</members>
         <members>Emails_updates_Create</members>
         <members>Emails_updates_Edit</members>
@@ -339,6 +489,7 @@
         <members>Lead_Creation_migrated</members>
         <members>Lead_Creation_or_Modification</members>
         <members>Lead_Marked_as_Closed_Won</members>
+        <members>Lead_Owner_Assignment_Notification</members>
         <members>Lead_Owner_Changes_Notification</members>
         <members>Lead_Status_change_date</members>
         <members>Lead_Task_for_On_Hold_Date</members>
@@ -351,12 +502,17 @@
         <members>Mark_Contact_as_Quote_Contact</members>
         <members>Mark_contact_as_technical_contact_when_added_to_an_opportunity</members>
         <members>Microsoft_Partner_Role_Solution_Area_and_Solution_Play_Screen_Flow</members>
+        <members>NetSuite_Financial_Populate_Related_Project_from_Opportunity</members>
         <members>New_Lead_alert_for_sales_team_member_WIP</members>
         <members>Nov_2022_Cloud_Price_Rise_Deadline</members>
+        <members>OLI_Discount_Create_UK_US</members>
+        <members>OLI_Discount_Update_UK_US</members>
+        <members>Opportunity_Account_Owner_Email_Notifications</members>
         <members>Opportunity_Add_Price_Book</members>
         <members>Opportunity_Auto_Renewal_Triggered</members>
         <members>Opportunity_Close_MS_Sales_Support_case_on_Closed_Lost</members>
         <members>Opportunity_Create_Services_in_Portfolio_Opp_Prods</members>
+        <members>Opportunity_Creation_Screen</members>
         <members>Opportunity_Currency</members>
         <members>Opportunity_Custom_Billing_Address</members>
         <members>Opportunity_Finance_review_status_change</members>
@@ -370,6 +526,7 @@
         <members>Opportunity_Update_Closed_won_information_to_KAM_Plan_Test</members>
         <members>Opportunity_Update_Opp_fields_for_UK_and_US</members>
         <members>POP_Up_Custom_Validation</members>
+        <members>PPC_Health_Slack_Update</members>
         <members>PVR_Rebate_Currency_Convert_Flow</members>
         <members>Payment_Terms_Modification_From_Account</members>
         <members>PrimaryContact</members>
@@ -405,10 +562,12 @@
         <members>Send_Notification_to_Slack_for_AI_offering_Product</members>
         <members>Send_Proposal_Request</members>
         <members>Send_Quote_Reminders</members>
+        <members>Send_Slack_Message_to_Sales_Support_Slack_Channel</members>
         <members>Send_Slack_Message_to_Scandinavia_Slack_Channel</members>
         <members>Send_Slack_Notification_about_Sales_Support_Required</members>
         <members>Send_Slack_Notification_to_ScandicDeals_Channel</members>
         <members>Send_new_lead_notification</members>
+        <members>Sending_a_Slack_message_for_the_MS_product_family_for_Closed_Won_opportunity_rec</members>
         <members>Sept_2021_Margin_Change_Chaser_V2</members>
         <members>Set_Date_Changed_to_Closed_Won</members>
         <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
@@ -416,6 +575,7 @@
         <members>Set_Payment_Terms_when_Opp_Product_is_deleted</members>
         <members>Set_Status_Last_Modified_Date</members>
         <members>Set_default_owner_on_imported_renewal_oppty</members>
+        <members>Set_last_invoice_date</members>
         <members>Set_the_Auto_Renewal_checkbox_to_true</members>
         <members>Show_all_ordered_products_to_account_level</members>
         <members>Slack_Send_MS_Support_ticket_notifications</members>
@@ -483,6 +643,7 @@
         <members>Update_Pillar</members>
         <members>Update_Product</members>
         <members>Update_Product_Create_and_Edit</members>
+        <members>Update_QuoteLineItem_AfterSave</members>
         <members>Update_QuoteLineItem_Create</members>
         <members>Update_Quote_Create_and_Edit</members>
         <members>Update_Related_Project_when_NetSuite_Project_Number_is_added</members>
@@ -491,6 +652,8 @@
         <members>Update_Task_Create_and_Edit</members>
         <members>Update_Task_Creation</members>
         <members>Update_Task_Creation_1</members>
+        <members>Update_Units_fields_when_license_product_has_been_added</members>
+        <members>Update_the_Opportunity_Lead_Source</members>
         <members>Updated_the_Opportunity_s_Billing_Address_Information</members>
         <members>Weekly_Pipeline_Notification</members>
         <members>X1st_Opportunity_Closed_Won</members>
@@ -514,7 +677,11 @@
         <name>Flow</name>
     </types>
     <types>
+        <members>Account_Daily_Status_Maintenance</members>
+        <members>Account_Hierarchy_Sync_Parent_Status</members>
         <members>Account_Name_is_changed</members>
+        <members>Account_Sub_Account_Created_Notification</members>
+        <members>Account_Type_Set_to_Customer</members>
         <members>Account_Update_Account_Currency</members>
         <members>Account_Update_Account_Hierarchy_to_HubSpot</members>
         <members>Account_Update_Account_Hierarchy_to_HubSpot_Scheduled</members>
@@ -540,6 +707,7 @@
         <members>Case_Update_Creation_Edit_1</members>
         <members>Change_opportunity_Stage_based_on_Renewal_Status</members>
         <members>Check_1st_won_opp_for_existing_records</members>
+        <members>Contact_Owner_Notification</members>
         <members>Contact_Role_Creation_Edit</members>
         <members>Contact_Role_Creation_Edit_1</members>
         <members>Contact_Update_Creation_Edit</members>
@@ -577,6 +745,7 @@
         <members>Discount_on_quote_line_item</members>
         <members>Editable_Cost_Price_Dollar</members>
         <members>Editable_Unit_List_Price_In_USD</members>
+        <members>EmailMessage_Reopen_Closed_Case</members>
         <members>Email_Message</members>
         <members>Emails_updates_Create</members>
         <members>Emails_updates_Edit</members>
@@ -605,6 +774,7 @@
         <members>Lead_Creation_migrated</members>
         <members>Lead_Creation_or_Modification</members>
         <members>Lead_Marked_as_Closed_Won</members>
+        <members>Lead_Owner_Assignment_Notification</members>
         <members>Lead_Owner_Changes_Notification</members>
         <members>Lead_Status_change_date</members>
         <members>Lead_Task_for_On_Hold_Date</members>
@@ -617,12 +787,17 @@
         <members>Mark_Contact_as_Quote_Contact</members>
         <members>Mark_contact_as_technical_contact_when_added_to_an_opportunity</members>
         <members>Microsoft_Partner_Role_Solution_Area_and_Solution_Play_Screen_Flow</members>
+        <members>NetSuite_Financial_Populate_Related_Project_from_Opportunity</members>
         <members>New_Lead_alert_for_sales_team_member_WIP</members>
         <members>Nov_2022_Cloud_Price_Rise_Deadline</members>
+        <members>OLI_Discount_Create_UK_US</members>
+        <members>OLI_Discount_Update_UK_US</members>
+        <members>Opportunity_Account_Owner_Email_Notifications</members>
         <members>Opportunity_Add_Price_Book</members>
         <members>Opportunity_Auto_Renewal_Triggered</members>
         <members>Opportunity_Close_MS_Sales_Support_case_on_Closed_Lost</members>
         <members>Opportunity_Create_Services_in_Portfolio_Opp_Prods</members>
+        <members>Opportunity_Creation_Screen</members>
         <members>Opportunity_Currency</members>
         <members>Opportunity_Custom_Billing_Address</members>
         <members>Opportunity_Finance_review_status_change</members>
@@ -636,6 +811,7 @@
         <members>Opportunity_Update_Closed_won_information_to_KAM_Plan_Test</members>
         <members>Opportunity_Update_Opp_fields_for_UK_and_US</members>
         <members>POP_Up_Custom_Validation</members>
+        <members>PPC_Health_Slack_Update</members>
         <members>PVR_Rebate_Currency_Convert_Flow</members>
         <members>Payment_Terms_Modification_From_Account</members>
         <members>PrimaryContact</members>
@@ -671,10 +847,12 @@
         <members>Send_Notification_to_Slack_for_AI_offering_Product</members>
         <members>Send_Proposal_Request</members>
         <members>Send_Quote_Reminders</members>
+        <members>Send_Slack_Message_to_Sales_Support_Slack_Channel</members>
         <members>Send_Slack_Message_to_Scandinavia_Slack_Channel</members>
         <members>Send_Slack_Notification_about_Sales_Support_Required</members>
         <members>Send_Slack_Notification_to_ScandicDeals_Channel</members>
         <members>Send_new_lead_notification</members>
+        <members>Sending_a_Slack_message_for_the_MS_product_family_for_Closed_Won_opportunity_rec</members>
         <members>Sept_2021_Margin_Change_Chaser_V2</members>
         <members>Set_Date_Changed_to_Closed_Won</members>
         <members>Set_Eficode_Subsidiary_on_Pending_Invoice</members>
@@ -682,6 +860,7 @@
         <members>Set_Payment_Terms_when_Opp_Product_is_deleted</members>
         <members>Set_Status_Last_Modified_Date</members>
         <members>Set_default_owner_on_imported_renewal_oppty</members>
+        <members>Set_last_invoice_date</members>
         <members>Set_the_Auto_Renewal_checkbox_to_true</members>
         <members>Show_all_ordered_products_to_account_level</members>
         <members>Slack_Send_MS_Support_ticket_notifications</members>
@@ -749,6 +928,7 @@
         <members>Update_Pillar</members>
         <members>Update_Product</members>
         <members>Update_Product_Create_and_Edit</members>
+        <members>Update_QuoteLineItem_AfterSave</members>
         <members>Update_QuoteLineItem_Create</members>
         <members>Update_Quote_Create_and_Edit</members>
         <members>Update_Related_Project_when_NetSuite_Project_Number_is_added</members>
@@ -757,6 +937,8 @@
         <members>Update_Task_Create_and_Edit</members>
         <members>Update_Task_Creation</members>
         <members>Update_Task_Creation_1</members>
+        <members>Update_Units_fields_when_license_product_has_been_added</members>
+        <members>Update_the_Opportunity_Lead_Source</members>
         <members>Updated_the_Opportunity_s_Billing_Address_Information</members>
         <members>Weekly_Pipeline_Notification</members>
         <members>X1st_Opportunity_Closed_Won</members>
@@ -829,12 +1011,14 @@
         <name>NamedCredential</name>
     </types>
     <types>
+        <members>API_Only_user</members>
         <members>Atlassian_Deal_Reg_Access</members>
         <members>Atlassian_PPC_Access</members>
         <members>Atlassian_PPC_All_Offices</members>
         <members>Atlassian_PPC_Finnish_Office</members>
         <members>Atlassian_PPC_Import_Access</members>
         <members>Atlassian_PPC_United_Kingdom_Office</members>
+        <members>JSON_Converter</members>
         <name>PermissionSet</name>
     </types>
     <types>
@@ -846,6 +1030,10 @@
     <types>
         <members>*</members>
         <name>StaticResource</name>
+    </types>
+    <types>
+        <members>Contact</members>
+        <name>Workflow</name>
     </types>
     <types>
         <members>Field_Trip__Object_Analysis__c.Field_Trip__Send_Processing_Complete_Notification2</members>

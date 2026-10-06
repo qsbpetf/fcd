@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Consulting - Order</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Amount_Match__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Effective_Date_Field__c</field>
+        <value xsi:type="xsd:string">Date_Changed_to_Closed_won__c</value>
+    </values>
+    <values>
+        <field>Effective_From__c</field>
+        <value xsi:type="xsd:date">2024-03-20</value>
+    </values>
+    <values>
+        <field>Error_Message__c</field>
+        <value xsi:type="xsd:string">The following NetSuite Consulting Project fields are mandatory: Delivery Manager, Contracts, New or Extension, Customer Invoicing Contact, Start Date. Fill them in from the Close readiness panel on this page.</value>
+    </values>
+    <values>
+        <field>Guidance__c</field>
+        <value xsi:type="xsd:string">These fields flow to the NetSuite project once the deal is won.</value>
+    </values>
+    <values>
+        <field>Netsuite_Record_Type__c</field>
+        <value xsi:type="xsd:string">Project</value>
+    </values>
+    <values>
+        <field>Primary_Amount_Field__c</field>
+        <value xsi:type="xsd:string">Total_Amount_Consulting__c</value>
+    </values>
+    <values>
+        <field>Primary_Amount_Operator__c</field>
+        <value xsi:type="xsd:string">GreaterThanZero</value>
+    </values>
+    <values>
+        <field>Required_Fields__c</field>
+        <value xsi:type="xsd:string">Delivery_Owner__c;Contract_Drive_Folder_url__c;New_or_Extension__c;Customer_Invoicing_Contact__c;Project_Start_Date__c</value>
+    </values>
+    <values>
+        <field>Secondary_Amount_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Secondary_Amount_Operator__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Sequence__c</field>
+        <value xsi:type="xsd:double">50.0</value>
+    </values>
+    <values>
+        <field>Severity__c</field>
+        <value xsi:type="xsd:string">Blocking</value>
+    </values>
+    <values>
+        <field>Skip_When_Extension__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Subsidiary_Scope__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Subsidiary_Source__c</field>
+        <value xsi:type="xsd:string">Account</value>
+    </values>
+    <values>
+        <field>Target_Stages__c</field>
+        <value xsi:type="xsd:string">Order</value>
+    </values>
+    <values>
+        <field>Treat_Blank_Effective_Date_As_In_Scope__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>

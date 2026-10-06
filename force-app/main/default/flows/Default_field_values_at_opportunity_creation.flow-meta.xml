@@ -2,35 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <decisions>
-        <name>myRule_1</name>
-        <label>Lead source is null</label>
-        <locationX>182</locationX>
-        <locationY>431</locationY>
-        <defaultConnector>
-            <targetReference>Use_Account_currency</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>FALSE_Lead source is null</defaultConnectorLabel>
-        <rules>
-            <name>TRUE_myRule_1</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.LeadSource</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_1_A1</targetReference>
-            </connector>
-            <label>TRUE_Lead source is null</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>myRule_28</name>
         <label>Purchase notification contact is null</label>
         <locationX>182</locationX>
-        <locationY>1031</locationY>
+        <locationY>731</locationY>
         <defaultConnectorLabel>FALSE_Purchase notification contact</defaultConnectorLabel>
         <rules>
             <name>TRUE_myRule_28</name>
@@ -52,7 +27,7 @@
         <name>Use_Account_currency</name>
         <label>Use Account currency</label>
         <locationX>182</locationX>
-        <locationY>731</locationY>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>myRule_28</targetReference>
         </defaultConnector>
@@ -96,7 +71,7 @@
         <locationX>182</locationX>
         <locationY>323</locationY>
         <connector>
-            <targetReference>myRule_1</targetReference>
+            <targetReference>Use_Account_currency</targetReference>
         </connector>
         <inputAssignments>
             <field>Created_Date_2__c</field>
@@ -107,26 +82,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>myRule_1_A1</name>
-        <label>Update Lead source</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
-        <connector>
-            <targetReference>Use_Account_currency</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>LeadSource</field>
-            <value>
-                <stringValue>Prospecting</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>myRule_28_A1</name>
         <label>Update Purchase Notification Contact</label>
         <locationX>50</locationX>
-        <locationY>1139</locationY>
+        <locationY>839</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Purchase_Notification_Contact__c</field>
@@ -147,7 +106,7 @@
         <name>Update_Currency</name>
         <label>Update Currency</label>
         <locationX>50</locationX>
-        <locationY>839</locationY>
+        <locationY>539</locationY>
         <connector>
             <targetReference>myRule_28</targetReference>
         </connector>

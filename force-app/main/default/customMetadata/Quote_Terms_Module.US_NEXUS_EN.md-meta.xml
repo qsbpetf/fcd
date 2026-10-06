@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Us Nexus En</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Applies_When__c</field>
+        <value xsi:type="xsd:string">Always</value>
+    </values>
+    <values>
+        <field>Body__c</field>
+        <value xsi:type="xsd:string">Where on-site presence creates sales tax Nexus in states not listed, Eficode may collect sales tax as appropriate. If you hold a valid sales tax exemption, please forward to receivables_usa@eficode.com upon quote acceptance to avoid unnecessary tax collection.</value>
+    </values>
+    <values>
+        <field>Condition_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Exclude_Groups__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Language__c</field>
+        <value xsi:type="xsd:string">English</value>
+    </values>
+    <values>
+        <field>Module_Code__c</field>
+        <value xsi:type="xsd:string">US_NEXUS</value>
+    </values>
+    <values>
+        <field>Offer_Type__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Placement__c</field>
+        <value xsi:type="xsd:string">Additional</value>
+    </values>
+    <values>
+        <field>Region_Variants__c</field>
+        <value xsi:type="xsd:string">Anglosphere</value>
+    </values>
+    <values>
+        <field>Section_Title__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">330.0</value>
+    </values>
+</CustomMetadata>

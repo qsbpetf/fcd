@@ -161,6 +161,7 @@
             <label>Yes_Negative</label>
         </rules>
     </decisions>
+    <description>After-save flow on OLI create for UK/US subsidiaries. Sets Recommended Discount and Discount from Account/Parent Atlassian discount matrix by product family and order type, scales for partner Cloud upgrades, zeroes on negative margin without sign-off.</description>
     <environments>Default</environments>
     <formulas>
         <name>ISNEW</name>
@@ -307,8 +308,8 @@ IF({!$Record.Partner_Discount_Formula__c} &gt; 25, {!LockRecommendedDiscount} ,
 {!LockRecommendedDiscount} * ({!$Record.Partner_Discount_Formula__c} / 25)))</expression>
         <scale>2</scale>
     </formulas>
-    <interviewLabel>TEST2_Discount Create {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>TEST2_Discount Create</label>
+    <interviewLabel>OLI Discount Create - UK/US {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>OLI Discount Create - UK/US</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -459,7 +460,7 @@ IF({!$Record.Partner_Discount_Formula__c} &gt; 25, {!LockRecommendedDiscount} ,
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>LockRecommendedDiscount</name>
         <dataType>Number</dataType>

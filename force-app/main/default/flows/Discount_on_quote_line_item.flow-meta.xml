@@ -460,7 +460,7 @@
         <object>QuoteLineItem</object>
     </recordUpdates>
     <startElementReference>isChangedDecision2_myRule_1_TotalPrice</startElementReference>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Email</name>
+        <label>Send Email</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recipientAddresses</name>
+            <value/>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>DefaultWorkflowUser</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>composeEmailContent</name>
+            <value>
+                <stringValue>True</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>SubAccountSubject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>&lt;p&gt;{!SubAccountTemplate}&lt;/p&gt;</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useLineBreaks</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>relatedRecordId</name>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <decisions>
+        <name>Did_Owner_find</name>
+        <label>Did Owner find?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No Email</defaultConnectorLabel>
+        <rules>
+            <name>Owner_exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Parent_Owner</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email</targetReference>
+            </connector>
+            <label>Owner exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Sub_Account_Scenario</name>
+        <label>Sub Account Scenario</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No Notification</defaultConnectorLabel>
+        <rules>
+            <name>Newly_Paranted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NewlyCreatedSubAccountFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Parent_Owner</targetReference>
+            </connector>
+            <label>Newly Paranted</label>
+        </rules>
+    </decisions>
+    <description>Emails the Parent Account Owner when a sub-account is created under (or re-parented to) their account by another user</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>NewlyCreatedSubAccountFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+  OR(
+    ISNEW(),
+    ISCHANGED({!$Record.ParentId})
+  ),
+  {!$Record.LastModifiedById} &lt;&gt; {!$Record.Parent.OwnerId}
+)</expression>
+    </formulas>
+    <interviewLabel>Account - Sub-Account Created Notification {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account - Sub-Account Created Notification</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Parent_Owner</name>
+        <label>Get Parent Owner</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Did_Owner_find</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Parent.OwnerId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Sub_Account_Scenario</targetReference>
+        </connector>
+        <filterFormula>AND(
+{!$Setup.AutomationSettings__c.Automation_Enabled__c}=TRUE,
+NOT(ISBLANK({!$Record.ParentId}))
+)</filterFormula>
+        <object>Account</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>SubAccountSubject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>New sub-account created under {!$Record.Parent.Name}: {!$Record.Name}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SubAccountTemplate</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hi {!Get_Parent_Owner.FirstName},
+
+{!$Record.Name} has created a new sub-account under {!$Record.Parent.Name}, which you own.
+
+Sub-account:      {!$Record.Name}
+Parent account:   {!$Record.Parent.Name}
+Created by:        {!$Record.CreatedBy.Full_Name__c}
+
+As the Account Owner of the parent, you may want to review this sub-account and align on ownership and account structure.
+
+View the sub-account:
+https://eficode--golivesb.sandbox.lightning.force.com/lightning/r/Account/{!$Record.Id}/view</text>
+    </textTemplates>
+</Flow>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <decisions>
+        <name>Evaluate_Account_Status</name>
+        <label>Evaluate Account Status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Inactive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_IsInactive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Account_to_Inactive</targetReference>
+            </connector>
+            <label>Is Inactive</label>
+        </rules>
+        <rules>
+            <name>Is_Churned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_IsChurned</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Account_to_Churned</targetReference>
+            </connector>
+            <label>Is Churned</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>fx_IsChurned</name>
+        <dataType>Boolean</dataType>
+        <expression>{!$Record.Open_Opportunities_Count__c} == 0 
+&amp;&amp; 
+(ISBLANK({!$Record.Max_License_End_Date__c}) || {!$Record.Max_License_End_Date__c} + 30 &lt; TODAY()) 
+&amp;&amp; 
+(ISBLANK({!$Record.Max_Project_End_Date__c}) || {!$Record.Max_Project_End_Date__c} &lt; TODAY() - 365) 
+&amp;&amp; 
+(ISBLANK({!$Record.Last_Invoice_Date__c}) || {!$Record.Last_Invoice_Date__c} &lt; TODAY() - 365)</expression>
+    </formulas>
+    <formulas>
+        <name>fx_IsInactive</name>
+        <dataType>Boolean</dataType>
+        <expression>{!$Record.Open_Opportunities_Count__c} == 0 
+&amp;&amp; 
+(ISBLANK({!$Record.Max_License_End_Date__c}) || {!$Record.Max_License_End_Date__c} + 30 &lt; TODAY()) 
+&amp;&amp; 
+(
+  ({!$Record.Max_Project_End_Date__c} &lt; TODAY() - 90 &amp;&amp; {!$Record.Max_Project_End_Date__c} &gt;= TODAY() - 365) 
+  || 
+  ({!$Record.Last_Invoice_Date__c} &lt; TODAY() - 90 &amp;&amp; {!$Record.Last_Invoice_Date__c} &gt;= TODAY() - 365)
+)</expression>
+    </formulas>
+    <interviewLabel>Account - Daily Status Maintenance {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account - Daily Status Maintenance</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Set_Account_to_Churned</name>
+        <label>Set Account to Churned</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Account_Type__c</field>
+            <value>
+                <stringValue>Churned Customer</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_Account_to_Inactive</name>
+        <label>Set Account to Inactive</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Account_Type__c</field>
+            <value>
+                <stringValue>Inactive Customer</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Evaluate_Account_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Customer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Account_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Client</stringValue>
+            </value>
+        </filters>
+        <object>Account</object>
+        <schedule>
+            <dayOfMonthToRun>0</dayOfMonthToRun>
+            <frequency>Daily</frequency>
+            <frequencyNumber>0</frequencyNumber>
+            <startDate>2026-09-28</startDate>
+            <startTime>12:46:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

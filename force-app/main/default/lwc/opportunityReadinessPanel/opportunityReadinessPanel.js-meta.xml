@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="previewStage" type="String"
+                default="Closed won - awaiting approval"
+                label="Check against stage"
+                description="Stage the checklist is measured against. The panel shows what is still missing to reach it, from any current stage."/>
+            <property name="autoOpenStages" type="String"
+                default="Closing"
+                label="Auto-open when moving into"
+                description="Semicolon-separated stages that open the window when the record moves into them with fields missing. Leave blank to never auto-open."/>
+            <property name="autoOpenFromStages" type="String"
+                label="Auto-open only when coming from"
+                description="Semicolon-separated stages the record must be coming from. Leave blank to open on arrival from any stage."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

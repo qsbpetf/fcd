@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Admin Fee En</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Applies_When__c</field>
+        <value xsi:type="xsd:string">Has_Category</value>
+    </values>
+    <values>
+        <field>Body__c</field>
+        <value xsi:type="xsd:string">Eficode reserves the right to charge an administrative fee on license sales. Such administrative fee shall always be visible on the Offer.</value>
+    </values>
+    <values>
+        <field>Condition_Value__c</field>
+        <value xsi:type="xsd:string">License</value>
+    </values>
+    <values>
+        <field>Exclude_Groups__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Language__c</field>
+        <value xsi:type="xsd:string">English</value>
+    </values>
+    <values>
+        <field>Module_Code__c</field>
+        <value xsi:type="xsd:string">ADMIN_FEE</value>
+    </values>
+    <values>
+        <field>Offer_Type__c</field>
+        <value xsi:type="xsd:string">Binding</value>
+    </values>
+    <values>
+        <field>Placement__c</field>
+        <value xsi:type="xsd:string">Additional</value>
+    </values>
+    <values>
+        <field>Region_Variants__c</field>
+        <value xsi:type="xsd:string">Anglosphere;Global;Jodocus;Rest_of_World</value>
+    </values>
+    <values>
+        <field>Section_Title__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">390.0</value>
+    </values>
+</CustomMetadata>

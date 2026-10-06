@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Gitlab Flowthrough En</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Applies_When__c</field>
+        <value xsi:type="xsd:string">Has_Group</value>
+    </values>
+    <values>
+        <field>Body__c</field>
+        <value xsi:type="xsd:string">This quotation is provided subject to GitLab&apos;s Fulfilment Reseller Flow-Through Terms which can be found here &lt;a href=&quot;https://about.gitlab.com/handbook/legal/reseller-flow-through/&quot;&gt;https://about.gitlab.com/handbook/legal/reseller-flow-through/&lt;/a&gt;. These terms apply to this quotation and any subsequent order notwithstanding anything to the contrary contained in or incorporated into any document from or oral statement made by you, the customer. No variation or amendment to the conditions shall be of any effect unless expressly agreed, in writing, by a person authorised to sign on behalf of Eficode. By accepting this quotation, I confirm that I have read and I accept the conditions and I am authorised to enter into a contract on behalf of the customer.</value>
+    </values>
+    <values>
+        <field>Condition_Value__c</field>
+        <value xsi:type="xsd:string">GitLab_License</value>
+    </values>
+    <values>
+        <field>Exclude_Groups__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Language__c</field>
+        <value xsi:type="xsd:string">English</value>
+    </values>
+    <values>
+        <field>Module_Code__c</field>
+        <value xsi:type="xsd:string">GITLAB_FLOWTHROUGH</value>
+    </values>
+    <values>
+        <field>Offer_Type__c</field>
+        <value xsi:type="xsd:string">Any</value>
+    </values>
+    <values>
+        <field>Placement__c</field>
+        <value xsi:type="xsd:string">Additional</value>
+    </values>
+    <values>
+        <field>Region_Variants__c</field>
+        <value xsi:type="xsd:string">ALL</value>
+    </values>
+    <values>
+        <field>Section_Title__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">300.0</value>
+    </values>
+</CustomMetadata>

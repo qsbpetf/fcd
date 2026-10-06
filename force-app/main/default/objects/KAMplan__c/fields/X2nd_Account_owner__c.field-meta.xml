@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X2nd_Account_owner__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>2nd Account owner</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Account_Plans1</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

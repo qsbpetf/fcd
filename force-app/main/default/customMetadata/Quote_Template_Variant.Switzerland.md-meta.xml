@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Switzerland</label>
+    <protected>false</protected>
+    <values>
+        <field>Address__c</field>
+        <value xsi:type="xsd:string">Aargauerstrasse 180
+8048 Zürich, Switzerland</value>
+    </values>
+    <values>
+        <field>Bank_Details__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Business_ID__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Commercial_Register__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Default_Language__c</field>
+        <value xsi:type="xsd:string">German</value>
+    </values>
+    <values>
+        <field>Footer_Contact__c</field>
+        <value xsi:type="xsd:string">+41 43 336 33 00 | www.eficode.ch</value>
+    </values>
+    <values>
+        <field>Legal_Entity_Name__c</field>
+        <value xsi:type="xsd:string">Eficode Switzerland AG</value>
+    </values>
+    <values>
+        <field>Logo_Static_Resource__c</field>
+        <value xsi:type="xsd:string">EficodeLogo</value>
+    </values>
+    <values>
+        <field>Managing_Director__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Offer_Type_Policy__c</field>
+        <value xsi:type="xsd:string">Always Binding</value>
+    </values>
+    <values>
+        <field>Show_Bank_Details__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>VAT_ID__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

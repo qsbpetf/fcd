@@ -145,4 +145,139 @@ private class OppSplitEngineTest {
             System.assertNotEquals(oldOwnerId, s.SplitOwnerId, 'Old owner splits should be deleted');
         }
     }
+
+    /**
+     * Regression test for the deletion-pass bug: processDeletions() previously had no
+     * IsClosed check, so zeroing a tier amount on an already-closed opportunity would
+     * delete the existing split even though the creation pass (correctly) would never
+     * recreate it. Verifies the deletion pass now skips closed opportunities entirely.
+     */
+    @IsTest
+    static void execute_closedOpp_amountZeroed_doesNotDeleteSplit() {
+        Account acc = getAccount();
+        Id ownerId = getUserId('EngineOppOwner');
+        Id t2TypeId = getSplitTypeId('T2');
+
+        setAutomation(true);
+
+        Opportunity opp = buildOpp(acc.Id, ownerId);
+        opp.Estimate_Managed_Service_Revenue__c = 500;
+        opp.Total_Amount_T2__c = 550000;
+        insert opp;
+
+        System.assertNotEquals(0,
+            [SELECT COUNT() FROM OpportunitySplit WHERE OpportunityId = :opp.Id AND SplitTypeId = :t2TypeId],
+            'T2 split should exist before the opportunity is closed.');
+
+        // Close the opportunity via a normal DML update (goes through the trigger).
+        update new Opportunity(Id = opp.Id, StageName = 'Closed Won');
+
+        // Re-query the now-closed opportunity with IsClosed populated, to use as the "old" state.
+        Opportunity closedOpp = [
+            SELECT Id, OwnerId, AccountId, CloseDate, Amount, Net_Revenue_Forecast__c,
+                   Estimate_Licensing_Revenue__c, Estimate_Managed_Service_Revenue__c,
+                   T1_Opp__c, Total_Amount_T2__c, Total_Amount_T3__c, T3_From_Products__c,
+                   Quota_Update_Allowed__c, Run_Splits_Flow__c, IsClosed
+            FROM Opportunity WHERE Id = :opp.Id
+        ];
+
+        // Simulate the amount rollup zeroing T2 out while the opp is already closed.
+        Opportunity zeroedOpp = closedOpp.clone(true, true, true, true);
+        zeroedOpp.Total_Amount_T2__c = 0;
+
+        Test.startTest();
+        OppSplitEngine.execute(new List<Opportunity>{ zeroedOpp }, new Map<Id, Opportunity>{ opp.Id => closedOpp });
+        Test.stopTest();
+
+        System.assertNotEquals(0,
+            [SELECT COUNT() FROM OpportunitySplit WHERE OpportunityId = :opp.Id AND SplitTypeId = :t2TypeId],
+            'T2 split should NOT be deleted when the amount is zeroed out on an already-closed opportunity.');
+    }
+
+    /**
+     * Regression test for the T1 race condition: an Opportunity that becomes T1-eligible
+     * (CloseDate within the account's T1 window, revenue present) via a rollup that lands
+     * AFTER the opportunity already closed would previously stay permanently un-flagged,
+     * because the normal creation pass is blocked by isClosed and Run_Splits_Flow__c admin
+     * repair only recreates splits when T1_Opp__c is already 'Yes'. Verifies the always-run
+     * reconciliation step now catches this case.
+     *
+     * Quota_Update_Allowed__c is a formula: it stays true on "Closed won - awaiting approval"
+     * only when CloseDate is in the current calendar quarter. Tests must match that, not
+     * fake the formula field (JSON deserialize drops it).
+     */
+    @IsTest
+    static void execute_closedOppEligibleForT1_reconciliationCreatesSplitAndSetsFlag() {
+        Account acc = getAccount();
+        Id ownerId = getUserId('EngineOppOwner');
+        Id t1TypeId = getSplitTypeId('T1');
+
+        setAutomation(true);
+
+        // CloseDate = today so Quota_Update_Allowed__c remains true after closing
+        // (same quarter + year as TODAY, per the formula).
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, ownerId, Date.today(), 'Explore', null, 'RaceConditionOpp');
+        insert opp;
+
+        System.assertEquals(0,
+            [SELECT COUNT() FROM OpportunitySplit WHERE OpportunityId = :opp.Id AND SplitTypeId = :t1TypeId],
+            'No T1 split should exist before revenue is set.');
+
+        OppSplitService.resetAutomationFlag();
+
+        // Close + set revenue in the same update. Stage must be one of the closed-won stages
+        // the Quota formula actually recognizes (not generic "Closed Won").
+        update new Opportunity(
+            Id = opp.Id,
+            StageName = 'Closed won - awaiting approval',
+            Net_Revenue_Forecast__c = 1800
+        );
+
+        System.assertNotEquals(0,
+            [SELECT COUNT() FROM OpportunitySplit WHERE OpportunityId = :opp.Id AND SplitTypeId = :t1TypeId],
+            'T1 split should be created via reconciliation even though the opportunity is already closed.');
+
+        Opportunity refreshed = [SELECT T1_Opp__c, Quota_Update_Allowed__c, IsClosed FROM Opportunity WHERE Id = :opp.Id];
+        System.assertEquals(true, refreshed.IsClosed, 'Precondition: opportunity should be closed.');
+        System.assertEquals(true, refreshed.Quota_Update_Allowed__c, 'Precondition: quota updates should still be allowed this quarter.');
+        System.assertEquals('Yes', refreshed.T1_Opp__c, 'T1_Opp__c should be set to Yes by the reconciliation step.');
+    }
+
+    /**
+     * Regression test for the oppsToUpdate map-collision bug: when admin repair
+     * (Run_Splits_Flow__c reset) and T1 reconciliation (T1_Opp__c set) both queue a field
+     * update for the SAME Opportunity in the SAME trigger invocation, both updates must survive —
+     * previously the second Map.put() with a fresh partial Opportunity silently overwrote
+     * the first one's field.
+     */
+    @IsTest
+    static void execute_adminRepairAndReconciliationTogether_bothFieldUpdatesPersist() {
+        Account acc = getAccount();
+        Id ownerId = getUserId('EngineOppOwner');
+
+        setAutomation(true);
+
+        Opportunity opp = TestDataFactory.getOpp(acc.Id, ownerId, Date.today(), 'Explore', null, 'MergeFixOpp');
+        insert opp;
+
+        OppSplitService.resetAutomationFlag();
+
+        // Single update: closes the opp AND sets T1-qualifying revenue (triggers reconciliation)
+        // AND flips Run_Splits_Flow__c true (triggers admin repair) — all in the same transaction,
+        // so both field updates target the same Opportunity Id in the same oppsToUpdate map.
+        update new Opportunity(
+            Id = opp.Id,
+            StageName = 'Closed won - awaiting approval',
+            Net_Revenue_Forecast__c = 1800,
+            Run_Splits_Flow__c = true
+        );
+
+        Opportunity refreshed = [SELECT Run_Splits_Flow__c, T1_Opp__c, Quota_Update_Allowed__c, IsClosed FROM Opportunity WHERE Id = :opp.Id];
+        System.assertEquals(true, refreshed.IsClosed, 'Precondition: opportunity should be closed.');
+        System.assertEquals(true, refreshed.Quota_Update_Allowed__c, 'Precondition: quota updates should still be allowed this quarter.');
+        System.assertEquals(false, refreshed.Run_Splits_Flow__c,
+            'Run_Splits_Flow__c should be reset to false by admin repair.');
+        System.assertEquals('Yes', refreshed.T1_Opp__c,
+            'T1_Opp__c should still be set to Yes by reconciliation, without being lost to a map overwrite.');
+    }
 }

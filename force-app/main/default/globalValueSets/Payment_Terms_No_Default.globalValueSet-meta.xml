@@ -22,7 +22,7 @@
     </customValue>
     <customValue>
         <fullName>14 Days</fullName>
-        <default>false</default>
+        <default>true</default>
         <label>14 Days</label>
     </customValue>
     <customValue>

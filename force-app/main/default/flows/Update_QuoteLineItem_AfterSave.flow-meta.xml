@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>Needs_Update</name>
+        <label>Values Out of Sync?</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Already In Sync - No DML</defaultConnectorLabel>
+        <rules>
+            <name>Out_of_Sync</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_QLI.TotalPrice</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_QLI.Total_Price__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_QLI.TotalPrice</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_QLI.Final_Price_After_Discount__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>formula_Final_Price</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_QLI</targetReference>
+            </connector>
+            <label>Out of Sync</label>
+        </rules>
+    </decisions>
+    <description>Replacement for Process Builder  &quot;Update QuoteLineItem (Create and Edit)&quot;</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>formula_Final_Price</name>
+        <dataType>Currency</dataType>
+        <expression>IF(ISBLANK({!Get_QLI.Discount__c}), {!Get_QLI.TotalPrice}, {!Get_QLI.TotalPrice} - ({!Get_QLI.TotalPrice} * ({!Get_QLI.Discount__c} / 100)))</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Update QuoteLineItem (After Save) {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update QuoteLineItem (After Save)</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_QLI</name>
+        <label>Get QLI With Calculated Totals</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Needs_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>QuoteLineItem</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_QLI</name>
+        <label>Update Total Price and Final Price</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Final_Price_After_Discount__c</field>
+            <value>
+                <elementReference>formula_Final_Price</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Total_Price__c</field>
+            <value>
+                <elementReference>Get_QLI.TotalPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <object>QuoteLineItem</object>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_QLI</targetReference>
+        </connector>
+        <object>QuoteLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

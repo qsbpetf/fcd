@@ -22,11 +22,6 @@
                 <label>Finland</label>
             </value>
             <value>
-                <fullName>Jodocus GmbH</fullName>
-                <default>false</default>
-                <label>Germany</label>
-            </value>
-            <value>
                 <fullName>NL</fullName>
                 <default>false</default>
                 <label>Netherlands</label>
@@ -65,6 +60,11 @@
                 <fullName>Other</fullName>
                 <default>false</default>
                 <label>Other</label>
+            </value>
+            <value>
+                <fullName>Jodocus GmbH</fullName>
+                <default>false</default>
+                <label>Germany</label>
             </value>
             <value>
                 <fullName>DE</fullName>

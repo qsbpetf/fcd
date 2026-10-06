@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>New_Opportunity_Notification_Email_to_Account_Owner</name>
+        <label>New Opportunity Notification Email to Account Owner</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Opportunity.Opp_Created_Notify_Account_Owner</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Opp_Created_Notify_Account_Owner</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Closed_Lost_Opportunity_Detail_to_Account_Owner</name>
+        <label>Send Closed Lost Opportunity Detail to Account Owner</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Opportunity.Opp_Lost_Notify_Account_Owner</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Opp_Lost_Notify_Account_Owner</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Closed_Won_Email</name>
+        <label>Send_Closed_Won_Email</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Opportunity.Opp_Won_Notify_Account_Owner_v2</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Opp_Won_Notify_Account_Owner_v2</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <decisions>
+        <name>Is_Account_Owner_Active</name>
+        <label>Is Account Owner Active</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Owner_is_Active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.Owner.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notification_Type</targetReference>
+            </connector>
+            <label>Owner is Active</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>With the Decision element, I set a notification criterion; it checks which condition is met</description>
+        <name>Notification_Type</name>
+        <label>Notification Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>New_Opportunity_Owner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NewOppOwnerFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>New_Opportunity_Notification_Email_to_Account_Owner</targetReference>
+            </connector>
+            <label>New Opportunity Owner</label>
+        </rules>
+        <rules>
+            <name>Closed_won</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ClosedWonFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Closed_Won_Email</targetReference>
+            </connector>
+            <label>Closed won</label>
+        </rules>
+        <rules>
+            <name>Closed_Lost</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ClosedLostFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Closed_Lost_Opportunity_Detail_to_Account_Owner</targetReference>
+            </connector>
+            <label>Closed Lost</label>
+        </rules>
+    </decisions>
+    <description>mails the Account Owner when (1) an Opp is created on their account by another user, (2) an Opp is Closed Won, (3) Closed Lost. Uses 3 Email Alerts + templates</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ClosedLostFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+  NOT(ISNEW()),
+  ISCHANGED({!$Record.StageName}),
+  ISPICKVAL({!$Record.StageName}, &quot;Closed Lost&quot;)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>ClosedWonFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+  NOT(ISNEW()),
+  ISCHANGED({!$Record.StageName}),
+  ISPICKVAL({!$Record.StageName}, &quot;Closed won - awaiting approval&quot;)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>NewOppOwnerFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+  ISNEW(),
+  {!$Record.CreatedById} &lt;&gt; {!$Record.Account.OwnerId},
+  {!$Record.Monthly_Cloud_Opp__c} = false
+)</expression>
+    </formulas>
+    <interviewLabel>Opportunity - Account Owner Email Notifications {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity - Account Owner Email Notifications</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Account_Owner_Active</targetReference>
+        </connector>
+        <filterFormula>AND(
+    {!$Setup.AutomationSettings__c.Automation_Enabled__c} = TRUE,
+    NOT(ISBLANK({!$Record.AccountId}))
+)</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

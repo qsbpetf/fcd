@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Jodocus (Germany)</label>
+    <protected>false</protected>
+    <values>
+        <field>Address__c</field>
+        <value xsi:type="xsd:string">Erkrather Str. 401
+40231 Düsseldorf, Germany</value>
+    </values>
+    <values>
+        <field>Bank_Details__c</field>
+        <value xsi:type="xsd:string">DANSKE BANK A/S
+IBAN: FI06 8214 5710 0302 91
+SWIFT: DABAFIHH</value>
+    </values>
+    <values>
+        <field>Business_ID__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Commercial_Register__c</field>
+        <value xsi:type="xsd:string">Amtsgericht Düsseldorf HRB 111015</value>
+    </values>
+    <values>
+        <field>Default_Language__c</field>
+        <value xsi:type="xsd:string">German</value>
+    </values>
+    <values>
+        <field>Footer_Contact__c</field>
+        <value xsi:type="xsd:string">Tel: +49 211 4187 1505 | officegermany@eficode.com | www.eficode.com</value>
+    </values>
+    <values>
+        <field>Legal_Entity_Name__c</field>
+        <value xsi:type="xsd:string">Eficode Germany GmbH</value>
+    </values>
+    <values>
+        <field>Logo_Static_Resource__c</field>
+        <value xsi:type="xsd:string">EficodeLogo</value>
+    </values>
+    <values>
+        <field>Managing_Director__c</field>
+        <value xsi:type="xsd:string">Jannik Schmitz / Henri Hämäläinen</value>
+    </values>
+    <values>
+        <field>Offer_Type_Policy__c</field>
+        <value xsi:type="xsd:string">Rule-based</value>
+    </values>
+    <values>
+        <field>Show_Bank_Details__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>VAT_ID__c</field>
+        <value xsi:type="xsd:string">DE322394025</value>
+    </values>
+</CustomMetadata>
