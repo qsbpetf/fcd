@@ -1,0 +1,23 @@
+<template>
+    <figure class="mermaid-wrapper">
+        <figcaption class="mermaid-label">{placeholderLabel}</figcaption>
+
+        <template lwc:if={isLoading}>
+            <div class="mermaid-status">Loading diagram...</div>
+        </template>
+
+        <template lwc:if={error}>
+            <div class="mermaid-error">{error}</div>
+        </template>
+
+        <template lwc:if={renderError}>
+            <div class="mermaid-error">{renderError}</div>
+        </template>
+
+        <div class="mermaid-render-host" lwc:dom="manual"></div>
+
+        <template lwc:if={showSourceFallback}>
+            <pre class="mermaid-source"><code>{displaySource}</code></pre>
+        </template>
+    </figure>
+</template>

@@ -1,0 +1,29 @@
+<template>
+    <template for:each={renderedParts} for:item="part">
+        <span key={part.key}>
+            <template lwc:if={part.isText}>{part.text}</template>
+            <template lwc:elseif={part.isHighlight}><mark>{part.text}</mark></template>
+            <template lwc:elseif={part.isLink}>
+                <a
+                    href={part.url}
+                    data-doc-path={part.docPath}
+                    data-anchor={part.anchor}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onclick={handleLinkClick}
+                >
+                    {part.label}
+                </a>
+            </template>
+            <template lwc:elseif={part.isStrong}>
+                <strong>{part.text}</strong>
+            </template>
+            <template lwc:elseif={part.isEmphasis}>
+                <em>{part.text}</em>
+            </template>
+            <template lwc:elseif={part.isCode}>
+                <code>{part.text}</code>
+            </template>
+        </span>
+    </template>
+</template>

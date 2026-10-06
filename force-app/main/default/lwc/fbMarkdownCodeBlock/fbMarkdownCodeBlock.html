@@ -1,0 +1,14 @@
+<template>
+    <div class="code-block-wrapper">
+        <div class="code-block-header">
+            <template lwc:if={showLanguageLabel}>
+                <span class="code-block-language">{languageLabel}</span>
+            </template>
+            <span class="code-block-spacer"></span>
+            <button type="button" class="code-copy-button" title="Copy code" onclick={handleCopyClick}>
+                <lightning-icon icon-name="utility:copy" size="x-small" alternative-text="Copy code"></lightning-icon>
+            </button>
+        </div>
+        <pre class="code-block-pre"><code class="code-block-code" lwc:dom="manual"></code></pre>
+    </div>
+</template>

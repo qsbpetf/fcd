@@ -1,0 +1,85 @@
+[
+    {
+        "label": "Documentation",
+        "path": "README.md"
+    },
+    {
+        "label": "Partner Portal Commerce",
+        "children": [
+            {
+                "label": "Atlassian PPC overview",
+                "path": "Atlassian_PPC_Overview.md"
+            },
+            {
+                "label": "Invoice groups",
+                "path": "Invoice_Groups.md"
+            },
+            {
+                "label": "Quote and invoice import",
+                "path": "Quote_And_Invoice_Import.md"
+            },
+            {
+                "label": "Monthly invoice auto-import",
+                "path": "Monthly_Invoice_Auto_Import.md"
+            },
+            {
+                "label": "Currency rate import",
+                "path": "Currency_Rates.md"
+            },
+            {
+                "label": "Default Opportunity Owner",
+                "path": "Default_Opportunity_Owner.md"
+            },
+            {
+                "label": "Promotion codes",
+                "path": "Promotion_Codes.md"
+            },
+            {
+                "label": "PPC credential health",
+                "path": "PPC_Credential_Health.md"
+            },
+            {
+                "label": "Quote and invoice PDF preview",
+                "path": "Quote_And_Invoice_PDF_Preview.md"
+            }
+        ]
+    },
+    {
+        "label": "Deal registration",
+        "children": [
+            {
+                "label": "Deal and service registration",
+                "path": "Atlassian_Deal_Registration.md"
+            }
+        ]
+    },
+    {
+        "label": "Other features",
+        "children": [
+            {
+                "label": "Make.com webhooks",
+                "path": "Make_Webhooks.md"
+            },
+            {
+                "label": "MEDDPICC",
+                "path": "MEDDPICC.md"
+            },
+            {
+                "label": "Opportunity product editor",
+                "path": "Opportunity_Product_Editor.md"
+            },
+            {
+                "label": "Opportunity splits",
+                "path": "Opportunity_Splits.md"
+            },
+            {
+                "label": "Tier calculation",
+                "path": "Tier_Calculation.md"
+            }
+        ]
+    },
+    {
+        "label": "Docs viewer",
+        "path": "Docs_Viewer.md"
+    }
+]

@@ -1,0 +1,244 @@
+<template>
+    <div class="viewer-shell">
+        <header class="viewer-header">
+            <lightning-icon icon-name="utility:snippet" size="small" class="viewer-header-icon"></lightning-icon>
+            <h1 class="viewer-header-title">Documentation</h1>
+        </header>
+
+        <div class="viewer-body">
+            <template lwc:if={error}>
+                <div class="viewer-error">{error}</div>
+            </template>
+
+            <div class="docs-layout">
+                <aside class="docs-sidebar">
+                    <div class="sidebar-search">
+                        <lightning-input
+                            type="search"
+                            label="Search"
+                            value={searchQuery}
+                            onchange={handleSearchInput}
+                            onkeydown={handleSearchKeydown}
+                            placeholder="Search documentation..."
+                            disabled={isSearchInputDisabled}
+                        ></lightning-input>
+
+                        <template lwc:if={showSearchIndexStatus}>
+                            <div class="search-index-status">Indexing...</div>
+                        </template>
+
+                        <div class="search-scope">
+                            <lightning-button-group>
+                                <lightning-button
+                                    label="All"
+                                    variant={searchScopeAllVariant}
+                                    onclick={handleSearchScopeAll}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="This document"
+                                    variant={searchScopeCurrentVariant}
+                                    onclick={handleSearchScopeCurrent}
+                                ></lightning-button>
+                            </lightning-button-group>
+                        </div>
+
+                        <template lwc:if={showSearchResults}>
+                            <ul class="search-results" role="listbox">
+                                <template for:each={searchResults} for:item="result">
+                                    <li key={result.resultKey} class="search-result-item" role="option">
+                                        <button
+                                            type="button"
+                                            class="search-result-button"
+                                            data-result-key={result.resultKey}
+                                            onclick={handleSearchResultClick}
+                                        >
+                                            <span class="search-result-label">{result.label}</span>
+                                            <template lwc:if={result.sectionHeading}>
+                                                <span class="search-result-heading">{result.sectionHeading}</span>
+                                            </template>
+                                            <span class="search-result-snippet">{result.snippet}</span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+
+                        <template lwc:if={showSearchNoResults}>
+                            <div class="search-no-results">No results</div>
+                        </template>
+                    </div>
+
+                    <div class="sidebar-title">Documents</div>
+                    <template lwc:if={navigationItems}>
+                        <lightning-tree
+                            items={navigationItems}
+                            selected-item={selectedItem}
+                            onselect={handleNavigationSelect}
+                        >
+                        </lightning-tree>
+                    </template>
+                </aside>
+
+                <section class="docs-content">
+                    <template lwc:if={isLoading}>
+                        <div class="loading-state">
+                            <lightning-spinner alternative-text="Loading documentation" size="medium"> </lightning-spinner>
+                        </div>
+                    </template>
+
+                    <template lwc:if={hasBlocks}>
+                        <div class="markdown-body" ondoclink={handleDocumentLink}>
+                            <template for:each={blocks} for:item="block">
+                                <section key={block.key} data-block-key={block.key} id={block.anchorId}>
+                                    <template lwc:if={block.isHeading1}>
+                                        <h1>
+                                            <c-fb-markdown-inline
+                                                parts={block.parts}
+                                                highlight-term={block.highlightTerm}
+                                            ></c-fb-markdown-inline>
+                                        </h1>
+                                    </template>
+
+                                    <template lwc:elseif={block.isHeading2}>
+                                        <h2>
+                                            <c-fb-markdown-inline
+                                                parts={block.parts}
+                                                highlight-term={block.highlightTerm}
+                                            ></c-fb-markdown-inline>
+                                        </h2>
+                                    </template>
+
+                                    <template lwc:elseif={block.isHeading3}>
+                                        <h3>
+                                            <c-fb-markdown-inline
+                                                parts={block.parts}
+                                                highlight-term={block.highlightTerm}
+                                            ></c-fb-markdown-inline>
+                                        </h3>
+                                    </template>
+
+                                    <template lwc:elseif={block.isList}>
+                                        <c-fb-markdown-list
+                                            items={block.items}
+                                            ordered={block.ordered}
+                                            highlight-term={block.highlightTerm}
+                                        ></c-fb-markdown-list>
+                                    </template>
+
+                                    <template lwc:elseif={block.isBlockquote}>
+                                        <blockquote>
+                                            <template for:each={block.lines} for:item="line">
+                                                <p key={line.key}>
+                                                    <c-fb-markdown-inline
+                                                        parts={line.parts}
+                                                        highlight-term={block.highlightTerm}
+                                                    ></c-fb-markdown-inline>
+                                                </p>
+                                            </template>
+                                        </blockquote>
+                                    </template>
+
+                                    <template lwc:elseif={block.isMermaidBlock}>
+                                        <c-fb-markdown-mermaid
+                                            mermaid-source={block.mermaidSource}
+                                            mermaid-src={block.mermaidSrc}
+                                            alt={block.alt}
+                                        ></c-fb-markdown-mermaid>
+                                    </template>
+
+                                    <template lwc:elseif={block.isCodeBlock}>
+                                        <c-fb-markdown-code-block
+                                            code={block.code}
+                                            language={block.language}
+                                        ></c-fb-markdown-code-block>
+                                    </template>
+
+                                    <template lwc:elseif={block.isTable}>
+                                        <div class="table-wrapper">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <template for:each={block.headers} for:item="header">
+                                                            <th key={header.key}>
+                                                                <c-fb-markdown-inline
+                                                                    parts={header.parts}
+                                                                    highlight-term={block.highlightTerm}
+                                                                ></c-fb-markdown-inline>
+                                                            </th>
+                                                        </template>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={block.rows} for:item="row">
+                                                        <tr key={row.key}>
+                                                            <template for:each={row.cells} for:item="cell">
+                                                                <td key={cell.key}>
+                                                                    <c-fb-markdown-inline
+                                                                        parts={cell.parts}
+                                                                        highlight-term={block.highlightTerm}
+                                                                    ></c-fb-markdown-inline>
+                                                                </td>
+                                                            </template>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template>
+
+                                    <template lwc:elseif={block.isImage}>
+                                        <figure class="image-wrapper">
+                                            <img src={block.src} alt={block.alt} />
+                                        </figure>
+                                    </template>
+
+                                    <template lwc:else>
+                                        <p>
+                                            <template for:each={block.lines} for:item="line">
+                                                <span key={line.key}>
+                                                    <c-fb-markdown-inline
+                                                        parts={line.parts}
+                                                        highlight-term={block.highlightTerm}
+                                                    ></c-fb-markdown-inline>
+                                                </span>
+                                            </template>
+                                        </p>
+                                    </template>
+                                </section>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={selectedDocumentLabel}></template>
+                    <template lwc:if={isLoading}></template>
+                    <template lwc:if={hasBlocks}></template>
+                    <template lwc:else>
+                        <div class="empty-state">Choose a document in the menu on the left.</div>
+                    </template>
+                </section>
+
+                <template lwc:if={showTableOfContents}>
+                    <aside class="docs-toc-column">
+                        <nav class="docs-toc" aria-label="Table of contents">
+                            <div class="toc-title">On this page</div>
+                            <ul class="toc-list">
+                                <template for:each={displayTableOfContents} for:item="entry">
+                                    <li key={entry.key} class={entry.itemClass}>
+                                        <button
+                                            type="button"
+                                            class={entry.buttonClass}
+                                            data-block-key={entry.blockKey}
+                                            onclick={handleTocClick}
+                                        >
+                                            {entry.label}
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </nav>
+                    </aside>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

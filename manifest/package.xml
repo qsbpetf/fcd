@@ -25,6 +25,10 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
+        <members>Documentation</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
         <members>Account.AutoInvoiceImport__c</members>
         <members>Opportunity.ImportedInvoiceNumber__c</members>
         <members>Opportunity.Monthly_Cloud_Opp__c</members>
@@ -373,6 +377,7 @@
         <members>Batch_Job_Monitor</members>
         <members>Buying_Exchange_Rate__c</members>
         <members>Deal_Service_Registration</members>
+        <members>Documentation_Viewer</members>
         <members>InvoiceGroup__c</members>
         <members>PendingInvoice__c</members>
         <members>PpcCredentialStatus__c</members>
@@ -389,6 +394,7 @@
     </types>
     <types>
         <members>Deal_Service_Registration</members>
+        <members>Documentation_Viewer</members>
         <name>FlexiPage</name>
     </types>
     <types>
@@ -1018,6 +1024,7 @@
         <members>Atlassian_PPC_Finnish_Office</members>
         <members>Atlassian_PPC_Import_Access</members>
         <members>Atlassian_PPC_United_Kingdom_Office</members>
+        <members>Documentation_Access</members>
         <members>JSON_Converter</members>
         <name>PermissionSet</name>
     </types>

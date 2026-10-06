@@ -1,0 +1,36 @@
+<template>
+    <template lwc:if={hasItems}>
+        <template lwc:if={ordered}>
+            <ol>
+                <template for:each={items} for:item="item">
+                    <li key={item.key}>
+                        <c-fb-markdown-inline parts={item.parts} highlight-term={highlightTerm}></c-fb-markdown-inline>
+                        <template lwc:if={item.children.length}>
+                            <c-fb-markdown-list
+                                items={item.children}
+                                ordered={item.childrenOrdered}
+                                highlight-term={highlightTerm}
+                            ></c-fb-markdown-list>
+                        </template>
+                    </li>
+                </template>
+            </ol>
+        </template>
+        <template lwc:else>
+            <ul>
+                <template for:each={items} for:item="item">
+                    <li key={item.key}>
+                        <c-fb-markdown-inline parts={item.parts} highlight-term={highlightTerm}></c-fb-markdown-inline>
+                        <template lwc:if={item.children.length}>
+                            <c-fb-markdown-list
+                                items={item.children}
+                                ordered={item.childrenOrdered}
+                                highlight-term={highlightTerm}
+                            ></c-fb-markdown-list>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </template>
+</template>

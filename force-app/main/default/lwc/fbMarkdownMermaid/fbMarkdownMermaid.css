@@ -1,0 +1,80 @@
+.mermaid-wrapper {
+    margin: 1rem 0;
+    border: 1px solid #c9d7e6;
+    border-radius: 4px;
+    background: #f8fbff;
+    overflow: hidden;
+}
+
+.mermaid-label {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #234e70;
+    border-bottom: 1px solid #dbe7f3;
+    background: #eef6ff;
+}
+
+.mermaid-render-host {
+    padding: 0.75rem;
+    overflow-x: auto;
+    background: #fff;
+}
+
+.mermaid-render-host svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    color: #16325c;
+}
+
+/* Mermaid embeds <style> in SVG; in LWC shadow DOM those rules may not apply. */
+.mermaid-render-host svg text,
+.mermaid-render-host svg tspan,
+.mermaid-render-host svg .nodeLabel,
+.mermaid-render-host svg .label,
+.mermaid-render-host svg .edgeLabel,
+.mermaid-render-host svg .cluster-label {
+    fill: #16325c !important;
+}
+
+.mermaid-render-host svg .edgeLabel text,
+.mermaid-render-host svg .edgeLabel tspan {
+    fill: #1f2a37 !important;
+}
+
+.mermaid-render-host svg foreignObject,
+.mermaid-render-host svg foreignObject div,
+.mermaid-render-host svg foreignObject span,
+.mermaid-render-host svg foreignObject p {
+    color: #16325c !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+}
+
+.mermaid-status,
+.mermaid-error {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.mermaid-error {
+    color: #8a1f11;
+    background: #fff5f4;
+}
+
+.mermaid-source {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    background: #fff;
+}
+
+.mermaid-source code {
+    font-family: 'Fira Code', Consolas, Monaco, monospace;
+    font-size: 0.8em;
+    line-height: 1.35;
+    white-space: pre;
+}

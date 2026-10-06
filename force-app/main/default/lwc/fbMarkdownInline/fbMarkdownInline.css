@@ -1,0 +1,36 @@
+:host {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+a {
+    color: #0b5cab;
+    text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+    color: #032d60;
+}
+
+strong,
+em,
+code {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+code {
+    font-family: 'Fira Code', Consolas, Monaco, monospace;
+    font-size: 0.8em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    background: #f0f0f0;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #e83e8c;
+}

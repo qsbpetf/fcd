@@ -1,0 +1,36 @@
+:host {
+    display: block;
+}
+
+ul {
+    list-style: disc outside;
+    margin: 0 0 1.25rem;
+    padding-left: 1.6rem;
+    max-width: 75ch;
+}
+
+ol {
+    list-style: decimal outside;
+    margin: 0 0 1.25rem;
+    padding-left: 1.9rem;
+    max-width: 75ch;
+}
+
+li {
+    display: list-item;
+    margin-bottom: 0.45rem;
+    overflow: visible;
+}
+
+li::marker {
+    color: #34495e;
+    font-size: 1em;
+}
+
+ul ul,
+ul ol,
+ol ul,
+ol ol {
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+}
