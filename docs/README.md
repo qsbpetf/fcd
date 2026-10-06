@@ -37,3 +37,12 @@ Atlassian Commerce API reference: [Quotes](https://developer.atlassian.com/platf
 | [Opportunity product editor](Opportunity_Product_Editor.md) | Custom add, edit, and delete grid for Opportunity Products |
 | [Opportunity splits](Opportunity_Splits.md) | T1, T2, and T3 `OpportunitySplit` rows from `OppSplitEngine`, and which older flows are still active |
 | [Tier calculation](Tier_Calculation.md) | `Tier__c` lines, the T2 and T3 formulas, the nightly batch, and the Calculate Tiers flow |
+
+## For developers
+
+These pages explain how to maintain the documentation. They do not describe product behavior.
+
+| Document | What it covers |
+| --- | --- |
+| [Maintaining the documentation](AGENTS.md) | How to extend these pages, keep the menu in step, and stay within what the viewer can render |
+| [Refresh the viewer](Docs_Viewer.md) | How to copy the pages into the `MarkdownDemo` static resource and deploy them |

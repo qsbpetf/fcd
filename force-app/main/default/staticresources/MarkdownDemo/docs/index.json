@@ -79,7 +79,16 @@
         ]
     },
     {
-        "label": "Docs viewer",
-        "path": "Docs_Viewer.md"
+        "label": "For developers",
+        "children": [
+            {
+                "label": "Maintaining the documentation",
+                "path": "AGENTS.md"
+            },
+            {
+                "label": "Refresh the viewer",
+                "path": "Docs_Viewer.md"
+            }
+        ]
     }
 ]
