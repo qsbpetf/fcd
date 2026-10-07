@@ -37,6 +37,25 @@ DML order at the end of the run: delete, then insert, then update existing split
 
 Closed Opportunities (`IsClosed`) skip T1/T2/T3 assignment, the close-date gate, owner-change inserts, and all deletions. Two paths still run on a closed Opportunity: [T1 eligibility reconciliation](#t1-eligibility-reconciliation) when Quotas Update Allowed is true, and [Run Splits Flow](#run-splits-flow) when that checkbox flips to true.
 
+Run Splits Flow is decided before the quota check. It still runs when the Opportunity is closed.
+
+```mermaid
+flowchart TD
+    start["After insert or update"] --> auto{"Automation<br/>on?"}
+    auto -->|No| stop["Engine does not run"]
+    auto -->|Yes| guard{"First<br/>entry this<br/>transaction?"}
+    guard -->|No| skip["Skip. Already in the engine"]
+    guard -->|Yes| repair{"Run Splits Flow<br/>turned on?"}
+    repair -->|Yes| fix["Insert qualifying owner splits and clear the checkbox"]
+    repair -->|No| quota
+    fix --> quota{"Quotas Update<br/>Allowed?"}
+    quota -->|No| noquota["No reconciliation, assignment, or deletion"]
+    quota -->|Yes| recon["Reconcile T1, including closed Opportunities"]
+    recon --> closed{"Opportunity<br/>closed?"}
+    closed -->|Yes| closedStop["Skip assignment, owner change, and deletion"]
+    closed -->|No| work["Assign T1, T2, and T3, then delete"]
+```
+
 ---
 
 ## What a split row looks like
@@ -62,6 +81,21 @@ T1 uses `Account.T1_Start_Date__c` (label **T1 Start Date**, field default 1 Jul
 
 ### Normal assignment
 
+Owner splits in the diagrams below are the Opportunity owner, and the Account owner when that user is different. Each row is 100%.
+
+```mermaid
+flowchart TD
+    start["Open, and Quotas Update Allowed"] --> kind{"Insert or update?"}
+    kind -->|Insert| revenue{"Amount,<br/>Net Revenue,<br/>or Licensing Revenue<br/>is not zero?"}
+    kind -->|Update| changed{"Close date or<br/>Account changed,<br/>or one of those<br/>amounts<br/>left zero?"}
+    revenue -->|No| none["No T1 insert"]
+    changed -->|No| none
+    revenue -->|Yes| window
+    changed -->|Yes| window{"Start date set<br/>and close date<br/>on or after it?"}
+    window -->|No| none
+    window -->|Yes| add["Insert owner splits and set T1 Opp to Yes"]
+```
+
 This runs only when the Opportunity is open and Quotas Update Allowed is true.
 
 On insert, T1 is considered when any of these is not null and not zero: `Amount`, `Net_Revenue_Forecast__c` (Net Revenue), `Estimate_Licensing_Revenue__c` (Estimate: Licensing Revenue).
@@ -72,6 +106,26 @@ Splits are inserted only when the Account has a T1 start date and `CloseDate` is
 
 ### Close date outside the window
 
+Setting `T1_Opp__c` to No waits for the close date or the Account to change. Deleting an existing T1 split that is outside the window does not.
+
+```mermaid
+flowchart TD
+    start["Open, quota allowed, close date or Account changed"] --> outside{"Start date blank<br/>or close date before it,<br/>and T1 Opp is Yes?"}
+    outside -->|Yes| no["Set T1 Opp to No"]
+    outside -->|No| keep["Leave T1 Opp as saved"]
+```
+
+```mermaid
+flowchart TD
+    start["Existing T1 split. Open and quota allowed"] --> outside{"Start date<br/>blank or close<br/>date before it?"}
+    outside -->|Yes| del["Delete the split"]
+    outside -->|No| changed{"T1 Opp or<br/>Net Revenue<br/>changed?"}
+    changed -->|No| keep["Keep the split"]
+    changed -->|Yes| zero{"T1 Opp<br/>is not Yes,<br/>or Net Revenue<br/>is zero?"}
+    zero -->|Yes| del
+    zero -->|No| keep
+```
+
 When an open, quota-allowed Opportunity is updated and the close date or Account changed:
 
 - If the T1 start date is blank, or the close date is before it, and `T1_Opp__c` is `Yes`, the engine sets `T1_Opp__c` to `No`.
@@ -81,6 +135,19 @@ Separately, on every open, quota-allowed update, existing T1 splits are deleted 
 T1 splits are also deleted when `T1_Opp__c` or Net Revenue changed on this save, and the Opportunity is not `T1_Opp__c = Yes` or Net Revenue is null or zero.
 
 ### T1 eligibility reconciliation
+
+This pass does not set `T1_Opp__c` back to No, and it does not look at `IsClosed`.
+
+```mermaid
+flowchart TD
+    start["Quotas Update Allowed. Closed Opportunities included"] --> window{"Start date set<br/>and close date<br/>on or after it?"}
+    window -->|No| leave["No insert. This pass does not set T1 Opp to No"]
+    window -->|Yes| revenue{"Amount,<br/>Net Revenue,<br/>or Licensing<br/>Revenue<br/>is not zero?"}
+    revenue -->|No| leave
+    revenue -->|Yes| already{"T1 Opp is<br/>already Yes?"}
+    already -->|Yes| leave
+    already -->|No| add["Insert owner splits and set T1 Opp to Yes"]
+```
 
 This runs on insert and update whenever Quotas Update Allowed is true, including when the Opportunity is closed. It does not require a particular field to have changed.
 
@@ -98,7 +165,29 @@ This path exists so a rollup that lands after the Opportunity has closed can sti
 
 ## T2
 
-Open Opportunity, Quotas Update Allowed true.
+Open Opportunity, Quotas Update Allowed true. An insert does not need a field change. An update does.
+
+```mermaid
+flowchart TD
+    start["Open, and Quotas Update Allowed"] --> svc{"Amount or<br/>managed<br/>service revenue<br/>is not zero?"}
+    svc -->|No| none["No new T2 split"]
+    svc -->|Yes| gap{"Amount is<br/>not zero and Total<br/>Amount T2<br/>is zero?"}
+    gap -->|Yes| none
+    gap -->|No| kind{"Insert or update?"}
+    kind -->|Insert| add["Insert owner splits"]
+    kind -->|Update| why{"T2 changed,<br/>Account changed,<br/>or managed service<br/>revenue left zero?"}
+    why -->|Yes| add
+    why -->|No| none
+```
+
+Deletion does not wait for `Total_Amount_T2__c` to change on this save.
+
+```mermaid
+flowchart TD
+    start["Existing T2 split. Open and quota allowed"] --> zero{"Total Amount<br/>T2 is null<br/>or zero?"}
+    zero -->|Yes| del["Delete the split"]
+    zero -->|No| keep["Keep the split"]
+```
 
 T2 is skipped unless there is service revenue: `Amount` is not null and not zero, or `Estimate_Managed_Service_Revenue__c` (Estimate: Managed Service Revenue) is not null and not zero. If `Amount` is non-zero, `Total_Amount_T2__c` must also be non-zero. Estimate: Consulting Revenue is not part of this check.
 
@@ -112,7 +201,25 @@ Existing T2 splits are deleted on every open, quota-allowed update when `Total_A
 
 ## T3
 
-Open Opportunity, Quotas Update Allowed true.
+Open Opportunity, Quotas Update Allowed true. A product change can insert a split even when `Total_Amount_T3__c` is zero. The deletion pass then removes existing T3 splits and leaves the insert queued in this run.
+
+```mermaid
+flowchart TD
+    start["Open, and Quotas Update Allowed"] --> kind{"Insert or<br/>update?"}
+    kind -->|Insert| amt{"Total Amount<br/>T3 is not zero?"}
+    amt -->|Yes| add["Insert owner splits"]
+    amt -->|No| none["No new T3 split"]
+    kind -->|Update| upd{"T3 From Products<br/>or Account changed,<br/>or a non-zero T3<br/>amount changed?"}
+    upd -->|Yes| add
+    upd -->|No| none
+```
+
+```mermaid
+flowchart TD
+    start["Existing T3 split. Open and quota allowed"] --> zero{"Total Amount<br/>T3 is null<br/>or zero?"}
+    zero -->|Yes| del["Delete the existing split. An insert queued in this run stays"]
+    zero -->|No| keep["Keep the split"]
+```
 
 On insert, T3 splits are added when `Total_Amount_T3__c` is not null and not zero.
 
@@ -123,6 +230,33 @@ Existing T3 splits are deleted on every open, quota-allowed update when `Total_A
 ---
 
 ## Owner change and cleanup
+
+The first diagram runs only when the owner changes. The second runs on every open, quota-allowed update, before the T1, T2, and T3 deletion rules.
+
+```mermaid
+flowchart TD
+    start["Owner changed. Open and quota allowed"] --> diff{"Account<br/>owner is set<br/>and different?"}
+    diff -->|Yes| t1{"T1 Opp is Yes?"}
+    t1 -->|Yes| addT1["Add Account-owner T1"]
+    t1 -->|No| t2
+    addT1 --> t2{"Total Amount T2<br/>is not zero?"}
+    t2 -->|Yes| addT2["Add Account-owner T2"]
+    t2 -->|No| t3
+    addT2 --> t3{"Total Amount T3<br/>is not zero?"}
+    t3 -->|Yes| addT3["Add Account-owner T3"]
+    t3 -->|No| done["Done"]
+    addT3 --> done
+    diff -->|No| same{"New owner is<br/>the Account<br/>owner?"}
+    same -->|Yes| pct["Set that user's tier splits to 100 percent"]
+    same -->|No| done
+```
+
+```mermaid
+flowchart TD
+    start["Every open, quota-allowed update"] --> known{"Owner is<br/>the Opportunity owner,<br/>the Account owner,<br/>or 2nd Opp Owner?"}
+    known -->|No| del["Delete the T1, T2, or T3 split"]
+    known -->|Yes| keep["Leave it for the tier deletion rules"]
+```
 
 When the Opportunity owner changes, the Opportunity is open, and Quotas Update Allowed is true:
 
@@ -158,6 +292,20 @@ The formula is true when the stage is Explore, Identify Needs, Develop Solution,
 It is also true for **Closed won - awaiting approval** and **Order** when the close date is in the current calendar quarter and the current calendar year.
 
 It is also true for **Closed Lost**, **Duplicate - Error in Opp**, **Duplicate - Multiple Options**, **Duplicate - Dead Quote**, and **Cancelled After Invoice** when the close date is after `TODAY() - 90`.
+
+Pipeline stages in the diagram are Explore, Identify Needs, Develop Solution, Evaluate, Justify, and Closing.
+
+```mermaid
+flowchart TD
+    stage{"Stage"} -->|Pipeline| yes["True"]
+    stage -->|Won awaiting approval, or Order| quarter{"Close date in this<br/>quarter and year?"}
+    quarter -->|Yes| yes
+    quarter -->|No| no["False"]
+    stage -->|Lost, Duplicate, or Cancelled After Invoice| days{"Close date <br/>after today minus<br/>90 days?"}
+    days -->|Yes| yes
+    days -->|No| no
+    stage -->|Any other stage| no
+```
 
 `IsClosed` is a separate check. A closed Opportunity can have Quotas Update Allowed true and still skip assignment and deletion. Reconciliation and Run Splits Flow are the exceptions described above.
 

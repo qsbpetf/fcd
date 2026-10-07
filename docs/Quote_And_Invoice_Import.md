@@ -87,7 +87,30 @@ Rows shipped for the special cases:
 | `Default_002` | blank | `DATACENTER` | blank | Atlassian Data Center - Marketplace Application | Fallback when a Data Center line has no exact match |
 | `Entitlement_001` | `Atlassian Cloud` | `CLOUD` | blank | the text `null` | Reads the SEN off the Atlassian Cloud JSON line and does not create a product |
 
-`PortalProductMapper.mapProduct` then does this:
+`PortalProductMapper.mapProduct` then does this. A single match on product name alone is discarded. The platform default is used instead.
+
+```mermaid
+flowchart TD
+    line["JSON line"] --> exact{"Exactly one row<br/>for name, platform,<br/>and edition?"}
+    exact -->|Yes| empty{"Salesforce<br/>product name<br/>is empty?"}
+    empty -->|Yes| sen["No product. Keep the cloud SEN"]
+    empty -->|No| prod{"A Product2<br/>has that name?"}
+    prod -->|Yes| use["Use that product"]
+    prod -->|No| fail["Line fails"]
+    exact -->|No| known{"Platform and<br/>edition both appear<br/>on some row?"}
+    known -->|No| fail
+    known -->|Yes| next["Name search, shown below"]
+```
+
+```mermaid
+flowchart TD
+    names{"Rows with this<br/>product name"} -->|None| def{"Exactly one<br/>platform default?"}
+    names -->|One| drop["Discard that name match"]
+    drop --> def
+    names -->|More than one| fail["Line fails. The default is not used"]
+    def -->|Yes| ok["Use the platform default"]
+    def -->|No| fail
+```
 
 1. Look for one row where product name, platform, and edition all equal the JSON line, including blanks.
    - One row whose Salesforce product name is empty (`Entitlement_001` is this case): do not create an Opportunity Product. Keep that line's `supportEntitlementNumber` as the shared cloud SEN. Later CLOUD lines whose SEN is not `0` get `SEN__c` set to that value.
@@ -114,7 +137,17 @@ The search key is the line **description** with everything from the first `(` re
 
 `Jira, Premium, Annual (USD, Default, 29-03-2024)` matches a row whose `ProductName__c` is `Jira, Premium, Annual`.
 
-`PpcPortalProductMapper.mapProduct` then does this:
+`PpcPortalProductMapper.mapProduct` then does this. An unknown description stays `found = true` and uses the default product. `found = false` means duplicate rows for that name, or a Salesforce product name stored as the text `null`.
+
+```mermaid
+flowchart TD
+    key["Description before the first parenthesis"] --> n{"How many<br/>metadata<br/>rows?"}
+    n -->|One| named{"Name is empty<br/>or the text null?"}
+    named -->|Yes| fail["found is false"]
+    named -->|No| use["found is true. The next step fails if no Product2 has that name"]
+    n -->|None| def["found is true. Use the marketplace default"]
+    n -->|More than one| fail
+```
 
 1. Exactly one row with that product name: look up `Product2` by `SalesforceProductName__c`. `found` is set to true when the metadata name is non-empty, including when no `Product2` has that name. The next step then fails because the product id is missing. Keep `SalesforceProductName__c` identical to `Product2.Name`.
 2. No row with that product name: `found` is still true. The line uses the default row, the one with a blank `ProductName__c`. In this repo that is `Default_001`, Salesforce product **Atlassian Cloud - Marketplace Application**. The log text says the product name is unknown, and the line is still mapped.
@@ -131,6 +164,14 @@ Add a Commerce API product by creating a record whose `ProductName__c` is the de
 ## JSON quote upload
 
 This path uses a JSON file exported from the older portal. The file holds the order, the line items, and the technical contact.
+
+```mermaid
+flowchart TD
+    file["Upload the JSON"] --> check["Validate. Nothing is inserted yet"]
+    check --> pb{"Price book<br/>entry for this<br/>product and<br/>currency?"}
+    pb -->|No| skip["Report the line. Do not insert it"]
+    pb -->|Yes| save["Create the products and update the Opportunity"]
+```
 
 1. Upload the file, or drop it on the component.
 2. Click **Validate Opportunity Products**. This maps lines to Opportunity Products and shows the result. Nothing is inserted yet.
@@ -171,6 +212,28 @@ On create, the Opportunity is also updated with:
 Quote money fields from the API are in minor units. The mapper divides `amountExcludingTax` and `subTotal` by 100 before writing Opportunity Product prices.
 
 An open quote is completed from the order preview. An accepted quote is completed from its orders. Entitlement name, slug, and ARI come from per-line entitlement calls. The API response does not include a technical contact, so this path does not set `Atlassian_AT_Quote_Tech_Contact__c`.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant UI as Quote importer
+    participant API as Commerce API
+    User->>UI: Paste the quote URL
+    UI->>API: GET quote
+    alt Open quote
+        UI->>API: Order preview
+    else Accepted quote
+        UI->>API: Related orders
+    end
+    loop Each line that needs an entitlement
+        UI->>API: Entitlement
+    end
+    UI->>User: Lines, promo codes, and PDF preview
+    User->>UI: Create products
+    UI->>UI: Pending invoice Processing, then up to 90 lines per queueable
+```
+
+Invoice import uses the same queueable. When its lines are in, the Opportunity stage is set to **Closing**. A quote leaves the stage unchanged.
 
 After the quote is fetched, the same screen lists **Available Promo Codes** that match line names. That list is a reminder. Applying a code is done in Atlassian. See [Promotion codes](Promotion_Codes.md). Invoice import does not show this list.
 
@@ -302,6 +365,17 @@ After insert, Lightning flows still calculate discounts and currencies for the m
 ## Merging line items
 
 When **Merge Line Items** is checked, `PpcOpportunityProductMapper.mergeEqualProducts` groups lines that share the same `PpcLineItemId__c`, license start date, and license end date.
+
+```mermaid
+flowchart TD
+    lines["Mapped lines"] --> box{"Merge Line<br/>Items<br/>checked?"}
+    box -->|No| keep["Keep each line"]
+    box -->|Yes| eq["Group by PPC line id, start, and end"]
+    eq --> sum["Sum the money. Sum users only when the prices are not negative"]
+    sum --> dates{"Merge Date<br/>Ranges<br/>checked?"}
+    dates -->|No| out["One product per group"]
+    dates -->|Yes| wide["Group by entitlement. Widen the dates. Do not sum users"]
+```
 
 On the kept line it sums:
 

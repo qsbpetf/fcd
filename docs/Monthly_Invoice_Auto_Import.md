@@ -43,22 +43,38 @@ An invoice is imported when all of the following are true:
 
 Other lines on a selected invoice are still mapped by `PpcOpportunityProductMapper`. The CARD + MONTHLY check decides whether the invoice is eligible. It does not drop non-monthly lines off an eligible invoice.
 
+```mermaid
+flowchart TD
+    acc{"AutoInvoice<br/>Import<br/>checked?"} -->|No| skip["Skip the Account"]
+    acc -->|Yes| on{"Automation<br/>enabled?"}
+    on -->|No| none["The scheduled job imports nothing"]
+    on -->|Yes| paid{"Paid invoice<br/>on an active<br/>Invoice Group?"}
+    paid -->|No| noinv["Skip the invoice"]
+    paid -->|Yes| card{"Payment<br/>method<br/>is CARD?"}
+    card -->|No| noinv
+    card -->|Yes| mon{"At least<br/>one line<br/>is MONTHLY?"}
+    mon -->|No| noinv
+    mon -->|Yes| win{"createdAt is<br/>inside the<br/>day window?"}
+    win -->|No| noinv
+    win -->|Yes| dup{"This invoice<br/>number is already<br/>on the Account?"}
+    dup -->|Yes| noinv
+    dup -->|No| yes["Import it.<br/>Keep the other lines"]
+```
+
 ---
 
 ## Job chain
 
-```text
-PpcInvoiceImporterBatch          (scheduled; also the batch)
-        │  creates Opportunity (stage Explore) + PendingInvoice__c (Waiting)
-        ▼
-InvoiceToOpportunityBatch        (started from the first batch's finish)
-        │  re-fetches the invoice, loads entitlement partner info,
-        │  maps lines, sets PendingInvoice to Processing
-        ▼
-ProcessOpportunityLinesQueueable (chains itself)
-        │  inserts up to 90 Opportunity Products per execution
-        ▼
-Opportunity stage = Closing, PendingInvoice status = Done
+```mermaid
+flowchart TD
+    sched["PpcInvoiceImporterBatch"] --> create["Opportunity in Explore. Before save sets the owner"]
+    create --> wait["Pending invoice Waiting"]
+    wait --> map["InvoiceToOpportunityBatch re-fetches and maps the lines"]
+    map --> proc["Pending invoice Processing"]
+    proc --> chunk["Queueable inserts up to 90 lines"]
+    chunk --> more{"Lines left?"}
+    more -->|Yes| chunk
+    more -->|No| close["Stage Closing. Pending invoice Done"]
 ```
 
 `PpcInvoiceImporterBatch` is schedulable. `execute(SchedulableContext)` calls `run()`. `run()` does nothing if either batch class already has a job in Queued, Preparing, Processing, or Holding.
@@ -122,7 +138,19 @@ Set in `PpcInvoiceImporterBatch.createOpportunity`:
 
 `Invoice_JSON__c` through `Invoice_JSON_5__c` exist on the object. The importer currently stores empty strings in those fields and loads the invoice again by id in the next batch.
 
-A lock error on the Opportunity or Account increments `RetryCount__c` and sets status **Error**. After 4 retries the status becomes **Failed** and the queueable stops. The next scheduled run will not create a second Opportunity for the same invoice number, because `ImportedInvoiceNumber__c` is already set. Fix the error, then reprocess that pending invoice or clear the Opportunity reference before expecting another automatic create.
+A lock error on the Opportunity or Account increments `RetryCount__c` and sets status **Error**. After 4 retries the status becomes **Failed** and the queueable returns without enqueueing the rest. Under 4, lines already removed for the failed chunk are not retried, but any lines still in the list are enqueued. **Done**, and the move to **Closing**, are written only when the status is not **Error**.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Waiting
+    Waiting --> Processing: Next batch maps the invoice
+    Processing --> Done: Lines are in and status is not Error
+    Processing --> Error: Insert throws
+    Error --> Failed: Retry count reaches 4
+    Done --> [*]: Cleanup can delete an old Done row
+```
+
+The next scheduled run will not create a second Opportunity for the same invoice number, because `ImportedInvoiceNumber__c` is already set. Fix the error, then reprocess that pending invoice or clear the Opportunity reference before expecting another automatic create.
 
 When **Delete pending invoices** is checked, `InvoiceToOpportunityBatch.finish` deletes `PendingInvoice__c` rows in status **Done** older than **Days to keep pending invoices**.
 

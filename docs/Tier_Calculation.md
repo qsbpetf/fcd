@@ -6,6 +6,24 @@ T1 on the tier line is T2 plus T3. It is not a third product formula.
 
 Those Opportunity totals are also what [T1, T2, and T3 opportunity splits](Opportunity_Splits.md) use to decide whether T2 and T3 split rows should exist. Saving `Total_Amount_T2__c` or `Total_Amount_T3__c` is an Opportunity update, so the split engine runs in the same transaction when automation is on.
 
+```mermaid
+sequenceDiagram
+    participant Job as Nightly batch or Calculate Tiers
+    participant Svc as TierCalcService
+    participant Tier as Tier line
+    participant Opp as Opportunity
+    participant Split as Split engine
+    Job->>Svc: Recalculate
+    Svc->>Tier: Upsert one row per split user
+    Note over Tier: Same full totals on every user. T1 is T2 plus T3
+    alt Override is off and the total changed
+        Svc->>Opp: Write Total Amount T2 or T3
+        Opp->>Split: The Opportunity update runs the engine
+    else Override is on
+        Svc->>Tier: Keep the stored total on the line
+    end
+```
+
 ---
 
 ## Table of Contents
@@ -64,11 +82,39 @@ If the Opportunity has no splits, the Opportunity owner is used at 100% so one t
 
 ## T2 amount
 
+The override and the empty-product case are decided once for the Opportunity. Attainment below is per product.
+
+```mermaid
+flowchart TD
+    start["T2 total"] --> over{"T2 Override?"}
+    over -->|Yes| stored["Stored Total Amount T2, or 0"]
+    over -->|No| products{"Any products?"}
+    products -->|No| est["Consulting estimate plus managed service estimate"]
+    products -->|Yes| sum["Sum of each product's attainment"]
+```
+
 If `T2_Override__c` is true, T2 is the current `Total_Amount_T2__c` (or 0 when that field is null). Products are not summed.
 
 If the Opportunity has no products, T2 is `Estimate_Consulting_Revenue__c` plus `Estimate_Managed_Service_Revenue__c`. Null estimates count as 0.
 
 If it has products, T2 is the sum of each product's attainment amount. Attainment is calculated as follows. `Revenue_Type_Formula__c` and `Renewal__c` come from the product. The project date is `Opportunity.Project_Start_Date_From_Project__c`.
+
+```mermaid
+flowchart TD
+    line["One product"] --> type{"Revenue type<br/>blank or<br/>Licenses?"}
+    type -->|Yes| zero["Attainment is 0"]
+    type -->|No| renew{"New, or<br/>Upgrade on the<br/>same platform?"}
+    renew -->|Yes| full["Full list price including discount"]
+    renew -->|No| proj{"Project start<br/>date set?"}
+    proj -->|No| zero
+    proj -->|Yes| after{"License start<br/>is after<br/>project start<br/>plus 365 days?"}
+    after -->|Yes| zero
+    after -->|No| before{"License end is<br/>before project<br/>start plus<br/>365 days?"}
+    before -->|Yes| full
+    before -->|No| days{"License start<br/>is set and days<br/>is greater<br/>than 0?"}
+    days -->|Yes| ratio["Prorate the list price over that window"]
+    days -->|No| zero
+```
 
 1. Blank revenue type, or revenue type `Licenses`: attainment is 0.
 2. Otherwise, `Renewal__c` of `New` or `Upgrade (Same Platform)`: attainment is `Total_List_Price_Incl_Discount__c`.
@@ -86,6 +132,15 @@ A null list price counts as 0. Products with attainment 0 are not added.
 ---
 
 ## T3 amount
+
+```mermaid
+flowchart TD
+    start["T3 total"] --> over{"T3 Override?"}
+    over -->|Yes| stored["Stored Total Amount T3, or 0"]
+    over -->|No| products{"Any products?"}
+    products -->|No| est["Licensing margin estimate, or 0"]
+    products -->|Yes| sum["T3 product margins plus both rebates"]
+```
 
 If `T3_Override__c` is true, T3 is the current `Total_Amount_T3__c` (or 0 when null).
 

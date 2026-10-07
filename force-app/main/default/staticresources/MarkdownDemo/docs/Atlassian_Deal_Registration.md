@@ -72,11 +72,37 @@ Solutions: `ENTERPRISE_STRATEGY_AND_PLANNING`, `CLOUD_MIGRATION`, `SERVICE_MANAG
 
 Product codes are the constants at the top of `atlassianDealRegDraftForm.js` and `atlassianServiceRegDraftForm.js`. The service list is shorter than the deal list.
 
-The form is read-only when the status it has loaded is `APPROVED`, `EXPIRED`, `CLOSED_WON`, `CLOSED_LOST`, `CLOSED`, or `REJECTED`. **Submit** on the form itself is shown only in edit mode when status is `DRAFT`. **Poll** on the form is shown only when status is `IN_PROGRESS`. Those form buttons need a Salesforce record id. The record-page buttons below are the ones used after the local create.
+The form is read-only when the status it has loaded is `APPROVED`, `EXPIRED`, `CLOSED_WON`, `CLOSED_LOST`, `CLOSED`, or `REJECTED`. That is the registration status on the form. It is not the job status stored after submit (`IN_PROGRESS`, `COMPLETED`, `FAILED`, `VALIDATION_ERROR`). **Submit** on the form itself is shown only in edit mode when status is `DRAFT`. **Poll** on the form is shown only when status is `IN_PROGRESS`. Those form buttons need a Salesforce record id. The record-page buttons below are the ones used after the local create.
+
+```mermaid
+flowchart TD
+    form{"Status loaded<br/>on the form"} -->|DRAFT| edit["Edit stays open.<br/>Submit is shown"]
+    form -->|IN_PROGRESS| poll["Poll is shown"]
+    form -->|Approved, expired, closed, or rejected| lock["Form is read-only"]
+```
 
 ---
 
 ## Sync, submit, and refresh
+
+Create writes the local record and does not call Atlassian. Create in Atlassian, edit, and submit are separate steps.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant Record as Submission record
+    participant API as Atlassian
+    User->>Record: Create
+    Note over Record: No callout. Registration id stays blank
+    User->>API: Create in Atlassian
+    API-->>Record: 201, registration id, status DRAFT
+    User->>API: Edit
+    API-->>Record: 204
+    User->>API: Submit
+    API-->>Record: 202 and a job id
+    User->>API: Refresh
+    API-->>Record: 200 job status
+```
 
 `atlassianRegSubmitRefreshButton` on the submission record:
 
@@ -114,6 +140,14 @@ Search requires a partner account. Filters:
 
 Search must return **200**. The response `X-Trace-Id` is kept on the result as `traceId`. Next and previous use `pagination.nextPageToken`. The component also filters the returned rows by program type in the browser.
 
+```mermaid
+flowchart TD
+    where{"Where is the<br/>detail opened?"} -->|Submission record| ids{"Registration id<br/>and partner account<br/>both set?"}
+    ids -->|Yes| live["GET the live registration"]
+    ids -->|No| local["Render the stored JSON as a local draft"]
+    where -->|Search or a URL| api["Always call the API"]
+```
+
 The table shows id, deal name, program type, status, customer domain, `partnerSubmittedOpportunityNumber`, estimated revenue formatted as EUR, expiration date, and created time. **View** opens `atlassianRegistrationDetail` in a modal. **Edit** in that modal loads the draft form. If Salesforce has no submission for that registration id and partner account, Save calls `updateDealDraftByRegistrationId` or `updateServiceDraftByRegistrationId`. That PATCHes Atlassian and does not insert `AtlassianRegSubmission__c`.
 
 On a submission record, the detail component loads `getSubmissionRecord`. When both `Registration_Id__c` and `Partner_Account_Id__c` are set, it GETs the live registration. Otherwise it renders `Draft_Payload_JSON__c` and shows id `(not synced to Atlassian yet)` and status `Local draft`. A blank payload shows "No draft data saved on this record yet."
@@ -133,6 +167,15 @@ Submit is asynchronous. The submit response is a job, not the final registration
 Manual refresh is `pollJobStatus` on the record, described above.
 
 `AtlassianDealRegJobStatusPollBatch` selects submissions where `Job_Id__c` and `Partner_Account_Id__c` are set and `Status__c` is exactly `IN_PROGRESS`. Scope size is 10. For each row it calls job status:
+
+```mermaid
+flowchart TD
+    poll["Status is IN_PROGRESS"] --> ok{"Job status<br/>returns 200?"}
+    ok -->|No| stay["Write the error. Leave status IN_PROGRESS"]
+    ok -->|Yes| next{"Returned<br/>status"}
+    next -->|COMPLETED or SUCCESS| clear["Write the status. Clear Error when it was set"]
+    next -->|FAILED or VALIDATION_ERROR| bad["Write the status and the error"]
+```
 
 - On success it writes `Status__c`, `Last_Polled__c`, and `Error__c` when the body has an error.
 - When the new status is `COMPLETED` or `SUCCESS` and the old `Error__c` was filled, it clears `Error__c`.

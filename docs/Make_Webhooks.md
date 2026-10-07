@@ -32,6 +32,25 @@ A webhook is enqueued only when every rule below is true:
 | At least one Opportunity Product has `UnitPrice` not null | `UnitPrice` of 0 counts. A line with a null unit price does not. |
 | The kill switch is not off | See [Kill switch](#kill-switch). |
 
+Insert never enters this flowchart. A later update sends again even when the stage did not change.
+
+```mermaid
+flowchart TD
+    upd["After update"] --> stage{"Stage is an<br/>active config<br/>row?"}
+    stage -->|No| no["No webhook"]
+    stage -->|Yes| rev{"Revenue Types<br/>filled and not<br/>exactly Licenses?"}
+    rev -->|No| no
+    rev -->|Yes| acc{"Account<br/>name<br/>set?"}
+    acc -->|No| no
+    acc -->|Yes| open{"Open, or<br/>closed within<br/>15 days?"}
+    open -->|No| no
+    open -->|Yes| price{"A line has<br/>a unit price,<br/>including 0?"}
+    price -->|No| no
+    price -->|Yes| kill{"Kill switch on?"}
+    kill -->|No| no
+    kill -->|Yes| post["One POST per Opportunity"]
+```
+
 All matching Opportunity ids from the trigger are passed to one `MakeOpportunityWebhookQueueable`. That job sends one HTTP POST per id. A second update of the same Opportunity in the **same transaction** does not enqueue again. The handler keeps a static set of ids it has already accepted. A later transaction sends again.
 
 Creating the Opportunity already in a configured stage does not send a webhook. Adding the first priced product later does not either, because the product trigger does not call the Opportunity handler. The next update of the Opportunity, while a priced line exists, does.
@@ -50,6 +69,17 @@ Each deleted row is posted when all of these are true:
 
 The delete path does not require any priced line to remain on the Opportunity. Deleting the last priced line still posts, as long as that line itself had a unit price and the parent still qualifies.
 
+```mermaid
+flowchart TD
+    del["After delete"] --> price{"Deleted line<br/>has a unit<br/>price?"}
+    price -->|No| no["No webhook"]
+    price -->|Yes| parent{"Parent still passes<br/>stage, revenue,<br/>account, and<br/>close date?"}
+    parent -->|No| no
+    parent -->|Yes| kill{"Kill switch on?"}
+    kill -->|No| no
+    kill -->|Yes| post["One POST for that deleted line"]
+```
+
 One `MakeOLIWebhookQueueable` is enqueued for the deleted ids. It sends one POST per id. The same static-set rule applies inside one transaction.
 
 Deleting a product does not also send the Opportunity webhook.
@@ -64,6 +94,16 @@ Both jobs use `callout:MakeDotCom` plus a path constant, method POST, header `Co
 | --- | --- | --- |
 | Opportunity update | `MakeOpportunityWebhookQueueable` | `{ "OpportunityId": "<id>" }` |
 | Product delete | `MakeOLIWebhookQueueable` | `{ "OpportunityLineItemId": "<id>" }` |
+
+```mermaid
+sequenceDiagram
+    participant Trig as Trigger
+    participant Q as Queueable
+    participant Make as Make.com
+    Trig->>Q: One job for the ids accepted in this transaction
+    Q->>Make: POST one id
+    Note over Q,Make: The HTTP status is not checked.<br/>A failure is only a debug log.<br/>The Salesforce save is<br/>already committed
+```
 
 The queueable loops every id in one execution. A single trigger that deletes more than 100 qualifying lines can hit the callout governor limit, because the job does not chain itself.
 
