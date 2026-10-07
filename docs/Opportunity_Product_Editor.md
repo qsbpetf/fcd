@@ -4,6 +4,21 @@
 
 The grid is read-only. Picklist and currency columns display values. Changes are made in the add and edit modals, which use `opportunityLineItemsEditDatatable`.
 
+```mermaid
+flowchart TD
+    list["Paged list"] --> add["Add"]
+    list --> edit["Edit Selected"]
+    list --> del["Delete Selected"]
+    add --> search["Search the price book"]
+    search --> drafts["Draft lines, then the edit grid"]
+    drafts --> ins["Insert"]
+    edit --> upd["Edit grid, then update"]
+    del --> confirm["Confirm, then delete"]
+    url["navToAddOppProducts"] --> search
+```
+
+`navToAddOppProducts` opens the add modal directly. **Next** on the search step opens the grid even when no product was chosen.
+
 ---
 
 ## Table of Contents
@@ -82,6 +97,19 @@ The save payload also copies `SEN_Technical_Contact__c` when that value is alrea
 ## Save behavior
 
 Insert and update send a map of lines to Apex. Delete sends ids. All three use `allOrNone = false` and then roll back the whole savepoint if any row failed. One bad line saves nothing. Errors are returned to the modal and the modal stays open. A clean save closes the modal with `submit`, toasts success, and the list reloads.
+
+```mermaid
+sequenceDiagram
+    participant Modal
+    participant Apex
+    Modal->>Apex: One call for the rows
+    alt Any row fails
+        Apex->>Apex: Roll the savepoint back
+        Apex->>Modal: Return the errors
+    else Every row succeeds
+        Apex->>Modal: Close and reload the list
+    end
+```
 
 Insert sets `OpportunityId`, `PricebookEntryId`, `Name`, `UnitPrice`, `Quantity`, `Discount__c`, `Units__c`, `Renewal__c`, license start and end, `Additional_Info__c`, `SEN__c`, `User_Count__c`, `Loss_Reviewed__c`, `Unusual_discount_reviewed__c`, `Editable_Cost_Price_in_Dollars__c`, `Editable_Unit_List_Price_in_USD__c`, and `SEN_Technical_Contact__c`. Update sends those plus `Id`. Salesforce still runs validation, price book rules, and the other Opportunity Product automation on that DML.
 

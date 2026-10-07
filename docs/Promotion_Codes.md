@@ -65,6 +65,19 @@ The search-string help text says the keyword is compared to `Product2.Name`. The
 
 For each upcoming-bill line it uses `productName` when that is filled, otherwise `description`.
 
+```mermaid
+flowchart TD
+    code["Active code with<br/>a search string"] --> name{"Line name<br/>contains the<br/>search string?"}
+    name -->|No| skip["No match"]
+    name -->|Yes| plat{"Platform blank,<br/>or the name<br/>matches it?"}
+    plat -->|No| skip
+    plat -->|Yes| ed{"Edition blank,<br/>or the name<br/>contains it?"}
+    ed -->|No| skip
+    ed -->|Yes| show["List the code once"]
+```
+
+The card lists each matching code once. The user applies it in Atlassian. Imported prices stay unchanged. Invoice import and the JSON upload do not show the card.
+
 A code matches that line when all of these are true:
 
 1. The line name contains `SearchString__c`. The check ignores case.

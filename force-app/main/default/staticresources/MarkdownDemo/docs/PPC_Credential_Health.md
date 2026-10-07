@@ -71,21 +71,15 @@ The health check does **not** use the running user’s office custom permissions
 
 ## Overall architecture
 
-```
-PPC_TransactionAccount__mdt
-        │  (which offices / named credentials exist)
-        ▼
-Schedulable (every 20 min: three hourly jobs at :00, :20, :40)
-        │
-        ▼
-Queueable + callouts
-        │  GET /commerce/api/v2/invoice-groups?page-size=1
-        │  per named credential, 10 second timeout
-        ▼
-PpcCredentialStatus__c  (one row per named credential)
-        │
-        ├── Home page LWC  (read status; optional Probe now)
-        └── Record-triggered Flow on Status__c  (Slack — built separately)
+```mermaid
+flowchart TD
+    meta["Transaction Account<br/>metadata"] --> jobs["Three hourly jobs<br/>at :00, :20, and :40"]
+    jobs --> q["One queueable<br/>for every office"]
+    now["Probe now"] --> q
+    q --> get["GET invoice-groups<br/>page size 1"]
+    get --> row["One status row<br/>per named credential"]
+    row --> home["Home page reads the rows"]
+    row --> slack["Slack flow, only if<br/>Status changed"]
 ```
 
 The dashboard never calls Atlassian. The scheduled (or manual) probe is the source of truth. The custom object is what the UI and a Slack Flow both consume.
@@ -127,6 +121,22 @@ Salesforce limits cumulative callout time to 120 seconds per transaction. Ten of
 | 4xx | `Unhealthy` | Unhealthy | Client/auth problem (400, 401, 403, …) |
 | 5xx, timeout, missing named credential, other exception | `Other_Error` | Other Error | Atlassian down, network, or config missing |
 | Never probed | `Unknown` | Unknown | Seed / before first run |
+
+```mermaid
+stateDiagram-v2
+    [*] --> Unknown
+    Unknown --> Healthy: 2xx
+    Unknown --> Unhealthy: 4xx
+    Unknown --> Other_Error: 5xx or HTTP 0
+    Healthy --> Unhealthy: 4xx
+    Healthy --> Other_Error: 5xx or HTTP 0
+    Unhealthy --> Healthy: 2xx
+    Unhealthy --> Other_Error: 5xx or HTTP 0
+    Other_Error --> Healthy: 2xx
+    Other_Error --> Unhealthy: 4xx
+```
+
+A probe that stays in the same status does not follow one of those arrows. `LastChecked__c` is still updated.
 
 `HttpStatusCode__c` is `0` when there was no HTTP response.
 
@@ -200,6 +210,14 @@ Behaviour:
 - If an org-default record exists and **Enabled** is unchecked, scheduled `execute()` returns without enqueueing a probe
 - **Probe now** on the dashboard **still runs** when the kill switch is off
 
+```mermaid
+flowchart TD
+    who{"Who started<br/>the probe?"} -->|Schedule| on{"Enabled is on,<br/>or no org default<br/>is saved?"}
+    who -->|Probe now| go["Enqueue the queueable"]
+    on -->|Yes| go
+    on -->|No| stop["The scheduled run returns"]
+```
+
 How to pause scheduled probes without unscheduling the Apex jobs:
 
 1. Setup → **Custom Settings**
@@ -219,6 +237,12 @@ This is a **hierarchy custom setting**, not custom metadata. Change it in the or
 
 Lightning component **PPC Credential Health** (`ppcCredentialHealth`).
 
+![Atlassian PPC credential health on the Home page](_images/ppc-credential-health-dashboard.png)
+
+The Home page shows one card per named credential, with **Probe now** at the top right and the time of the last refresh under the title. A green edge and a **Healthy** badge mean the last probe returned HTTP 200. An orange edge and an **Unhealthy** badge mean HTTP 401, and the response body is printed under that card.
+
+In this snapshot, Switzerland, Denmark, Finland, Germany (`Eficode_Office_JODOCUS`), the Netherlands, and Norway are healthy, each with 0 consecutive failures. Ex-Germany (`Eficode_Office_DE`) and Sweden are unhealthy, both with 2515 consecutive failures. The United Kingdom and the United States are also unhealthy, both with 530 consecutive failures. Those two offices share one transaction account, so a bad token shows up on both cards. Every card in the picture was checked 7 minutes earlier.
+
 Each named credential is a card with:
 
 - Subsidiary label (Finland, Germany, …)
@@ -227,6 +251,14 @@ Each named credential is a card with:
 - HTTP code, last checked (relative time), response time, consecutive failures
 - Error snippet when the last probe was not healthy
 - Stale warning when last check is older than 45 minutes
+
+![Sweden card, status Unhealthy, HTTP 401](_images/ppc-credential-health-unhealthy.png)
+
+An unhealthy card. HTTP 401 means the token or the transaction account was rejected. The response body is shown under the figures, and consecutive failures keep counting.
+
+![Norway card, status Healthy, HTTP 200](_images/ppc-credential-health-healthy.png)
+
+A healthy card. HTTP 200 means the last probe succeeded, and consecutive failures are 0.
 
 **Probe now** starts the same Queueable as the schedule.
 

@@ -63,6 +63,19 @@ It runs only when both entry conditions are true:
 - `ImportedInvoiceNumber__c` is not blank
 - `LeadSource` is `Renewal`
 
+```mermaid
+flowchart TD
+    ins["Before save, on create"] --> gate{"Invoice number<br/>set and Lead<br/>Source is<br/>Renewal?"}
+    gate -->|No| keep["The creator stays the owner"]
+    gate -->|Yes| sub{"A row exists<br/>for this<br/>subsidiary?"}
+    sub -->|Yes| filled{"Default Owner<br/>is filled in?"}
+    filled -->|Yes| own["Owner is that user"]
+    filled -->|No| bad["Owner is cleared.<br/>The insert fails"]
+    sub -->|No| fb{"One Eficode<br/>Default row,<br/>with an owner?"}
+    fb -->|Yes| own
+    fb -->|No| bad
+```
+
 Then:
 
 1. Look up one `DefaultOpportunityOwner__c` where `Subsidiary__c` equals `Account.CV_Subsidiary__c`.

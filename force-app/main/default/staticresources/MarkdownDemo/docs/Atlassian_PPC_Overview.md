@@ -41,6 +41,16 @@ Authentication headers come from named-credential merge fields:
 
 The JSON file contains the quote, line items, and the technical contact in one payload. The Commerce API does not. Quote and invoice imports call entitlements, orders, and order preview (for open quotes) before the Opportunity Products can be built. The Commerce API import does not receive a technical contact.
 
+```mermaid
+flowchart TD
+    start{"Which import?"} -->|JSON file| file["One file: quote,<br/>lines, and the<br/>technical contact"]
+    file --> jmap["Portal Product mapping"]
+    start -->|Commerce API| url["User pastes a<br/>quote or invoice URL"]
+    url --> pmap["PPC Product mapping"]
+    url --> calls["Several callouts.<br/>No technical contact"]
+    month["Monthly card invoices.<br/>The only unattended path"] --> pmap
+```
+
 A fully automatic poll of every new quote was not built. The Commerce API does not support the filters that would make that poll reliable. Users select the quote or invoice. Monthly card invoices are the exception: those are imported on a schedule for Accounts that opt in. See [Monthly invoice auto-import](Monthly_Invoice_Auto_Import.md).
 
 ---
@@ -58,6 +68,19 @@ For each subsidiary:
 | Custom permission `Eficode_Office_{CODE}` | `PortalCommerceApiAccessMgmt` checks this permission before a user can call that office. |
 
 `PortalCommerceApiAccessMgmt.translateApiNameToNamedCredential` loads every `PPC_TransactionAccount__mdt` row and accepts either `SubsidiaryApiName__c` or the record developer name. The developer name is the named-credential suffix. The record label is the transaction account UUID sent as `X-transaction-account`.
+
+```mermaid
+flowchart TD
+    sub["Account subsidiary"] --> hit{"A metadata row<br/>matches the API name<br/>or the developer name?"}
+    hit -->|No| none["No credential for this call"]
+    hit -->|Yes| nc["Named credential<br/>Eficode Office<br/>plus that code"]
+    nc --> uuid["The label is the<br/>transaction account UUID"]
+    nc --> perm{"This user has<br/>the office<br/>permission?"}
+    perm -->|Yes| ok["The callout can run"]
+    perm -->|No| block["The callout is blocked"]
+```
+
+The JSON file upload does not call PPC, so it skips this lookup. A manual import uses the user who clicks the button. A scheduled job uses the user who scheduled it.
 
 | Developer name | `SubsidiaryApiName__c` (Account `CV_Subsidiary__c`) | Named credential |
 | --- | --- | --- |
@@ -83,12 +106,38 @@ Quote fetch, invoice fetch, the Account invoice list, and the monthly importer a
 | Situation | What the code does |
 | --- | --- |
 | Open quote | Quote payload is incomplete. An order preview is loaded and parsed. |
-| Accepted quote | Related orders are loaded and parsed. |
+| Accepted quote | The order id is taken from the first line, and that order is loaded. |
 | Entitlement, ARI, and slug | A separate entitlements call is made per line that needs them. |
 | Invoice | Each invoice line points at an order and order item. Those orders are loaded, then line fields are filled from the order items. |
 | Billing profiles | There is no customer id to query. All billing profiles for every transaction account are imported as Invoice Groups. Sales then sets `InvoiceGroup__c.Account__c`. |
 | Paging | List calls return pages (50 records for invoice groups). The sync follows `nextId` until the page is exhausted, then moves to the next office. |
 | Large quotes | Line-level calls add up. A large quote is many callouts. |
+
+```mermaid
+sequenceDiagram
+    participant UI as Importer
+    participant API as Commerce API
+    alt Open quote
+        UI->>API: GET the quote
+        UI->>API: Order preview
+        loop Each line that needs an entitlement
+            UI->>API: GET the entitlement
+        end
+    else Accepted quote
+        UI->>API: GET the quote
+        UI->>API: Order from the first line
+        loop Each line that needs an entitlement
+            UI->>API: GET the entitlement
+        end
+    else Invoice
+        UI->>API: GET the invoice
+        loop Each distinct order on the lines
+            UI->>API: GET that order
+        end
+    end
+```
+
+Entitlement calls are part of quote import. Invoice import does not make them. It loads one order per distinct order id on the invoice lines. Product mapping for both paths is in [Quote and invoice import](Quote_And_Invoice_Import.md).
 
 Invoice lists on an Account only include Invoice Groups with `Active__c = true`. One callout is made per active Invoice Group, using the Account's subsidiary credential.
 
@@ -141,6 +190,16 @@ Queried from Eficode production (`EficodeProd`). All of these jobs are in state 
 | `PPC Credential Health Check 0` | `PpcCredentialHealthSchedulable` | `0 0 * * * ?` | Every hour at :00 |
 | `PPC Credential Health Check 1` | `PpcCredentialHealthSchedulable` | `0 20 * * * ?` | Every hour at :20 |
 | `PPC Credential Health Check 2` | `PpcCredentialHealthSchedulable` | `0 40 * * * ?` | Every hour at :40 |
+
+```mermaid
+flowchart LR
+    a["04:00<br/>Invoice Groups"] --> b["05:00<br/>Products"]
+    b --> c["06:00<br/>Offerings"]
+    c --> d["08:30<br/>Currency rates"]
+    d --> e["08:45<br/>Invoice import"]
+```
+
+Credential health is not in that morning chain. It runs on its own, every hour at :00, :20, and :40.
 
 Product sync runs before offerings sync. Currency rates are refreshed at 08:30, before the 08:45 invoice import, so new Opportunity Products can pick up that day's USD rate. See [Currency rate import](Currency_Rates.md).
 

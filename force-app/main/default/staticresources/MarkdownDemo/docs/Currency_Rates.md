@@ -30,6 +30,21 @@ Quote and invoice import write the Atlassian USD amounts onto the Opportunity Pr
 
 The scheduler only enqueues the queueable. The callout runs in the queueable, because scheduled Apex cannot make callouts.
 
+```mermaid
+sequenceDiagram
+    participant Sch as Scheduler
+    participant Q as Queueable
+    participant API as Exchange Rates API
+    participant SF as Salesforce
+    Sch->>Q: Enqueue. No callout here
+    Q->>API: GET the latest rates
+    Q->>Q: Keep active currencies
+    Q->>SF: Dated rates, corporate base, start date today
+    Q->>SF: Buying rates, USD base, one row per currency and day
+```
+
+A failed dated-rate response is logged, and the buying-rate insert still runs. A second run on the same day fails that insert, because the date-plus-currency key already exists.
+
 It runs 15 minutes before `Apex Morning Auto Invoice Import` (08:45), so Opportunity Products created by that import can see the same day's rate.
 
 ---
@@ -59,6 +74,19 @@ A second run on the same day fails the `Buying_Exchange_Rate__c` insert when `St
 
 The code applies `rate × (1 + MarkupPercent__c / 100)` to every currency that is not the base of that calculation. The API base currency, and USD when rebasing the buying rates, are not marked up.
 
+```mermaid
+flowchart TD
+    rate["An active currency"] --> base{"Base of this<br/>calculation?"}
+    base -->|Yes| raw["No markup"]
+    base -->|No| own{"A markup row<br/>for this code?"}
+    own -->|Yes| pct["Use that percent"]
+    own -->|No| def["Use Default"]
+    pct --> apply["Multiply by<br/>1 plus the percent"]
+    def --> apply
+```
+
+Dated rates use the API base. Buying rates are rebased to USD first, and USD itself is not marked up.
+
 | Record | Markup |
 | --- | --- |
 | `Default` | 3% |
@@ -76,6 +104,14 @@ The object description says the corporate currency is not marked up. That matche
 **Dated conversion rates** are Salesforce's own advanced-currency rates. Opportunities and reports in a non-corporate currency use them from the rate whose start date is in effect.
 
 **Buying exchange rates** are read when an Opportunity Product is created. The before-save flow **Exchange Rate Flow** (`Exchange_Rate_Flow`) looks up `Buying_Exchange_Rate__c` for the Opportunity currency with `Start_Date__c` on or before today, newest first, and sets `OpportunityLineItem.Exchange_Rate__c` from `Exchange_Rate_from_USD_to_X__c`. If `Opportunity.FX_Rate_Override__c` is set, the flow uses that value instead.
+
+```mermaid
+flowchart TD
+    create["Opportunity Product<br/>is created"] --> over{"FX Rate<br/>Override<br/>is set?"}
+    over -->|Yes| use["Exchange Rate<br/>is the override"]
+    over -->|No| find["Newest buying rate<br/>on or before today"]
+    find --> copy["Exchange Rate<br/>is that USD rate"]
+```
 
 `PortalQuoteConverter.getLatestCurrencyConversionFactor` still reads the older fields `Exchange_Rate_from_USD_to_EUR__c` and `Exchange_Rate_from_USD_to_GBP__c` on the newest `Buying_Exchange_Rate__c`. This job does not fill those two fields. It fills `Exchange_Rate_from_USD_to_X__c`. The line mappers also do not multiply imported Atlassian amounts by that factor.
 

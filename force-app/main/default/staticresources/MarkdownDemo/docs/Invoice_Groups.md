@@ -61,7 +61,21 @@ In Eficode production the job is scheduled and waiting:
 | Cron | `0 0 4 ? * 1,2,3,4,5,6,7` |
 | When | Every day at 04:00, org timezone `Europe/Helsinki` |
 
-The queueable chains itself: next page while `nextId` is present, then the next office. An error on one office is logged and the job moves on to the next office.
+The queueable chains itself: next page while `nextId` is present, then the next office. A fetch error is logged and the job moves on to the next office. A failed upsert is not caught, so that chain stops.
+
+```mermaid
+flowchart TD
+    start["Schedulable enqueues<br/>the first office"] --> fetch["GET a page of 50"]
+    fetch --> err{"Fetch<br/>error?"}
+    err -->|Yes| logged["Log the error"]
+    err -->|No| up["Upsert on the Atlassian id.<br/>Leave Account as it is"]
+    up --> nid{"nextId<br/>is set?"}
+    nid -->|Yes| fetch
+    nid -->|No| more{"Another<br/>office?"}
+    logged --> more
+    more -->|Yes| fetch
+    more -->|No| fin["Sync finished"]
+```
 
 ---
 
@@ -74,6 +88,17 @@ The queueable chains itself: next page while `nextId` is present, then the next 
 On the Account, the related Invoice Groups are the billing profiles that the **Atlassian PPC Invoices** tab and the monthly importer will query.
 
 A new billing profile appears after the next sync with `Account__c` empty until someone links it. A profile set inactive in PPC stays on the Account with `Active__c` unchecked and drops out of invoice retrieval.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Unlinked: First sync
+    Unlinked --> Linked: Sales sets Account
+    Linked --> Linked: Later sync keeps Account
+    Unlinked --> Inactive: PPC sets inactive
+    Linked --> Inactive: PPC sets inactive
+    Inactive --> Unlinked: Active again, Account still empty
+    Inactive --> Linked: Active again, Account still set
+```
 
 ---
 

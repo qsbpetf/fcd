@@ -179,7 +179,7 @@ When you add a new page:
 4. Make the file name, the README link, and the index label describe the same page.
 5. Copy the markdown tree into `staticresources/MarkdownDemo/docs/` when the page should show in Salesforce.
 
-There is no `_images/` library in this repo today. Do not invent one unless a page actually needs an image.
+Screenshots live in `docs/_images/` and are included from a page as one image on its own line, for example `![Sweden card, Unhealthy](_images/ppc-credential-health-unhealthy.png)`. The viewer resolves that path from the page. Copy `_images/` into the static resource with the markdown.
 
 ---
 
@@ -212,7 +212,7 @@ To refresh the org:
 
 1. Edit the markdown under `docs/`.
 2. Update `docs/index.json` when the menu changes.
-3. Copy the markdown files and `index.json` into `force-app/main/default/staticresources/MarkdownDemo/docs/`. Leave the OpenAPI spec and the Postman collection out.
+3. Copy the markdown files, `index.json`, and `docs/_images/` into `force-app/main/default/staticresources/MarkdownDemo/docs/`. Leave the OpenAPI spec and the Postman collection out.
 4. Deploy the `MarkdownDemo` static resource to the Eficode GoLive sandbox unless the user asked not to deploy.
 
 The component looks for `index.json` at the resource root and under `docs/`. This package uses `docs/`.

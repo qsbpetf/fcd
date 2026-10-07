@@ -241,14 +241,53 @@ After the quote is fetched, the same screen lists **Available Promo Codes** that
 
 ## Commerce API invoice import
 
-1. Paste the invoice URL, or paste the invoice UUID copied from the Account **Atlassian PPC Invoices** tab.
-2. Click **Fetch Invoice**.
-3. Click **Import fetched Invoice** and review conversion results the same way as a quote.
-4. Click **Import fetched Invoice and create products!** `PpcInvoiceConverter` creates a `PendingInvoice__c` in status **Processing**, sets `ImportedInvoiceNumber__c` to the invoice number, and enqueues `ProcessOpportunityLinesQueueable`. When the lines are in, the Opportunity stage is set to **Closing**.
+This is the **Atlassian PPC Invoices** tab on the Opportunity (`partnerPortalApiInvoiceImporter`). The card title is **Import Atlassian Partner Portal Invoice via API into Salesforce Opportunity Products**. It writes products onto an Opportunity that already exists. It does not create the Opportunity.
 
-**Merge Line Items** defaults to on.
+The Account tab with the same name only lists invoices. Copy the invoice id from there, or paste the full invoice URL. See [Invoices on the Account](#invoices-on-the-account).
 
-On create, the Opportunity is also updated with:
+**Merge Line Items** is checked by default. Leave it checked to collapse lines that share a PPC line id and the same start and end. See [Merging line items](#merging-line-items).
+
+### 1. The tab opens
+
+Paste the invoice URL or id into **Atlassian Partner Portal Invoice URL**. **Fetch Invoice** is the only button that can be used. The two import buttons stay disabled, and both result areas are empty. Nothing has been read from Atlassian, and nothing is written to the Opportunity.
+
+![Opportunity Atlassian PPC Invoices tab, before fetch](_images/ppc-invoice-import-step-1.png)
+
+The id in this shot is the same invoice as the Account list, `6bf55864-25b4-45c8-983f-a112bfe1cda8`.
+
+### 2. Fetch Invoice
+
+**Fetch Invoice** loads the invoice and its lines. The header shows the invoice number, status, item count, VAT, subtotal, and total. The lines underneath show description, entitlement number, dates, quantity, and amounts. The result logs stay empty. Fetch does not map products and does not insert them.
+
+![Invoice loaded, import buttons enabled, logs still empty](_images/ppc-invoice-import-step-2.png)
+
+This fetch returns invoice `IN-EU-003-588-678`, status PAID, with four lines. **Import fetched Invoice** and **Import fetched Invoice and create products!** are now enabled.
+
+### 3. Import fetched Invoice
+
+**Import fetched Invoice** maps the lines and shows the result. It still does not insert Opportunity Products.
+
+![Mapped lines and the merge result, before products are created](_images/ppc-invoice-import-step-3.png)
+
+Read the three logs before creating anything:
+
+- **Oppty Lines** lists each source line and whether a price book entry was found for the mapped product and the Opportunity currency.
+- **Error Log** is empty when every line mapped. A line here is not safe to create.
+- **Success Log** is what will be written. With **Merge Line Items** checked, these four Jira lines become one product: user count 29, dates 2026-09-27 to 2026-10-27, entitlement `E-3NX-SYT-TTA-FBJ`.
+
+Stop here if the Error Log has a line, or if the Success Log is not the product you expect. Nothing is on the Opportunity yet.
+
+### 4. Import fetched Invoice and create products!
+
+Click **Import fetched Invoice and create products!** This is the last step, and the only click that writes.
+
+A success toast says the invoice was imported and the products are queued for creation. `PpcInvoiceConverter` then:
+
+- Creates a `PendingInvoice__c` for this invoice, status **Processing**, linked to the Opportunity and its Account. The line count is the merged count from the Success Log (one product in this example).
+- Sets `ImportedInvoiceNumber__c` to the invoice number.
+- Enqueues `ProcessOpportunityLinesQueueable`, which inserts the Opportunity Products. When those lines are in, the Opportunity stage is set to **Closing**. A quote import uses the same queueable and leaves the stage unchanged.
+
+The Opportunity is also updated with:
 
 - `Atlassian_AT_Quote_ref__c` = invoice number
 - `Atlassian_AT_Quote_amount__c` = invoice `subTotal`
@@ -265,7 +304,17 @@ Each invoice line is filled from the related order and order item, then from ent
 
 `partnerPortalApiInvoiceViewer` lists invoices for the Account. Only Invoice Groups with `Active__c = true` are queried. Three active groups and one inactive group produce three API requests.
 
-Use the invoice id from this list when importing that invoice onto an Opportunity. **Preview** on a row opens the Atlassian invoice PDF. See [Quote and invoice PDF preview](Quote_And_Invoice_PDF_Preview.md).
+The component sits on the Account tab **Atlassian PPC Invoices**. The card title is **Atlassian Partner Portal Invoices via API**.
+
+![Atlassian PPC Invoices tab on an Account](_images/ppc-invoices-on-account.png)
+
+Each invoice is one row: invoice id, invoice number, payment type, status, paid date, line count, tax, subtotal, total, currency, and **Preview**. The lines for that invoice open underneath, with description, Atlassian offering, Atlassian product, the mapped Salesforce product, interval, start, end, quantity, and amounts. **Load more invoices** asks for the next page. In this shot the Account is Sweco Finland Oy, subsidiary Finland, and the open invoice is `IN-EU-003-588-678`, a paid card invoice.
+
+Use the invoice id from this list when importing that invoice onto an Opportunity. **Preview** on a row opens the Atlassian invoice PDF in a new tab. Salesforce does not store the file. See [Quote and invoice PDF preview](Quote_And_Invoice_PDF_Preview.md).
+
+![Preview of the same invoice, opened from the Account tab](_images/ppc-invoice-preview.png)
+
+This is **Preview** for `IN-EU-003-588-678`. The tab is the Atlassian PDF, with the invoice number and date, bill-to and sold-to, and the card receipt. It is the same invoice as the row above, not a second copy stored in Salesforce.
 
 ---
 
