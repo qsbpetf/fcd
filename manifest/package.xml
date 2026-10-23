@@ -252,6 +252,9 @@
         <members>Quote_Template_Variant.Jodocus</members>
         <members>Quote_Template_Variant.Rest_of_World</members>
         <members>Quote_Template_Variant.Switzerland</members>
+        <members>Quote_Terms.Consulting_Terms</members>
+        <members>Quote_Terms.Licenses_Terms</members>
+        <members>Quote_Terms.Managed_Services_Terms</members>
         <members>Quote_Terms_Group.Advisory_Support</members>
         <members>Quote_Terms_Group.Atlassian_License</members>
         <members>Quote_Terms_Group.Azure_GitHub_CSP</members>
@@ -314,6 +317,13 @@
         <members>Quote_Terms_Module.TECH_CONTACT_ROW_EN</members>
         <members>Quote_Terms_Module.US_NEXUS_EN</members>
         <members>Quote_Terms_Module.US_SALES_TAX_EN</members>
+        <members>Subsidiary_Approver.Denmark</members>
+        <members>Subsidiary_Approver.Finland</members>
+        <members>Subsidiary_Approver.Germany</members>
+        <members>Subsidiary_Approver.Norway</members>
+        <members>Subsidiary_Approver.Sweden</members>
+        <members>Subsidiary_Approver.United_Kingdom</members>
+        <members>Subsidiary_Approver.United_States</members>
         <members>bmpyrckt__Timeline_Configuration.KAMopportunities</members>
         <members>bmpyrckt__Timeline_Configuration.KAMplanTask</members>
         <members>bmpyrckt__Timeline_Configuration.Template_Item</members>

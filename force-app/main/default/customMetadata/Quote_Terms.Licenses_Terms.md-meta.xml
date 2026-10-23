@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Licenses Terms</label>
+    <protected>false</protected>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Product_Type__c</field>
+        <value xsi:type="xsd:string">Licenses</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>Terms_Text_DE__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Terms_Text_EN__c</field>
+        <value xsi:type="xsd:string">&lt;p&gt;This quotation for Licences is provided subject to Eficode&apos;s Re-sale of Third Party Software Terms which can be found here &lt;a href=&quot;https://www.eficode.com/trust-centre-uk/legal/product-specific-terms&quot;&gt;https://www.eficode.com/trust-centre-uk/legal/product-specific-terms&lt;/a&gt; / &lt;a href=&quot;https://www.eficode.com/contract-and-quotation-terms&quot;&gt;Eficode contract and quotation terms&lt;/a&gt;. These terms apply to this quotation and any subsequent order notwithstanding anything to the contrary contained in or incorporated into any document from, including a purchase order, or oral statement made by you, the customer. No variation or amendment to the conditions shall be of any effect unless expressly agreed, in writing, by a person authorised to sign on behalf of Eficode. By accepting this quotation, you confirm that you have read and that you accept the Terms and Conditions and you are authorised to enter into a contract on behalf of the customer.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Additional Terms and Conditions as applicable.&lt;/b&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;All applicable sales taxes / VAT will be charged upon invoicing.&lt;/li&gt;
+&lt;li&gt;Eficode currently collects sales tax in the following US states: CT, IL, IN, KS, MA, MI, ND, NY, PA, WA.&lt;/li&gt;
+&lt;li&gt;Where on-site presence creates sales tax Nexus in states not listed, Eficode may collect sales tax as appropriate. If you hold a valid sales tax exemption, please forward to &lt;a href=&quot;mailto:receivables_usa@eficode.com&quot;&gt;receivables_usa@eficode.com&lt;/a&gt; upon quote acceptance to avoid unnecessary tax collection.&lt;/li&gt;
+&lt;li&gt;Discount (%) is applied to the List Price payable when purchasing directly from the relevant software provider.&lt;/li&gt;
+&lt;li&gt;Due to the user flexibility that Monthly Cloud provides, all of our quotes are estimates which are subject to change.&lt;/li&gt;
+&lt;li&gt;Quotes for new licenses show indicative start and end dates which will change subject to when the license keys are procured.&lt;/li&gt;
+&lt;li&gt;Eficode reserves the right to amend pricing of Third Party Software at any time (both inside and outside of the quote&apos;s expiration date), prior to acceptance of an Order.&lt;/li&gt;
+&lt;li&gt;Eficode reserves the right to charge an administrative fee on license sales. Such administrative fee shall always be visible on the Offer&lt;/li&gt;
+&lt;/ul&gt;</value>
+    </values>
+</CustomMetadata>

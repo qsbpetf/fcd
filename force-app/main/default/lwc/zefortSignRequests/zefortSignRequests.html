@@ -1,0 +1,54 @@
+<template>
+  <lightning-card title="Zefort Sign Requests" icon-name="standard:task">
+    <div class="slds-p-around_medium">
+      <lightning-button
+        label="Refresh"
+        onclick={handleRefresh}
+        class="slds-m-bottom_medium"
+      ></lightning-button>
+
+      <template if:true={isLoading}>
+        <lightning-spinner
+          alternative-text="Loading sign requests"
+          size="small"
+        ></lightning-spinner>
+      </template>
+
+      <template if:false={isLoading}>
+        <template if:true={error}>
+          <div class="slds-text-color_error slds-m-bottom_medium">{error}</div>
+        </template>
+
+        <template if:true={hasRequests}>
+          <lightning-datatable
+            key-field="id"
+            data={requests}
+            columns={requestColumns}
+            hide-checkbox-column
+            onrowaction={handleRequestAction}
+          ></lightning-datatable>
+        </template>
+
+        <template if:false={hasRequests}>
+          <div class="slds-text-color_weak">
+            No sign requests for this record.
+          </div>
+        </template>
+
+        <template if:true={hasSelectedParties}>
+          <div class="slds-m-top_large">
+            <h3 class="slds-text-heading_small slds-m-bottom_small">
+              Parties for Selected Request
+            </h3>
+            <lightning-datatable
+              key-field="id"
+              data={selectedRequestParties}
+              columns={partyColumns}
+              hide-checkbox-column
+            ></lightning-datatable>
+          </div>
+        </template>
+      </template>
+    </div>
+  </lightning-card>
+</template>

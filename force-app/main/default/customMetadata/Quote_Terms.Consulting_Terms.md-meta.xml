@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Consulting Terms</label>
+    <protected>false</protected>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Product_Type__c</field>
+        <value xsi:type="xsd:string">Consulting</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">3.0</value>
+    </values>
+    <values>
+        <field>Terms_Text_DE__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Terms_Text_EN__c</field>
+        <value xsi:type="xsd:string">&lt;b&gt;Consulting Terms and Conditions&lt;/b&gt;&lt;br&gt;
+Consulting services are always subject to separate agreements negotiated between Eficode and the Customer. This non-binding offer for Consulting Services is subject to Eficode&apos;s Consulting General Terms and Conditions accessible at &lt;a href=&quot;https://www.eficode.com/consulting-general-terms&quot;&gt;https://www.eficode.com/consulting-general-terms&lt;/a&gt;.&lt;br&gt;&lt;br&gt;
+These terms apply to this quotation and any subsequent order in such manner and in the order of precedence for agreement as indicated in the Frame Agreement or other relevant agreement as agreed upon between the parties. No variation or amendment to the General Terms and Conditions shall be of any effect unless expressly agreed, in a deviation form, which shall be attached, as an integral part, to the agreement between the parties. You hereby confirm that you have read the Terms and Conditions and acknowledge that future agreements shall be governed by those Terms and Conditions.</value>
+    </values>
+</CustomMetadata>

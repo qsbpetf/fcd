@@ -1,0 +1,51 @@
+<template>
+  <lightning-card title="Zefort Contracts" icon-name="custom:custom63">
+    <div class="slds-p-around_medium">
+      <template if:true={hasZefortApiKey}>
+        <template if:true={error}>
+          <div class="slds-text-color_error slds-m-bottom_medium">{error}</div>
+        </template>
+
+        <template if:true={showCreatePartyButton}>
+          <lightning-button
+            label="Create Party in Zefort"
+            onclick={handleCreateParty}
+            variant="brand"
+            class="slds-m-top_small"
+            disabled={isLoading}
+          >
+          </lightning-button>
+        </template>
+
+        <template if:true={showContractsList}>
+          <lightning-datatable
+            key-field="id"
+            data={contracts}
+            columns={columns}
+            hide-checkbox-column
+          >
+          </lightning-datatable>
+        </template>
+
+        <template if:true={showNoContractsMessage}>
+          <div class="slds-text-color_weak slds-m-top_small">
+            No contracts found for this party in Zefort.
+          </div>
+        </template>
+      </template>
+
+      <template if:false={hasZefortApiKey}>
+        <div class="slds-text-color_error">
+          Please configure your Zefort API key in settings.
+        </div>
+      </template>
+    </div>
+
+    <template if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="Loading..."
+        size="small"
+      ></lightning-spinner>
+    </template>
+  </lightning-card>
+</template>

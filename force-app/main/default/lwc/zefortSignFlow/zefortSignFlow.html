@@ -1,0 +1,209 @@
+<template>
+  <lightning-card title="Sign with Zefort" icon-name="standard:contract">
+    <div class="slds-p-around_medium">
+      <template if:true={isLoading}>
+        <lightning-spinner
+          alternative-text="Loading sign flow"
+          size="small"
+        ></lightning-spinner>
+      </template>
+
+      <template if:false={isLoading}>
+        <template if:true={error}>
+          <div class="slds-text-color_error slds-m-bottom_medium">{error}</div>
+        </template>
+
+        <template if:true={context}>
+          <template if:true={requiresManualAccountSelection}>
+            <div class="slds-box slds-theme_default slds-m-bottom_medium">
+              <div class="slds-text-color_error slds-m-bottom_small">
+                {resolutionMessage}
+              </div>
+              <div class="slds-text-body_small slds-m-bottom_small">
+                Select an account manually to continue.
+              </div>
+              <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_small">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                  <lightning-input
+                    type="text"
+                    label="Search account"
+                    value={manualAccountSearchTerm}
+                    onchange={handleManualAccountSearchTermChange}
+                    placeholder="Type at least 2 characters"
+                  ></lightning-input>
+                </div>
+                <div
+                  class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large"
+                >
+                  <lightning-button
+                    label="Search"
+                    onclick={handleSearchAccounts}
+                    disabled={disableAccountSearch}
+                  ></lightning-button>
+                </div>
+              </div>
+
+              <template if:true={hasManualAccountOptions}>
+                <lightning-combobox
+                  label="Select account"
+                  value={selectedManualAccountId}
+                  options={manualAccountOptions}
+                  onchange={handleManualAccountChange}
+                ></lightning-combobox>
+              </template>
+            </div>
+          </template>
+
+          <template if:true={hasFiles}>
+            <lightning-combobox
+              label="Main document"
+              value={selectedMainFileId}
+              options={fileOptions}
+              onchange={handleMainFileChange}
+              class="slds-m-bottom_medium"
+            ></lightning-combobox>
+
+            <lightning-dual-listbox
+              name="attachments"
+              label="Attachments"
+              source-label="Available"
+              selected-label="Selected"
+              options={fileOptions}
+              value={selectedAttachmentIds}
+              onchange={handleAttachmentChange}
+              class="slds-m-bottom_medium"
+            ></lightning-dual-listbox>
+          </template>
+
+          <template if:false={hasFiles}>
+            <div class="slds-text-color_weak slds-m-bottom_medium">
+              No files found on this record.
+            </div>
+          </template>
+
+          <div class="slds-m-top_large">
+            <h3 class="slds-text-heading_small slds-m-bottom_small">
+              eSign parties
+            </h3>
+
+            <div class="slds-text-body_small slds-m-bottom_small">
+              Available account contacts: {contactCount}
+            </div>
+
+            <template if:true={showInternalSignerMessage}>
+              <div
+                class="internal-signer-warning slds-text-body_small slds-m-bottom_small"
+              >
+                Company signer is not configured in Zefort Settings. Add one
+                there, or continue by adding another signer or approver here.
+              </div>
+            </template>
+
+            <template if:true={hasParticipants}>
+              <template for:each={participants} for:item="participant">
+                <div
+                  key={participant.participantKey}
+                  class="participant-row slds-grid slds-wrap slds-gutters slds-m-bottom_small slds-box slds-theme_default"
+                >
+                  <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+                    <div class="slds-text-body_regular">{participant.name}</div>
+                    <div class="slds-text-body_small slds-text-color_weak">
+                      {participant.email}
+                    </div>
+                    <div class="slds-text-body_small slds-text-color_weak">
+                      Source: {participant.sourceLabel}
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+                    <lightning-combobox
+                      data-participant-key={participant.participantKey}
+                      label="Role"
+                      value={participant.role}
+                      options={roleOptions}
+                      onchange={handleParticipantRoleChange}
+                    ></lightning-combobox>
+                  </div>
+                  <div
+                    class="slds-col slds-size_1-of-1 slds-large-size_3-of-12 slds-p-top_large slds-text-align_right"
+                  >
+                    <lightning-button
+                      label="Remove"
+                      data-participant-key={participant.participantKey}
+                      onclick={handleRemoveParticipant}
+                    ></lightning-button>
+                  </div>
+                </div>
+              </template>
+            </template>
+
+            <template if:false={hasParticipants}>
+              <div class="slds-text-color_weak slds-m-bottom_medium">
+                No eSign parties selected yet.
+              </div>
+            </template>
+
+            <div class="slds-grid slds-wrap slds-gutters">
+              <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                <lightning-combobox
+                  label="Add account contact"
+                  value={selectedContactToAddId}
+                  options={availableContactOptions}
+                  onchange={handleContactToAddChange}
+                ></lightning-combobox>
+              </div>
+              <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+                <lightning-combobox
+                  label="Role"
+                  value={selectedRoleToAdd}
+                  options={roleOptions}
+                  onchange={handleRoleToAddChange}
+                ></lightning-combobox>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-1 slds-large-size_3-of-12 slds-p-top_large"
+              >
+                <lightning-button
+                  label="Add participant"
+                  onclick={handleAddParticipant}
+                  disabled={disableAddParticipant}
+                ></lightning-button>
+              </div>
+            </div>
+          </div>
+
+          <template if:true={submitError}>
+            <div class="slds-text-color_error slds-m-top_medium">{submitError}</div>
+          </template>
+          <template if:true={submitSuccessMessage}>
+            <div class="slds-text-color_success slds-m-top_medium">
+              {submitSuccessMessage}
+            </div>
+          </template>
+
+          <div class="slds-m-top_medium">
+            <lightning-button
+              label="Launch Sign Request"
+              variant="brand"
+              onclick={handleSubmit}
+              disabled={submitDisabled}
+            ></lightning-button>
+            <template if:true={isSubmitting}>
+              <lightning-spinner
+                alternative-text="Submitting sign request"
+                size="small"
+                class="slds-m-left_small"
+              ></lightning-spinner>
+            </template>
+            <template if:true={isSearchingAccounts}>
+              <lightning-spinner
+                alternative-text="Searching accounts"
+                size="small"
+                class="slds-m-left_small"
+              ></lightning-spinner>
+            </template>
+          </div>
+        </template>
+      </template>
+    </div>
+  </lightning-card>
+</template>

@@ -1,0 +1,140 @@
+<template>
+  <lightning-card title="Zefort Settings" icon-name="custom:custom63">
+    <div class="slds-p-around_medium">
+      <div class="slds-form">
+        <lightning-combobox
+          name="region"
+          label="Zefort Region"
+          value={selectedRegion}
+          placeholder="Select Region"
+          options={regionOptions}
+          onchange={handleRegionChange}
+        >
+        </lightning-combobox>
+
+        <template if:true={showDedicatedUrlField}>
+          <lightning-input
+            type="text"
+            label="Dedicated Instance URL"
+            value={dedicatedUrl}
+            onchange={handleDedicatedUrlChange}
+            placeholder="your-instance.zefort.com"
+            class="slds-m-top_small"
+          >
+          </lightning-input>
+        </template>
+
+        <div class="slds-form-element slds-m-top_small">
+          <label class="slds-form-element__label">API Key</label>
+          <div class="slds-form-element__control">
+            <template if:true={hasExistingKey}>
+              <div class="slds-text-color_success slds-m-bottom_x-small">
+                ✓ Current API key: {currentApiKeyMask}
+              </div>
+            </template>
+            <lightning-input
+              type="password"
+              value={apiKey}
+              onchange={handleApiKeyChange}
+            >
+            </lightning-input>
+          </div>
+        </div>
+
+        <div class="slds-form-element slds-m-top_medium">
+          <label class="slds-form-element__label">Company Internal Signer</label>
+          <div class="slds-form-element__control">
+            <template if:true={hasSelectedInternalSigner}>
+              <div class="slds-text-body_small slds-m-bottom_x-small">
+                Selected: {selectedInternalSignerLabel}
+              </div>
+            </template>
+
+            <lightning-combobox
+              label="Internal signer role"
+              value={selectedInternalSignerRole}
+              options={internalSignerRoleOptions}
+              onchange={handleInternalSignerRoleChange}
+              disabled={isLoading}
+              class="slds-m-bottom_small"
+            >
+            </lightning-combobox>
+
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_small">
+              <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                <lightning-input
+                  type="text"
+                  label="Search contacts"
+                  value={internalSignerSearchTerm}
+                  onchange={handleInternalSignerSearchTermChange}
+                  placeholder="Type at least 2 characters"
+                >
+                </lightning-input>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large"
+              >
+                <lightning-button
+                  label="Search Contacts"
+                  onclick={handleSearchInternalSignerContacts}
+                  disabled={disableInternalSignerSearch}
+                >
+                </lightning-button>
+              </div>
+            </div>
+
+            <template if:true={hasInternalSignerOptions}>
+              <lightning-combobox
+                label="Select internal signer"
+                value={selectedInternalSignerId}
+                options={internalSignerOptions}
+                onchange={handleInternalSignerChange}
+              >
+              </lightning-combobox>
+            </template>
+
+            <template if:true={internalSignerSearchMessage}>
+              <div class="slds-text-body_small slds-m-top_x-small">
+                {internalSignerSearchMessage}
+              </div>
+            </template>
+
+            <template if:true={hasSelectedInternalSigner}>
+              <div class="slds-m-top_small">
+                <lightning-button
+                  label="Clear Internal Signer"
+                  onclick={handleClearInternalSigner}
+                  disabled={isLoading}
+                >
+                </lightning-button>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <div class="slds-m-top_medium">
+          <lightning-button
+            label="Save"
+            variant="brand"
+            onclick={handleSave}
+            disabled={isLoading}
+          >
+          </lightning-button>
+        </div>
+      </div>
+    </div>
+
+    <template if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="Saving..."
+        size="small"
+      ></lightning-spinner>
+    </template>
+    <template if:true={isSearchingContacts}>
+      <lightning-spinner
+        alternative-text="Searching contacts..."
+        size="small"
+      ></lightning-spinner>
+    </template>
+  </lightning-card>
+</template>

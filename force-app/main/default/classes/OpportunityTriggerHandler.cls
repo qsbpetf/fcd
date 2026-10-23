@@ -10,6 +10,9 @@
  * Without sharing to ensure that all related contacts' sync flag is updated regardless of current user's visibility to the contacts.
  * */
 public without sharing class OpportunityTriggerHandler {
+    public static final String JIRA_PROJECT_ID = '10134';
+    public static final String JIRA_ISSUE_TYPE_ID = '10005';
+
     public static void updateContactsJiraSyncFlag(Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         Set<Id> oppoIds = New Set<Id>();
         Set<Id> contactIds = New Set<Id>();
@@ -37,5 +40,39 @@ public without sharing class OpportunityTriggerHandler {
             // TODO: add Nebula logger
             system.debug(e.getCause() + ':' + e.getLineNumber() + ':' + e.getLineNumber());
         }
+    }
+
+    // Sends a Jira issue only when the batch (or a user) fills the request date on a record that has no issue yet.
+    public static void createJiraIssues(List<Opportunity> newList, Map<Id, Opportunity> oldMap) {
+        if (!OppSplitService.isAutomationEnabled()) {
+            return;
+        }
+        List<Opportunity> toSend = selectJiraIssueRequests(newList, oldMap);
+        if (toSend.isEmpty() || Test.isRunningTest()) {
+            return;
+        }
+        System.debug('sending: ' + toSend);
+//        JCFS.API.createJiraIssueWithDefaultPostAction(JIRA_PROJECT_ID, JIRA_ISSUE_TYPE_ID, toSend, Trigger.old);
+        JCFS.API.createJiraIssue(JIRA_PROJECT_ID, JIRA_ISSUE_TYPE_ID, toSend, Trigger.old);
+    }
+
+    @TestVisible
+    private static List<Opportunity> selectJiraIssueRequests(List<Opportunity> newList, Map<Id, Opportunity> oldMap) {
+        List<Opportunity> toSend = new List<Opportunity>();
+        if (newList == null || oldMap == null) {
+            return toSend;
+        }
+        for (Opportunity opp : newList) {
+            Opportunity oldOpp = oldMap.get(opp.Id);
+            if (oldOpp == null) {
+                continue;
+            }
+            if (oldOpp.Jira_Issue_Requested_On__c == null
+                && opp.Jira_Issue_Requested_On__c != null
+                && String.isBlank(opp.Jira_Issue_Key__c)) {
+                toSend.add(opp);
+            }
+        }
+        return toSend;
     }
 }
